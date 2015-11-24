@@ -25,7 +25,7 @@ public class WronglyClassifiedInspection {
 		ArrayList<String> tweetsAtheism = new ArrayList<String>(
 			    Arrays.asList("tweets158.xml","tweets244.xml", "tweets467.xml", "tweets298.xml", "tweets342.xml"));
 		ArrayList<String> tweetsHillary = new ArrayList<String>(
-			    Arrays.asList("tweets1895.xml","tweets1691.xml", "tweets2067.xml", "tweets2239.xml", "tweets1785.xml"));
+			    Arrays.asList("tweets1820.xml","tweets1691.xml", "tweets2067.xml", "tweets2239.xml", "tweets1785.xml"));
 		
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 

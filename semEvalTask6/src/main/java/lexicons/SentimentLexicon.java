@@ -5,28 +5,9 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SentimentLexicon {
-	private HashMap<String, Float> lexicon;
-	public SentimentLexicon(String path) {
-		lexicon = generateLexicon(path);
-	}
-
-	/**
-	 * generates the lexicon in the specified language
-	 */
-	private HashMap<String, Float> generateLexicon(String path) {
-		HashMap<String, Float> lexicon = new HashMap<String, Float>();
-		try (FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr)) {
-			String currentString = "";
-			while ((currentString = br.readLine()) != null) {
-				String[] entry = currentString.split(" : ");
-				lexicon.put(entry[0], Float.valueOf(entry[1]));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lexicon;
-	}
+public abstract class SentimentLexicon {
+	
+	protected HashMap<String, Float> lexicon;
 
 	/**
 	 * returns 0 if there is no entry in the lexicon or the entry is positiv and
@@ -39,4 +20,6 @@ public class SentimentLexicon {
 		}
 		return value;
 	}
+	
+	public abstract HashMap<String, Float> generateLexicon(String path);
 }

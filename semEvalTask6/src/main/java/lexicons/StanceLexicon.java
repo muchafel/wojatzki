@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import util.SimilarityHelper;
 /**
  * Wrapper for the generated stance lexicons
  * provides reading-from-text methods
@@ -52,5 +54,25 @@ public class StanceLexicon {
 			value = lexicon.get(word);
 		}
 		return value;
+	}
+	
+	/**
+	 * returns 0 if there is no entry in the lexicon else returns stance value 
+	 */
+	public float getStance_WithFallback(String word) {
+		if (lexicon.containsKey(word)) {
+			return lexicon.get(word);
+		}
+		return getFallBack(word);
+	}
+
+	private float getFallBack(String word) {
+		for(String entry: lexicon.keySet()){
+			if(SimilarityHelper.WordsAreSimilar(word, entry)) {
+//				System.out.println(word+" not found ; use similar word "+ entry+ " instead!");
+				return lexicon.get(entry);
+			}
+		}
+		return 0;
 	}
 }

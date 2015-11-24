@@ -83,9 +83,9 @@ public class None_Stance_TopicWise implements Constants {
 
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
-			SummedStanceDFE_staticLexicon.class.getName(),
+//			SummedStanceDFE_staticLexicon.class.getName(),
+			SummedStanceDFE_functionalParts.class.getName(),
 //			SummedStanceDFE.class.getName(),
-//			SummedStanceDFE_functionalParts.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
@@ -110,16 +110,22 @@ public class None_Stance_TopicWise implements Constants {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone");
+			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_100");
 		}
 
 	}
 
 	private static List<File> getTopicFolders(String path) {
+		System.out.println("Folders: ");
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
+			
+			if(!f.getName().equals("HillaryClinton")){
+				continue;
+			}
+			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;

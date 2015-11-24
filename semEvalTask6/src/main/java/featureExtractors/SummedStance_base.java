@@ -1,5 +1,8 @@
 package featureExtractors;
 
+import static org.apache.uima.fit.util.JCasUtil.selectCovered;
+import static org.apache.uima.fit.util.JCasUtil.toText;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -19,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
@@ -31,11 +35,14 @@ import org.apache.uima.jcas.JCas;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
+import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
+import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaCollector;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaDependent;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
 import java_cup.reduce_action;
 import lexicons.StanceLexicon;
 import types.FunctionalPartAnnotation;
@@ -101,29 +108,67 @@ public abstract class SummedStance_base extends FeatureExtractorResource_ImplBas
 
 			Collection<Token> relevantTokens = getRelevantTokens(jcas, tokenMode);
 			// if tweet is against add tokens to favor frequency distribution
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
+//				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+//			}
+			//STANCE VS NONE
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
 				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+//				favor = incAll_ngrams(relevantTokens,favor);
 			}
+			
 			// if tweet is against add tokens to favor frequency distribution
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
-					.equals("AGAINST")) {
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+//					.equals("AGAINST")) {
+//				against = incAll(against, relevantTokens, stopwords, useStopwords);
+//			}
+			
+			//STANCE VS NONE
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
 				against = incAll(against, relevantTokens, stopwords, useStopwords);
+//				against = incAll_ngrams(relevantTokens,against);
 			}
+			
 		}
 		
-		//
-		write("favor", favor.getMostFrequentSamples(500),favor);
-		write("against", against.getMostFrequentSamples(500),against);
+		//STATIC INC (KNOWLEDGE INFUSION)
+//		favor=infuseKnowledge(favor);
 		
+		
+		//
+//		write("favor", favor.getMostFrequentSamples(500),favor);
+//		write("against", against.getMostFrequentSamples(500),against);
+//		
+		
+//		System.out.println(favor.getMostFrequentSamples(500));
 		
 //		//TODO: just an experiment!!!
 //		FrequencyDistribution<String> favor_reduced = reduce(favor);
 //		FrequencyDistribution<String> against_reduced = reduce(against);
 		
 		Map<String, Float> lexicon = createLexiconMap(favor, against);
-		writeLexicon("Atheism_temp", sortMap(lexicon));
-		System.out.println("done with lexicon");
+//		writeLexicon("HillaryClinton_temp", sortMap(lexicon));
+//		System.out.println("done with lexicon");
 		return new StanceLexicon(lexicon);
+	}
+
+	private FrequencyDistribution<String> incAll_ngrams(Collection<Token> relevantTokens, FrequencyDistribution<String> favor) {
+		
+		for (List<String> ngram : new NGramStringListIterable(toText(relevantTokens), 1, 3)) {
+			 favor.inc(StringUtils.join(ngram, "_"));
+		 }
+		return favor;
+	}
+
+	private FrequencyDistribution<String> infuseKnowledge(FrequencyDistribution<String> favor) {
+		favor.addSample("president", 200);
+		favor.addSample("democratic", 200);
+		favor.addSample("republican", 200);
+		favor.addSample("arkansas", 200);
+		favor.addSample("party", 200);
+		favor.addSample("candidate", 200);
+		favor.addSample("equality", 200);
+		return favor;
 	}
 
 	/**
@@ -304,7 +349,7 @@ public abstract class SummedStance_base extends FeatureExtractorResource_ImplBas
 	
 	private static void write( String polarity, List<String> mostFrequentSamples, FrequencyDistribution<String> fd) {
 		try (PrintWriter out = new PrintWriter(new BufferedWriter(
-				new FileWriter("src/main/resources/lists/stanceLexicons/Atheism_temp/"+polarity+".txt", true)))) {
+				new FileWriter("src/main/resources/lists/stanceLexicons/HillaryClinton_temp/"+polarity+".txt", true)))) {
 			for (String key : mostFrequentSamples) {
 				out.println(key +" "+fd.getCount(key));
 			}

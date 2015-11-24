@@ -45,6 +45,7 @@ import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
 import featureExtractors.SummedStanceDFE;
+import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
 import io.ConfusionMatrixOutput;
@@ -82,8 +83,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-			LuceneNGramDFE.class.getName(), 
+//			LuceneNGramDFE.class.getName(), 
 //			SummedStanceDFE.class.getName(),
+			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
@@ -150,8 +152,8 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
-//						J48.class.getName(),
-						SMO.class.getName(),
+						J48.class.getName(),
+//						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));

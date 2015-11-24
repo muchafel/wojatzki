@@ -7,6 +7,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import annotators.FunctionalPartsAnnotator;
 import annotators.HashTagStancePolarityAnnotator;
+import annotators.LexiconBasedSentimentAnnotator;
 import annotators.MergedArktweetTokenizer;
 import annotators.ModalVerbAnnotator;
 import annotators.NegationAnnotator;
@@ -16,11 +17,13 @@ import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.berkeleyparser.BerkeleyParser;
 import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpDependencyParser;
+import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpChunker;
 import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import edu.stanford.nlp.pipeline.SentimentAnnotator;
 
 public class PreprocessingPipeline {
 
@@ -309,5 +312,106 @@ public class PreprocessingPipeline {
 				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
 				);
 	}
+	
+	
+	/**
+	 * 1. use the break iterator to create sentence annos
+	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
+	 * 3. Ark-tools pos tagging
+	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
+	 * 		then remove pos-tagging
+	 * 5. open NLP POS tagging
+	 * 6. lemmas (Stanford)
+	 * 7. OpenNlpChunker
+	 * 8. ClearNlpDependencyParser
+	 * 9. NegationAnnotator 
+	 * 10. FunctionalPartsAnnotator
+	 * 11. TokenStancePolarityAnnotator
+	 * 12. HashTagStancePolarityAnnotator
+	 * 13. ModalVerbAnnotator
+	 * @return
+	 * @throws ResourceInitializationException
+	 */
+	public static AnalysisEngineDescription getPreprocessingChunkingFunctionalStanceAnno() throws ResourceInitializationException {
+		return createEngineDescription(
+				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
+				createEngineDescription(MergedArktweetTokenizer.class),
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(TwitterSpecificAnnotator.class),
+				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(FunctionalPartsAnnotator.class),
+				createEngineDescription(TokenStancePolarityAnnotator.class,
+						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
+				createEngineDescription(HashTagStancePolarityAnnotator.class,
+						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
+				);
+	}
+	
+	
+	/**
+	 * 1. use the break iterator to create sentence annos
+	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
+	 * 3. Ark-tools pos tagging
+	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
+	 * 		then remove pos-tagging
+	 * 5. open NLP POS tagging
+	 * 6. lemmas (Stanford)
+	 * 7. OpenNlpChunker
+	 * 8. ClearNlpDependencyParser
+	 * 9. SentimentAnnotator
+	 * 10. NegationAnnotator 
+	 * 11. FunctionalPartsAnnotator
+	 * 12. TokenStancePolarityAnnotator
+	 * 13. HashTagStancePolarityAnnotator
+	 * 14. ModalVerbAnnotator
+	 * @return
+	 * @throws ResourceInitializationException
+	 */
+	public static AnalysisEngineDescription getPreprocessingSentimentFunctionalStanceAnno() throws ResourceInitializationException {
+		return createEngineDescription(
+				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
+				createEngineDescription(MergedArktweetTokenizer.class),
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(TwitterSpecificAnnotator.class),
+				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(LexiconBasedSentimentAnnotator.class),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(FunctionalPartsAnnotator.class),
+				createEngineDescription(TokenStancePolarityAnnotator.class,
+						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
+				createEngineDescription(HashTagStancePolarityAnnotator.class,
+						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
+				);
+	}
+	
 	
 }
