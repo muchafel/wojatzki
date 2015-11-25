@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Nov 13 10:04:23 CET 2015
- * XML source: /Users/michael/workspaces/Implicitness/semEvalTask6/src/main/resources/desc/type/ownArgTypes.xml
+ * Updated by JCasGen Tue Nov 24 15:45:21 CET 2015
+ * XML source: /Users/michael/git/ucsm_git/semEvalTask6/src/main/resources/desc/type/ownArgTypes.xml
  * @generated */
 public class TwitterSpecificPOS extends Annotation {
   /** @generated

@@ -32,7 +32,7 @@ public class SummedStanceDFE extends SummedStance_base {
 			}
 			
 			if (useStances) {
-				wordStanceLexicon = readLexicon(wordStanceDir,RelevantTokens.ALL);
+				wordStanceLexicon = readLexicon(binCasDir,RelevantTokens.ALL);
 			}
 		} catch (IOException | UIMAException e) {
 			e.printStackTrace();

@@ -29,9 +29,9 @@ import util.PreprocessingPipeline;
 import util.StanceConstants;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 
-public class StanceLexiconMetaCollector extends MetaCollector {
+public class BinCasMetaCollector extends MetaCollector {
 
-	@ConfigurationParameter(name = SummedStanceDFE.PARAM_STANCE_LEXICON_DIR, mandatory = true)
+	@ConfigurationParameter(name = SummedStanceDFE.PARAM_BINCAS_DIR, mandatory = true)
     protected String wordStanceDir;
 	protected AnalysisEngine writer;
 	
@@ -40,7 +40,7 @@ public class StanceLexiconMetaCollector extends MetaCollector {
 	@Override
 	public Map<String, String> getParameterKeyPairs() {
 		 Map<String, String> mapping = new HashMap<String, String>();
-	     mapping.put(SummedStanceDFE.PARAM_STANCE_LEXICON_DIR, "wordStanceLexicon");
+	     mapping.put(SummedStanceDFE.PARAM_BINCAS_DIR, "wordStanceLexicon");
 	     return mapping;
 	}
 
@@ -54,7 +54,6 @@ public class StanceLexiconMetaCollector extends MetaCollector {
 			        BinaryCasWriter.PARAM_TARGET_LOCATION, wordStanceDir,
 			        BinaryCasWriter.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
 		} catch (ResourceInitializationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         writer.process(jcas);

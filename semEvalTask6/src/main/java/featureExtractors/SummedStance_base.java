@@ -49,12 +49,10 @@ import types.FunctionalPartAnnotation;
 import util.CollocationMeasureHelper;
 import util.StanceConstants;
 
-public abstract class SummedStance_base extends FeatureExtractorResource_ImplBase
-		implements DocumentFeatureExtractor, MetaDependent, StanceConstants {
+public abstract class SummedStance_base extends BinCasMetaDependent
+		 {
 
-	public enum RelevantTokens {
-		ALL, HASHTAG, SENTENCE, SENTENCE_FILTERED, SENTENCE_NOUNS_VEBS_ADJECTIVES
-	}
+	
 
 	public static final String PARAM_USE_STANCE_LEXICON = "useStanceLexicon";
 	@ConfigurationParameter(name = PARAM_USE_STANCE_LEXICON, mandatory = true, defaultValue = "true")
@@ -64,70 +62,61 @@ public abstract class SummedStance_base extends FeatureExtractorResource_ImplBas
 	@ConfigurationParameter(name = PARAM_USE_HASHTAG_LEXICON, mandatory = true, defaultValue = "true")
 	protected boolean useHashtags;
 
-	public static final String PARAM_STANCE_LEXICON_DIR = "wordStanceLexicon";
-	@ConfigurationParameter(name = PARAM_STANCE_LEXICON_DIR, mandatory = true)
-	protected String wordStanceDir;
 
 	protected StanceLexicon wordStanceLexicon;
 	protected StanceLexicon hashTagStanceLexicon;
 	protected List<String> stopwords;
 	protected boolean useStopwords = true;
 
-	@Override
-	public List<Class<? extends MetaCollector>> getMetaCollectorClasses() {
-		List<Class<? extends MetaCollector>> metaCollectorClasses = new ArrayList<Class<? extends MetaCollector>>();
-		metaCollectorClasses.add(StanceLexiconMetaCollector.class);
-
-		return metaCollectorClasses;
-	}
+	
 
 	/**
 	 * reads the training data and creates a stance lexcicon object
 	 * 
-	 * @param wordStanceDir
+	 * @param binCasDir
 	 * @param tokenMode
 	 * @return
 	 * @throws CollectionException
 	 * @throws UIMAException
 	 * @throws IOException
 	 */
-	protected StanceLexicon readLexicon(String wordStanceDir, RelevantTokens tokenMode)
+	protected StanceLexicon readLexicon(String binCasDir, RelevantTokens tokenMode)
 			throws CollectionException, UIMAException, IOException {
 		// create favor and against fds foreach target
 		FrequencyDistribution<String> favor = new FrequencyDistribution<String>();
 		FrequencyDistribution<String> against = new FrequencyDistribution<String>();
 
 		CollectionReader reader = CollectionReaderFactory.createReader(BinaryCasReader.class,
-				BinaryCasReader.PARAM_SOURCE_LOCATION, wordStanceDir, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+				BinaryCasReader.PARAM_SOURCE_LOCATION, binCasDir, BinaryCasReader.PARAM_PATTERNS, "*.bin",
 				BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
 
-		// iterate over all cases that have been stored by the meta collector
+		// iterate over all CASes that have been stored by the meta collector
 		while (reader.hasNext()) {
 			JCas jcas = JCasFactory.createJCas();
 			reader.getNext(jcas.getCas());
 
 			Collection<Token> relevantTokens = getRelevantTokens(jcas, tokenMode);
 			// if tweet is against add tokens to favor frequency distribution
-//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
-//				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
-//			}
-			//STANCE VS NONE
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
 				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
-//				favor = incAll_ngrams(relevantTokens,favor);
 			}
+			//STANCE VS NONE
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
+//				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+//				favor = incAll_ngrams(relevantTokens,favor);
+//			}
 			
 			// if tweet is against add tokens to favor frequency distribution
-//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
-//					.equals("AGAINST")) {
-//				against = incAll(against, relevantTokens, stopwords, useStopwords);
-//			}
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+					.equals("AGAINST")) {
+				against = incAll(against, relevantTokens, stopwords, useStopwords);
+			}
 			
 			//STANCE VS NONE
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
-				against = incAll(against, relevantTokens, stopwords, useStopwords);
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
+//				against = incAll(against, relevantTokens, stopwords, useStopwords);
 //				against = incAll_ngrams(relevantTokens,against);
-			}
+//			}
 			
 		}
 		
@@ -221,74 +210,8 @@ public abstract class SummedStance_base extends FeatureExtractorResource_ImplBas
 		return reduced;
 	}
 
-	/**
-	 * return
-	 * 
-	 * @param jcas
-	 * @param tokenMode
-	 * @return
-	 */
-	protected Collection<Token> getRelevantTokens(JCas jcas, RelevantTokens tokenMode) {
-		if (tokenMode.equals(RelevantTokens.ALL))
-			return JCasUtil.select(jcas, Token.class);
-		else if (tokenMode.equals(RelevantTokens.SENTENCE))
-			return getFunctionalTokens(jcas, SENTENCE_FUNCTION);
-		else if (tokenMode.equals(RelevantTokens.HASHTAG))
-			return getFunctionalTokens(jcas, TAG_FUNCTION);
-		else if (tokenMode.equals(RelevantTokens.SENTENCE_FILTERED))
-			return filterTokens(getFunctionalTokens(jcas, SENTENCE_FUNCTION));
-		else if (tokenMode.equals(RelevantTokens.SENTENCE_NOUNS_VEBS_ADJECTIVES))
-			return filterTokensNounsVerbsAdjectives(getFunctionalTokens(jcas, SENTENCE_FUNCTION));
-		else
-			return null;
-	}
 
-
-	private Collection<Token> filterTokensNounsVerbsAdjectives(Collection<Token> input) {
-		Collection<Token> tokens = new HashSet<Token>();
-		for (Token t : input) {
-			String pos = t.getPos().getClass().getSimpleName();
-//			System.out.println(t.getCoveredText()+" "+pos);
-			if (pos.equals("NN") || pos.equals("V") || pos.equals("ADJ")) {
-				tokens.add(t);
-			}
-		}
-		return tokens;
-	}
-
-	/**
-	 * 
-	 * @param select
-	 * @return
-	 */
-	private Collection<Token> filterTokens(Collection<Token> input) {
-		Collection<Token> tokens = new HashSet<Token>();
-		for (Token t : input) {
-			String pos = t.getPos().getPosValue();
-			if (!pos.equals(".") && !pos.equals(",") && !pos.equals(":") && !pos.equals("DT") && !pos.equals("IN")
-					&& !pos.equals("-LRB-") && !pos.equals("-RRB-")) {
-				tokens.add(t);
-			}
-		}
-		return tokens;
-	}
-
-	/**
-	 * returns only tokens that have been annotated with the specified function
-	 * 
-	 * @param jcas
-	 * @param function
-	 * @return
-	 */
-	protected Collection<Token> getFunctionalTokens(JCas jcas, String function) {
-		Collection<Token> tokens = new HashSet<Token>();
-		for (FunctionalPartAnnotation part : JCasUtil.select(jcas, FunctionalPartAnnotation.class)) {
-			if (part.getFunction().equals(function)) {
-				tokens.addAll(JCasUtil.selectCovered(Token.class, part));
-			}
-		}
-		return tokens;
-	}
+	
 
 	/**
 	 * uses the two FrequencyDistributions to generate a map by calculating

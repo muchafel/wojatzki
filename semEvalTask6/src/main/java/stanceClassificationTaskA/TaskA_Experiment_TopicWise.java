@@ -38,6 +38,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
+import featureExtractors.AspectBasedSentimentDFE_domainIndependent;
 import featureExtractors.ConditionalSentenceCountDFE;
 import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
@@ -84,14 +85,15 @@ public class TaskA_Experiment_TopicWise implements Constants {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			SummedStanceDFE.class.getName(),
+			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 			SummedStanceDFE_functionalParts.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
-//			EmoticonRatioDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
+			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 	//  	NrOfTokensDFE.class.getName(),
 	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
@@ -103,13 +105,13 @@ public class TaskA_Experiment_TopicWise implements Constants {
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		preProcessing=PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
+		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			TaskA_Experiment_TopicWise experiment = new TaskA_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceDetection");
+			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceDetectionTree");
 		}
 
 	}

@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Nov 13 10:04:23 CET 2015
+ * Updated by JCasGen Tue Nov 24 15:45:21 CET 2015
  * @generated */
 public class NegationAnnotation_Type extends Annotation_Type {
   /** @generated 

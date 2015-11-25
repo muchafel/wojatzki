@@ -133,5 +133,27 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>types.Sentiment</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>nrcSentiment</name>
+          <description/>
+          <rangeTypeName>uima.cas.Float</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>mpqaSentiment</name>
+          <description/>
+          <rangeTypeName>uima.cas.Float</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>bingLiuSentiment</name>
+          <description/>
+          <rangeTypeName>uima.cas.Float</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>

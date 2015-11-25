@@ -1,15 +1,17 @@
-package io;
+package lexicons;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
-
-import lexicons.SentimentLexicon;
-
+/**
+ * https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon
+ * @author michael
+ *
+ */
 public class BingLiuSentimentLexicon extends SentimentLexicon {
 
 	public BingLiuSentimentLexicon(String bingLiuPath) {
-		// TODO Auto-generated constructor stub
+		this.lexicon=generateLexicon(bingLiuPath);
 	}
 
 	@Override

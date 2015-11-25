@@ -37,11 +37,11 @@ public class SummedStanceDFE_functionalParts extends SummedStance_base {
 			}
 
 			if (useStances) {
-				wordStanceLexicon = readLexicon(wordStanceDir,RelevantTokens.SENTENCE);
+				wordStanceLexicon = readLexicon(binCasDir,RelevantTokens.SENTENCE);
 			}
 
 			if (useHashtags) {
-				hashTagStanceLexicon = readLexicon(wordStanceDir,RelevantTokens.HASHTAG);
+				hashTagStanceLexicon = readLexicon(binCasDir,RelevantTokens.HASHTAG);
 			}
 		} catch (IOException | UIMAException e) {
 			e.printStackTrace();
