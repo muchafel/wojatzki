@@ -1,14 +1,19 @@
 package io;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Properties;
 
 import de.tudarmstadt.ukp.dkpro.lab.reporting.ReportBase;
 import de.tudarmstadt.ukp.dkpro.lab.storage.StorageService.AccessMode;
+import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
+import de.tudarmstadt.ukp.dkpro.tc.evaluation.Id2Outcome;
+import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorBase;
+import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.WekaTestTask;
 import weka.core.SerializationHelper;
 
-public class ConfusionMatrixOutput extends ReportBase {
+public class ConfusionMatrixOutput extends ReportBase implements Constants{
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -26,6 +31,15 @@ public class ConfusionMatrixOutput extends ReportBase {
 		System.out.println("F(a): "+eval.fMeasure(0));
 		System.out.println("F(b): "+eval.fMeasure(1));
 		System.out.println("F(weighted): "+eval.weightedFMeasure());
+		
+		File id2OutcomeFile=new File(storage.getParentFile().getAbsolutePath() + "/id2outcome.txt");
+		Id2Outcome id2Outcome = new Id2Outcome(id2OutcomeFile, LM_SINGLE_LABEL);
+		EvaluatorBase evaluator = EvaluatorFactory.createEvaluator(id2Outcome, true, false);
+		Map<String, Double> resultTempMap = evaluator.calculateEvaluationMeasures();
+		for (String key : resultTempMap.keySet()) {
+			Double value = resultTempMap.get(key);
+			System.out.println(key + " " + String.valueOf(value));
+		}
 	}
 
 }

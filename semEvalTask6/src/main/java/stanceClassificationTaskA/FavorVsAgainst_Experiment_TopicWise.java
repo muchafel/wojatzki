@@ -44,12 +44,17 @@ import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.StanceLexiconDFE_Hashtags;
+import featureExtractors.StanceLexiconDFE_Hashtags_normalized;
+import featureExtractors.StanceLexiconDFE_Tokens;
+import featureExtractors.StanceLexiconDFE_Tokens_normalized;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
+import util.NoneTrainFilter;
 import util.PreprocessingPipeline;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
@@ -74,7 +79,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
 	public static final int NUM_FOLDS = 3;
-	public static final String TOPIC_FOLDERS = "/semevalTask6/favorVsAgainst/targets/";
+	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 1000;
@@ -85,7 +90,10 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			SummedStanceDFE.class.getName(),
-			SummedStanceDFE_functionalParts.class.getName(),
+			StanceLexiconDFE_Tokens.class.getName(),
+			StanceLexiconDFE_Hashtags.class.getName(),
+//			SummedStanceDFE_functionalParts.class.getName(),
+//			LuceneNGramDFE.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
@@ -119,6 +127,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
+			if(!f.getName().equals("HillaryClinton")){
+				continue;
+			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;
@@ -126,7 +137,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class,
 				NUM_FOLDS);
 		batch.setPreprocessing(preProcessing);
 		// batch.addInnerReport(WekaClassificationReport.class);
@@ -136,8 +147,8 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		batch.setParameterSpace(pSpace);
 
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(BatchCrossValidationReport.class);
-//		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
+//		batch.addReport(BatchCrossValidationReport.class);
+		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
 		// batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
 
 		// Run
@@ -152,18 +163,22 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
-						J48.class.getName(),
-//						SMO.class.getName(),
+//						J48.class.getName(),
+						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));
 
+		
+		 Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
+	            Arrays.asList(new String[] { NoneTrainFilter.class.getName() }));
+		
 		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir, folder.getName());
 
 		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
 		// bundle parameterspace
 		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimPipelineParameters, dimFeatureSets,
-				dimClassificationArgs);
+				dimClassificationArgs,dimFeatureFilters);
 
 		return pSpace;
 	}
@@ -175,15 +190,16 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	 * @param dimPipelineParameters
 	 * @param dimFeatureSets
 	 * @param dimClassificationArgs
+	 * @param dimFeatureFilters 
 	 * @return
 	 */
 	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders,
 			Dimension<List<Object>> dimPipelineParameters, Dimension<List<String>> dimFeatureSets,
-			Dimension<List<String>> dimClassificationArgs) {
+			Dimension<List<String>> dimClassificationArgs, Dimension<List<String>> dimFeatureFilters) {
 
 		return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
-				dimPipelineParameters, dimFeatureSets, dimClassificationArgs);
+				dimPipelineParameters, dimFeatureSets,dimFeatureFilters, dimClassificationArgs);
 	}
 
 	private Dimension<List<Object>> getPipelineParameters(String baseDir, String target) {

@@ -69,7 +69,7 @@ public class AspectBasedSentimentDFE_domainIndependent extends BinCasMetaDepende
 
 			// add nouns to fds
 			// TODO only Nouns? --> Bi-grams?
-			if (outcome.equals("FAVOR") || outcome.equals("AGAINST")) {
+			if (outcome.equals("STANCE") || outcome.equals("AGAINST") || outcome.equals("FAVOR")) {
 				stanceNouns.incAll(JCasUtil.toText(relevantTokens));
 			} else {
 				nonStanceNouns.incAll(JCasUtil.toText(relevantTokens));

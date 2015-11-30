@@ -20,6 +20,8 @@ import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.FrequencyDistributionNGramDFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneSkipNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
@@ -32,6 +34,7 @@ import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchTrainTestUsingTCEvaluationReport;
+import de.tudarmstadt.ukp.dkpro.tc.ml.report.InnerBatchUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
@@ -85,15 +88,16 @@ public class TaskA_Experiment_TopicWise implements Constants {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			SummedStanceDFE.class.getName(),
-			AspectBasedSentimentDFE_domainIndependent.class.getName(),
+//			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 			SummedStanceDFE_functionalParts.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
+			LuceneCharacterNGramDFE.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
-			ConditionalSentenceCountDFE.class.getName(),
-			RepeatedPunctuationDFE.class.getName(),
-			EmoticonRatioDFE.class.getName(),
+//			ConditionalSentenceCountDFE.class.getName(),
+//			RepeatedPunctuationDFE.class.getName(),
+//			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 	//  	NrOfTokensDFE.class.getName(),
 	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
@@ -111,7 +115,7 @@ public class TaskA_Experiment_TopicWise implements Constants {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			TaskA_Experiment_TopicWise experiment = new TaskA_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceDetectionTree");
+			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceDetection");
 		}
 
 	}
@@ -121,6 +125,9 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
+			if(!f.getName().equals("HillaryClinton")){
+				continue;
+			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;
@@ -128,18 +135,19 @@ public class TaskA_Experiment_TopicWise implements Constants {
 
 	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class,
 				NUM_FOLDS);
 		batch.setPreprocessing(preProcessing);
 		// batch.addInnerReport(WekaClassificationReport.class);
 //		batch.addInnerReport(WekaFeatureValuesReport.class);
 		batch.addInnerReport(ConfusionMatrixOutput.class);
+//		batch.addInnerReport(InnerBatchUsingTCEvaluationReport.class);
 //		batch.addInnerReport(WekaOutcomeIDReport.class);
 		batch.setParameterSpace(pSpace);
 
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(BatchCrossValidationReport.class);
-//		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
+//		batch.addReport(BatchCrossValidationReport.class);
+		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
 		// batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
 
 		// Run
@@ -154,8 +162,8 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
-						J48.class.getName(),
-//						SMO.class.getName(),
+//						J48.class.getName(),
+						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));

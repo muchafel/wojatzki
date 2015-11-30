@@ -24,7 +24,6 @@ public class SimpleNegationDFE extends FeatureExtractorResource_ImplBase impleme
 			if(negationCand.getIsNegation())numOfNegation++;
 		}
 		features.add(new Feature("NUMBER_OF_NEGATIONS", numOfNegation));
-//		System.out.println(jcas.getDocumentText()+ " "+ numOfNegation);
 		return features;
 	}
 

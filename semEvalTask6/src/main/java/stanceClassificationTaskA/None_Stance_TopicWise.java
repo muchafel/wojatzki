@@ -38,14 +38,18 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
+import featureExtractors.AspectBasedSentimentDFE_domainIndependent;
 import featureExtractors.ConditionalSentenceCountDFE;
 import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.StanceLexiconDFE_Hashtags;
+import featureExtractors.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.SummedStanceDFE_functionalParts;
+import featureExtractors.StanceLexiconDFE_Tokens_normalized;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
 import io.ConfusionMatrixOutput;
@@ -84,33 +88,37 @@ public class None_Stance_TopicWise implements Constants {
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-			SummedStanceDFE_functionalParts.class.getName(),
+			StanceLexiconDFE_Tokens_normalized.class.getName(),
+//			StanceLexiconDFE_Hashtags_normalized.class.getName(),
+			StanceLexiconDFE_Hashtags.class.getName(),
+//			SummedStanceDFE_functionalParts.class.getName(),
+//			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
-//			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
+			SimpleNegationDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 	//  	NrOfTokensDFE.class.getName(),
-	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  	NrOfTokensPerSentenceDFE.class.getName(),
+	  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
+	  	NrOfTokensPerSentenceDFE.class.getName(),
 //	  	ModalVerbFeaturesDFE.class.getName()
-//			TypeTokenRatioFeatureExtractor.class.getName(),
+			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		preProcessing=PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
+		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_100");
+			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_");
 		}
 
 	}
@@ -133,7 +141,7 @@ public class None_Stance_TopicWise implements Constants {
 
 	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class,
 				NUM_FOLDS);
 		batch.setPreprocessing(preProcessing);
 		// batch.addInnerReport(WekaClassificationReport.class);
@@ -143,8 +151,8 @@ public class None_Stance_TopicWise implements Constants {
 		batch.setParameterSpace(pSpace);
 
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(BatchCrossValidationReport.class);
-//		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
+//		batch.addReport(BatchCrossValidationReport.class);
+		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
 		// batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
 
 		// Run
@@ -202,7 +210,8 @@ public class None_Stance_TopicWise implements Constants {
 						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
-						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true"
+						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false"
 				}));
 		return dimPipelineParameters;
 	}

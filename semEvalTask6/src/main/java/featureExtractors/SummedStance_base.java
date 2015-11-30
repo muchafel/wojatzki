@@ -61,6 +61,10 @@ public abstract class SummedStance_base extends BinCasMetaDependent
 	public static final String PARAM_USE_HASHTAG_LEXICON = "useHashTagLexicon";
 	@ConfigurationParameter(name = PARAM_USE_HASHTAG_LEXICON, mandatory = true, defaultValue = "true")
 	protected boolean useHashtags;
+	
+	public static final String PARAM_USE_POLARITY = "usePolarity";
+	@ConfigurationParameter(name = PARAM_USE_POLARITY, mandatory = true, defaultValue = "true")
+	protected boolean usePolarity;
 
 
 	protected StanceLexicon wordStanceLexicon;
@@ -96,28 +100,28 @@ public abstract class SummedStance_base extends BinCasMetaDependent
 			reader.getNext(jcas.getCas());
 
 			Collection<Token> relevantTokens = getRelevantTokens(jcas, tokenMode);
-			// if tweet is against add tokens to favor frequency distribution
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
-				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+			
+			if(usePolarity){
+				// if tweet is against add tokens to favor frequency distribution
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
+					favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+				}
+				
+				// if tweet is against add tokens to favor frequency distribution
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("AGAINST")) {
+					against = incAll(against, relevantTokens, stopwords, useStopwords);
+				}
+			}else{
+				//STANCE VS NONE
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
+					favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+				}
+				//STANCE VS NONE
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
+					against = incAll(against, relevantTokens, stopwords, useStopwords);
+				}
 			}
-			//STANCE VS NONE
-//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
-//				favor = incAll(favor, relevantTokens, stopwords, useStopwords);
-//				favor = incAll_ngrams(relevantTokens,favor);
-//			}
-			
-			// if tweet is against add tokens to favor frequency distribution
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
-					.equals("AGAINST")) {
-				against = incAll(against, relevantTokens, stopwords, useStopwords);
-			}
-			
-			//STANCE VS NONE
-//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
-//				against = incAll(against, relevantTokens, stopwords, useStopwords);
-//				against = incAll_ngrams(relevantTokens,against);
-//			}
-			
 		}
 		
 		//STATIC INC (KNOWLEDGE INFUSION)
@@ -146,17 +150,6 @@ public abstract class SummedStance_base extends BinCasMetaDependent
 		for (List<String> ngram : new NGramStringListIterable(toText(relevantTokens), 1, 3)) {
 			 favor.inc(StringUtils.join(ngram, "_"));
 		 }
-		return favor;
-	}
-
-	private FrequencyDistribution<String> infuseKnowledge(FrequencyDistribution<String> favor) {
-		favor.addSample("president", 200);
-		favor.addSample("democratic", 200);
-		favor.addSample("republican", 200);
-		favor.addSample("arkansas", 200);
-		favor.addSample("party", 200);
-		favor.addSample("candidate", 200);
-		favor.addSample("equality", 200);
 		return favor;
 	}
 

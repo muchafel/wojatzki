@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -13,10 +14,10 @@ import org.apache.uima.resource.ResourceSpecifier;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
+import featureExtractors.BinCasMetaDependent.RelevantTokens;
 
-public class SummedStanceDFE extends SummedStance_base {
+public class StanceLexiconDFE_Tokens_normalized extends SummedStance_base{
 
-	
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
 			throws ResourceInitializationException {
@@ -24,35 +25,40 @@ public class SummedStanceDFE extends SummedStance_base {
 			return false;
 		}
 		try {
-			//TODO parammeterize stopwords
-			if(useStopwords){
+			//FIXME remove stopwords from DFEs
+			if (useStopwords) {
 				stopwords = init("src/main/resources/lists/stop-words_english_6_en.txt");
 			}
-			
 			if (useStances) {
-				wordStanceLexicon = readLexicon(binCasDir,RelevantTokens.ALL);
+				wordStanceLexicon = readLexicon(binCasDir,RelevantTokens.SENTENCE);
 			}
+
 		} catch (IOException | UIMAException e) {
 			e.printStackTrace();
 		}
-		
+
 		return true;
 	}
-
+	
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
-
 		Set<Feature> features = new HashSet<Feature>();
 		float tokenPolarity = 0;
-
+		int numberOfPositiveTokens=0;
+		int numberOfNegativeTokens=0;
+		
 		for (Token token : JCasUtil.select(jcas, Token.class)) {
 			if (useStances) {
-				tokenPolarity += wordStanceLexicon.getStance(token.getCoveredText());
+				float stance= wordStanceLexicon.getStance_WithFallback(token.getCoveredText());
+				tokenPolarity += stance;
+				if(stance>0)numberOfPositiveTokens++;
+				else if(stance<0)numberOfNegativeTokens++;
 			}
-
 		}
-
-		features.add(new Feature("SummedTokenPolarity", tokenPolarity));
+		
+		features.add(new Feature("SummedTokenPolarity_normalized", tokenPolarity));
+		features.add(new Feature("numberOfPositiveTokens", numberOfPositiveTokens));
+		features.add(new Feature("numberOfNegativeTokens", numberOfNegativeTokens));
 		return features;
 	}
 
