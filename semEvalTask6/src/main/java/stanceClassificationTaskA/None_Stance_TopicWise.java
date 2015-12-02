@@ -97,16 +97,16 @@ public class None_Stance_TopicWise implements Constants {
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
-			SimpleNegationDFE.class.getName(),
-			ConditionalSentenceCountDFE.class.getName(),
-			RepeatedPunctuationDFE.class.getName(),
+//			SimpleNegationDFE.class.getName(),
+//			ConditionalSentenceCountDFE.class.getName(),
+//			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 	//  	NrOfTokensDFE.class.getName(),
-	  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-	  	NrOfTokensPerSentenceDFE.class.getName(),
+//	  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
+//	  	NrOfTokensPerSentenceDFE.class.getName(),
 //	  	ModalVerbFeaturesDFE.class.getName()
-			TypeTokenRatioFeatureExtractor.class.getName(),
+//			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
 
 	public static void main(String[] args) throws Exception {

@@ -11,6 +11,11 @@
 	</parent>
 	<dependencies>
 		<dependency>
+			<groupId>edu.berkeley.nlp</groupId>
+			<artifactId>berkeleylm</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
 			<groupId>dkpro.similarity</groupId>
 			<artifactId>dkpro.similarity.algorithms.lexical-asl</artifactId>
 		</dependency>

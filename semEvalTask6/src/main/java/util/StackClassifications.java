@@ -28,11 +28,14 @@ public class StackClassifications implements Constants {
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
-		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
+//		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
+		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized_alleFeatures.txt";
+		
+		
 		
 		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_lex.txt";
-//		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex.txt";
+//		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
 //		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
 		
 		

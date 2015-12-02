@@ -1,0 +1,535 @@
+
+\data\
+ngram 1=133
+ngram 2=200
+ngram 3=186
+ngram 4=0
+
+\1-grams:
+-1.698970	can	-0.030413
+-2.301030	different	-0.030413
+-2.301030	Google+	-0.030413
+-2.301030	at	-0.030413
+-2.301030	details	-0.030413
+-2.301030	server	-0.030413
+-2.301030	set	-0.030413
+-2.000000	dozens	-0.331443
+-2.301030	huge	-0.030413
+-2.301030	Start	-0.030413
+-2.301030	translation	-0.030413
+-2.301030	Control	-0.030413
+-2.301030	around	-0.030413
+-2.301030	getting	-0.030413
+-2.301030	site,	-0.030413
+-2.000000	our	-0.030413
+-2.301030	by	-0.030413
+-2.301030	Can	-0.030413
+-2.301030	translate.apachefriends.org,	-0.030413
+-2.301030	in	-0.030413
+-2.301030	include	-0.030413
+-2.301030	Friends	-0.030413
+-2.301030	Guides	-0.030413
+-2.301030	Facebook,	-0.030413
+-2.301030	apps.	-0.030413
+-2.301030	languages.	-0.030413
+-2.000000	We	-0.030413
+-2.000000	us	-0.030413
+-2.301030	it.	-0.030413
+-2.301030	FAQs	-0.030413
+-2.000000	using	-0.030413
+-2.301030	X	-0.030413
+-2.301030	been	-0.030413
+-2.301030	OS	-0.030413
+-2.000000	more	-0.030413
+-2.301030	installers.	-0.030413
+-2.301030	Forums,	-0.030413
+-2.301030	Contribute	-0.030413
+-2.301030	Wordpress,	-0.030413
+-2.301030	section	-0.030413
+-2.301030	behind	-0.030413
+-2.301030	installed	-0.030413
+-2.301030	of	-0.030413
+-2.000000	available	-0.030413
+-2.301030	than	-0.030413
+-2.301030	XAMPP,	-0.030413
+-2.000000	check	-0.331443
+-2.301030	joining	-0.030413
+-2.301030	Welcome	-0.030413
+-2.000000	you	-0.030413
+-2.301030	applications.	-0.030413
+-2.301030	successfully	-0.030413
+-2.301030	status.	-0.030413
+-2.301030		-0.030413
+-2.301030	MySQL,	-0.030413
+-2.301030	translations.	-0.030413
+-2.301030	Joomla!	-0.030413
+-2.301030	source	-0.030413
+-1.455932	to	-0.097360
+-1.823909	Bitnami	-0.030413
+-2.301030	need	-0.030413
+-2.301030	years	-0.030413
+-2.301030	contribute	-0.030413
+-2.301030	into	-0.030413
+-2.301030	others	-0.030413
+-2.301030	Community	-0.030413
+-2.301030	10	-0.030413
+-1.522879	the	-0.030413
+-2.301030	find	-0.030413
+-2.301030	translate.apachefriends.org.	-0.030413
+-2.301030	liking	-0.030413
+-2.301030	system!	-0.030413
+-2.301030	5.6.12	-0.030413
+-2.301030	there	-0.030413
+-2.301030	deployed	-0.030413
+-2.301030	where	-0.030413
+-2.301030	HOW-TO	-0.030413
+-1.602060	and	-0.030413
+-1.602060	for	-0.030413
+-1.823909	You	-0.206504
+-2.301030	following	-0.030413
+-1.455932	XAMPP	-0.081566
+-2.301030	cooperating	-0.030413
+-2.301030	get	-0.030413
+-2.000000	other	-0.030413
+-2.301030	Apache,	-0.030413
+-2.301030	one-click	-0.030413
+-2.301030	up	-0.030413
+-2.301030	List,	-0.030413
+-2.301030	this	-0.030413
+-2.301030	are	-0.030413
+-2.301030	Now	-0.030413
+-2.301030	exploits	-0.030413
+-2.301030	Visit	-0.030413
+-2.301030	be	-0.030413
+-2.301030	yourself	-0.030413
+-2.000000	or	-0.030413
+-2.301030	components.	-0.030413
+-2.301030	is	-0.030413
+-2.301030	Install	-0.030413
+-2.301030	Twitter,	-0.030413
+-2.301030	free.	-0.030413
+-2.301030	Bitnami-packaged	-0.030413
+-2.301030	Drupal,	-0.030413
+-1.301030	</s>
+-1.823909	applications	-0.030413
+-2.000000	translate	-0.331443
+-2.301030	make	-0.030413
+-2.000000	have	-0.030413
+-2.301030	users	-0.030413
+-2.000000	community	-0.030413
+-2.301030	started	-0.030413
+-2.000000	with	-0.030413
+-2.301030	Apache	-0.030413
+-2.301030	involved	-0.030413
+-1.522879	on	-0.030413
+-2.301030	Mailing	-0.030413
+-99.000000	<s>	-0.071806
+-2.301030	–	-0.030413
+-2.301030	Panel	-0.030413
+-2.301030	members?	-0.030413
+-2.000000	adding	-0.030413
+-2.301030	start	-0.030413
+-2.000000	a	-0.030413
+-2.000000	your	-0.030413
+-2.301030	circles.	-0.030413
+-2.301030	has	-0.030413
+-2.000000	PHP	-0.030413
+-2.301030	open	-0.030413
+-2.301030	currently	-0.030413
+-2.301030	info	-0.030413
+-2.301030	page	-0.030413
+-2.000000	help	-0.030413
+
+\2-grams:
+-1.414785	have successfully	-0.004432
+-1.113755	joining our	-0.004432
+-1.414785	more info	-0.004432
+-0.998848	Contribute to	-0.004432
+-1.489752	XAMPP on	-0.004432
+-1.933353	XAMPP translation	-0.004432
+-1.064089	users can	-0.004432
+-1.414785	community members?	-0.004432
+-0.855908	XAMPP for	-0.004432
+-1.041235	XAMPP, for	-0.004432
+-1.414785	community behind	-0.004432
+-1.406236	on the	-0.004432
+-1.113755	huge community	-0.004432
+-0.942139	translate.apachefriends.org. </s>
+-1.843946	the currently	-0.004432
+-1.177510	help to	-0.004432
+-1.496646	applications available	-0.004432
+-1.414785	PHP applications.	-0.004432
+-1.843946	the Mailing	-0.004432
+-1.560477	and Bitnami	-0.004432
+-1.140894	been around	-0.004432
+-1.565333	applications include	-0.004432
+-1.565333	Bitnami are	-0.004432
+-1.280141	you can	-0.004432
+-1.113755	make dozens	-0.004432
+-1.414785	more than	-0.004432
+-1.864623	to make	-0.004432
+-1.140894	Apache Friends	-0.004432
+-0.261376	check the	-0.004432
+-0.998848	cooperating to	-0.004432
+-1.365119	adding us	-0.004432
+-0.994410	<s> 	-0.305462
+-1.140894	include Wordpress,	-0.004432
+-1.113755	is a	-0.004432
+-0.942139	translations. </s>
+-1.140894	translate.apachefriends.org, where	-0.004432
+-1.113755	currently available	-0.004432
+-1.140894	server status.	-0.004432
+-1.801275	XAMPP using	-0.004432
+-1.365119	help translate	-0.004432
+-1.740205	can start	-0.004432
+-1.160128	Bitnami </s>
+-1.797676	on Twitter,	-0.004432
+-1.140894	translation at	-0.004432
+-1.373714	the XAMPP	-0.004432
+-1.019525	in the	-0.004432
+-1.041235	Friends and	-0.004432
+-1.541210	You have	-0.004432
+-1.933353	XAMPP into	-0.004432
+-1.140894	open source	-0.004432
+-1.641109	and dozens	-0.004432
+-1.414785	available apps.	-0.004432
+-1.113755	liking us	-0.004432
+-0.942139	status. </s>
+-1.088212	source applications	-0.004432
+-1.140894	X 5.6.12	-0.004432
+-1.088212	it. You	-0.004432
+-1.041235	Joomla! and	-0.004432
+-1.140894	free. Bitnami-packaged	-0.004432
+-1.933353	XAMPP Control	-0.004432
+-1.686221	for other	-0.004432
+-1.843946	the server	-0.004432
+-1.140894	get involved	-0.004432
+-1.113755	up a	-0.004432
+-1.140894	contribute translations.	-0.004432
+-1.140894	10 years	-0.004432
+-1.797676	for free.	-0.004432
+-1.983532	<s> Welcome	-0.004432
+-1.365119	your help	-0.004432
+-1.140894	at translate.apachefriends.org.	-0.004432
+-1.414785	a site,	-0.004432
+-1.140894	FAQs section	-0.004432
+-0.942139	 </s>
+-1.320554	using Bitnami	-0.004432
+-1.140894	HOW-TO Guides	-0.004432
+-1.140894	installers. Visit	-0.004432
+-0.998848	installed XAMPP	-0.004432
+-1.019525	Visit the	-0.004432
+-1.088212	Bitnami-packaged applications	-0.004432
+-1.041235	around for	-0.004432
+-1.753168	to your	-0.004432
+-1.113755	start using	-0.004432
+-1.414785	We need	-0.004432
+-1.113755	following our	-0.004432
+-1.177510	us to	-0.004432
+-1.414785	adding yourself	-0.004432
+-1.019525	exploits on	-0.004432
+-1.243169	PHP and	-0.004432
+-1.140894	getting started	-0.004432
+-1.641109	and other	-0.004432
+-1.140894	are cooperating	-0.004432
+-0.743547	to XAMPP	-0.004432
+-1.740205	can find	-0.004432
+-1.140894	system! Now	-0.004432
+-1.113755	Forums, adding	-0.004432
+-1.843946	the HOW-TO	-0.004432
+-1.740205	can contribute	-0.004432
+-1.473183	to the	-0.004432
+-1.113755	deployed with	-0.004432
+-1.414785	a huge	-0.004432
+-1.113755	need your	-0.004432
+-1.686221	for more	-0.004432
+-0.259532	translate XAMPP	-0.004432
+-1.414785	our exploits	-0.004432
+-1.113755	MySQL, PHP	-0.004432
+-1.797676	on this	-0.004432
+-1.140894	OS X	-0.004432
+-1.414785	our Forums,	-0.004432
+-1.797676	on Facebook,	-0.004432
+-1.414785	of open	-0.004432
+-1.797676	for getting	-0.004432
+-1.140894	behind it.	-0.004432
+-0.942139	apps. </s>
+-1.843946	the FAQs	-0.004432
+-1.140894	Drupal, Joomla!	-0.004432
+-1.983532	<s> Community	-0.004432
+-1.140894	set up	-0.004432
+-1.797676	for details	-0.004432
+-1.113755	languages. We	-0.004432
+-0.433787	You can	-0.004432
+-1.041235	Guides for	-0.004432
+-1.797676	on XAMPP,	-0.004432
+-1.365119	or check	-0.004432
+-0.998848	Panel to	-0.004432
+-1.357486	on XAMPP	-0.004432
+-1.019525	details on	-0.004432
+-1.140894	than 10	-0.004432
+-1.983532	<s> Can	-0.004432
+-1.258241	Bitnami XAMPP	-0.004432
+-1.365119	or adding	-0.004432
+-1.209100	available on	-0.004432
+-1.740205	can be	-0.004432
+-1.740205	can get	-0.004432
+-1.414785	other components.	-0.004432
+-0.270716	dozens of	-0.004432
+-1.140894	info in	-0.004432
+-1.140894	where users	-0.004432
+-1.113755	members? We	-0.004432
+-1.088212	Install applications	-0.004432
+-0.998848	Welcome to	-0.004432
+-1.113755	Can you	-0.004432
+-1.296577	applications on	-0.004432
+-1.933353	XAMPP has	-0.004432
+-1.414785	your Google+	-0.004432
+-1.753168	to translate	-0.004432
+-1.140894	Facebook, following	-0.004432
+-1.113755	Twitter, or	-0.004432
+-1.414785	of others	-0.004432
+-1.140894	be deployed	-0.004432
+-1.753168	to check	-0.004432
+-1.140894	different languages.	-0.004432
+-1.041235	page for	-0.004432
+-1.365119	other community	-0.004432
+-1.140894	one-click installers.	-0.004432
+-1.933353	XAMPP page	-0.004432
+-1.983532	<s> Start	-0.004432
+-1.019525	Start the	-0.004432
+-1.724400	<s> You	-0.004432
+-1.365119	you help	-0.004432
+-1.140894	Mailing List,	-0.004432
+-1.140894	into different	-0.004432
+-1.365119	with PHP	-0.004432
+-1.983532	<s> Install	-0.004432
+-1.140894	site, translate.apachefriends.org,	-0.004432
+-1.414785	using Apache,	-0.004432
+-1.140894	Apache, MySQL,	-0.004432
+-1.140894	has been	-0.004432
+-1.140894	Control Panel	-0.004432
+-1.113755	Now you	-0.004432
+-1.740205	and liking	-0.004432
+-1.140894	– there	-0.004432
+-1.113755	section or	-0.004432
+-1.140894	successfully installed	-0.004432
+-0.942139	applications. </s>
+-0.998848	yourself to	-0.004432
+-1.041235	others and	-0.004432
+-1.113755	started with	-0.004432
+-1.797676	for OS	-0.004432
+-1.626218	the Bitnami	-0.004432
+-1.140894	this system!	-0.004432
+-1.414785	have set	-0.004432
+-1.140894	Wordpress, Drupal,	-0.004432
+-1.983532	<s> Apache	-0.004432
+-1.140894	involved by	-0.004432
+-1.113755	find more	-0.004432
+-0.942139	Community </s>
+-1.365119	We have	-0.004432
+-1.140894	by joining	-0.004432
+-1.088212	components. You	-0.004432
+-1.414785	with one-click	-0.004432
+-1.140894	Google+ circles.	-0.004432
+-1.140894	there is	-0.004432
+-1.445939	<s> XAMPP	-0.004432
+-0.942139	5.6.12 </s>
+-1.041235	List, and	-0.004432
+-1.983532	<s> Contribute	-0.004432
+-1.140894	years –	-0.004432
+-1.492496	and can	-0.004432
+-1.209100	us on	-0.004432
+-0.942139	circles. </s>
+
+\3-grams:
+-1.087709	OS X 5.6.12
+-1.063851	system! Now you
+-1.087709	get involved by
+-0.979699	for details on
+-1.087709	a site, translate.apachefriends.org,
+-0.960982	successfully installed XAMPP
+-1.087709	XAMPP translation at
+-1.063851	We need your
+-1.550429	users can contribute
+-1.316594	You have successfully
+-1.430835	Bitnami-packaged applications include
+-1.087709	than 10 years
+-1.276919	Twitter, or adding
+-1.207024	Now you can
+-0.999258	of others and
+-1.309830	details on the
+-0.426290	it. You can
+-1.063851	<s> Can you
+-1.558672	Panel to check
+-1.515145	around for more
+-1.087709	has been around
+-1.087709	can be deployed
+-1.586290	us on Facebook,
+-0.723975	Contribute to XAMPP
+-1.063851	the currently available
+-1.270742	applications on XAMPP
+-1.427302	Friends and Bitnami
+-1.041235	other components. You
+-1.316594	deployed with one-click
+-1.087709	the Mailing List,
+-0.255942	to translate XAMPP
+-0.999258	HOW-TO Guides for
+-1.087709	XAMPP has been
+-1.779463	translate XAMPP into
+-0.844644	translate XAMPP for
+-1.087709	community behind it.
+-1.087709	of open source
+-1.063851	Facebook, following our
+-1.594093	XAMPP for other
+-1.087709	include Wordpress, Drupal,
+-1.413184	<s> You have
+-1.779463	to XAMPP translation
+-1.276919	or adding us
+-0.257752	or check the
+-1.087709	on this system!
+-0.844644	to XAMPP for
+-1.063851	a huge community
+-0.723975	Welcome to XAMPP
+-0.999258	XAMPP page for
+-0.255942	help translate XAMPP
+-1.087709	for OS X
+-1.316594	with PHP applications.
+-1.316594	up a site,
+-1.087709	for free. Bitnami-packaged
+-1.276919	you help translate
+-1.586290	available on XAMPP,
+-1.087709	the HOW-TO Guides
+-1.316594	other community members?
+-1.063851	on Twitter, or
+-1.663690	the XAMPP Control
+-1.376755	others and can
+-0.960982	Control Panel to
+-1.063851	FAQs section or
+-0.960982	<s> Welcome to
+-1.087709	XAMPP Control Panel
+-1.586290	XAMPP on this
+-1.283850	Start the XAMPP
+-1.276919	Can you help
+-1.063851	set up a
+-1.316594	and other components.
+-1.146835	liking us on
+-1.588476	on XAMPP using
+-1.276919	need your help
+-1.316594	Forums, adding yourself
+-1.484516	Joomla! and dozens
+-1.063851	there is a
+-1.613848	to the Mailing
+-1.119604	your help to
+-1.087709	for getting started
+-1.188631	the Bitnami XAMPP
+-1.063851	can start using
+-1.063851	to make dozens
+-1.316594	for more than
+-1.041235	free. Bitnami-packaged applications
+-1.715470	check the HOW-TO
+-1.087709	into different languages.
+-1.625778	cooperating to make
+-1.240567	XAMPP using Bitnami
+-1.063851	our Forums, adding
+-1.087709	can contribute translations.
+-1.715470	check the server
+-1.276919	languages. We have
+-1.663690	<s> XAMPP has
+-0.266918	and dozens of
+-1.636766	You can find
+-1.087709	have set up
+-0.266918	make dozens of
+-1.119604	adding us to
+-1.087709	on Facebook, following
+-1.550429	you can start
+-1.175888	MySQL, PHP and
+-0.979699	our exploits on
+-1.087709	<s> Apache Friends
+-1.087709	XAMPP into different
+-1.087709	Wordpress, Drupal, Joomla!
+-1.474184	Visit the Bitnami
+-1.087709	translate.apachefriends.org, where users
+-1.636766	You can get
+-1.087709	can get involved
+-0.999258	been around for
+-1.087709	the FAQs section
+-1.316594	find more info
+-1.063851	and liking us
+-1.063851	community members? We
+-0.426290	components. You can
+-1.364881	dozens of open
+-1.276919	started with PHP
+-1.087709	Bitnami are cooperating
+-1.586290	page for details
+-1.550429	List, and liking
+-1.063851	by joining our
+-1.063851	different languages. We
+-1.087709	have successfully installed
+-1.087709	more than 10
+-1.041235	<s> Install applications
+-1.087709	site, translate.apachefriends.org, where
+-1.063851	getting started with
+-1.379898	source applications available
+-1.087709	applications include Wordpress,
+-1.550429	and can be
+-1.316594	start using Apache,
+-1.430835	and Bitnami are
+-1.087709	with one-click installers.
+-0.960982	<s> Contribute to
+-1.276919	section or check
+-1.316594	is a huge
+-1.276919	for other community
+-1.087709	10 years –
+-1.063851	Apache, MySQL, PHP
+-1.019740	where users can
+-1.558672	help to translate
+-1.663690	Bitnami XAMPP page
+-1.316594	following our exploits
+-1.087709	using Apache, MySQL,
+-1.374673	installed XAMPP on
+-1.680928	XAMPP for OS
+-0.960982	are cooperating to
+-1.364881	dozens of others
+-1.316594	members? We need
+-1.613848	in the FAQs
+-1.041235	open source applications
+-1.558672	us to your
+-0.979699	installers. Visit the
+-1.316594	joining our Forums,
+-1.613848	on the currently
+-1.316594	huge community behind
+-0.979699	info in the
+-1.087709	– there is
+-0.999258	Drupal, Joomla! and
+-1.087709	more info in
+-1.586290	exploits on Twitter,
+-1.087709	one-click installers. Visit
+-0.999258	on XAMPP, for
+-1.063851	be deployed with
+-1.362032	yourself to the
+-1.063851	can find more
+-0.999258	Apache Friends and
+-0.979699	<s> Start the
+-1.316594	currently available apps.
+-1.484516	PHP and other
+-1.316594	to your Google+
+-1.087709	the server status.
+-1.087709	involved by joining
+-1.146835	applications available on
+-1.087709	years – there
+-1.041235	behind it. You
+-1.220730	Install applications on
+-1.586290	Guides for getting
+-1.586290	XAMPP, for free.
+-1.087709	your Google+ circles.
+-1.087709	this system! Now
+-1.087709	translation at translate.apachefriends.org.
+-0.999258	Mailing List, and
+-1.316594	We have set
+-0.960982	adding yourself to
+-0.257752	to check the
+
+\4-grams:
+
+\end\

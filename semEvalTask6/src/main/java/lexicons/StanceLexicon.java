@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import util.SimilarityHelper;
 /**
@@ -74,5 +75,9 @@ public class StanceLexicon {
 			}
 		}
 		return 0;
+	}
+	
+	public Set<String> getKeys() {
+		return lexicon.keySet();
 	}
 }
