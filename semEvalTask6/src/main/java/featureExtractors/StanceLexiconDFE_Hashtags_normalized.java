@@ -39,6 +39,9 @@ public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
 		return true;
 	}
 
+	
+	
+	
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
 

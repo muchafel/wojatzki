@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class WordEmbeddingLexicon {
 
@@ -45,4 +46,11 @@ public class WordEmbeddingLexicon {
 		return this.lexicon.get(key);
 	}
 	
+	public int getDimensionality() {
+		return this.lexicon.entrySet().iterator().next().getValue().size();
+	}
+	
+	public Set<String> getKeySet() {
+		return lexicon.keySet();
+	}
 }

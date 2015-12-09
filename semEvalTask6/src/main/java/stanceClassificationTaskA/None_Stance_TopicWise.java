@@ -53,6 +53,7 @@ import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.StanceLexiconDFE_Tokens_normalized;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
+import featureExtractors.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import io.TaskATweetReader_None_Stance;
@@ -96,7 +97,8 @@ public class None_Stance_TopicWise implements Constants {
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
-			LuceneNGramDFE.class.getName(), 
+			WordEmbeddingDFE.class.getName(),
+//			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
@@ -132,9 +134,9 @@ public class None_Stance_TopicWise implements Constants {
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
 			
-//			if(!f.getName().equals("HillaryClinton")){
-//				continue;
-//			}
+			if(!f.getName().equals("HillaryClinton")){
+				continue;
+			}
 			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
