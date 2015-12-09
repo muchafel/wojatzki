@@ -45,6 +45,7 @@ import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.SimpleSentencePolarityDFE;
 import featureExtractors.StanceLexiconDFE_Hashtags;
 import featureExtractors.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.SummedStanceDFE;
@@ -88,13 +89,14 @@ public class None_Stance_TopicWise implements Constants {
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-			StanceLexiconDFE_Tokens_normalized.class.getName(),
+//			StanceLexiconDFE_Tokens_normalized.class.getName(),
 //			StanceLexiconDFE_Hashtags_normalized.class.getName(),
-			StanceLexiconDFE_Hashtags.class.getName(),
+//			StanceLexiconDFE_Hashtags.class.getName(),
+//			SimpleSentencePolarityDFE.class.getName(),
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
-//			LuceneNGramDFE.class.getName(), 
+			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
@@ -102,10 +104,10 @@ public class None_Stance_TopicWise implements Constants {
 //			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
-	//  	NrOfTokensDFE.class.getName(),
-//	  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  	NrOfTokensPerSentenceDFE.class.getName(),
-//	  	ModalVerbFeaturesDFE.class.getName()
+//	  		NrOfTokensDFE.class.getName(),
+//	  		LongWordsFeatureExtractor.class.getName(), //configure to 6!
+//	  		NrOfTokensPerSentenceDFE.class.getName(),
+//	  		ModalVerbFeaturesDFE.class.getName()
 //			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
 
@@ -130,9 +132,9 @@ public class None_Stance_TopicWise implements Constants {
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
 			
-			if(!f.getName().equals("HillaryClinton")){
-				continue;
-			}
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
 			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
@@ -167,8 +169,8 @@ public class None_Stance_TopicWise implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
-						J48.class.getName(),
-//						SMO.class.getName(),
+//						J48.class.getName(),
+						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));

@@ -119,8 +119,8 @@ public class StanceLexiconDFE_Tokens_normalized extends SummedStance_base{
 		}
 		
 		features.add(new Feature("SummedTokenPolarity_normalized", tokenPolarity));
-		features.add(new Feature("numberOfPositiveTokens", numberOfPositiveTokens));
-		features.add(new Feature("numberOfNegativeTokens", numberOfNegativeTokens));
+		features.add(new Feature("numberOfPositiveTokens_normalized", numberOfPositiveTokens));
+		features.add(new Feature("numberOfNegativeTokens_normalized", numberOfNegativeTokens));
 		return features;
 	}
 	

@@ -26,6 +26,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.twitter.EmoticonRatioDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.NumberOfHashTagsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
+import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchTrainTestUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapter;
@@ -36,6 +37,10 @@ import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.SimpleSentencePolarityDFE;
+import featureExtractors.StackedFeatureDFE;
+import featureExtractors.StanceLexiconDFE_Hashtags;
+import featureExtractors.StanceLexiconDFE_Tokens;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
 import io.ConfusionMatrixOutput;
@@ -68,11 +73,13 @@ public class TaskA_Experiment implements Constants {
 	public static int N_GRAM_MAXCANDIDATES=1000;
 	
 	public static String[] FES={
-			SummedStanceDFE_staticLexicon.class.getName(),
 //								ContextualityMeasureFeatureExtractor.class.getName(),
 //							    LuceneNGramDFE.class.getName(),
 //							    HashTagDFE.class.getName(),
 //							    TopicDFE.class.getName(),
+								StanceLexiconDFE_Tokens.class.getName(),
+								StanceLexiconDFE_Hashtags.class.getName(),
+								SimpleSentencePolarityDFE.class.getName(),	
 //							    SimpleNegationDFE.class.getName(),
 //							    EmoticonRatioDFE.class.getName(),
 //							    LuceneNgramInspection.class.getName(),
@@ -95,20 +102,22 @@ public class TaskA_Experiment implements Constants {
 	
 	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 		
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class, NUM_FOLDS);
-		batch.setPreprocessing(PreprocessingPipeline.getPreprocessingTokenStanceAnno());
-//		batch.addInnerReport(WekaClassificationReport.class);
-        batch.addInnerReport(WekaFeatureValuesReport.class);
-        batch.addInnerReport(ConfusionMatrixOutput.class);
-        batch.addInnerReport(WekaOutcomeIDReport.class);
-        batch.setParameterSpace(pSpace);
-        //TODO use exitsing?
-        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-        batch.addReport(BatchCrossValidationReport.class);
-//        batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
-        
-        // Run
-        Lab.getInstance().run(batch);
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class,
+				NUM_FOLDS);
+		batch.setPreprocessing(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno());
+		// batch.addInnerReport(WekaClassificationReport.class);
+//		batch.addInnerReport(WekaFeatureValuesReport.class);
+		batch.addInnerReport(ConfusionMatrixOutput.class);
+//		batch.addInnerReport(WekaOutcomeIDReport.class);
+		batch.setParameterSpace(pSpace);
+
+		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
+//		batch.addReport(BatchCrossValidationReport.class);
+		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
+		// batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
+
+		// Run
+		Lab.getInstance().run(batch);
 		
 	}
 
@@ -161,7 +170,10 @@ public class TaskA_Experiment implements Constants {
                 		NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
                 		NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
                 		NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX,
-                		HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/hashTags.txt"
+                		HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/hashTags.txt",
+                		SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
+						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favor_against/id2homogenizedOutcome.txt"
                 })
         );
 		return dimPipelineParameters;

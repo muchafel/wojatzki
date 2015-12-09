@@ -38,7 +38,7 @@ public class TokenThesaurus {
 		for(String token : fd.getKeys()){
 			tokenBOWMapping.put(token, new HashSet<String>());
 			for(String bowCandidate : fd.getKeys()){
-				if(SimilarityHelper.WordsAreSimilar(token,bowCandidate) || token.equals(bowCandidate))tokenBOWMapping.get(token).add(bowCandidate);
+				if(SimilarityHelper.wordsAreSimilar(token,bowCandidate) || token.equals(bowCandidate))tokenBOWMapping.get(token).add(bowCandidate);
 			}
 		}
 		return tokenBOWMapping;

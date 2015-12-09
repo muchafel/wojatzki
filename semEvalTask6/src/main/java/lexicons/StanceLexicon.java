@@ -69,7 +69,7 @@ public class StanceLexicon {
 
 	private float getFallBack(String word) {
 		for(String entry: lexicon.keySet()){
-			if(SimilarityHelper.WordsAreSimilar(word, entry)) {
+			if(SimilarityHelper.wordsAreSimilar(word, entry)) {
 //				System.out.println(word+" not found ; use similar word "+ entry+ " instead!");
 				return lexicon.get(entry);
 			}

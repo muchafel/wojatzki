@@ -17,7 +17,7 @@ import java.util.Map;
  * @author michael
  *
  */
-public class ThesaurusLMGeneration {
+public class ThesaurusLMGeneration_Oren {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(

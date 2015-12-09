@@ -44,6 +44,8 @@ import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.SimpleSentencePolarityDFE;
+import featureExtractors.StackedFeatureDFE;
 import featureExtractors.StanceLexiconDFE_Hashtags;
 import featureExtractors.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.StanceLexiconDFE_Tokens;
@@ -78,40 +80,41 @@ import weka.classifiers.trees.J48;
 public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
-	public static final int NUM_FOLDS = 3;
+	public static final int NUM_FOLDS = 10;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
-	public static int N_GRAM_MAXCANDIDATES = 1000;
+	public static int N_GRAM_MAXCANDIDATES = 400;
 	public static AnalysisEngineDescription preProcessing;
 
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
+//			StackedFeatureDFE.class.getName(),
 //			SummedStanceDFE.class.getName(),
 			StanceLexiconDFE_Tokens.class.getName(),
 			StanceLexiconDFE_Hashtags.class.getName(),
+			SimpleSentencePolarityDFE.class.getName(),	
 //			SummedStanceDFE_functionalParts.class.getName(),
-//			LuceneNGramDFE.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
-//			EmoticonRatioDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
+			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
-	//  	NrOfTokensDFE.class.getName(),
+			NrOfTokensDFE.class.getName(),
 	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  	NrOfTokensPerSentenceDFE.class.getName(),
-//	  	ModalVerbFeaturesDFE.class.getName()
-//			TypeTokenRatioFeatureExtractor.class.getName(),
+			NrOfTokensPerSentenceDFE.class.getName(),
+//	  		ModalVerbFeaturesDFE.class.getName()
+			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir );
-		preProcessing=PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
+		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
@@ -127,9 +130,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
-			if(!f.getName().equals("HillaryClinton")){
-				continue;
-			}
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;
@@ -211,7 +214,8 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
-						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true"
+						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favor_against/id2homogenizedOutcome.txt"
 				}));
 		return dimPipelineParameters;
 	}
