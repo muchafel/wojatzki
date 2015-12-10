@@ -27,7 +27,13 @@ public class SimilarityHelper {
 			else if(lower_i.equals(hashTagVariant(lower_j))){
 				return true;
 			}
-			else if (normalized_levensthein<0.2){
+			else if(lower_i.equals(userVariant(lower_j))){
+				return true;
+			}
+			else if(lower_i.equals(genetiveS(lower_j))){
+				return true;
+			}
+			else if (normalized_levensthein<0.15){
 				return true;
 			}
 			else {
@@ -36,8 +42,17 @@ public class SimilarityHelper {
 		}
 		return false;
 	}
+	private static Object genetiveS(String lower_j) {
+		if(lower_j.endsWith("'s"))return lower_j.replace("'s", "");
+		return lower_j;
+	}
 	private static String hashTagVariant(String lower_j) {
 		if(lower_j.startsWith("#"))return lower_j.replace("#", "");
+		return lower_j;
+	}
+	
+	private static String userVariant(String lower_j) {
+		if(lower_j.startsWith("@"))return lower_j.replace("@", "");
 		return lower_j;
 	}
 	
