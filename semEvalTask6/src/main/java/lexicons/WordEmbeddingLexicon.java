@@ -14,9 +14,13 @@ public class WordEmbeddingLexicon {
 
 	private Map<String, List<Float>> lexicon;
 	
+	
+	public WordEmbeddingLexicon(Map<String, List<Float>> lexicon){
+		this.lexicon= lexicon;
+	}
+	
 	public WordEmbeddingLexicon(String path){
 		this.lexicon= readLexicon(path);
-		
 	}
 	private Map<String, List<Float>> readLexicon(String path) {
 		Map<String, List<Float>> lexicon=new HashMap<String, List<Float>>();

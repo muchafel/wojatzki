@@ -65,7 +65,7 @@ public class SimilarityHelper {
 		for(float dimension: a){
 			sum+=dimension*dimension;
 		}
-		return sum;
+		return (float) Math.sqrt(sum);
 	}
 	private static float dotProduct(List<Float> a, List<Float> b) {
 		float sum = 0;

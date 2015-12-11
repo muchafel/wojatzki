@@ -19,5 +19,6 @@ public class WordEmbeddingLexiconTest {
 		System.out.println("cosine hillary & cat:" + SimilarityHelper.getCosineSimilarity(lex.getEmbedding("hillary"), lex.getEmbedding("cat")));
 		System.out.println("cosine hitler & stalin:" + SimilarityHelper.getCosineSimilarity(lex.getEmbedding("hitler"), lex.getEmbedding("stalin")));
 		System.out.println("cosine hitler & flower:" + SimilarityHelper.getCosineSimilarity(lex.getEmbedding("hitler"), lex.getEmbedding("flower")));
+		System.out.println("cosine dog & cat:" + SimilarityHelper.getCosineSimilarity(lex.getEmbedding("dog"), lex.getEmbedding("cat")));
 	}
 }
