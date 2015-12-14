@@ -48,15 +48,18 @@ import featureExtractors.SimpleNegationDFE;
 import featureExtractors.SimpleSentencePolarityDFE;
 import featureExtractors.StanceLexiconDFE_Hashtags;
 import featureExtractors.StanceLexiconDFE_Hashtags_normalized;
+import featureExtractors.StanceLexiconDFE_Tokens;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.StanceLexiconDFE_Tokens_normalized;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
 import featureExtractors.WordEmbeddingDFE;
+import featureExtractors.WordEmbeddingDFE_keyWords;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import io.TaskATweetReader_None_Stance;
+import moa.classifiers.functions.Perceptron;
 import util.PreprocessingPipeline;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
@@ -80,7 +83,7 @@ import weka.classifiers.trees.J48;
 public class None_Stance_TopicWise implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
-	public static final int NUM_FOLDS = 3;
+	public static final int NUM_FOLDS = 10;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
@@ -90,25 +93,27 @@ public class None_Stance_TopicWise implements Constants {
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-//			StanceLexiconDFE_Tokens_normalized.class.getName(),
+			StanceLexiconDFE_Tokens_normalized.class.getName(),
+//			StanceLexiconDFE_Tokens.class.getName(),
 //			StanceLexiconDFE_Hashtags_normalized.class.getName(),
-//			StanceLexiconDFE_Hashtags.class.getName(),
-//			SimpleSentencePolarityDFE.class.getName(),
+			StanceLexiconDFE_Hashtags.class.getName(),
+			SimpleSentencePolarityDFE.class.getName(),
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
-			WordEmbeddingDFE.class.getName(),
+//			WordEmbeddingDFE.class.getName(),
+//			WordEmbeddingDFE_keyWords.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
-//			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
-//			EmoticonRatioDFE.class.getName(),
+			SimpleNegationDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
+			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
-//	  		LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  		NrOfTokensPerSentenceDFE.class.getName(),
+	  		LongWordsFeatureExtractor.class.getName(), //configure to 6!
+	  		NrOfTokensPerSentenceDFE.class.getName(),
 //	  		ModalVerbFeaturesDFE.class.getName()
 //			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
@@ -133,10 +138,9 @@ public class None_Stance_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
-			
-			if(!f.getName().equals("HillaryClinton")){
-				continue;
-			}
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
 			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
@@ -173,6 +177,7 @@ public class None_Stance_TopicWise implements Constants {
 				Arrays.asList(new String[] { 
 //						J48.class.getName(),
 						SMO.class.getName(),
+//						MultilayerPerceptron.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));

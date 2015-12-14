@@ -52,6 +52,7 @@ import featureExtractors.SummedStanceDFE;
 import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
+import featureExtractors.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import util.PreprocessingPipeline;
@@ -89,9 +90,10 @@ public class TaskA_Experiment_TopicWise implements Constants {
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			SummedStanceDFE.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
-			SummedStanceDFE_functionalParts.class.getName(),
+//			SummedStanceDFE_functionalParts.class.getName(),
+//			WordEmbeddingDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-			LuceneCharacterNGramDFE.class.getName(),
+//			LuceneCharacterNGramDFE.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
@@ -163,8 +165,8 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
 //						J48.class.getName(),
-						SMO.class.getName(),
-//						MultilayerPerceptron.class.getName(),
+//						SMO.class.getName(),
+						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));
 

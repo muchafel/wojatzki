@@ -49,10 +49,7 @@ import types.FunctionalPartAnnotation;
 import util.CollocationMeasureHelper;
 import util.StanceConstants;
 
-public abstract class SummedStance_base extends BinCasMetaDependent
-		 {
-
-	
+public abstract class SummedStance_base extends BinCasMetaDependent{
 
 	public static final String PARAM_USE_STANCE_LEXICON = "useStanceLexicon";
 	@ConfigurationParameter(name = PARAM_USE_STANCE_LEXICON, mandatory = true, defaultValue = "true")
