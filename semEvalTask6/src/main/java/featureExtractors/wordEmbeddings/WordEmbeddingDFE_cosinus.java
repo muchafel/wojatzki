@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.wordEmbeddings;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,6 +20,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import featureExtractors.SummedStance_base;
 import featureExtractors.BinCasMetaDependent.RelevantTokens;
 import lexicons.WordEmbeddingLexicon;
 import types.StanceAnnotation;
@@ -31,6 +32,7 @@ public class WordEmbeddingDFE_cosinus extends SummedStance_base{
 	private WordEmbeddingLexicon lexicon;
 	private List<String> stopwords;
 	private List<Float> stanceVector;
+	
 	
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier, Map aAdditionalParams)

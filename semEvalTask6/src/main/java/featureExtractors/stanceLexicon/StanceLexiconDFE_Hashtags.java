@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.stanceLexicon;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -14,10 +14,10 @@ import org.apache.uima.resource.ResourceSpecifier;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
+import featureExtractors.SummedStance_base;
 import featureExtractors.BinCasMetaDependent.RelevantTokens;
 
-public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
-
+public class StanceLexiconDFE_Hashtags extends SummedStance_base{
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
 			throws ResourceInitializationException {
@@ -39,9 +39,6 @@ public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
 		return true;
 	}
 
-	
-	
-	
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
 
@@ -52,7 +49,7 @@ public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
 		
 		for (Token token : JCasUtil.select(jcas, Token.class)) {
 			if (useStances) {
-				float stance=hashTagStanceLexicon.getStance_WithFallback(token.getCoveredText());
+				float stance=hashTagStanceLexicon.getStance(token.getCoveredText());
 				hashTagPolarity += stance;
 				if(stance>0)numberOfPositiveHashtags++;
 				else if(stance<0)numberOfNegativeHashtags++;
@@ -64,6 +61,5 @@ public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
 		features.add(new Feature("numberOfNegativeHashtags", numberOfNegativeHashtags));
 		return features;
 	}
-
 
 }

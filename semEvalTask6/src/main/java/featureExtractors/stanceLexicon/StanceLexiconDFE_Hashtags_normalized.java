@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.stanceLexicon;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -14,9 +14,11 @@ import org.apache.uima.resource.ResourceSpecifier;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
+import featureExtractors.SummedStance_base;
 import featureExtractors.BinCasMetaDependent.RelevantTokens;
 
-public class StanceLexiconDFE_Tokens extends SummedStance_base{
+public class StanceLexiconDFE_Hashtags_normalized extends SummedStance_base{
+
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
 			throws ResourceInitializationException {
@@ -28,37 +30,41 @@ public class StanceLexiconDFE_Tokens extends SummedStance_base{
 			if (useStopwords) {
 				stopwords = init("src/main/resources/lists/stop-words_english_6_en.txt");
 			}
-			if (useStances) {
-				wordStanceLexicon = readLexicon(binCasDir,RelevantTokens.SENTENCE);
+			if (useHashtags) {
+				hashTagStanceLexicon = readLexicon(binCasDir,RelevantTokens.HASHTAG);
 			}
-
 		} catch (IOException | UIMAException e) {
 			e.printStackTrace();
 		}
 
 		return true;
 	}
+
+	
+	
 	
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
+
 		Set<Feature> features = new HashSet<Feature>();
-		float tokenPolarity = 0;
-		int numberOfPositiveTokens=0;
-		int numberOfNegativeTokens=0;
+		float hashTagPolarity = 0;
+		int numberOfPositiveHashtags=0;
+		int numberOfNegativeHashtags=0;
 		
 		for (Token token : JCasUtil.select(jcas, Token.class)) {
 			if (useStances) {
-				float stance= wordStanceLexicon.getStance(token.getCoveredText());
-				tokenPolarity += stance;
-				if(stance>0)numberOfPositiveTokens++;
-				else if(stance<0)numberOfNegativeTokens++;
+				float stance=hashTagStanceLexicon.getStance_WithFallback(token.getCoveredText());
+				hashTagPolarity += stance;
+				if(stance>0)numberOfPositiveHashtags++;
+				else if(stance<0)numberOfNegativeHashtags++;
 			}
 		}
 		
-		features.add(new Feature("SummedTokenPolarity", tokenPolarity));
-		features.add(new Feature("numberOfPositiveTokens", numberOfPositiveTokens));
-		features.add(new Feature("numberOfNegativeTokens", numberOfNegativeTokens));
+		features.add(new Feature("SummedHashTagPolarity", hashTagPolarity));
+		features.add(new Feature("numberOfPositiveHashtags", numberOfPositiveHashtags));
+		features.add(new Feature("numberOfNegativeHashtags", numberOfNegativeHashtags));
 		return features;
 	}
+
 
 }

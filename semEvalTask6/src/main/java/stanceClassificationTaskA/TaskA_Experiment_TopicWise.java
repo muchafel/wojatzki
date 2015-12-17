@@ -52,7 +52,7 @@ import featureExtractors.SummedStanceDFE;
 import featureExtractors.SummedStanceDFE_functionalParts;
 import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
-import featureExtractors.WordEmbeddingDFE;
+import featureExtractors.wordEmbeddings.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import util.PreprocessingPipeline;

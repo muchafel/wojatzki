@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -338,5 +339,59 @@ public abstract class SummedStance_base extends BinCasMetaDependent {
 			}
 		}
 		return helper.getAveragedSentenceVector(embeddingCandidates);
+	}
+	
+	/**
+	 * extracts the top 10 concepts and returns thier wordembeddings
+	 * @param binCasDir
+	 * @param stopwords 
+	 * @param lexicon
+	 * @param stopwords
+	 * @return
+	 * @throws IOException 
+	 * @throws UIMAException 
+	 * @throws CollectionException 
+	 */
+	protected  Map<String,List<Float>> readKeyConceptsVector(String binCasDir, WordEmbeddingLexicon lexicon, List<String> stopwords) throws CollectionException, UIMAException, IOException {
+		// create favor and against fds foreach target
+				FrequencyDistribution<String> favor = new FrequencyDistribution<String>();
+
+				CollectionReader reader = CollectionReaderFactory.createReader(BinaryCasReader.class,
+						BinaryCasReader.PARAM_SOURCE_LOCATION, binCasDir, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+						BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
+
+				// iterate over all CASes that have been stored by the meta collector
+				while (reader.hasNext()) {
+					JCas jcas = JCasFactory.createJCas();
+					reader.getNext(jcas.getCas());
+
+					Collection<Token> relevantTokens = getRelevantTokens(jcas,RelevantTokens.SENTENCE_NOUNS);
+
+					if (usePolarity) {
+						// if tweet is against add tokens to favor frequency
+						// distribution
+						if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+								.equals("FAVOR")) {
+							favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+						}
+
+					} else {
+						// STANCE VS NONE
+						if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+								.equals("STANCE")) {
+							favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+						}
+					}
+				}
+				//TODO: normalize embeddings
+				return getWordEmbeddingsMap(favor.getMostFrequentSamples(20),lexicon);
+	}
+
+	private Map<String, List<Float>> getWordEmbeddingsMap(List<String> mostFrequentSamples, WordEmbeddingLexicon lexicon) {
+		Map<String, List<Float>> result= new HashMap<String, List<Float>>();
+		for(String key: mostFrequentSamples){
+			result.put(key, lexicon.getEmbedding_WithFallback(key));
+		}
+		return result;
 	}
 }
