@@ -22,7 +22,7 @@ import util.StanceConstants;
 public abstract class BinCasMetaDependent extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor, MetaDependent, StanceConstants{
 	
 	public enum RelevantTokens {
-		ALL, HASHTAG, SENTENCE, SENTENCE_FILTERED, SENTENCE_NOUNS_VEBS_ADJECTIVES, SENTENCE_NOUNS
+		ALL, HASHTAG, SENTENCE, SENTENCE_FILTERED, SENTENCE_NOUNS_VEBS_ADJECTIVES, SENTENCE_NOUNS,
 	}
 	
 	public static final String PARAM_BINCAS_DIR = "BinCasDirLexicon";

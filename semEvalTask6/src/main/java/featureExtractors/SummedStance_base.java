@@ -31,6 +31,7 @@ import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -45,11 +46,13 @@ import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
 import java_cup.reduce_action;
 import lexicons.StanceLexicon;
+import lexicons.WordEmbeddingLexicon;
 import types.FunctionalPartAnnotation;
 import util.CollocationMeasureHelper;
 import util.StanceConstants;
+import util.wordEmbeddingUtil.WordEmbeddingHelper;
 
-public abstract class SummedStance_base extends BinCasMetaDependent{
+public abstract class SummedStance_base extends BinCasMetaDependent {
 
 	public static final String PARAM_USE_STANCE_LEXICON = "useStanceLexicon";
 	@ConfigurationParameter(name = PARAM_USE_STANCE_LEXICON, mandatory = true, defaultValue = "true")
@@ -58,18 +61,15 @@ public abstract class SummedStance_base extends BinCasMetaDependent{
 	public static final String PARAM_USE_HASHTAG_LEXICON = "useHashTagLexicon";
 	@ConfigurationParameter(name = PARAM_USE_HASHTAG_LEXICON, mandatory = true, defaultValue = "true")
 	protected boolean useHashtags;
-	
+
 	public static final String PARAM_USE_POLARITY = "usePolarity";
 	@ConfigurationParameter(name = PARAM_USE_POLARITY, mandatory = true, defaultValue = "true")
 	protected boolean usePolarity;
-
 
 	protected StanceLexicon wordStanceLexicon;
 	protected StanceLexicon hashTagStanceLexicon;
 	protected List<String> stopwords;
 	protected boolean useStopwords = true;
-
-	
 
 	/**
 	 * reads the training data and creates a stance lexcicon object
@@ -97,111 +97,115 @@ public abstract class SummedStance_base extends BinCasMetaDependent{
 			reader.getNext(jcas.getCas());
 
 			Collection<Token> relevantTokens = getRelevantTokens(jcas, tokenMode);
-			
-			if(usePolarity){
-				// if tweet is against add tokens to favor frequency distribution
-				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("FAVOR")) {
+
+			if (usePolarity) {
+				// if tweet is against add tokens to favor frequency
+				// distribution
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("FAVOR")) {
 					favor = incAll(favor, relevantTokens, stopwords, useStopwords);
 				}
-				
-				// if tweet is against add tokens to favor frequency distribution
+
+				// if tweet is against add tokens to favor frequency
+				// distribution
 				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
 						.equals("AGAINST")) {
 					against = incAll(against, relevantTokens, stopwords, useStopwords);
 				}
-			}else{
-				//STANCE VS NONE
-				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("STANCE")) {
+			} else {
+				// STANCE VS NONE
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("STANCE")) {
 					favor = incAll(favor, relevantTokens, stopwords, useStopwords);
+					// favor = incAllLemmas(against, relevantTokens, stopwords,
+					// useStopwords);
 				}
-				//STANCE VS NONE
-				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome().equals("NONE")) {
+				// STANCE VS NONE
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("NONE")) {
 					against = incAll(against, relevantTokens, stopwords, useStopwords);
+					// against = incAllLemmas(against, relevantTokens,
+					// stopwords, useStopwords);
 				}
 			}
 		}
-		
-		//STATIC INC (KNOWLEDGE INFUSION)
-//		favor=infuseKnowledge(favor);
-		
-		
+
+		// STATIC INC (KNOWLEDGE INFUSION)
+		// favor=infuseKnowledge(favor);
+
 		//
-//		write("favor", favor.getMostFrequentSamples(500),favor);
-//		write("against", against.getMostFrequentSamples(500),against);
-//		
-		
-//		System.out.println(favor.getMostFrequentSamples(500));
-		
-//		//TODO: just an experiment!!!
-//		FrequencyDistribution<String> favor_reduced = reduce(favor);
-//		FrequencyDistribution<String> against_reduced = reduce(against);
-		
+		// write("favor", favor.getMostFrequentSamples(500),favor);
+		// write("against", against.getMostFrequentSamples(500),against);
+		//
+
+		// System.out.println(favor.getMostFrequentSamples(500));
+
+		// //TODO: just an experiment!!!
+		// FrequencyDistribution<String> favor_reduced = reduce(favor);
+		// FrequencyDistribution<String> against_reduced = reduce(against);
+
 		Map<String, Float> lexicon = createLexiconMap(favor, against);
-//		writeLexicon("HillaryClinton_temp", sortMap(lexicon));
-//		System.out.println("done with lexicon");
+		// writeLexicon("HillaryClinton_temp", sortMap(lexicon));
+		// System.out.println("done with lexicon");
 		return new StanceLexicon(lexicon);
 	}
 
-	private FrequencyDistribution<String> incAll_ngrams(Collection<Token> relevantTokens, FrequencyDistribution<String> favor) {
-		
+	private FrequencyDistribution<String> incAll_ngrams(Collection<Token> relevantTokens,
+			FrequencyDistribution<String> favor) {
+
 		for (List<String> ngram : new NGramStringListIterable(toText(relevantTokens), 1, 3)) {
-			 favor.inc(StringUtils.join(ngram, "_"));
-		 }
+			favor.inc(StringUtils.join(ngram, "_"));
+		}
 		return favor;
 	}
 
 	/**
 	 * writes to the specified resource in the form Token:Stance
+	 * 
 	 * @param target
 	 * @param lexcicon
 	 */
-		private static void writeLexicon(String target, Map<String, Float> lexcicon) {
-			
-			try (PrintWriter out = new PrintWriter(new BufferedWriter(
-					new FileWriter("src/main/resources/lists/stanceLexicons/" + target + "/stanceLexicon.txt", true)))) {
-				for (String key : lexcicon.keySet()) {
-					out.println(key + ":" + lexcicon.get(key));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+	private static void writeLexicon(String target, Map<String, Float> lexcicon) {
+
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(
+				new FileWriter("src/main/resources/lists/stanceLexicons/" + target + "/stanceLexicon.txt", true)))) {
+			for (String key : lexcicon.keySet()) {
+				out.println(key + ":" + lexcicon.get(key));
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	
-		
-		private static Map<String, Float> sortMap(Map<String, Float> unsortMap) {
-			// Convert Map to List
-					List<Map.Entry<String, Float>> list = 
-						new LinkedList<Map.Entry<String, Float>>(unsortMap.entrySet());
+	}
 
-					// Sort list with comparator, to compare the Map values
-					Collections.sort(list, new Comparator<Map.Entry<String, Float>>() {
-						public int compare(Map.Entry<String, Float> o1,
-			                                           Map.Entry<String, Float> o2) {
-							return (o1.getValue()).compareTo(o2.getValue());
-						}
-					});
+	private static Map<String, Float> sortMap(Map<String, Float> unsortMap) {
+		// Convert Map to List
+		List<Map.Entry<String, Float>> list = new LinkedList<Map.Entry<String, Float>>(unsortMap.entrySet());
 
-					// Convert sorted map back to a Map
-					Map<String, Float> sortedMap = new LinkedHashMap<String, Float>();
-					for (Iterator<Map.Entry<String, Float>> it = list.iterator(); it.hasNext();) {
-						Map.Entry<String, Float> entry = it.next();
-						sortedMap.put(entry.getKey(), entry.getValue());
-					}
+		// Sort list with comparator, to compare the Map values
+		Collections.sort(list, new Comparator<Map.Entry<String, Float>>() {
+			public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float> o2) {
+				return (o1.getValue()).compareTo(o2.getValue());
+			}
+		});
+
+		// Convert sorted map back to a Map
+		Map<String, Float> sortedMap = new LinkedHashMap<String, Float>();
+		for (Iterator<Map.Entry<String, Float>> it = list.iterator(); it.hasNext();) {
+			Map.Entry<String, Float> entry = it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
 		return sortedMap;
-	}	
-		
+	}
+
 	private FrequencyDistribution<String> reduce(FrequencyDistribution<String> full) {
 		FrequencyDistribution<String> reduced = new FrequencyDistribution<String>();
-		for(String word: full.getKeys()){
-			if(full.getCount(word)>1){
+		for (String word : full.getKeys()) {
+			if (full.getCount(word) > 1) {
 				reduced.addSample(word, full.getCount(word));
 			}
 		}
 		return reduced;
 	}
-
-
-	
 
 	/**
 	 * uses the two FrequencyDistributions to generate a map by calculating
@@ -259,15 +263,80 @@ public abstract class SummedStance_base extends BinCasMetaDependent{
 		}
 		return freq;
 	}
-	
-	private static void write( String polarity, List<String> mostFrequentSamples, FrequencyDistribution<String> fd) {
-		try (PrintWriter out = new PrintWriter(new BufferedWriter(
-				new FileWriter("src/main/resources/lists/stanceLexicons/HillaryClinton_temp/"+polarity+".txt", true)))) {
+
+	protected FrequencyDistribution<String> incAllLemmas(FrequencyDistribution<String> freq, Collection<Token> tokens,
+			List<String> stopwords, boolean useStopwords) {
+		for (Token t : tokens) {
+			if (useStopwords) {
+				if (!stopwords.contains(t.getCoveredText())) {
+					freq.inc(t.getLemma().getValue().toLowerCase());
+				}
+			} else
+				freq.inc(t.getLemma().getValue().toLowerCase());
+		}
+		return freq;
+	}
+
+	private static void write(String polarity, List<String> mostFrequentSamples, FrequencyDistribution<String> fd) {
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+				"src/main/resources/lists/stanceLexicons/HillaryClinton_temp/" + polarity + ".txt", true)))) {
 			for (String key : mostFrequentSamples) {
-				out.println(key +" "+fd.getCount(key));
+				out.println(key + " " + fd.getCount(key));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * returns a word-embedding vector representation of a jcases that are pro/stance
+	 * @param binCasDir
+	 * @param stopwords2 
+	 * @param lexicon2
+	 * @param stopwords2
+	 * @return
+	 * @throws IOException 
+	 * @throws UIMAException 
+	 * @throws CollectionException 
+	 */
+	protected List<Float> readStanceVector(String binCasDir, WordEmbeddingLexicon lexicon, List<String> stopwords) throws CollectionException, UIMAException, IOException {
+		CollectionReader reader = CollectionReaderFactory.createReader(BinaryCasReader.class,
+				BinaryCasReader.PARAM_SOURCE_LOCATION, binCasDir, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+				BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
+
+		Set<String> embeddingCandidates= new HashSet<String>();
+		WordEmbeddingHelper helper=new WordEmbeddingHelper(lexicon);
+		// iterate over all CASes that have been stored by the meta collector
+		while (reader.hasNext()) {
+			JCas jcas = JCasFactory.createJCas();
+			reader.getNext(jcas.getCas());
+
+			//TODO: check for stopwords?
+			Collection<Token> relevantTokens = new HashSet<>();
+			for(Token t: JCasUtil.select(jcas, Token.class)){
+				//filter stopwords and punctuations
+				if (!stopwords.contains(t.getCoveredText().toLowerCase()) || !t.getPos().getPosValue().equals(",")
+						|| !t.getPos().getPosValue().equals(".") ||! t.getPos().getPosValue().equals("$")
+						|| !t.getPos().getPosValue().equals("'") ||! t.getPos().getPosValue().equals(":")){
+					relevantTokens.add(t);
+				}
+			}
+
+			if (usePolarity) {
+				// if tweet is against add tokens to favor frequency
+				// distribution
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("FAVOR")) {
+					for(Token t: relevantTokens)embeddingCandidates.add(t.getCoveredText().toLowerCase());
+				}
+
+			} else {
+				// STANCE VS NONE
+				if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+						.equals("STANCE")) {
+					for(Token t: relevantTokens)embeddingCandidates.add(t.getCoveredText().toLowerCase());
+				}
+			}
 		}
+		return helper.getAveragedSentenceVector(embeddingCandidates);
+	}
 }
