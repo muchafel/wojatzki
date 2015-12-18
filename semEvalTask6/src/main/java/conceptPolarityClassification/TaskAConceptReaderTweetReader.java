@@ -94,7 +94,6 @@ public class TaskAConceptReaderTweetReader extends TaskATweetReader_base {
 			e.printStackTrace();
 		}
 		
-		AggregateBuilder aggregateBuilder= new AggregateBuilder();
 		try {
 			engine.process(jcas);
 		} catch (AnalysisEngineProcessException e) {

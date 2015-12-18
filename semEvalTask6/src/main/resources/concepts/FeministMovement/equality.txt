@@ -1,0 +1,37 @@
+#ID=PREDICTION;GOLDSTANDARD;THRESHOLD
+#labels 0=AGAINST 1=FAVOR
+#Fri Dec 18 16:29:27 CET 2015
+tweets1140.xml=0,1;1,0;-1.0
+tweets1603.xml=1,0;1,0;-1.0
+tweets1346.xml=0,1;0,1;-1.0
+tweets1031.xml=0,1;0,1;-1.0
+tweets1176.xml=1,0;1,0;-1.0
+tweets1351.xml=1,0;0,1;-1.0
+tweets1600.xml=1,0;1,0;-1.0
+tweets1356.xml=1,0;1,0;-1.0
+tweets1199.xml=0,1;0,1;-1.0
+tweets1155.xml=1,0;1,0;-1.0
+tweets1374.xml=0,1;0,1;-1.0
+tweets1548.xml=1,0;1,0;-1.0
+tweets1160.xml=0,1;0,1;-1.0
+tweets1572.xml=0,1;1,0;-1.0
+tweets1501.xml=1,0;1,0;-1.0
+tweets1427.xml=0,1;0,1;-1.0
+tweets1188.xml=1,0;1,0;-1.0
+tweets1301.xml=0,1;0,1;-1.0
+tweets1332.xml=0,1;0,1;-1.0
+tweets1236.xml=1,0;0,1;-1.0
+tweets1298.xml=1,0;1,0;-1.0
+tweets1285.xml=0,1;1,0;-1.0
+tweets1198.xml=0,1;0,1;-1.0
+tweets1604.xml=1,0;1,0;-1.0
+tweets1159.xml=1,0;1,0;-1.0
+tweets1220.xml=1,0;0,1;-1.0
+tweets1151.xml=1,0;1,0;-1.0
+tweets1019.xml=1,0;0,1;-1.0
+tweets1238.xml=0,1;0,1;-1.0
+tweets1475.xml=1,0;1,0;-1.0
+tweets1606.xml=0,1;0,1;-1.0
+tweets1385.xml=0,1;0,1;-1.0
+tweets1310.xml=0,1;1,0;-1.0
+tweets1629.xml=0,1;0,1;-1.0

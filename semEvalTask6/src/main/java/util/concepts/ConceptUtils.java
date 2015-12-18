@@ -2,10 +2,14 @@ package util.concepts;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.UIMAException;
@@ -24,6 +28,25 @@ import util.SimilarityHelper;
 
 public class ConceptUtils {
 	
+	
+	
+	private static final Map<String, List<String>> strictlyPolarConcepts = new HashMap<String, List<String>>();
+    static {
+    	strictlyPolarConcepts.put("HillaryClinton", new ArrayList<String>(
+    		    Arrays.asList("money", "#tcot", "#whyimnotvotingforhillary")));
+    	strictlyPolarConcepts.put("Atheism", new ArrayList<String>(
+    		    Arrays.asList("love", "heart", "#peace", "#islam", "#freethinker","pray")));
+    	strictlyPolarConcepts.put("FeministMovement", new ArrayList<String>(
+    		    Arrays.asList("#spankafeminist", "@cooimemegirl")));
+    	strictlyPolarConcepts.put("LegalizationofAbortion", new ArrayList<String>(
+    		    Arrays.asList("womb", "#prolifegen", "marriage","#prolifeyouth","#alllivesmatter", "matter", "murder")));
+    	strictlyPolarConcepts.put("ClimateChangeisaRealConcern", new ArrayList<String>(
+    		    Arrays.asList("generation", "atmosphere", "#sustainability", "level","planet", "#tip", "water", "#mission", "sea","future","today","#environment","day",">")));
+    }
+    
+    public static List<String> getStrictlyPolarConcepts(String target){
+    	return strictlyPolarConcepts.get(target);
+    }
 	
 	public static Set<String> getConcepts(File folder, int topN,List<String> stopwords) throws IOException, UIMAException {
 		// create favor and against fds foreach target

@@ -38,6 +38,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
+import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
 import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
@@ -94,15 +95,15 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			StackedFeatureDFE.class.getName(),
 //			SummedStanceDFE.class.getName(),
 //			SimpleSentencePolarityDFE.class.getName(),
-//			StanceLexiconDFE_Tokens.class.getName(),
-//			StanceLexiconDFE_Hashtags.class.getName(),
-//			SimpleSentencePolarityDFE.class.getName(),	
+			StanceLexiconDFE_Tokens.class.getName(),
+			StanceLexiconDFE_Hashtags.class.getName(),
+			SimpleSentencePolarityDFE.class.getName(),	
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
-//			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
+			SimpleNegationDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //			NrOfTokensDFE.class.getName(),
@@ -110,6 +111,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			NrOfTokensPerSentenceDFE.class.getName(),
 //	  		ModalVerbFeaturesDFE.class.getName()
 //			TypeTokenRatioFeatureExtractor.class.getName(),
+			ClassifiedConceptDFE.class.getName()
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -131,9 +133,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
-//			if(!f.getName().equals("HillaryClinton")){
-//				continue;
-//			}
+			if(!f.getName().equals("FeministMovement")){
+				continue;
+			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;

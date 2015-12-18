@@ -48,11 +48,12 @@ import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SMO;
+import weka.classifiers.trees.J48;
 
 public class ConceptPolarityClassification_Experiment implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
-	public static final int NUM_FOLDS = 10;
+	public static final int NUM_FOLDS = 5;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
@@ -75,7 +76,9 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 
 			List<String> stopwords=init("src/main/resources/lists/stop-words_english_6_en.txt");
 			
-			Set<String> concepts = ConceptUtils.getConcepts(folder,5,stopwords);
+			Set<String> concepts = ConceptUtils.getConcepts(folder,10,stopwords);
+			concepts=removeStrictlyPolarConcepts(concepts,folder);
+			
 			System.out.println("Normalized: "+concepts);
 			for(String concept: concepts){
 				System.out.println("experiments for " + folder.getName() +" "+concept+"_ConceptPolarityClassification");
@@ -85,6 +88,18 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 			}
 		}
 
+	}
+
+	private static Set<String> removeStrictlyPolarConcepts(Set<String> concepts, File folder) {
+		Set<String> removed= new HashSet<String>(); 
+		System.out.println(concepts);
+		for(String concept: concepts){
+			if(!ConceptUtils.getStrictlyPolarConcepts(folder.getName()).contains(concept)){
+				removed.add(concept);
+			}
+		}
+		System.out.println(removed);
+		return removed;
 	}
 
 	private static String removeSpecialChars(String concept) {
@@ -117,12 +132,12 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders = new ArrayList<File>();
 		for (File f : listOfFiles) {
-			if (!f.getName().equals("HillaryClinton")) {
-				continue;
-			}
-//			if (!f.getName().equals("Atheism")) {
+//			if (!f.getName().equals("HillaryClinton")) {
 //				continue;
 //			}
+			if (!f.getName().equals("FeministMovement")) {
+				continue;
+			}
 			if (f.isDirectory())
 				folders.add(f);
 		}
@@ -158,8 +173,8 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] {
-						// J48.class.getName(),
-						SMO.class.getName(),
+						 J48.class.getName(),
+//						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 				// ZeroR.class.getName()
 		}));
