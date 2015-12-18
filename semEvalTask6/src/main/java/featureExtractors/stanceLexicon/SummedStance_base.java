@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.stanceLexicon;
 
 import static org.apache.uima.fit.util.JCasUtil.selectCovered;
 import static org.apache.uima.fit.util.JCasUtil.toText;
@@ -45,6 +45,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaCollector;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaDependent;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
+import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 import java_cup.reduce_action;
 import lexicons.StanceLexicon;
 import lexicons.WordEmbeddingLexicon;

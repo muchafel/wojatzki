@@ -24,9 +24,7 @@ import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
-import featureExtractors.BinCasMetaDependent;
-import featureExtractors.SummedStance_base;
-import featureExtractors.BinCasMetaDependent.RelevantTokens;
+import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 import lexicons.StanceLexicon;
 import lexicons.TokenThesaurus;
 

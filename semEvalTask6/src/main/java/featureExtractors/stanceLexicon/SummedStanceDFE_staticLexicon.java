@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.stanceLexicon;
 
 import java.util.HashSet;
 import java.util.Set;

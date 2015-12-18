@@ -44,16 +44,16 @@ import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
-import featureExtractors.SimpleSentencePolarityDFE;
 import featureExtractors.StackedFeatureDFE;
 import featureExtractors.SummedStanceDFE;
-import featureExtractors.SummedStanceDFE_functionalParts;
-import featureExtractors.SummedStanceDFE_staticLexicon;
 import featureExtractors.TopicDFE;
+import featureExtractors.sentiment.SimpleSentencePolarityDFE;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Tokens;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Tokens_normalized;
+import featureExtractors.stanceLexicon.SummedStanceDFE_functionalParts;
+import featureExtractors.stanceLexicon.SummedStanceDFE_staticLexicon;
 import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import util.NoneTrainFilter;
@@ -88,27 +88,28 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static AnalysisEngineDescription preProcessing;
 
 	public static String[] FES = {
-			// ContextualityMeasureFeatureExtractor.class.getName(),
+// 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			StackedFeatureDFE.class.getName(),
 //			SummedStanceDFE.class.getName(),
-			StanceLexiconDFE_Tokens.class.getName(),
-			StanceLexiconDFE_Hashtags.class.getName(),
-			SimpleSentencePolarityDFE.class.getName(),	
+//			SimpleSentencePolarityDFE.class.getName(),
+//			StanceLexiconDFE_Tokens.class.getName(),
+//			StanceLexiconDFE_Hashtags.class.getName(),
+//			SimpleSentencePolarityDFE.class.getName(),	
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
-			ConditionalSentenceCountDFE.class.getName(),
-			RepeatedPunctuationDFE.class.getName(),
-			EmoticonRatioDFE.class.getName(),
+//			ConditionalSentenceCountDFE.class.getName(),
+//			RepeatedPunctuationDFE.class.getName(),
+//			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
-			NrOfTokensDFE.class.getName(),
-	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-			NrOfTokensPerSentenceDFE.class.getName(),
+//			NrOfTokensDFE.class.getName(),
+//		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
+//			NrOfTokensPerSentenceDFE.class.getName(),
 //	  		ModalVerbFeaturesDFE.class.getName()
-			TypeTokenRatioFeatureExtractor.class.getName(),
+//			TypeTokenRatioFeatureExtractor.class.getName(),
 	};
 
 	public static void main(String[] args) throws Exception {

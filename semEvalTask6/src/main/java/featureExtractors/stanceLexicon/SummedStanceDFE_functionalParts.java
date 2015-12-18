@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.stanceLexicon;
 
 import static org.apache.uima.fit.util.JCasUtil.toText;
 
@@ -21,6 +21,7 @@ import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
+import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 
 public class SummedStanceDFE_functionalParts extends SummedStance_base {
 

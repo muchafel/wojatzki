@@ -1,4 +1,4 @@
-package featureExtractors;
+package featureExtractors.sentiment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import featureExtractors.stanceLexicon.BinCasMetaDependent;
 import types.Sentiment;
 import util.CollocationMeasureHelper;
 
