@@ -1,0 +1,27 @@
+#ID=PREDICTION;GOLDSTANDARD;THRESHOLD
+#labels 0=AGAINST 1=FAVOR
+#Tue Dec 22 11:55:00 CET 2015
+tweets2468.xml=0,1;0,1;-1.0
+tweets2844.xml=0,1;1,0;-1.0
+tweets2643.xml=0,1;0,1;-1.0
+tweets2822.xml=0,1;1,0;-1.0
+tweets2640.xml=0,1;0,1;-1.0
+tweets2470.xml=0,1;0,1;-1.0
+tweets2864.xml=1,0;1,0;-1.0
+tweets2493.xml=0,1;0,1;-1.0
+tweets2912.xml=0,1;1,0;-1.0
+tweets2598.xml=1,0;0,1;-1.0
+tweets2449.xml=0,1;0,1;-1.0
+tweets2892.xml=0,1;1,0;-1.0
+tweets2423.xml=0,1;1,0;-1.0
+tweets2821.xml=0,1;0,1;-1.0
+tweets2433.xml=1,0;0,1;-1.0
+tweets2813.xml=0,1;1,0;-1.0
+tweets2739.xml=1,0;0,1;-1.0
+tweets2368.xml=0,1;0,1;-1.0
+tweets2453.xml=1,0;1,0;-1.0
+tweets2865.xml=0,1;1,0;-1.0
+tweets2494.xml=0,1;0,1;-1.0
+tweets2519.xml=1,0;0,1;-1.0
+tweets2450.xml=0,1;0,1;-1.0
+tweets2586.xml=0,1;0,1;-1.0
