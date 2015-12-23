@@ -41,7 +41,7 @@ public class ConceptUtils {
     	strictlyPolarConcepts.put("LegalizationofAbortion", new ArrayList<String>(
     		    Arrays.asList("womb", "#prolifegen", "marriage","#prolifeyouth","#alllivesmatter", "matter", "murder")));
     	strictlyPolarConcepts.put("ClimateChangeisaRealConcern", new ArrayList<String>(
-    		    Arrays.asList("generation", "atmosphere", "#sustainability", "level","planet", "#tip", "water", "#mission", "sea","future","today","#environment","day",">")));
+    		    Arrays.asList("generation", "atmosphere", "#sustainability", "level","planet", "#tip", "water", "#mission", "sea","future","today","#environment","day",">","time")));
     }
     
     public static List<String> getStrictlyPolarConcepts(String target){

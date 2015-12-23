@@ -132,9 +132,15 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders = new ArrayList<File>();
 		for (File f : listOfFiles) {
-			if (!f.getName().equals("HillaryClinton")) {
+//			if (!f.getName().equals("HillaryClinton")) {
+//				continue;
+//			}
+			if (!f.getName().equals("ClimateChangeisaRealConcern")) {
 				continue;
 			}
+//			if (!f.getName().equals("Atheism")) {
+//				continue;
+//			}
 //			if (!f.getName().equals("FeministMovement")) {
 //				continue;
 //			}

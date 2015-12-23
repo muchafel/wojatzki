@@ -121,6 +121,9 @@ public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase impl
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
 		Set<Feature> features= new HashSet<Feature>();
+		int summedConceptPolarity=0;
+		int numberOfPositiveConcepts=0;
+		int numberOfNegativeConcepts=0;
 		for (String concept : conceptToId2Outcome.keySet()) {
 			int polarity=0;
 			if (conceptContained(concept, jcas)) {
@@ -128,12 +131,19 @@ public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase impl
 //				System.out.println(conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()));
 				if (conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()).equals("FAVOR")){
 					polarity=1;
+					summedConceptPolarity+=1;
+					numberOfPositiveConcepts++;
 				}else if(conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()).equals("AGAINST")){
 					polarity=-1;
+					summedConceptPolarity+=-1;
+					numberOfNegativeConcepts++;
 				}
 			}
 			features.add(new Feature("concept_"+concept, polarity));
 		}
+		features.add(new Feature("summedConceptPolarity", summedConceptPolarity));
+		features.add(new Feature("numberOfPositveConcepts", numberOfPositiveConcepts));
+		features.add(new Feature("numberOfNegativeConcepts", numberOfNegativeConcepts));
 		return features;
 	}
 
