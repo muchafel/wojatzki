@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -31,6 +32,9 @@ import util.SimilarityHelper;
 public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	Map<String, Map<String, String>> conceptToId2Outcome;
+	public static final String PARAM_TARGET = "target";
+	@ConfigurationParameter(name = PARAM_TARGET, mandatory = true)
+	private String target;
 
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier, Map aAdditionalParams)
@@ -39,17 +43,18 @@ public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase impl
 			return false;
 		}
 		// TODO paramterisize!!!!!
-		conceptToId2Outcome = readConceptid2Outcome("src/main/resources/concepts/FeministMovement");
+		conceptToId2Outcome = readConceptid2Outcome("src/main/resources/concepts/"+target,target);
 		return true;
 	}
 
-	private Map<String, Map<String, String>> readConceptid2Outcome(String path) {
+
+	private Map<String, Map<String, String>> readConceptid2Outcome(String path, String target) {
 		List<File> concepts = getConcepts(path);
 		Map<String, Map<String, String>> result = new HashMap<String, Map<String, String>>();
 		for (File concept : concepts) {
 			try {
 				// TODO paramterisize!!!!!
-				result.put(concept.getName().replace(".txt", ""), readPrediction("src/main/resources/concepts/FeministMovement/" + concept.getName()));
+				result.put(concept.getName().replace(".txt", ""), readPrediction("src/main/resources/concepts/"+target+"/" + concept.getName()));
 			} catch (NumberFormatException | IOException e) {
 				e.printStackTrace();
 			}

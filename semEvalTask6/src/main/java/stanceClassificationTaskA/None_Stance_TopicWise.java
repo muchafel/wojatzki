@@ -95,24 +95,24 @@ public class None_Stance_TopicWise implements Constants {
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-//			StanceLexiconDFE_Tokens_normalized.class.getName(),
+			StanceLexiconDFE_Tokens_normalized.class.getName(),
 //			StanceLexiconDFE_Tokens.class.getName(),
-//			StanceLexiconDFE_Hashtags_normalized.class.getName(),
+			StanceLexiconDFE_Hashtags_normalized.class.getName(),
 //			StanceLexiconDFE_Hashtags.class.getName(),
-//			SimpleSentencePolarityDFE.class.getName(),
+			SimpleSentencePolarityDFE.class.getName(),
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
 //			WordEmbeddingDFE.class.getName(),
 //			WordEmbeddingDFE_cosinus.class.getName(),
-			WordEmbeddingDFE_topConcepts_cosinus.class.getName(),
+//			WordEmbeddingDFE_topConcepts_cosinus.class.getName(),
 //			WordEmbeddingDFE_keyWords.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
-//			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
+			SimpleNegationDFE.class.getName(),
+			ConditionalSentenceCountDFE.class.getName(),
+			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
@@ -142,7 +142,10 @@ public class None_Stance_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
-			if(!f.getName().equals("HillaryClinton")){
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
+			if(!f.getName().equals("FeministMovement")){
 				continue;
 			}
 			System.out.println(f.getName());

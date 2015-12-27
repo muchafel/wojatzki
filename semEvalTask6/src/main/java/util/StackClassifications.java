@@ -24,22 +24,23 @@ import opennlp.tools.util.eval.FMeasure;
 
 public class StackClassifications implements Constants {
 
+	
 	public static void main(String[] args)
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
+		
+		String target="FeministMovement";
+		
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
-		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized_alleFeatures.txt";
+		String stanceVsNonePath="src/main/resources/evaluation/"+target+"/stanceVsNone/id2homogenizedOutcome.txt";
 		
-		
-		
-		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_lex.txt";
+		String favorVsAgainstPath="src/main/resources/evaluation/"+target+"/favorVsAgainst/id2homogenizedOutcome.txt";
 //		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
 //		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
 		
-		
-		Map<String, String> correct = readGold("src/main/resources/evaluation/gold/id2homogenizedOutcome.txt");
+		Map<String, String> correct = readGold("src/main/resources/evaluation/"+target+"/gold/id2homogenizedOutcome.txt");
 		Map<String, String> stanceVsNone = readPrediction(stanceVsNonePath);
 		System.out.println("Stance Vs None Measures:");
 		printEvaluationMeasures(new File(stanceVsNonePath));

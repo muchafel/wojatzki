@@ -221,7 +221,8 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favor_against/id2homogenizedOutcome.txt"
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favor_against/id2homogenizedOutcome.txt",
+						ClassifiedConceptDFE.PARAM_TARGET,target
 				}));
 		return dimPipelineParameters;
 	}
