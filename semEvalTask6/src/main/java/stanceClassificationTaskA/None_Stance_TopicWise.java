@@ -145,7 +145,16 @@ public class None_Stance_TopicWise implements Constants {
 //			if(!f.getName().equals("HillaryClinton")){
 //				continue;
 //			}
-			if(!f.getName().equals("FeministMovement")){
+//			if(!f.getName().equals("FeministMovement")){
+//				continue;
+//			}
+//			if(!f.getName().equals("Atheism")){
+//				continue;
+//			}
+//			if(!f.getName().equals("LegalizationofAbortion")){
+//				continue;
+//			}
+			if(!f.getName().equals("ClimateChangeisaRealConcern")){
 				continue;
 			}
 			System.out.println(f.getName());

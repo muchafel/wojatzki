@@ -41,15 +41,20 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
+import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
 import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.StackedFeatureDFE;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.TopicDFE;
 import featureExtractors.sentiment.AspectBasedSentimentDFE_domainIndependent;
+import featureExtractors.sentiment.SimpleSentencePolarityDFE;
+import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags;
+import featureExtractors.stanceLexicon.StanceLexiconDFE_Tokens;
 import featureExtractors.stanceLexicon.SummedStanceDFE_functionalParts;
 import featureExtractors.stanceLexicon.SummedStanceDFE_staticLexicon;
 import featureExtractors.wordEmbeddings.WordEmbeddingDFE;
@@ -78,7 +83,7 @@ import weka.classifiers.trees.J48;
 public class TaskA_Experiment_TopicWise implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
-	public static final int NUM_FOLDS = 3;
+	public static final int NUM_FOLDS = 10;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
@@ -92,20 +97,24 @@ public class TaskA_Experiment_TopicWise implements Constants {
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			WordEmbeddingDFE.class.getName(),
-//			LuceneNGramDFE.class.getName(), 
+			LuceneNGramDFE.class.getName(), 
 //			LuceneCharacterNGramDFE.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneSkipNGramDFE.class.getName(),
+//			StanceLexiconDFE_Tokens.class.getName(),
+//			StanceLexiconDFE_Hashtags.class.getName(),
+//			SimpleSentencePolarityDFE.class.getName(),
 //			SimpleNegationDFE.class.getName(),
 //			ConditionalSentenceCountDFE.class.getName(),
 //			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
-	//  	NrOfTokensDFE.class.getName(),
-	//  	LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  	NrOfTokensPerSentenceDFE.class.getName(),
-//	  	ModalVerbFeaturesDFE.class.getName()
+//			NrOfTokensDFE.class.getName(),
+//		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
+//			NrOfTokensPerSentenceDFE.class.getName(),
+//	  		ModalVerbFeaturesDFE.class.getName()
 //			TypeTokenRatioFeatureExtractor.class.getName(),
+//			ClassifiedConceptDFE.class.getName()
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -114,10 +123,10 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
+			System.out.println("experiments for "+folder.getName()+"_ngram_stanceDetection");
 			TaskA_Experiment_TopicWise experiment = new TaskA_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceDetection");
+			experiment.runCrossValidation(pSpace, folder.getName()+"_ngram_stanceDetection");
 		}
 
 	}
@@ -127,9 +136,9 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
 		for(File f: listOfFiles){
-			if(!f.getName().equals("HillaryClinton")){
-				continue;
-			}
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;
@@ -165,8 +174,8 @@ public class TaskA_Experiment_TopicWise implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
 //						J48.class.getName(),
-//						SMO.class.getName(),
-						MultilayerPerceptron.class.getName(),
+						SMO.class.getName(),
+//						MultilayerPerceptron.class.getName(),
 //				 ZeroR.class.getName()
 		}));
 
@@ -207,7 +216,10 @@ public class TaskA_Experiment_TopicWise implements Constants {
 						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
-						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true"
+						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
+						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
+						ClassifiedConceptDFE.PARAM_TARGET,target
 				}));
 		return dimPipelineParameters;
 	}

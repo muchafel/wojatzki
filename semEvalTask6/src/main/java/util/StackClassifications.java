@@ -21,6 +21,7 @@ import de.tudarmstadt.ukp.dkpro.tc.evaluation.SingleOutcome;
 import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorBase;
 import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
 import opennlp.tools.util.eval.FMeasure;
+import weka.core.SerializationHelper;
 
 public class StackClassifications implements Constants {
 
@@ -28,7 +29,11 @@ public class StackClassifications implements Constants {
 	public static void main(String[] args)
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
 		
-		String target="FeministMovement";
+//		String target="FeministMovement";
+//		String target="ClimateChangeisaRealConcern";
+		String target="LegalizationofAbortion";
+//		String target="HillaryClinton";
+//		String target="Atheism";
 		
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
 //		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
@@ -57,11 +62,12 @@ public class StackClassifications implements Constants {
 //		printFile(tempId2Outcome);
 		System.out.println("merged:");
 		printEvaluationMeasures(tempId2Outcome);
+		ComputeSemevalMeasure.printSemevalMeasure(tempId2Outcome);
 	}
 
 	private static void printEvaluationMeasures(File tempId2Outcome) throws IOException, TextClassificationException {
 		Id2Outcome id2Outcome = new Id2Outcome(tempId2Outcome, LM_SINGLE_LABEL);
-		EvaluatorBase evaluator = EvaluatorFactory.createEvaluator(id2Outcome, true, false);
+		EvaluatorBase evaluator = EvaluatorFactory.createEvaluator(id2Outcome, true, true);
 		Map<String, Double> resultTempMap = evaluator.calculateEvaluationMeasures();
 		for (String key : resultTempMap.keySet()) {
 			Double value = resultTempMap.get(key);
@@ -133,13 +139,14 @@ public class StackClassifications implements Constants {
 					}
 				}
 				if(!foundInfavorVsAgainst){
-					System.out.println("UNDECIDED");
-//					merged.put(svn, "UNDECIDED");
+					System.err.println("UNDECIDED");
 				}
 			}
-				
-			
 		}
+//		System.out.println("merged");
+//		for(String key: merged.keySet()){
+//			System.out.println(key+" "+merged.get(key));
+//		}
 		return merged;
 	}
 
@@ -204,7 +211,7 @@ public class StackClassifications implements Constants {
 				for (int i = 0; i < predictionS.length; i++) {
 					if (goldS[i].equals("1")) {
 						gold.put(id, labelList.get(i));
-//						System.out.println("gold " + id + " " + labelList.get(i));
+						System.out.println("gold " + id + " " + labelList.get(i));
 					}
 				}
 			}

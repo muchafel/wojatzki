@@ -136,7 +136,16 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			if(!f.getName().equals("FeministMovement")){
 //				continue;
 //			}
-			if(!f.getName().equals("LegalizationofAbortion")){
+//			if(!f.getName().equals("LegalizationofAbortion")){
+//				continue;
+//			}
+//			if(!f.getName().equals("HillaryClinton")){
+//				continue;
+//			}
+//			if(!f.getName().equals("Atheism")){
+//				continue;
+//			}
+			if(!f.getName().equals("ClimateChangeisaRealConcern")){
 				continue;
 			}
 			if(f.isDirectory())folders.add(f);
