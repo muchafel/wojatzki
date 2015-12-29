@@ -1,0 +1,15 @@
+#ID=PREDICTION;GOLDSTANDARD;THRESHOLD
+#labels 0=AGAINST 1=FAVOR
+#Wed Dec 23 10:33:13 CET 2015
+tweets1699.xml=1,0;1,0;-1.0
+tweets1768.xml=1,0;1,0;-1.0
+tweets1926.xml=1,0;1,0;-1.0
+tweets1998.xml=1,0;1,0;-1.0
+tweets2024.xml=1,0;1,0;-1.0
+tweets2065.xml=1,0;1,0;-1.0
+tweets2072.xml=1,0;1,0;-1.0
+tweets2084.xml=1,0;1,0;-1.0
+tweets2118.xml=1,0;1,0;-1.0
+tweets2168.xml=1,0;1,0;-1.0
+tweets2178.xml=1,0;1,0;-1.0
+tweets2255.xml=1,0;1,0;-1.0

@@ -76,7 +76,7 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 
 			List<String> stopwords=init("src/main/resources/lists/stop-words_english_6_en.txt");
 			
-			Set<String> concepts = ConceptUtils.getConcepts(folder,10,stopwords);
+			Set<String> concepts = ConceptUtils.getConcepts(folder,12,stopwords);
 			concepts=removeStrictlyPolarConcepts(concepts,folder);
 			
 			System.out.println("Normalized: "+concepts);
@@ -135,15 +135,15 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 //			if (!f.getName().equals("HillaryClinton")) {
 //				continue;
 //			}
-			if (!f.getName().equals("ClimateChangeisaRealConcern")) {
-				continue;
-			}
+//			if (!f.getName().equals("ClimateChangeisaRealConcern")) {
+//				continue;
+//			}
 //			if (!f.getName().equals("Atheism")) {
 //				continue;
 //			}
-//			if (!f.getName().equals("FeministMovement")) {
-//				continue;
-//			}
+			if (!f.getName().equals("FeministMovement")) {
+				continue;
+			}
 //			if (!f.getName().equals("LegalizationofAbortion")) {
 //				continue;
 //			}

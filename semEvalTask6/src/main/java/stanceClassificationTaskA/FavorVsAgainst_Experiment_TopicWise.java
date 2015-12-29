@@ -142,12 +142,12 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			if(!f.getName().equals("HillaryClinton")){
 //				continue;
 //			}
-//			if(!f.getName().equals("Atheism")){
-//				continue;
-//			}
-			if(!f.getName().equals("ClimateChangeisaRealConcern")){
+			if(!f.getName().equals("Atheism")){
 				continue;
 			}
+//			if(!f.getName().equals("ClimateChangeisaRealConcern")){
+//				continue;
+//			}
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;

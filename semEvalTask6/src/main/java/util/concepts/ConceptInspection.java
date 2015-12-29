@@ -24,6 +24,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import conceptPolarityClassification.ConceptPolarityClassification_Experiment;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
@@ -71,13 +72,20 @@ public class ConceptInspection {
 		Iterator<JCas> it= SimplePipeline.iteratePipeline(reader,PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos()).iterator();
 		int pro=0;
 		int contra=0;
+		System.out.println(concept);
 		while (it.hasNext()) {
 			JCas jcas = it.next();
 				String outcome= JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome();
 				if (outcome.equals("FAVOR")) {
-					if(conceptContained(concept,jcas,engine))pro++;
+					if(conceptContained(concept,jcas,engine)){
+						System.out.println(DocumentMetaData.get(jcas).getDocumentId()+"=0,1;1,0;-1.0");
+						pro++;
+					}
 				}else if(outcome.equals("AGAINST")){
-					if(conceptContained(concept,jcas,engine))contra++;
+					if(conceptContained(concept,jcas,engine)){
+						System.out.println(DocumentMetaData.get(jcas).getDocumentId()+"=1,0;1,0;-1.0");
+						contra++;
+					}
 				}
 		}
 		String result= concept+"--> # in favor: "+String.valueOf(pro)+"  # against: "+String.valueOf(contra);
@@ -130,7 +138,16 @@ public class ConceptInspection {
 //			if (!f.getName().equals("HillaryClinton")) {
 //				continue;
 //			}
-			if (!f.getName().equals("Atheism")) {
+//			if (!f.getName().equals("Atheism")) {
+//				continue;
+//			}
+//			if (!f.getName().equals("ClimateChangeisaRealConcern")) {
+//				continue;
+//			}
+//			if (!f.getName().equals("FeministMovement")) {
+//				continue;
+//			}
+			if (!f.getName().equals("LegalizationofAbortion")) {
 				continue;
 			}
 			if (f.isDirectory())
