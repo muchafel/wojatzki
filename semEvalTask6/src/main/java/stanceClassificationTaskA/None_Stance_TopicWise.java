@@ -45,6 +45,7 @@ import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.SimpleNounFreqencyDFE;
 import featureExtractors.StackedFeatureDFE;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.TopicDFE;
@@ -95,35 +96,35 @@ public class None_Stance_TopicWise implements Constants {
 	public static AnalysisEngineDescription preProcessing;
 
 	public static String[] FES = {
+			SimpleNounFreqencyDFE.class.getName(),
 			// ContextualityMeasureFeatureExtractor.class.getName(),
-//			SummedStanceDFE_staticLexicon.class.getName(),
-//			StanceLexiconDFE_Tokens_normalized.class.getName(),
-//			StanceLexiconDFE_Tokens.class.getName(),
-//			StanceLexiconDFE_Hashtags_normalized.class.getName(),
-//			StanceLexiconDFE_Hashtags.class.getName(),
-//			SimpleSentencePolarityDFE.class.getName(),
+//			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
+//			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
+//			SimpleSentencePolarityDFE.class.getName(), //M
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
-//			SummedStanceDFE.class.getName(),
+			
+			//WordEmbedding Features --> not useful so far
 //			WordEmbeddingDFE.class.getName(),
 //			WordEmbeddingDFE_cosinus.class.getName(),
 //			WordEmbeddingDFE_topConcepts_cosinus.class.getName(),
 //			WordEmbeddingDFE_keyWords.class.getName(),
-//			LuceneNGramDFE.class.getName(), 
+			
 //			HashTagDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(),
-//			SimpleNegationDFE.class.getName(),
-//			ConditionalSentenceCountDFE.class.getName(),
-//			RepeatedPunctuationDFE.class.getName(),
+			
+//			SimpleNegationDFE.class.getName(), //M
+//			ConditionalSentenceCountDFE.class.getName(), //M
+//			RepeatedPunctuationDFE.class.getName(), //M
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
-//	  		LongWordsFeatureExtractor.class.getName(), //configure to 6!
-//	  		NrOfTokensPerSentenceDFE.class.getName(),
-//	  		ModalVerbFeaturesDFE.class.getName()
+//	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
+//	  		NrOfTokensPerSentenceDFE.class.getName(), //M
+//	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-//			ClassifiedConceptDFE.class.getName()
-			StackedFeatureDFE.class.getName(),
+//			ClassifiedConceptDFE.class.getName(), //M
+//			StackedFeatureDFE.class.getName(), //M
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -155,9 +156,9 @@ public class None_Stance_TopicWise implements Constants {
 //			if(!f.getName().equals("Atheism")){
 //				continue;
 //			}
-//			if(!f.getName().equals("LegalizationofAbortion")){
-//				continue;
-//			}
+			if(!f.getName().equals("LegalizationofAbortion")){
+				continue;
+			}
 //			if(!f.getName().equals("ClimateChangeisaRealConcern")){
 //				continue;
 //			}
@@ -242,6 +243,7 @@ public class None_Stance_TopicWise implements Constants {
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
 						ClassifiedConceptDFE.PARAM_TARGET,target,
+						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
 						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
 				}));
 		return dimPipelineParameters;

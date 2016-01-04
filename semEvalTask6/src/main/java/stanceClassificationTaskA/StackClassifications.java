@@ -31,8 +31,8 @@ public class StackClassifications implements Constants {
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
 		
 //		String target="FeministMovement";
-		String target="ClimateChangeisaRealConcern";
-//		String target="LegalizationofAbortion";
+//		String target="ClimateChangeisaRealConcern";
+		String target="LegalizationofAbortion";
 //		String target="HillaryClinton";
 //		String target="Atheism";
 		
