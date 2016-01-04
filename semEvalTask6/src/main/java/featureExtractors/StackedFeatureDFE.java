@@ -68,6 +68,7 @@ implements DocumentFeatureExtractor{
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
 		String docId = DocumentMetaData.get(jcas).getDocumentId();
 		Set<Feature> featList = new HashSet<Feature>();
+//		System.out.println(docId+ " "+ id2Outcome_ngram.get(docId));
 		featList.add(new Feature("stacked_ngram_outcome",  id2Outcome_ngram.get(docId)));
 		return featList;
 	}

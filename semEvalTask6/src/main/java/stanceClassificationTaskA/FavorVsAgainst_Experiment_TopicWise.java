@@ -83,35 +83,32 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static final String LANGUAGE_CODE = "en";
 	public static final int NUM_FOLDS = 10;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
-	public static int N_GRAM_MIN = 1;
+	public static int N_GRAM_MIN = 2;
 	public static int N_GRAM_MAX = 3;
-	public static int N_GRAM_MAXCANDIDATES = 400;
+	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
 
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
-//			SummedStanceDFE_staticLexicon.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-//			StackedFeatureDFE.class.getName(),
-//			SummedStanceDFE.class.getName(),
-//			SimpleSentencePolarityDFE.class.getName(),
-			StanceLexiconDFE_Tokens.class.getName(),
-			StanceLexiconDFE_Hashtags.class.getName(),
-			SimpleSentencePolarityDFE.class.getName(),	
+			StackedFeatureDFE.class.getName(), //M ---> configured to model only bi-and trigrams
+			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
+			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
+			SimpleSentencePolarityDFE.class.getName(),	//M
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
-//			LuceneSkipNGramDFE.class.getName(),
-			SimpleNegationDFE.class.getName(),
-			ConditionalSentenceCountDFE.class.getName(),
-			RepeatedPunctuationDFE.class.getName(),
+//			LuceneNGramDFE.class.getName(),
+			SimpleNegationDFE.class.getName(), //M
+			ConditionalSentenceCountDFE.class.getName(), //M
+			RepeatedPunctuationDFE.class.getName(), //M
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //			NrOfTokensDFE.class.getName(),
-//		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
+		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
 //			NrOfTokensPerSentenceDFE.class.getName(),
-//	  		ModalVerbFeaturesDFE.class.getName()
+	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-			ClassifiedConceptDFE.class.getName()
+			ClassifiedConceptDFE.class.getName() //M
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -125,7 +122,6 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst");
 		}
-
 	}
 
 	private static List<File> getTopicFolders(String path) {
@@ -142,12 +138,13 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			if(!f.getName().equals("HillaryClinton")){
 //				continue;
 //			}
-			if(!f.getName().equals("Atheism")){
-				continue;
-			}
+//			if(!f.getName().equals("Atheism")){
+//				continue;
+//			}
 //			if(!f.getName().equals("ClimateChangeisaRealConcern")){
 //				continue;
 //			}
+			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
 		return folders;
@@ -230,7 +227,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favor_against/id2homogenizedOutcome.txt",
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
 						ClassifiedConceptDFE.PARAM_TARGET,target
 				}));
 		return dimPipelineParameters;

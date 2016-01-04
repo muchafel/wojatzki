@@ -38,12 +38,14 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
+import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
 import featureExtractors.HashTagDFE;
 import featureExtractors.LuceneNgramInspection;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
+import featureExtractors.StackedFeatureDFE;
 import featureExtractors.SummedStanceDFE;
 import featureExtractors.TopicDFE;
 import featureExtractors.sentiment.AspectBasedSentimentDFE_domainIndependent;
@@ -87,19 +89,19 @@ public class None_Stance_TopicWise implements Constants {
 	public static final String LANGUAGE_CODE = "en";
 	public static final int NUM_FOLDS = 10;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
-	public static int N_GRAM_MIN = 1;
+	public static int N_GRAM_MIN = 2;
 	public static int N_GRAM_MAX = 3;
-	public static int N_GRAM_MAXCANDIDATES = 1000;
+	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
 
 	public static String[] FES = {
 			// ContextualityMeasureFeatureExtractor.class.getName(),
 //			SummedStanceDFE_staticLexicon.class.getName(),
-			StanceLexiconDFE_Tokens_normalized.class.getName(),
+//			StanceLexiconDFE_Tokens_normalized.class.getName(),
 //			StanceLexiconDFE_Tokens.class.getName(),
-			StanceLexiconDFE_Hashtags_normalized.class.getName(),
+//			StanceLexiconDFE_Hashtags_normalized.class.getName(),
 //			StanceLexiconDFE_Hashtags.class.getName(),
-			SimpleSentencePolarityDFE.class.getName(),
+//			SimpleSentencePolarityDFE.class.getName(),
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 //			SummedStanceDFE.class.getName(),
@@ -109,10 +111,10 @@ public class None_Stance_TopicWise implements Constants {
 //			WordEmbeddingDFE_keyWords.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			HashTagDFE.class.getName(),
-//			LuceneSkipNGramDFE.class.getName(),
-			SimpleNegationDFE.class.getName(),
-			ConditionalSentenceCountDFE.class.getName(),
-			RepeatedPunctuationDFE.class.getName(),
+//			LuceneNGramDFE.class.getName(),
+//			SimpleNegationDFE.class.getName(),
+//			ConditionalSentenceCountDFE.class.getName(),
+//			RepeatedPunctuationDFE.class.getName(),
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
@@ -120,6 +122,8 @@ public class None_Stance_TopicWise implements Constants {
 //	  		NrOfTokensPerSentenceDFE.class.getName(),
 //	  		ModalVerbFeaturesDFE.class.getName()
 //			TypeTokenRatioFeatureExtractor.class.getName(),
+//			ClassifiedConceptDFE.class.getName()
+			StackedFeatureDFE.class.getName(),
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -154,9 +158,9 @@ public class None_Stance_TopicWise implements Constants {
 //			if(!f.getName().equals("LegalizationofAbortion")){
 //				continue;
 //			}
-			if(!f.getName().equals("ClimateChangeisaRealConcern")){
-				continue;
-			}
+//			if(!f.getName().equals("ClimateChangeisaRealConcern")){
+//				continue;
+//			}
 			System.out.println(f.getName());
 			if(f.isDirectory())folders.add(f);
 		}
@@ -236,7 +240,9 @@ public class None_Stance_TopicWise implements Constants {
 						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false"
+						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
+						ClassifiedConceptDFE.PARAM_TARGET,target,
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
 				}));
 		return dimPipelineParameters;
 	}
