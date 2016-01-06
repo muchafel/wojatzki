@@ -37,6 +37,7 @@ implements DocumentFeatureExtractor{
 		if (!super.initialize(aSpecifier, aAdditionalParams)) {
 			return false;
 		}
+//		System.out.println(id2outcomeFilePath);
 		id2Outcome_ngram = getId2OutcomeMap(id2outcomeFilePath);
 		return true;
 	}

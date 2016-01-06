@@ -93,5 +93,39 @@ public class TargetWordingCutOff {
 		// Atheism top 50 nouns in trump: 11.478
 		// ClimateChangeisaRealConcern top 50 nouns in trump: 10.857
 		// FeministMovement top 50 nouns in trump: 13.526
+		
+//		 FeministMovement LegalizationofAbortion 967
+//		 HillaryClinton FeministMovement 1389
+//		 Atheism ClimateChangeisaRealConcern FeministMovement LegalizationofAbortion 18
+//		 HillaryClinton 14641
+//		 HillaryClinton Atheism ClimateChangeisaRealConcern FeministMovement 884
+//		 HillaryClinton Atheism FeministMovement LegalizationofAbortion 430
+//		 ClimateChangeisaRealConcern FeministMovement LegalizationofAbortion 47
+//		 Atheism ClimateChangeisaRealConcern FeministMovement 31
+//		 Atheism FeministMovement 331
+//		 Atheism 990
+//		 HillaryClinton LegalizationofAbortion 576
+//		 HillaryClinton Atheism ClimateChangeisaRealConcern 142
+//		 FeministMovement 1549
+//		 HillaryClinton ClimateChangeisaRealConcern FeministMovement 737
+//		 ClimateChangeisaRealConcern LegalizationofAbortion 139
+//		 Atheism LegalizationofAbortion 428
+//		 HillaryClinton ClimateChangeisaRealConcern FeministMovement LegalizationofAbortion 105
+//		 Atheism ClimateChangeisaRealConcern 243
+//		 HillaryClinton Atheism ClimateChangeisaRealConcern FeministMovement LegalizationofAbortion 5621
+//		 HillaryClinton Atheism ClimateChangeisaRealConcern LegalizationofAbortion 79
+//		 ClimateChangeisaRealConcern FeministMovement 92
+//		 HillaryClinton Atheism LegalizationofAbortion 680
+//		 Atheism FeministMovement LegalizationofAbortion 99
+//		 HillaryClinton ClimateChangeisaRealConcern LegalizationofAbortion 119
+//		 HillaryClinton Atheism FeministMovement 268
+//		 ClimateChangeisaRealConcern 1631
+//		 HillaryClinton Atheism 1166
+//		 HillaryClinton ClimateChangeisaRealConcern 901
+//		 32636
+//		 LegalizationofAbortion 548
+//		 HillaryClinton FeministMovement LegalizationofAbortion 958
+//		 Atheism ClimateChangeisaRealConcern LegalizationofAbortion 68
+		
 	}
 }

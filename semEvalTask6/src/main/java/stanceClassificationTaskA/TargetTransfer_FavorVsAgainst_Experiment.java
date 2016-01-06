@@ -29,6 +29,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.EmoticonRatioDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.NumberOfHashTagsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentTrainTest;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchTrainTestUsingTCEvaluationReport;
@@ -37,7 +38,6 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapt
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
-import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
 import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
@@ -48,7 +48,6 @@ import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;
 import featureExtractors.StackedFeatureDFE;
 import featureExtractors.SummedStanceDFE;
-import featureExtractors.TargetTransferClassificationDFE;
 import featureExtractors.TopicDFE;
 import featureExtractors.sentiment.SimpleSentencePolarityDFE;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags;
@@ -80,7 +79,7 @@ import weka.classifiers.functions.SimpleLogistic;
 import weka.classifiers.rules.ZeroR;
 import weka.classifiers.trees.J48;
 
-public class FavorVsAgainst_Experiment_TopicWise implements Constants {
+public class TargetTransfer_FavorVsAgainst_Experiment implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
 	public static final int NUM_FOLDS = 10;
@@ -89,14 +88,11 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=true;
-	public static String modelOutputFolder="src/main/resources/trainedModels";
 
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-			TargetTransferClassificationDFE.class.getName(), //M ???
-			StackedFeatureDFE.class.getName(), //M ???
+//			StackedFeatureDFE.class.getName(), //M ---> configured to model only bi-and trigrams
 			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
 			SimpleSentencePolarityDFE.class.getName(),	//M
@@ -109,11 +105,11 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //			NrOfTokensDFE.class.getName(),
-//		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
+		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
 //			NrOfTokensPerSentenceDFE.class.getName(),
 	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-			ClassifiedConceptDFE.class.getName() //M
+//			ClassifiedConceptDFE.class.getName() //M
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -121,20 +117,17 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir );
 		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
 		
-		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
-			FavorVsAgainst_Experiment_TopicWise experiment = new FavorVsAgainst_Experiment_TopicWise();
-			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			if(saveModel){
-				experiment.saveModel(pSpace,folder.getName());
-			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst");
+		for (File folderTrain : getTopicFoldersTrain(baseDir+TOPIC_FOLDERS)) {
+			for (File folderTest : getTopicFoldersTest(baseDir+TOPIC_FOLDERS,folderTrain)) {
+			System.out.println("experiments for train: "+folderTrain.getName()+" test: "+folderTest.getName()+" --> stanceDetection");
+			TargetTransfer_FavorVsAgainst_Experiment experiment = new TargetTransfer_FavorVsAgainst_Experiment();
+			ParameterSpace pSpace = experiment.setup(baseDir,folderTrain,folderTest );
+			experiment.runTrainTest(pSpace, folderTrain.getName()+folderTest.getName()+"_favorVsAgainst");
 			}
 		}
 	}
 
-
-	private static List<File> getTopicFolders(String path) {
+	private static List<File> getTopicFoldersTrain(String path) {
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		List<File> folders= new ArrayList<File>();
@@ -159,11 +152,38 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		}
 		return folders;
 	}
+	
+	private static List<File> getTopicFoldersTest(String path, File folderTrain) {
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles();
+		List<File> folders= new ArrayList<File>();
+		for(File f: listOfFiles){
+			if(!f.getName().equals(folderTrain.getName())){
+//				if(!f.getName().equals("FeministMovement")){
+//					continue;
+//				}
+//				if(!f.getName().equals("LegalizationofAbortion")){
+//					continue;
+//				}
+//				if(!f.getName().equals("HillaryClinton")){
+//					continue;
+//				}
+//				if(!f.getName().equals("Atheism")){
+//					continue;
+//				}
+//				if(!f.getName().equals("ClimateChangeisaRealConcern")){
+//					continue;
+//				}
+				System.out.println(f.getName());
+				if(f.isDirectory())folders.add(f);
+			}
+		}
+		return folders;
+	}
 
-	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
+	private void runTrainTest(ParameterSpace pSpace, String experimentName) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationUsingTCEvaluationAdapter.class,
-				NUM_FOLDS);
+		ExperimentTrainTest batch = new ExperimentTrainTest(experimentName, WekaClassificationUsingTCEvaluationAdapter.class);
 		batch.setPreprocessing(preProcessing);
 		// batch.addInnerReport(WekaClassificationReport.class);
 //		batch.addInnerReport(WekaFeatureValuesReport.class);
@@ -173,7 +193,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 //		batch.addReport(BatchCrossValidationReport.class);
-		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
+		batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
 		// batch.addReport(BatchTrainTestUsingTCEvaluationReport.class);
 
 		// Run
@@ -182,9 +202,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	}
 
 	@SuppressWarnings("unchecked")
-	private ParameterSpace setup(String baseDir, File folder) {
+	private ParameterSpace setup(String baseDir, File folderTrain, File folderTest) {
 		// configure reader dimension
-		Map<String, Object> dimReaders = getDimReaders(baseDir,folder);
+		Map<String, Object> dimReaders = getDimReaders(baseDir,folderTrain,folderTest);
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] { 
@@ -196,9 +216,12 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 		
 		 Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
-	            Arrays.asList(new String[] { NoneTrainFilter.class.getName() }));
+	            Arrays.asList(new String[] { 
+	            		NoneTrainFilter.class.getName(),
+//	            		TopNounContainedFilter.class.getName()
+	            		}));
 		
-		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir, folder.getName());
+		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir, folderTrain.getName());
 
 		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
 		// bundle parameterspace
@@ -238,29 +261,20 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
-						ClassifiedConceptDFE.PARAM_TARGET,target,
-						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
+						ClassifiedConceptDFE.PARAM_TARGET,target
 				}));
 		return dimPipelineParameters;
 	}
 
-	private Map<String, Object> getDimReaders(String baseDir, File folder) {
+	private Map<String, Object> getDimReaders(String baseDir, File folderTrain, File folderTest) {
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		dimReaders.put(DIM_READER_TRAIN, TaskATweetReader.class);
-		dimReaders.put(DIM_READER_TRAIN_PARAMS, Arrays.asList(TaskATweetReader.PARAM_SOURCE_LOCATION, folder.getAbsolutePath(),
+		dimReaders.put(DIM_READER_TRAIN_PARAMS, Arrays.asList(TaskATweetReader.PARAM_SOURCE_LOCATION, folderTrain.getAbsolutePath(),
+				TaskATweetReader.PARAM_LANGUAGE, LANGUAGE_CODE, TaskATweetReader.PARAM_PATTERNS, "*.xml"));
+		dimReaders.put(DIM_READER_TEST, TaskATweetReader.class);
+		dimReaders.put(DIM_READER_TEST_PARAMS, Arrays.asList(TaskATweetReader.PARAM_SOURCE_LOCATION, folderTest.getAbsolutePath(),
 				TaskATweetReader.PARAM_LANGUAGE, LANGUAGE_CODE, TaskATweetReader.PARAM_PATTERNS, "*.xml"));
 		return dimReaders;
-	}
-	
-	private void saveModel(ParameterSpace pSpace, String experimentName) throws Exception {
-		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
-				experimentName, new File(modelOutputFolder+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
-				preProcessing);
-		batch.setParameterSpace(pSpace);
-
-		// Run
-		Lab.getInstance().run(batch);
-		
 	}
 
 }
