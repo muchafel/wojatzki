@@ -30,6 +30,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapter;
+import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import featureExtractors.HashTagDFE;
 import featureExtractors.SimpleNegationDFE;
 import featureExtractors.sentiment.SimpleSentencePolarityDFE;
@@ -59,6 +60,8 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 200;
 	public static AnalysisEngineDescription preProcessing;
+	public static boolean saveModel=true;
+	public static String modelOutputFolder="src/main/resources/trainedModels/concepts";
 
 	public static String[] FES = {
 			// ContexmDFE.class.getName(),
@@ -84,7 +87,11 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 				System.out.println("experiments for " + folder.getName() +" "+concept+"_ConceptPolarityClassification");
 				ConceptPolarityClassification_Experiment experiment = new ConceptPolarityClassification_Experiment();
 				ParameterSpace pSpace = experiment.setup(baseDir, folder,concept);
-				experiment.runCrossValidation(pSpace, folder.getName() +"_"+ removeSpecialChars(concept) +"_ConceptPolarityClassification");
+				if(saveModel){
+					experiment.saveModel(pSpace, folder.getName() , removeSpecialChars(concept));
+				}else{
+					experiment.runCrossValidation(pSpace, folder.getName() +"_"+ removeSpecialChars(concept) +"_ConceptPolarityClassification");
+				}
 			}
 		}
 
@@ -141,9 +148,9 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 //			if (!f.getName().equals("Atheism")) {
 //				continue;
 //			}
-			if (!f.getName().equals("FeministMovement")) {
-				continue;
-			}
+//			if (!f.getName().equals("FeministMovement")) {
+//				continue;
+//			}
 //			if (!f.getName().equals("LegalizationofAbortion")) {
 //				continue;
 //			}
@@ -238,4 +245,14 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		return dimReaders;
 	}
 
+	private void saveModel(ParameterSpace pSpace, String target, String experimentName) throws Exception {
+		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
+				experimentName, new File(modelOutputFolder+"/"+target+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
+				preProcessing);
+		batch.setParameterSpace(pSpace);
+
+		// Run
+		Lab.getInstance().run(batch);
+	}
+	
 }

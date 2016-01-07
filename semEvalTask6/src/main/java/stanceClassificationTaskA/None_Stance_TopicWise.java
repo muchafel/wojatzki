@@ -96,14 +96,27 @@ public class None_Stance_TopicWise implements Constants {
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
 	public static boolean saveModel=true;
-	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
+//	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
+	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
 
 	public static String[] FES = {
 //			SimpleNounFreqencyDFE.class.getName(),
 			// ContextualityMeasureFeatureExtractor.class.getName(),
-//			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
-//			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
-//			SimpleSentencePolarityDFE.class.getName(), //M
+			
+			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
+			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
+			SimpleSentencePolarityDFE.class.getName(), //M
+			SimpleNegationDFE.class.getName(), //M
+			ConditionalSentenceCountDFE.class.getName(), //M
+			RepeatedPunctuationDFE.class.getName(), //M
+	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
+	  		NrOfTokensPerSentenceDFE.class.getName(), //M
+	  		ModalVerbFeaturesDFE.class.getName(), //M
+	  		
+//			ClassifiedConceptDFE.class.getName(), //M
+//			StackedFeatureDFE.class.getName(), //M
+			StackedBi_Tri_GramStanceNoneDFE.class.getName() //--> just for saving the model
+			
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 			
@@ -116,27 +129,21 @@ public class None_Stance_TopicWise implements Constants {
 //			HashTagDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(),
 			
-//			SimpleNegationDFE.class.getName(), //M
-//			ConditionalSentenceCountDFE.class.getName(), //M
-//			RepeatedPunctuationDFE.class.getName(), //M
+
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
-//	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
-//	  		NrOfTokensPerSentenceDFE.class.getName(), //M
-//	  		ModalVerbFeaturesDFE.class.getName(), //M
+
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-//			ClassifiedConceptDFE.class.getName(), //M
-//			StackedFeatureDFE.class.getName(), //M
-			StackedBi_Tri_GramDFE.class.getName()
+
 	};
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		preProcessing=PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno();
-		
+//		preProcessing= PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
+			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);

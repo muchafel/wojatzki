@@ -35,17 +35,46 @@ public class ConceptUtils {
     	strictlyPolarConcepts.put("HillaryClinton", new ArrayList<String>(
     		    Arrays.asList("money", "#tcot", "#whyimnotvotingforhillary")));
     	strictlyPolarConcepts.put("Atheism", new ArrayList<String>(
-    		    Arrays.asList("love", "heart", "#peace", "#islam", "#freethinker","pray")));
+    		    Arrays.asList( "#peace", "#islam", "#freethinker","pray")));
     	strictlyPolarConcepts.put("FeministMovement", new ArrayList<String>(
     		    Arrays.asList("#spankafeminist", "@cooimemegirl")));
     	strictlyPolarConcepts.put("LegalizationofAbortion", new ArrayList<String>(
     		    Arrays.asList("womb", "#prolifegen", "marriage","#prolifeyouth","#alllivesmatter", "matter", "murder")));
     	strictlyPolarConcepts.put("ClimateChangeisaRealConcern", new ArrayList<String>(
-    		    Arrays.asList("generation", "atmosphere", "#sustainability", "level","planet", "#tip", "water", "#mission", "sea","future","today","#environment","day",">","time")));
+    		    Arrays.asList( "atmosphere", "#sustainability", "water", "#mission", "future","#environment")));
+    }
+    
+    private static final Map<String,String> strictlyPolarConceptPolarity = new HashMap<String,String>();
+    static {
+    	strictlyPolarConceptPolarity.put("money","AGAINST");
+    	strictlyPolarConceptPolarity.put("#tcot","AGAINST");
+    	strictlyPolarConceptPolarity.put("#whyimnotvotingforhillary","AGAINST");
+//    	strictlyPolarConceptPolarity.put("love","AGAINST");
+//    	strictlyPolarConceptPolarity.put("heart","AGAINST");
+    	strictlyPolarConceptPolarity.put("#peace","FAVOR");
+    	strictlyPolarConceptPolarity.put("#islam","AGAINST");
+    	strictlyPolarConceptPolarity.put("#freethinker","FAVOR");
+    	strictlyPolarConceptPolarity.put("pray","AGAINST");
+    	strictlyPolarConceptPolarity.put("#spankafeminist","AGAINST");
+    	strictlyPolarConceptPolarity.put("womb","AGAINST");
+    	strictlyPolarConceptPolarity.put("#prolifegen","AGAINST");
+    	strictlyPolarConceptPolarity.put("marriage","AGAINST");
+    	strictlyPolarConceptPolarity.put("#prolifeyouth","AGAINST");
+    	strictlyPolarConceptPolarity.put("matter","AGAINST");
+    	strictlyPolarConceptPolarity.put("murder","AGAINST");
+    	strictlyPolarConceptPolarity.put("atmosphere","FAVOR");
+    	strictlyPolarConceptPolarity.put("water","FAVOR");
+    	strictlyPolarConceptPolarity.put("#mission","FAVOR");
+    	strictlyPolarConceptPolarity.put("future","FAVOR");
+    	strictlyPolarConceptPolarity.put("#environment","FAVOR");
     }
     
     public static List<String> getStrictlyPolarConcepts(String target){
     	return strictlyPolarConcepts.get(target);
+    }
+    
+    public static String getStrictlyPolarConceptPolarity(String concept){
+    	return strictlyPolarConceptPolarity.get(concept);
     }
 	
 	public static Set<String> getConcepts(File folder, int topN,List<String> stopwords) throws IOException, UIMAException {

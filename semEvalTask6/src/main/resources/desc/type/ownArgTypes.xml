@@ -156,10 +156,39 @@
       </features>
     </typeDescription>
   <typeDescription>
-      <name>types.BiTriGramOutcome</name>
+      <name>types.BiTriGramOutcomeFavorAgainst</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
+        <featureDescription>
+          <name>classificationOutcome</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  <typeDescription>
+      <name>types.BiTriGramOutcomeStanceNone</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>classificationOutcome</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>types.ClassifiedConceptOutcome</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>conceptName</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
         <featureDescription>
           <name>classificationOutcome</name>
           <description/>

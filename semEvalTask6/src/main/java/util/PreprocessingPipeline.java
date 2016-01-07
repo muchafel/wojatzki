@@ -13,6 +13,9 @@ import annotators.ModalVerbAnnotator;
 import annotators.NegationAnnotator;
 import annotators.TokenStancePolarityAnnotator;
 import annotators.TwitterSpecificAnnotator;
+import annotators.stacking.Bi_Tri_Gram_FavorAgainstStackingAnnotator;
+import annotators.stacking.Bi_Tri_Gram_NoneStanceStackingAnnotator;
+import annotators.stacking.ClassifiedConceptOutcomeStackingAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.berkeleyparser.BerkeleyParser;
@@ -28,189 +31,176 @@ import edu.stanford.nlp.pipeline.SentimentAnnotator;
 public class PreprocessingPipeline {
 
 	/**
-	 * 1. run ark-tools tokenizer
-	 * 3. open NLP POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. annotate syntax tress using stanford parser
-	 * 6. annotate modal verbs
+	 * 1. run ark-tools tokenizer 3. open NLP POS tagging 4. lemmas (Stanford)
+	 * 5. annotate syntax tress using stanford parser 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getPreprocessingTwokenizer() throws ResourceInitializationException {
 		return createEngineDescription(
-//				createEngineDescription(BreakIteratorSegmenter.class),
-//				createEngineDescription(OpenNlpPosTagger.class),
+				// createEngineDescription(BreakIteratorSegmenter.class),
+				// createEngineDescription(OpenNlpPosTagger.class),
 				createEngineDescription(ArktweetTokenizer.class),
-//				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-//				createEngineDescription(StanfordParser.class,StanfordParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(BerkeleyParser.class, BerkeleyParser.PARAM_PRINT_TAGSET,true),
-//				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				// createEngineDescription(ArktweetPosTagger.class,
+				// ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				// createEngineDescription(StanfordParser.class,StanfordParser.PARAM_PRINT_TAGSET,
+				// true),
+				createEngineDescription(BerkeleyParser.class, BerkeleyParser.PARAM_PRINT_TAGSET, true),
+				// createEngineDescription(ClearNlpDependencyParser.class,
+				// ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. break iterator segmenter
-	 * 3. open NLP POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. annotate syntax tress using stanford parser
-	 * 6. annotate modal verbs
+	 * 1. break iterator segmenter 3. open NLP POS tagging 4. lemmas (Stanford)
+	 * 5. annotate syntax tress using stanford parser 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingBreakIteratorSegmenter() throws ResourceInitializationException {
-		return createEngineDescription(
-				createEngineDescription(BreakIteratorSegmenter.class),
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(BerkeleyParser.class, BerkeleyParser.PARAM_PRINT_TAGSET,true),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+	public static AnalysisEngineDescription getPreprocessingBreakIteratorSegmenter()
+			throws ResourceInitializationException {
+		return createEngineDescription(createEngineDescription(BreakIteratorSegmenter.class),
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(BerkeleyParser.class, BerkeleyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. open NLP POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. annotate modal verbs
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. open NLP POS
+	 * tagging 4. lemmas (Stanford) 5. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getPreprocessingBreakTwokenizer() throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
-				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(OpenNlpPosTagger.class),
+				createEngineDescription(MergedArktweetTokenizer.class), createEngineDescription(OpenNlpPosTagger.class),
 				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. clear nlp dependencies
-	 * 6. annotate modal verbs
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. POS tagging 4.
+	 * lemmas (Stanford) 5. clear nlp dependencies 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getPreprocessingDependencies() throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
-				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(OpenNlpPosTagger.class),
+				createEngineDescription(MergedArktweetTokenizer.class), createEngineDescription(OpenNlpPosTagger.class),
 				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. open NLP POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. annotate syntax tress using stanford parser
-	 * 6. annotate modal verbs
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. open NLP POS
+	 * tagging 4. lemmas (Stanford) 5. annotate syntax tress using stanford
+	 * parser 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getPreprocessingTree() throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
-				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(OpenNlpPosTagger.class),
+				createEngineDescription(MergedArktweetTokenizer.class), createEngineDescription(OpenNlpPosTagger.class),
 				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(StanfordParser.class,StanfordParser.PARAM_PRINT_TAGSET, true, StanfordParser.PARAM_WRITE_PENN_TREE, true),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(StanfordParser.class, StanfordParser.PARAM_PRINT_TAGSET, true,
+						StanfordParser.PARAM_WRITE_PENN_TREE, true),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. open NLP POS tagging
-	 * 4. lemmas (Stanford)
-	 * 5. NER
-	 * 6. annotate modal verbs
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. open NLP POS
+	 * tagging 4. lemmas (Stanford) 5. NER 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getPreprocessingNER() throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
-				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(OpenNlpPosTagger.class),
+				createEngineDescription(MergedArktweetTokenizer.class), createEngineDescription(OpenNlpPosTagger.class),
 				createEngineDescription(StanfordLemmatizer.class),
 				createEngineDescription(StanfordNamedEntityRecognizer.class),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 5. lemmas (Stanford)
-	 * 6. annotate modal verbs
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 5. lemmas
+	 * (Stanford) 6. annotate modal verbs
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingBreakTwokenizerTweetAnnos() throws ResourceInitializationException {
+	public static AnalysisEngineDescription getPreprocessingBreakTwokenizerTweetAnnos()
+			throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. ClearNlpDependencyParser
-	 * 8. NegationAnnotator 
-	 * 6. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. ClearNlpDependencyParser 8. NegationAnnotator 6.
+	 * ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingBreakTwokenizerTweetAnnosNegation() throws ResourceInitializationException {
+	public static AnalysisEngineDescription getPreprocessingBreakTwokenizerTweetAnnosNegation()
+			throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run arg tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. ClearNlpDependencyParser
-	 * 8. NegationAnnotator 
-	 * 9. TokenStancePolarityAnnotator
-	 * 10. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run arg tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. ClearNlpDependencyParser 8. NegationAnnotator 9.
+	 * TokenStancePolarityAnnotator 10. ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
@@ -218,33 +208,36 @@ public class PreprocessingPipeline {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
-				createEngineDescription(TokenStancePolarityAnnotator.class,TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(TokenStancePolarityAnnotator.class,
+						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. ClearNlpDependencyParser
-	 * 8. NegationAnnotator 
-	 * 9. HTStancePolarityAnnotator
-	 * 10. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. ClearNlpDependencyParser 8. NegationAnnotator 9.
+	 * HTStancePolarityAnnotator 10. ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
@@ -252,212 +245,249 @@ public class PreprocessingPipeline {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
-				createEngineDescription(HashTagStancePolarityAnnotator.class,HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				createEngineDescription(OpenNlpPosTagger.class), createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(HashTagStancePolarityAnnotator.class,
+						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. ClearNlpDependencyParser
-	 * 8. NegationAnnotator 
-	 * 9. FunctionalPartsAnnotator
-	 * 10. TokenStancePolarityAnnotator
-	 * 11. HashTagStancePolarityAnnotator
-	 * 12. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. ClearNlpDependencyParser 8. NegationAnnotator 9.
+	 * FunctionalPartsAnnotator 10. TokenStancePolarityAnnotator 11.
+	 * HashTagStancePolarityAnnotator 12. ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingFunctionalStanceAnno() throws ResourceInitializationException {
+	public static AnalysisEngineDescription getPreprocessingFunctionalStanceAnno()
+			throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
 				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
 				createEngineDescription(FunctionalPartsAnnotator.class),
 				createEngineDescription(TokenStancePolarityAnnotator.class,
-						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
+						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION, true,
+						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
 				createEngineDescription(HashTagStancePolarityAnnotator.class,
-						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION, true,
+						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. OpenNlpChunker
-	 * 8. ClearNlpDependencyParser
-	 * 9. NegationAnnotator 
-	 * 10. FunctionalPartsAnnotator
-	 * 11. TokenStancePolarityAnnotator
-	 * 12. HashTagStancePolarityAnnotator
-	 * 13. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. OpenNlpChunker 8. ClearNlpDependencyParser 9.
+	 * NegationAnnotator 10. FunctionalPartsAnnotator 11.
+	 * TokenStancePolarityAnnotator 12. HashTagStancePolarityAnnotator 13.
+	 * ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingChunkingFunctionalStanceAnno() throws ResourceInitializationException {
+	public static AnalysisEngineDescription getPreprocessingChunkingFunctionalStanceAnno()
+			throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(OpenNlpChunker.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class), createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
 				createEngineDescription(FunctionalPartsAnnotator.class),
 				createEngineDescription(TokenStancePolarityAnnotator.class,
-						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
-						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
+						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION, true,
+						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
+						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
 				createEngineDescription(HashTagStancePolarityAnnotator.class,
-						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
-						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION, true,
+						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
+						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,
+						"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. OpenNlpChunker
-	 * 8. ClearNlpDependencyParser
-	 * 9. SentimentAnnotator
-	 * 10. NegationAnnotator 
-	 * 11. FunctionalPartsAnnotator
-	 * 12. TokenStancePolarityAnnotator
-	 * 13. HashTagStancePolarityAnnotator
-	 * 14. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. OpenNlpChunker 8. ClearNlpDependencyParser 9.
+	 * SentimentAnnotator 10. NegationAnnotator 11. FunctionalPartsAnnotator 12.
+	 * TokenStancePolarityAnnotator 13. HashTagStancePolarityAnnotator 14.
+	 * ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getPreprocessingSentimentFunctionalStanceAnno() throws ResourceInitializationException {
+	public static AnalysisEngineDescription getPreprocessingSentimentFunctionalStanceAnno()
+			throws ResourceInitializationException {
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(OpenNlpChunker.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class), createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
 				createEngineDescription(LexiconBasedSentimentAnnotator.class,
-						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
-						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH, "src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
-						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
 				createEngineDescription(FunctionalPartsAnnotator.class),
-//				createEngineDescription(TokenStancePolarityAnnotator.class,
-//						TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-//						TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/stanceLexicon.txt",
-//						TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
-//						TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/stanceLexicon.txt",
-//						TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/stanceLexicon.txt",
-//						TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/stanceLexicon.txt"),
-//				createEngineDescription(HashTagStancePolarityAnnotator.class,
-//						HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
-//						HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization of Abortion/hashtag_stanceLexicon.txt",
-//						HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
-//						HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate Change is a Real Concern/hashtag_stanceLexicon.txt",
-//						HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist Movement/hashtag_stanceLexicon.txt",
-//						HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary Clinton/hashtag_stanceLexicon.txt"),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt")
-				);
+				// createEngineDescription(TokenStancePolarityAnnotator.class,
+				// TokenStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+				// TokenStancePolarityAnnotator.PARAM_ABORTIONSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization
+				// of Abortion/stanceLexicon.txt",
+				// TokenStancePolarityAnnotator.PARAM_ATHEISMSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/stanceLexicon.txt",
+				// TokenStancePolarityAnnotator.PARAM_CLIMATESTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate
+				// Change is a Real Concern/stanceLexicon.txt",
+				// TokenStancePolarityAnnotator.PARAM_FEMINISTSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist
+				// Movement/stanceLexicon.txt",
+				// TokenStancePolarityAnnotator.PARAM_HILLARYSTANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary
+				// Clinton/stanceLexicon.txt"),
+				// createEngineDescription(HashTagStancePolarityAnnotator.class,
+				// HashTagStancePolarityAnnotator.PARAM_USE_FUCNTIONAL_PARTITION,true,
+				// HashTagStancePolarityAnnotator.PARAM_ABORTION_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Legalization
+				// of Abortion/hashtag_stanceLexicon.txt",
+				// HashTagStancePolarityAnnotator.PARAM_ATHEISM_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Atheism/hashtag_stanceLexicon.txt",
+				// HashTagStancePolarityAnnotator.PARAM_CLIMATE_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Climate
+				// Change is a Real Concern/hashtag_stanceLexicon.txt",
+				// HashTagStancePolarityAnnotator.PARAM_FEMINIST_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Feminist
+				// Movement/hashtag_stanceLexicon.txt",
+				// HashTagStancePolarityAnnotator.PARAM_HILLARY_HASHTAG_STANCES_FILE_PATH,"src/main/resources/lists/stanceLexicons/Hillary
+				// Clinton/hashtag_stanceLexicon.txt"),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"));
 	}
-	
+
 	/**
-	 * 1. use the break iterator to create sentence annos
-	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
-	 * 3. Ark-tools pos tagging
-	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
-	 * 		then remove pos-tagging
-	 * 5. open NLP POS tagging
-	 * 6. lemmas (Stanford)
-	 * 7. OpenNlpChunker
-	 * 8. ClearNlpDependencyParser
-	 * 9. SentimentAnnotator
-	 * 10. NegationAnnotator 
-	 * 11. FunctionalPartsAnnotator
-	 * 12. TokenStancePolarityAnnotator
-	 * 13. HashTagStancePolarityAnnotator
-	 * 14. ModalVerbAnnotator
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. OpenNlpChunker 8. ClearNlpDependencyParser 9.
+	 * SentimentAnnotator 10. NegationAnnotator 11. FunctionalPartsAnnotator 12.
+	 * TokenStancePolarityAnnotator 13. HashTagStancePolarityAnnotator 14.
+	 * ModalVerbAnnotator
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean stanceVsNone) throws ResourceInitializationException {
-		String mode="";
-		if(stanceVsNone)mode="noneVsStance";
-		else mode="favorVsAgainst";
+	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean useTcReader)
+			throws ResourceInitializationException {
+		String mode = "";
 		return createEngineDescription(
 				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
 				createEngineDescription(MergedArktweetTokenizer.class),
-				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 				createEngineDescription(TwitterSpecificAnnotator.class),
-				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
-				createEngineDescription(StanfordLemmatizer.class),
-				createEngineDescription(OpenNlpChunker.class),
-				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class), createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
 				createEngineDescription(LexiconBasedSentimentAnnotator.class,
-						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
-						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH, "src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
-						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
-				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
 				createEngineDescription(FunctionalPartsAnnotator.class),
-				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt"),
-				createEngineDescription(Bi_Tri_Gram_StackingAnnotator.class, Bi_Tri_Gram_StackingAnnotator.PARAM_TC_MODEL_LOCATION,"src/main/resources/trainedModels/bi_tri_grams/"+mode+"/"+target)
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"),
+				createEngineDescription(Bi_Tri_Gram_FavorAgainstStackingAnnotator.class,
+						Bi_Tri_Gram_FavorAgainstStackingAnnotator.PARAM_TC_MODEL_LOCATION,
+						"src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst/" + target,
+						Bi_Tri_Gram_FavorAgainstStackingAnnotator.PARAM_TC_READER, useTcReader),
+				createEngineDescription(Bi_Tri_Gram_NoneStanceStackingAnnotator.class,
+						Bi_Tri_Gram_NoneStanceStackingAnnotator.PARAM_TC_MODEL_LOCATION,
+						"src/main/resources/trainedModels/bi_tri_grams/noneVsStance/" + target,
+						Bi_Tri_Gram_NoneStanceStackingAnnotator.PARAM_TC_READER, useTcReader),
+				createEngineDescription(ClassifiedConceptOutcomeStackingAnnotator.class,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_MODEL_LOCATIONS,
+						"src/main/resources/trainedModels/concepts/" + target,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_READER, useTcReader,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target)
+				
 				);
 	}
-	
-	
+
 }
