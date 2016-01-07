@@ -61,7 +61,7 @@ public class TaskATweetReader extends TaskATweetReader_base{
 	    
 	    TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
 	    outcome.setOutcome(getTextClassificationOutcome(jcas));
-//	    System.out.println(getTextClassificationOutcome(jcas));
+////	    System.out.println(getTextClassificationOutcome(jcas));
 	    outcome.addToIndexes();
 	}
 

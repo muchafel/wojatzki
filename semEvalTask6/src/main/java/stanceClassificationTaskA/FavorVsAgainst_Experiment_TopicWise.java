@@ -90,13 +90,13 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
 	public static boolean saveModel=true;
-	public static String modelOutputFolder="src/main/resources/trainedModels";
+	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
 
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-			TargetTransferClassificationDFE.class.getName(), //M ???
-			StackedFeatureDFE.class.getName(), //M ???
+//			TargetTransferClassificationDFE.class.getName(), //M ???
+//			StackedFeatureDFE.class.getName(), //M ???
 			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
 			SimpleSentencePolarityDFE.class.getName(),	//M
@@ -113,7 +113,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			NrOfTokensPerSentenceDFE.class.getName(),
 	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-			ClassifiedConceptDFE.class.getName() //M
+//			ClassifiedConceptDFE.class.getName() //M
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -230,16 +230,15 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	private Dimension<List<Object>> getPipelineParameters(String baseDir, String target) {
 		@SuppressWarnings("unchecked")
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
-				Arrays.asList(new Object[] { NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
-						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
-						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
+				Arrays.asList(new Object[] { 
+//						NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
-						ClassifiedConceptDFE.PARAM_TARGET,target,
-						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
+//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
+//						ClassifiedConceptDFE.PARAM_TARGET,target,
+//						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
 				}));
 		return dimPipelineParameters;
 	}
@@ -260,7 +259,5 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 
 		// Run
 		Lab.getInstance().run(batch);
-		
 	}
-
 }

@@ -26,32 +26,39 @@ import weka.core.SerializationHelper;
 
 public class StackClassifications implements Constants {
 
-	
 	public static void main(String[] args)
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
-		
-//		String target="FeministMovement";
-//		String target="ClimateChangeisaRealConcern";
-//		String target="LegalizationofAbortion";
-//		String target="HillaryClinton";
-		String target="Atheism";
-		
-//		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
-//		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
-//		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
-//		String stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
-		String stanceVsNonePath="src/main/resources/evaluation/"+target+"/stanceVsNone/id2homogenizedOutcome.txt";
-		
-		String favorVsAgainstPath="src/main/resources/evaluation/"+target+"/favorVsAgainst/id2homogenizedOutcome.txt";
-//		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
-//		String favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
-		
-		Map<String, String> correct = readGold("src/main/resources/evaluation/"+target+"/gold/id2homogenizedOutcome.txt");
+
+//		 String target="FeministMovement";
+//		String target = "ClimateChangeisaRealConcern";
+		// String target="LegalizationofAbortion";
+		// String target="HillaryClinton";
+		 String target="Atheism";
+
+		// String
+		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
+		// String
+		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
+		// String
+		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
+		// String
+		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
+		String stanceVsNonePath = "src/main/resources/evaluation/" + target + "/stanceVsNone/id2homogenizedOutcome.txt";
+
+		String favorVsAgainstPath = "src/main/resources/evaluation/" + target
+				+ "/favorVsAgainst/id2homogenizedOutcome.txt";
+		// String
+		// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
+		// String
+		// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
+
+		Map<String, String> correct = readGold(
+				"src/main/resources/evaluation/" + target + "/gold/id2homogenizedOutcome.txt");
 		Map<String, String> stanceVsNone = readPrediction(stanceVsNonePath);
 		System.out.println("Stance Vs None Measures:");
 		printEvaluationMeasures(new File(stanceVsNonePath));
 		System.out.println("-----------");
-		
+
 		Map<String, String> favorVsAgainst = readPrediction(favorVsAgainstPath);
 		System.out.println("Favor Vs Against Measures:");
 		printEvaluationMeasures(new File(favorVsAgainstPath));
@@ -60,7 +67,7 @@ public class StackClassifications implements Constants {
 
 		File tempId2Outcome = createTempFile(merged, correct);
 
-//		printFile(tempId2Outcome);
+		// printFile(tempId2Outcome);
 		System.out.println("merged:");
 		printEvaluationMeasures(tempId2Outcome);
 		ComputeSemevalMeasure.printSemevalMeasure(tempId2Outcome);
@@ -81,8 +88,8 @@ public class StackClassifications implements Constants {
 		String line = "";
 		while ((line = br.readLine()) != null) {
 			System.out.println(line);
-			}
-		
+		}
+
 	}
 
 	private static File createTempFile(Map<String, String> merged, Map<String, String> correct) {
@@ -96,9 +103,10 @@ public class StackClassifications implements Constants {
 			bw.newLine();
 			bw.write("#Thu Nov 26 XX:XX:XX CET 2015");
 			bw.newLine();
-		
-			for(String gold : correct.keySet()){
-				String toWrite=gold+"="+toVector(getPredictionById(gold,merged))+toVector(correct.get(gold))+"-1.0";
+
+			for (String gold : correct.keySet()) {
+				String toWrite = gold + "=" + toVector(getPredictionById(gold, merged)) + toVector(correct.get(gold))
+						+ "-1.0";
 				bw.write(toWrite);
 				bw.newLine();
 			}
@@ -111,43 +119,47 @@ public class StackClassifications implements Constants {
 	}
 
 	private static String toVector(String lable) {
-		if(lable.equals("AGAINST"))return "1,0,0;";
-		else if(lable.equals("FAVOR"))return "0,1,0;";
-		else if(lable.equals("NONE"))return "0,0,1;";
-		System.err.println("UNKNOWN LABLE "+lable);
+		if (lable.equals("AGAINST"))
+			return "1,0,0;";
+		else if (lable.equals("FAVOR"))
+			return "0,1,0;";
+		else if (lable.equals("NONE"))
+			return "0,0,1;";
+		System.err.println("UNKNOWN LABLE " + lable);
 		return lable;
 	}
 
 	private static String getPredictionById(String gold, Map<String, String> merged) {
-		for(String key: merged.keySet()){
-			if(gold.equals(key))return merged.get(key);
+		for (String key : merged.keySet()) {
+			if (gold.equals(key))
+				return merged.get(key);
 		}
-		System.err.println(gold+ "not found in merged");
+		System.err.println(gold + "not found in merged");
 		return null;
 	}
 
 	private static Map<String, String> merge(Map<String, String> stanceVsNone, Map<String, String> favorVsAgainst) {
 		HashMap<String, String> merged = new HashMap<String, String>();
 		for (String svn : stanceVsNone.keySet()) {
-			if (stanceVsNone.get(svn).equals("NONE")){
+			if (stanceVsNone.get(svn).equals("NONE")) {
 				merged.put(svn, "NONE");
-			}else{
-				boolean foundInfavorVsAgainst=false; 
+			} else {
+				boolean foundInfavorVsAgainst = false;
 				for (String fvn : favorVsAgainst.keySet()) {
 					if (fvn.equals(svn)) {
 						merged.put(fvn, favorVsAgainst.get(fvn));
-						foundInfavorVsAgainst=true;
+						foundInfavorVsAgainst = true;
 					}
 				}
-				if(!foundInfavorVsAgainst){
+				if (!foundInfavorVsAgainst) {
 					System.err.println("UNDECIDED");
 				}
 			}
 		}
-//		System.out.println("merged");
-//		for(String key: merged.keySet()){
-//			System.out.println(key+" "+merged.get(key));
-//		}
+		// System.out.println("merged");
+		// for(String key: merged.keySet()){
+		// System.out.println(key+" "+merged.get(key));
+		// }
 		return merged;
 	}
 
@@ -175,7 +187,8 @@ public class StackClassifications implements Constants {
 
 				for (int i = 0; i < predictionS.length; i++) {
 					if (predictionS[i].equals("1")) {
-//						System.out.println("prediction " + id + " " + labelList.get(i));
+						// System.out.println("prediction " + id + " " +
+						// labelList.get(i));
 						prediction.put(id, labelList.get(i));
 					}
 				}
@@ -212,7 +225,8 @@ public class StackClassifications implements Constants {
 				for (int i = 0; i < predictionS.length; i++) {
 					if (goldS[i].equals("1")) {
 						gold.put(id, labelList.get(i));
-//						System.out.println("gold " + id + " " + labelList.get(i));
+						// System.out.println("gold " + id + " " +
+						// labelList.get(i));
 					}
 				}
 			}

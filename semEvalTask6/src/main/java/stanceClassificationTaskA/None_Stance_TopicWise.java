@@ -37,6 +37,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapt
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
+import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
 import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
@@ -94,13 +95,15 @@ public class None_Stance_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
+	public static boolean saveModel=true;
+	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
 
 	public static String[] FES = {
-			SimpleNounFreqencyDFE.class.getName(),
+//			SimpleNounFreqencyDFE.class.getName(),
 			// ContextualityMeasureFeatureExtractor.class.getName(),
-//			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
-//			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
-//			SimpleSentencePolarityDFE.class.getName(), //M
+			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
+			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
+			SimpleSentencePolarityDFE.class.getName(), //M
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
 			
@@ -113,15 +116,15 @@ public class None_Stance_TopicWise implements Constants {
 //			HashTagDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(),
 			
-//			SimpleNegationDFE.class.getName(), //M
-//			ConditionalSentenceCountDFE.class.getName(), //M
-//			RepeatedPunctuationDFE.class.getName(), //M
+			SimpleNegationDFE.class.getName(), //M
+			ConditionalSentenceCountDFE.class.getName(), //M
+			RepeatedPunctuationDFE.class.getName(), //M
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //	  		NrOfTokensDFE.class.getName(),
 //	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
 //	  		NrOfTokensPerSentenceDFE.class.getName(), //M
-//	  		ModalVerbFeaturesDFE.class.getName(), //M
+	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
 //			ClassifiedConceptDFE.class.getName(), //M
 //			StackedFeatureDFE.class.getName(), //M
@@ -136,7 +139,11 @@ public class None_Stance_TopicWise implements Constants {
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
-			experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_");
+			if(saveModel){
+				experiment.saveModel(pSpace,folder.getName());
+			}else{
+				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_");
+			}
 		}
 
 	}
@@ -156,9 +163,9 @@ public class None_Stance_TopicWise implements Constants {
 //			if(!f.getName().equals("Atheism")){
 //				continue;
 //			}
-			if(!f.getName().equals("LegalizationofAbortion")){
-				continue;
-			}
+//			if(!f.getName().equals("LegalizationofAbortion")){
+//				continue;
+//			}
 //			if(!f.getName().equals("ClimateChangeisaRealConcern")){
 //				continue;
 //			}
@@ -234,17 +241,18 @@ public class None_Stance_TopicWise implements Constants {
 	private Dimension<List<Object>> getPipelineParameters(String baseDir, String target) {
 		@SuppressWarnings("unchecked")
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
-				Arrays.asList(new Object[] { NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
-						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
-						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
+				Arrays.asList(new Object[] { 
+//						NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
+//						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
+//						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
-						ClassifiedConceptDFE.PARAM_TARGET,target,
-						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
+//						ClassifiedConceptDFE.PARAM_TARGET,target,
+//						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
+//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
 				}));
 		return dimPipelineParameters;
 	}
@@ -255,6 +263,16 @@ public class None_Stance_TopicWise implements Constants {
 		dimReaders.put(DIM_READER_TRAIN_PARAMS, Arrays.asList(TaskATweetReader_None_Stance.PARAM_SOURCE_LOCATION, folder.getAbsolutePath(),
 				TaskATweetReader_None_Stance.PARAM_LANGUAGE, LANGUAGE_CODE, TaskATweetReader_None_Stance.PARAM_PATTERNS, "*.xml"));
 		return dimReaders;
+	}
+	
+	private void saveModel(ParameterSpace pSpace, String experimentName) throws Exception {
+		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
+				experimentName, new File(modelOutputFolder+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
+				preProcessing);
+		batch.setParameterSpace(pSpace);
+
+		// Run
+		Lab.getInstance().run(batch);
 	}
 
 }
