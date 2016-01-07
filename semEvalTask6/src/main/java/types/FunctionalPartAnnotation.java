@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Nov 24 15:45:21 CET 2015
+ * Updated by JCasGen Thu Jan 07 11:06:34 CET 2016
  * XML source: /Users/michael/git/ucsm_git/semEvalTask6/src/main/resources/desc/type/ownArgTypes.xml
  * @generated */
 public class FunctionalPartAnnotation extends Annotation {

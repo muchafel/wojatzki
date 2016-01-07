@@ -17,11 +17,12 @@ public class PipelineTaskA {
 	public static void main(String[] args) throws IOException, ResourceInitializationException, UIMAException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		String modelFolderStanceVsNone="src/main/resources/trainedModels/noneVsStance/Atheism";
+		String modelFolderFavorAgainst="src/main/resources/trainedModels/favorVsAgainst/Atheism";
 		PipelineTaskA pipelineTaskA= new PipelineTaskA();
-		pipelineTaskA.run(baseDir,modelFolderStanceVsNone);
+		pipelineTaskA.run(baseDir,modelFolderStanceVsNone,modelFolderFavorAgainst);
 	}
 
-	private void run(String baseDir, String modelFolder) throws ResourceInitializationException, UIMAException, IOException {
+	private void run(String baseDir, String modelFolder, String modelFolderFavorAgainst) throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createReader(
 						UnclassifiedTweetReader.class,
@@ -30,9 +31,15 @@ public class PipelineTaskA {
 						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
 				),
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
+				//annotate none vs stance
 				AnalysisEngineFactory.createEngineDescription(
 						TcAnnotatorDocument.class,
 						TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION, modelFolder
+				),
+				//annotate fav vs against
+				AnalysisEngineFactory.createEngineDescription(
+						FavorAgainstOutcomeAnnotator.class,
+						FavorAgainstOutcomeAnnotator.PARAM_TC_MODEL_LOCATION, modelFolderFavorAgainst
 				),
 				AnalysisEngineFactory.createEngineDescription(
 						OutcomeInspection.class

@@ -416,5 +416,48 @@ public class PreprocessingPipeline {
 				);
 	}
 	
+	/**
+	 * 1. use the break iterator to create sentence annos
+	 * 2. run ark tweet tagger and annotate tokens but keep sentence annos
+	 * 3. Ark-tools pos tagging
+	 * 4. write hashtags and [at]s to TwitterSpecificAnno - User or hashtag
+	 * 		then remove pos-tagging
+	 * 5. open NLP POS tagging
+	 * 6. lemmas (Stanford)
+	 * 7. OpenNlpChunker
+	 * 8. ClearNlpDependencyParser
+	 * 9. SentimentAnnotator
+	 * 10. NegationAnnotator 
+	 * 11. FunctionalPartsAnnotator
+	 * 12. TokenStancePolarityAnnotator
+	 * 13. HashTagStancePolarityAnnotator
+	 * 14. ModalVerbAnnotator
+	 * @return
+	 * @throws ResourceInitializationException
+	 */
+	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean stanceVsNone) throws ResourceInitializationException {
+		String mode="";
+		if(stanceVsNone)mode="noneVsStance";
+		else mode="favorVsAgainst";
+		return createEngineDescription(
+				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
+				createEngineDescription(MergedArktweetTokenizer.class),
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default") ,
+				createEngineDescription(TwitterSpecificAnnotator.class),
+				createEngineDescription(OpenNlpPosTagger.class,OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class),
+				createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(LexiconBasedSentimentAnnotator.class,
+						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH, "src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(FunctionalPartsAnnotator.class),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,"src/main/resources/lists/listOfModalVerbs.txt"),
+				createEngineDescription(Bi_Tri_Gram_StackingAnnotator.class, Bi_Tri_Gram_StackingAnnotator.PARAM_TC_MODEL_LOCATION,"src/main/resources/trainedModels/bi_tri_grams/"+mode+"/"+target)
+				);
+	}
+	
 	
 }

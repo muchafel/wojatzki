@@ -90,28 +90,28 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
 	public static boolean saveModel=true;
-	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
+	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
 
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
 //			TargetTransferClassificationDFE.class.getName(), //M ???
 //			StackedFeatureDFE.class.getName(), //M ???
-			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
-			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
-			SimpleSentencePolarityDFE.class.getName(),	//M
+//			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
+//			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
+//			SimpleSentencePolarityDFE.class.getName(),	//M
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
-//			LuceneNGramDFE.class.getName(),
-			SimpleNegationDFE.class.getName(), //M
-			ConditionalSentenceCountDFE.class.getName(), //M
-			RepeatedPunctuationDFE.class.getName(), //M
+			LuceneNGramDFE.class.getName(),
+//			SimpleNegationDFE.class.getName(), //M
+//			ConditionalSentenceCountDFE.class.getName(), //M
+//			RepeatedPunctuationDFE.class.getName(), //M
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //			NrOfTokensDFE.class.getName(),
 //		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
 //			NrOfTokensPerSentenceDFE.class.getName(),
-	  		ModalVerbFeaturesDFE.class.getName(), //M
+//	  		ModalVerbFeaturesDFE.class.getName(), //M
 //			TypeTokenRatioFeatureExtractor.class.getName(),
 //			ClassifiedConceptDFE.class.getName() //M
 	};

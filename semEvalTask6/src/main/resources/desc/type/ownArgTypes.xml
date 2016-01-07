@@ -155,5 +155,17 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>types.BiTriGramOutcome</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>classificationOutcome</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>

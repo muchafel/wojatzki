@@ -32,6 +32,7 @@ public class LoadModels {
 						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
 				),
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
+				//annotate stance
 				AnalysisEngineFactory.createEngineDescription(
 						TcAnnotatorDocument.class,
 						TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION, modelFolder
