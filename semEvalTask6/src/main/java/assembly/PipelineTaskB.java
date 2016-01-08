@@ -63,6 +63,7 @@ public class PipelineTaskB {
 		AnalysisEngine trumpEngine = getTrumpEngine();
 		AnalysisEngine resolvingEngine=getResolvingEngine("DonaldTrump");
 		Map<String,AnalysisEngine> targetToEngine= getTargetEngines(targets);
+		System.out.println("all engines built");
 		for (JCas jcas : new JCasIterable(reader)) {
 				// preprocessing
 				// annotate trump Stance vs None

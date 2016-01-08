@@ -12,6 +12,7 @@ import org.apache.uima.jcas.cas.TOP;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import types.StanceAnnotation;
 import types.TaskBStanceAnnotation;
 
 public class RemovePreprocessingAnnotator_TASKB extends JCasAnnotator_ImplBase{
@@ -20,7 +21,7 @@ public class RemovePreprocessingAnnotator_TASKB extends JCasAnnotator_ImplBase{
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		List<TOP> toDelete = new ArrayList<TOP>();
 		for(TOP anno: JCasUtil.selectAll(jcas)){
-			if(anno instanceof TaskBStanceAnnotation || anno instanceof DocumentMetaData){
+			if(anno instanceof TaskBStanceAnnotation || anno instanceof DocumentMetaData || anno instanceof StanceAnnotation){
 				
 			}else{
 				toDelete.add(anno);

@@ -15,6 +15,7 @@ public class StanceResolver_TASKB extends JCasAnnotator_ImplBase{
 		String resolvedStance="";
 		int favor=0;
 		int against=0;
+		System.out.println(jcas.getDocumentText());
 		for(TaskBStanceAnnotation anno: JCasUtil.select(jcas, TaskBStanceAnnotation.class)){
 			if(anno.getTarget().equals("DonaldTrump")){
 				if(anno.getStance().equals("NONE")){
@@ -28,14 +29,20 @@ public class StanceResolver_TASKB extends JCasAnnotator_ImplBase{
 		}
 		if(!resolvedStance.equals("NONE")){
 			resolvedStance=resolve(against,favor);
+		}else{
+			System.out.println("tweet does not contain top i trump noun");
 		}
+		System.out.println("--> "+ resolvedStance);
 		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
 		outcome.setOutcome(resolvedStance);
 		outcome.addToIndexes();
 	}
 
 	private String resolve(int against, int favor) {
-		if((against==0 && favor==0 )||against==favor )return "NONE";
+		System.out.println("FAVOR: "+ favor+ " AGAINST: "+against);
+		if((against==0 && favor==0 )||against==favor ){
+			return "UNKNOWN";
+		}
 		if(against>favor)return "AGAINST";
 		else return "FAVOR";
 	}
