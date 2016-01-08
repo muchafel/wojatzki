@@ -61,7 +61,7 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		super.initialize(context);
 
 		conceptToModel= new HashMap<String,AnalysisEngine>();
-		System.out.println(tcModelLocations);
+//		System.out.println(tcModelLocations);
 		for (File conceptFile: tcModelLocations.listFiles()){
 			try {
 				mlAdapter = ModelPersistUtil.initMachineLearningAdapter(new File(tcModelLocations.getAbsolutePath()+"/"+conceptFile.getName()));

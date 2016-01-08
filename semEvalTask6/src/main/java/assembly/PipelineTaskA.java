@@ -3,6 +3,8 @@ package assembly;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -58,4 +60,5 @@ public class PipelineTaskA {
 				)
 		);	
 	}
+
 }
