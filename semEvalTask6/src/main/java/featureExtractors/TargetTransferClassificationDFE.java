@@ -13,15 +13,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import util.SimilarityHelper;
 
 public class TargetTransferClassificationDFE extends FeatureExtractorResource_ImplBase
 implements DocumentFeatureExtractor{
@@ -31,6 +34,7 @@ implements DocumentFeatureExtractor{
 	private String id2outcomeFolder;
 
 	private Map<String,Map<String, Integer>> id2Outcome_perTargets;
+	private Map<String,List<String>> targetToTopINouns;
 	
 	@Override
 	public boolean initialize(ResourceSpecifier aSpecifier,
@@ -39,9 +43,36 @@ implements DocumentFeatureExtractor{
 			return false;
 		}
 		id2Outcome_perTargets = getId2OutcomeMap(id2outcomeFolder);
+		try {
+			targetToTopINouns= readTargetWiseTopINouns();
+//			System.out.println("Top 60 Nouns for Targets:");
+//			for(String key: targetToTopINouns.keySet())System.out.println(key+" "+targetToTopINouns.get(key));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
+	private Map<String, List<String>> readTargetWiseTopINouns() throws FileNotFoundException, IOException {
+		Map<String, List<String>> targetToTopINouns= new HashMap<String, List<String>>();
+		File folder= new File("src/main/resources/top60Nouns"); 
+		for(File target: folder.listFiles()){
+			targetToTopINouns.put(target.getName(), getTop60Nouns(target));
+		}
+		return targetToTopINouns;
+	}
+
+	private List<String> getTop60Nouns(File target) throws FileNotFoundException, IOException {
+		List<String> top60Nouns = new ArrayList<String>();
+		try (BufferedReader br = new BufferedReader(new FileReader(target.getAbsolutePath()))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				for(String noun: line.split(","))top60Nouns.add(noun.replace(" ", ""));
+			}
+		}
+		return top60Nouns;
+	}
+
 	private Map<String, Map<String, Integer>> getId2OutcomeMap(String path) {
 		Map<String, Map<String, Integer>> result= new HashMap<String, Map<String, Integer>>();
 		
@@ -82,7 +113,7 @@ implements DocumentFeatureExtractor{
 		Set<Feature> featList = new HashSet<Feature>();
 		for(String target : id2Outcome_perTargets.keySet()){
 //			System.out.println(target);
-			if(id2Outcome_perTargets.get(target).get(docId) != null){
+			if(id2Outcome_perTargets.get(target).get(docId) != null && jcasContainsTopINoun(jcas,target)){
 //				System.out.println(docId+ " "+ id2Outcome_perTargets.get(target).get(docId));
 				featList.add(new Feature("stacked_outcome_"+target,  id2Outcome_perTargets.get(target).get(docId)));
 			}else{
@@ -93,6 +124,18 @@ implements DocumentFeatureExtractor{
 //		System.out.println(docId+ " "+ id2Outcome_ngram.get(docId));
 //		featList.add(new Feature("stacked_ngram_outcome",  id2Outcome_ngram.get(docId)));
 		return featList;
+	}
+
+	private boolean jcasContainsTopINoun(JCas jcas, String target) {
+		List<String> topINouns = targetToTopINouns.get(target);
+		for(Token t: JCasUtil.select(jcas, Token.class)){
+			if(t.getPos().getPosValue().equals("NN")||t.getPos().getPosValue().equals("NNS")||t.getPos().getPosValue().equals("NP")||t.getPos().getPosValue().equals("NPS")||t.getPos().getPosValue().equals("NPS")){
+				if(topINouns.contains(t.getCoveredText().toLowerCase())){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

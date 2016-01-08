@@ -37,7 +37,7 @@ public class ConceptUtils {
     	strictlyPolarConcepts.put("Atheism", new ArrayList<String>(
     		    Arrays.asList( "#peace", "#islam", "#freethinker","pray")));
     	strictlyPolarConcepts.put("FeministMovement", new ArrayList<String>(
-    		    Arrays.asList("#spankafeminist", "@cooimemegirl")));
+    		    Arrays.asList("#spankafeminist")));
     	strictlyPolarConcepts.put("LegalizationofAbortion", new ArrayList<String>(
     		    Arrays.asList("womb", "#prolifegen", "marriage","#prolifeyouth","#alllivesmatter", "matter", "murder")));
     	strictlyPolarConcepts.put("ClimateChangeisaRealConcern", new ArrayList<String>(
@@ -60,9 +60,11 @@ public class ConceptUtils {
     	strictlyPolarConceptPolarity.put("#prolifegen","AGAINST");
     	strictlyPolarConceptPolarity.put("marriage","AGAINST");
     	strictlyPolarConceptPolarity.put("#prolifeyouth","AGAINST");
+    	strictlyPolarConceptPolarity.put("#alllivesmatter","AGAINST");
     	strictlyPolarConceptPolarity.put("matter","AGAINST");
     	strictlyPolarConceptPolarity.put("murder","AGAINST");
     	strictlyPolarConceptPolarity.put("atmosphere","FAVOR");
+    	strictlyPolarConceptPolarity.put("#sustainability","FAVOR");
     	strictlyPolarConceptPolarity.put("water","FAVOR");
     	strictlyPolarConceptPolarity.put("#mission","FAVOR");
     	strictlyPolarConceptPolarity.put("future","FAVOR");

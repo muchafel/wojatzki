@@ -52,6 +52,8 @@ import featureExtractors.SummedStanceDFE;
 import featureExtractors.TopicDFE;
 import featureExtractors.sentiment.AspectBasedSentimentDFE_domainIndependent;
 import featureExtractors.sentiment.SimpleSentencePolarityDFE;
+import featureExtractors.stacking.StackedBi_Tri_GramStanceNoneDFE;
+import featureExtractors.stacking.StackedConceptClassificationDFE;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Tokens;
@@ -115,7 +117,8 @@ public class None_Stance_TopicWise implements Constants {
 	  		
 //			ClassifiedConceptDFE.class.getName(), //M
 //			StackedFeatureDFE.class.getName(), //M
-			StackedBi_Tri_GramStanceNoneDFE.class.getName() //--> just for saving the model
+			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
+			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
 			
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
@@ -255,8 +258,8 @@ public class None_Stance_TopicWise implements Constants {
 //						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
 //						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
 //						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
-						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
-						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+//						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
+//						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
 //						ClassifiedConceptDFE.PARAM_TARGET,target,
 //						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",

@@ -80,7 +80,7 @@ public class Bi_Tri_Gram_FavorAgainstStackingAnnotator extends JCasAnnotator_Imp
 			outcome.setOutcome("");
 			outcome.addToIndexes();
 		} else {
-			if (JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome() == null) {
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).size()==0) {
 				TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
 				outcome.setOutcome("");
 				outcome.addToIndexes();

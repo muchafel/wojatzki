@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,48 +30,57 @@ public class StackClassifications implements Constants {
 	public static void main(String[] args)
 			throws NumberFormatException, UnsupportedEncodingException, IOException, TextClassificationException {
 
+		ArrayList<String> targets = new ArrayList<String>(
+			    Arrays.asList("Atheism","FeministMovement", "ClimateChangeisaRealConcern","HillaryClinton", "LegalizationofAbortion"));
 //		 String target="FeministMovement";
 //		String target = "ClimateChangeisaRealConcern";
 		// String target="LegalizationofAbortion";
 		// String target="HillaryClinton";
-		 String target="Atheism";
+//		 String target="Atheism";
+		
+		for(String target: targets){
+			System.err.println(target.toUpperCase());
+			// String
+			// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
+			// String
+			// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
+			// String
+			// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
+			// String
+			// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
+			String stanceVsNonePath = "src/main/resources/evaluation/" + target + "/stanceVsNone/id2homogenizedOutcome.txt";
 
-		// String
-		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex.txt";
-		// String
-		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_lex_normalized.txt";
-		// String
-		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_j48_lex_normalized.txt";
-		// String
-		// stanceVsNonePath="src/main/resources/evaluation/stanceVsNone/id2homogenizedOutcome_smo_ngrams.txt";
-		String stanceVsNonePath = "src/main/resources/evaluation/" + target + "/stanceVsNone/id2homogenizedOutcome.txt";
+			String favorVsAgainstPath = "src/main/resources/evaluation/" + target
+					+ "/favorVsAgainst/id2homogenizedOutcome.txt";
+//			String favorVsAgainstPath = "src/main/resources/evaluation/" + target
+//					+ "/favorVsAgainst/id2homogenizedOutcome_woTransfer.txt";
+//			String favorVsAgainstPath = "src/main/resources/evaluation/" + target
+//					+ "/favorVsAgainst/id2homogenizedOutcome_unfilteredTransfer.txt";
+			// String
+			// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
+			// String
+			// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
 
-		String favorVsAgainstPath = "src/main/resources/evaluation/" + target
-				+ "/favorVsAgainst/id2homogenizedOutcome.txt";
-		// String
-		// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_j48_lex_normalized.txt";
-		// String
-		// favorVsAgainstPath="src/main/resources/evaluation/favorVsAgainst/id2homogenizedOutcome_smo_ngrams.txt";
+			Map<String, String> correct = readGold(
+					"src/main/resources/evaluation/" + target + "/gold/id2homogenizedOutcome.txt");
+			Map<String, String> stanceVsNone = readPrediction(stanceVsNonePath);
+//			System.out.println("Stance Vs None Measures:");
+//			printEvaluationMeasures(new File(stanceVsNonePath));
+//			System.out.println("-----------");
 
-		Map<String, String> correct = readGold(
-				"src/main/resources/evaluation/" + target + "/gold/id2homogenizedOutcome.txt");
-		Map<String, String> stanceVsNone = readPrediction(stanceVsNonePath);
-		System.out.println("Stance Vs None Measures:");
-		printEvaluationMeasures(new File(stanceVsNonePath));
-		System.out.println("-----------");
+			Map<String, String> favorVsAgainst = readPrediction(favorVsAgainstPath);
+			System.out.println("Favor Vs Against Measures:");
+			printEvaluationMeasures(new File(favorVsAgainstPath));
+			System.out.println("-----------");
+			Map<String, String> merged = merge(stanceVsNone, favorVsAgainst);
 
-		Map<String, String> favorVsAgainst = readPrediction(favorVsAgainstPath);
-		System.out.println("Favor Vs Against Measures:");
-		printEvaluationMeasures(new File(favorVsAgainstPath));
-		System.out.println("-----------");
-		Map<String, String> merged = merge(stanceVsNone, favorVsAgainst);
+			File tempId2Outcome = createTempFile(merged, correct);
 
-		File tempId2Outcome = createTempFile(merged, correct);
-
-		// printFile(tempId2Outcome);
-		System.out.println("merged:");
-		printEvaluationMeasures(tempId2Outcome);
-		ComputeSemevalMeasure.printSemevalMeasure(tempId2Outcome);
+			// printFile(tempId2Outcome);
+//			System.out.println("merged:");
+//			printEvaluationMeasures(tempId2Outcome);
+			ComputeSemevalMeasure.printSemevalMeasure(tempId2Outcome);
+		}
 	}
 
 	private static void printEvaluationMeasures(File tempId2Outcome) throws IOException, TextClassificationException {

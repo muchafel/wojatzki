@@ -51,6 +51,8 @@ import featureExtractors.SummedStanceDFE;
 import featureExtractors.TargetTransferClassificationDFE;
 import featureExtractors.TopicDFE;
 import featureExtractors.sentiment.SimpleSentencePolarityDFE;
+import featureExtractors.stacking.StackedBi_Tri_GramFavorAgainstDFE;
+import featureExtractors.stacking.StackedConceptClassificationDFE;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Hashtags_normalized;
 import featureExtractors.stanceLexicon.StanceLexiconDFE_Tokens;
@@ -89,7 +91,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=false;
+	public static boolean saveModel=true;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
 	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
 
@@ -99,17 +101,16 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			TargetTransferClassificationDFE.class.getName(), //M ???
 //			StackedFeatureDFE.class.getName(), //M ???
 //			ClassifiedConceptDFE.class.getName(), //M
-			
-			StanceLexiconDFE_Tokens.class.getName(), //M --> un-normalized
-			StanceLexiconDFE_Hashtags.class.getName(), //M --> un-normalized
-			SimpleSentencePolarityDFE.class.getName(),	//M
-			SimpleNegationDFE.class.getName(), //M
-			ConditionalSentenceCountDFE.class.getName(), //M
-			RepeatedPunctuationDFE.class.getName(), //M
-	  		ModalVerbFeaturesDFE.class.getName(), //M
+			StanceLexiconDFE_Tokens.class.getName(), //M S--> un-normalized
+			StanceLexiconDFE_Hashtags.class.getName(), //M S--> un-normalized
+			SimpleSentencePolarityDFE.class.getName(),	//M S
+			SimpleNegationDFE.class.getName(), //M S
+			ConditionalSentenceCountDFE.class.getName(), //M S
+			RepeatedPunctuationDFE.class.getName(), //M S
+	  		ModalVerbFeaturesDFE.class.getName(), //M S
 	  		
-			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //--> just for saving the model
-			StackedConceptClassificationDFE.class.getName()
+			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
+			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
 	  		
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),

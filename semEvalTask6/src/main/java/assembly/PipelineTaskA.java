@@ -1,6 +1,8 @@
 package assembly;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -11,23 +13,28 @@ import org.apache.uima.resource.ResourceInitializationException;
 import dataInspection.OutcomeInspection;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
+import io.StanceResultWriter;
 import util.PreprocessingPipeline;
 
 public class PipelineTaskA {
 	public static void main(String[] args) throws IOException, ResourceInitializationException, UIMAException {
+		ArrayList<String> targets = new ArrayList<String>(
+			    Arrays.asList("Atheism","FeministMovement", "ClimateChangeisaRealConcern","HillaryClinton", "LegalizationofAbortion"));
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-		String modelFolderStanceVsNone="src/main/resources/trainedModels/noneVsStance/Atheism";
-		String modelFolderFavorAgainst="src/main/resources/trainedModels/favorVsAgainst/Atheism";
-		String target="Atheism";
-		PipelineTaskA pipelineTaskA= new PipelineTaskA();
-		pipelineTaskA.run(baseDir,modelFolderStanceVsNone,modelFolderFavorAgainst,target);
+		for(String target: targets){
+			if(target.equals("Atheism"))continue;
+			String modelFolderStanceVsNone="src/main/resources/trainedModels/noneVsStance/"+target;
+			String modelFolderFavorAgainst="src/main/resources/trainedModels/favorVsAgainst/"+target;
+			PipelineTaskA pipelineTaskA= new PipelineTaskA();
+			pipelineTaskA.run(baseDir,modelFolderStanceVsNone,modelFolderFavorAgainst,target);
+		}
 	}
 
 	private void run(String baseDir, String modelFolder, String modelFolderFavorAgainst,String target) throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createReader(
 						UnclassifiedTweetReader.class,
-						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/Atheism/",
+						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/",
 						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
 						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
 				),
@@ -45,6 +52,9 @@ public class PipelineTaskA {
 				),
 				AnalysisEngineFactory.createEngineDescription(
 						OutcomeInspection.class
+				),
+				AnalysisEngineFactory.createEngineDescription(
+						StanceResultWriter.class, StanceResultWriter.PARAM_RESULT_OUTPUT_TARGET,target
 				)
 		);	
 	}

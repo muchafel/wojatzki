@@ -33,7 +33,7 @@ public class CompleteSeparationTaskB {
 
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 
-		int topI = 50;
+		int topI = 60;
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		ArrayList<String> targets = new ArrayList<String>(Arrays.asList("Atheism", "ClimateChangeisaRealConcern",
 				"HillaryClinton", "FeministMovement", "LegalizationofAbortion"));
