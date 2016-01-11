@@ -1,6 +1,7 @@
 package stanceClassificationTaskA;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
+import static de.tudarmstadt.ukp.dkpro.tc.core.util.ExperimentUtil.getAblationTestFeatures;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.EmoticonRatioDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.NumberOfHashTagsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentSaveModel;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchTrainTestUsingTCEvaluationReport;
@@ -37,7 +39,6 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapt
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
-import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
 import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
@@ -91,16 +92,22 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=true;
+	public static boolean saveModel=false;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
 	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
+	public static final FeSetMode feSetMode=FeSetMode.ablation;
+	
+	public enum FeSetMode {
+		all,
+		ablation, //contains a set with all features as well
+	}
 
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-//			TargetTransferClassificationDFE.class.getName(), //M ???
-//			StackedFeatureDFE.class.getName(), //M ???
-//			ClassifiedConceptDFE.class.getName(), //M
+			TargetTransferClassificationDFE.class.getName(), //M ???
+			StackedFeatureDFE.class.getName(), //M ???
+			ClassifiedConceptDFE.class.getName(), //M
 			StanceLexiconDFE_Tokens.class.getName(), //M S--> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M S--> un-normalized
 			SimpleSentencePolarityDFE.class.getName(),	//M S
@@ -109,8 +116,8 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 			RepeatedPunctuationDFE.class.getName(), //M S
 	  		ModalVerbFeaturesDFE.class.getName(), //M S
 	  		
-			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
-			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
+//			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
+//			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
 	  		
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
@@ -213,7 +220,14 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 		
 		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir, folder.getName());
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+//		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		
+		Dimension<List<String>> dimFeatureSets = null;
+		if (feSetMode == FeSetMode.ablation) {
+			dimFeatureSets = getAblationTestFeatures(FES);
+		} else {
+			dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		}
 		// bundle parameterspace
 		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimPipelineParameters, dimFeatureSets,
 				dimClassificationArgs,dimFeatureFilters);
@@ -265,9 +279,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	}
 	
 	private void saveModel(ParameterSpace pSpace, String experimentName) throws Exception {
-		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
-				experimentName, new File(modelOutputFolder+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
-				preProcessing);
+		ExperimentSaveModel batch = new ExperimentSaveModel(
+				experimentName, WekaClassificationUsingTCEvaluationAdapter.class,new File(modelOutputFolder+"/"+experimentName));
+		batch.setPreprocessing(preProcessing);
 		batch.setParameterSpace(pSpace);
 
 		// Run

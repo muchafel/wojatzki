@@ -73,7 +73,8 @@ public class NegationAnnotator extends JCasAnnotator_ImplBase{
 		}
 		// catch expressions such as hadn't, aren't etc...
 		else if(tokenText.contains("'")&&tokenText.length()>1){
-			if(tokenText.split("'").length>0){
+//			System.out.println(tokenText+" "+tokenText.split("'").length);
+			if(tokenText.split("'").length>1){
 				if(tokenText.split("'")[1].equals("t")) return true;
 			}
 		}

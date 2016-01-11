@@ -1,5 +1,6 @@
 package stanceClassificationTaskA;
 
+import static de.tudarmstadt.ukp.dkpro.tc.core.util.ExperimentUtil.getAblationTestFeatures;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.io.File;
@@ -29,6 +30,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.EmoticonRatioDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.twitter.NumberOfHashTagsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentSaveModel;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchTrainTestUsingTCEvaluationReport;
@@ -37,7 +39,6 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapt
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaFeatureValuesReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaOutcomeIDReport;
-import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import edu.berkeley.nlp.syntax.Trees.PunctuationStripper;
 import featureExtractors.ClassifiedConceptDFE;
 import featureExtractors.ConditionalSentenceCountDFE;
@@ -68,6 +69,7 @@ import io.ConfusionMatrixOutput;
 import io.TaskATweetReader;
 import io.TaskATweetReader_None_Stance;
 import moa.classifiers.functions.Perceptron;
+import stanceClassificationTaskA.FavorVsAgainst_Experiment_TopicWise.FeSetMode;
 import util.PreprocessingPipeline;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
@@ -97,9 +99,16 @@ public class None_Stance_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=true;
+	public static boolean saveModel=false;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
 	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
+	
+	public static final FeSetMode feSetMode=FeSetMode.ablation;
+	
+	public enum FeSetMode {
+		all,
+		ablation, //contains a set with all features as well
+	}
 
 	public static String[] FES = {
 //			SimpleNounFreqencyDFE.class.getName(),
@@ -223,7 +232,14 @@ public class None_Stance_TopicWise implements Constants {
 
 		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir, folder.getName());
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		//Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		
+		Dimension<List<String>> dimFeatureSets = null;
+		if (feSetMode == FeSetMode.ablation) {
+			dimFeatureSets = getAblationTestFeatures(FES);
+		} else {
+			dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		}
 		// bundle parameterspace
 		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimPipelineParameters, dimFeatureSets,
 				dimClassificationArgs);
@@ -277,9 +293,10 @@ public class None_Stance_TopicWise implements Constants {
 	}
 	
 	private void saveModel(ParameterSpace pSpace, String experimentName) throws Exception {
-		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
-				experimentName, new File(modelOutputFolder+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
-				preProcessing);
+		ExperimentSaveModel batch = new ExperimentSaveModel(
+				experimentName,
+				WekaClassificationUsingTCEvaluationAdapter.class,new File(modelOutputFolder+"/"+experimentName));
+		batch.setPreprocessing(preProcessing);
 		batch.setParameterSpace(pSpace);
 
 		// Run

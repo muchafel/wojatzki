@@ -20,8 +20,9 @@ public class XMLCreationTaskA {
 	public static void main(String[] args) throws FileNotFoundException, IOException, JAXBException {
 		List<String> topics= new ArrayList<String>();
 		
-		File file= new File("/Users/michael/ArgumentMiningCoprora/semEval2016/semeval2016-task6-trainingdata.txt");
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+//		File file= new File("/Users/michael/ArgumentMiningCoprora/semEval2016/semeval2016-task6-trainingdata.txt");
+		File fileTest= new File("/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/SemEval2016-Task6-subtaskA-testdata.txt");
+		try (BufferedReader br = new BufferedReader(new FileReader(fileTest))) {
 		    String line;
 		    boolean firstLine=true;
 		    while ((line = br.readLine()) != null) {
@@ -37,7 +38,8 @@ public class XMLCreationTaskA {
 		    	    // Write to System.out
 		    	    m.marshal(tweet, System.out);
 		    	    // Write to File
-		    	    m.marshal(tweet, new File("src/main/resources/tweets"+line.split("\t")[0]+".xml"));
+		    	    m.marshal(tweet, new File("/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA/"+line.split("\t")[0]+".xml"));
+//		    	    m.marshal(tweet, new File("src/main/resources/tweets"+line.split("\t")[0]+".xml"));
 		    	}
 		    }
 		}

@@ -14,7 +14,8 @@ public class OutcomeInspection extends JCasAnnotator_ImplBase{
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String outcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome();
-		System.out.println(DocumentMetaData.get(jcas).getDocumentId()+ " "+ outcome);
+		String target= JCasUtil.selectSingle(jcas, StanceAnnotation.class).getTarget();
+		System.out.println(target+" "+DocumentMetaData.get(jcas).getDocumentId()+ " "+ outcome);
 	}
 
 }

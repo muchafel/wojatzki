@@ -63,7 +63,7 @@ public class UnclassifiedTweetReader extends JCasResourceCollectionReader_ImplBa
 			tweetText = getContent(rootElement, "descendant::text");
 			tweetTarget = getContent(rootElement, "descendant::target");
 			tweetId = getContent(rootElement, "descendant::id");
-			// System.out.println(tweetText+" "+tweetTarget+ " "+ tweetStance);
+			System.out.println(tweetText+" |"+tweetTarget+ " ");
 		} catch (JaxenException e) {
 			e.printStackTrace();
 		}

@@ -22,8 +22,12 @@ public class SplitCorpusAccordingToTarget {
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 
+//		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
+//				TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/tweetsTaskA", TaskATweetReader.PARAM_PATTERNS,
+//				"*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",TaskATweetReader.PARAM_MEMORIZE_RESOURCE,true);
+		
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
-				TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/tweetsTaskA", TaskATweetReader.PARAM_PATTERNS,
+				TaskATweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA/", TaskATweetReader.PARAM_PATTERNS,
 				"*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",TaskATweetReader.PARAM_MEMORIZE_RESOURCE,true);
 		
 		for (JCas jcas : new JCasIterable(reader)) {
@@ -32,8 +36,15 @@ public class SplitCorpusAccordingToTarget {
 			String fileName= JCasUtil.select(jcas, OriginalResource.class).iterator().next().getFileName();
 			File jcasResource= new File(JCasUtil.select(jcas, OriginalResource.class).iterator().next().getLocation());
 			
-			createFolder(baseDir+"/semevalTask6",target);
-			String newFile= baseDir+"/semevalTask6/targets/"+target+"/"+fileName;
+			// for train data
+//			createFolder(baseDir + "/semevalTask6", target);
+//			String newFile = baseDir + "/semevalTask6/targets/" + target + "/" + fileName;
+//			System.out.println("copy file " + jcasResource + " to " + newFile);
+//			FileUtils.copyFile(jcasResource, new File(newFile));
+			
+			//for test data
+			createFolder("/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/",target);
+			String newFile= "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+target+"/"+fileName;
 			System.out.println("copy file "+jcasResource+ " to "+newFile);
 			FileUtils.copyFile(jcasResource, new File(newFile));
 		}

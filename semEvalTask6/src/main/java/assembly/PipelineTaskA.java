@@ -28,18 +28,28 @@ public class PipelineTaskA {
 			String modelFolderStanceVsNone="src/main/resources/trainedModels/noneVsStance/"+target;
 			String modelFolderFavorAgainst="src/main/resources/trainedModels/favorVsAgainst/"+target;
 			PipelineTaskA pipelineTaskA= new PipelineTaskA();
+			System.out.println(modelFolderStanceVsNone+" "+modelFolderFavorAgainst+" "+target);
 			pipelineTaskA.run(baseDir,modelFolderStanceVsNone,modelFolderFavorAgainst,target);
 		}
 	}
 
 	private void run(String baseDir, String modelFolder, String modelFolderFavorAgainst,String target) throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(
+				//training data
+//				CollectionReaderFactory.createReader(
+//						UnclassifiedTweetReader.class,
+//						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/",
+//						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
+//						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
+//				)
+				//test data
 				CollectionReaderFactory.createReader(
 						UnclassifiedTweetReader.class,
-						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/",
+						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+target+"/",
 						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
 						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
-				),
+				)
+				,
 //				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
 				//annotate none vs stance

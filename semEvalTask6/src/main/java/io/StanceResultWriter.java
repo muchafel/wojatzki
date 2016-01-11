@@ -35,7 +35,7 @@ public class StanceResultWriter extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		result = new File("src/main/resources/results/taskA/" + resultTarget + "_predicted.txt");
+		result = new File("src/main/resources/results/taskA/" + resultTarget + "_test_predicted.txt");
 		try {
 			result.createNewFile();
 		} catch (IOException e) {

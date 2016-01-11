@@ -28,9 +28,9 @@ import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentSaveModel;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationUsingTCEvaluationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapter;
-import de.tudarmstadt.ukp.dkpro.tc.weka.task.serialization.SaveModelWekaBatchTask;
 import featureExtractors.HashTagDFE;
 import featureExtractors.SimpleNegationDFE;
 import featureExtractors.sentiment.SimpleSentencePolarityDFE;
@@ -246,9 +246,9 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 	}
 
 	private void saveModel(ParameterSpace pSpace, String target, String experimentName) throws Exception {
-		SaveModelWekaBatchTask batch = new SaveModelWekaBatchTask(
-				experimentName, new File(modelOutputFolder+"/"+target+"/"+experimentName), WekaClassificationUsingTCEvaluationAdapter.class,
-				preProcessing);
+		ExperimentSaveModel batch = new ExperimentSaveModel(
+				experimentName, WekaClassificationUsingTCEvaluationAdapter.class, new File(modelOutputFolder+"/"+target+"/"+experimentName));
+		batch.setPreprocessing(preProcessing);
 		batch.setParameterSpace(pSpace);
 
 		// Run
