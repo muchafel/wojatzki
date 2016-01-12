@@ -103,7 +103,7 @@ public class None_Stance_TopicWise implements Constants {
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
 	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
 	
-	public static final FeSetMode feSetMode=FeSetMode.ablation;
+	public static final FeSetMode feSetMode=FeSetMode.all;
 	
 	public enum FeSetMode {
 		all,
@@ -124,10 +124,10 @@ public class None_Stance_TopicWise implements Constants {
 	  		NrOfTokensPerSentenceDFE.class.getName(), //M
 	  		ModalVerbFeaturesDFE.class.getName(), //M
 	  		
-//			ClassifiedConceptDFE.class.getName(), //M
-//			StackedFeatureDFE.class.getName(), //M
-			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
-			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
+			ClassifiedConceptDFE.class.getName(), //M
+			StackedFeatureDFE.class.getName(), //M
+//			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
+//			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
 			
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
@@ -155,14 +155,14 @@ public class None_Stance_TopicWise implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 //		preProcessing= PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
+			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true,false);
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
 				experiment.saveModel(pSpace,folder.getName());
 			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_");
+				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_polarConcepts");
 			}
 		}
 
@@ -277,9 +277,9 @@ public class None_Stance_TopicWise implements Constants {
 //						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 //						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
-//						ClassifiedConceptDFE.PARAM_TARGET,target,
-//						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
-//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
+						ClassifiedConceptDFE.PARAM_TARGET,target,
+						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
 				}));
 		return dimPipelineParameters;
 	}

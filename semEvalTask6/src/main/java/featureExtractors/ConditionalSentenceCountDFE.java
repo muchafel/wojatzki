@@ -1,6 +1,8 @@
 package featureExtractors;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.fit.util.JCasUtil;
@@ -18,13 +20,20 @@ public class ConditionalSentenceCountDFE extends FeatureExtractorResource_ImplBa
 
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
-		Set<Feature> features= new HashSet<Feature>();
 		
+		Set<Feature> features= new HashSet<Feature>();
+//		System.out.println(jcas.getDocumentText());
 		int numOfConds=0;
-		for(Sentence sentence: JCasUtil.select(jcas, Sentence.class)){
-			Token t=JCasUtil.selectCovered(Token.class,sentence).iterator().next();
-			//more advanced detection of conditional sentences ??? --> assuming that...
-			if(t.getCoveredText().toLowerCase().equals("if"))numOfConds++;
+		Collection<Sentence> sentences= JCasUtil.select(jcas, Sentence.class);
+		if(!sentences.isEmpty()){
+			for(Sentence sentence: JCasUtil.select(jcas, Sentence.class)){
+				List<Token> tokens=JCasUtil.selectCovered(Token.class,sentence);
+				if(tokens.isEmpty()){
+					Token t=tokens.iterator().next();
+					//more advanced detection of conditional sentences ??? --> assuming that...
+					if(t.getCoveredText().toLowerCase().equals("if"))numOfConds++;
+				}
+			}
 		}
 		features.add(new Feature("NUMBER_OF_CONDITIONAL_SENTENCES", numOfConds));
 		return features;

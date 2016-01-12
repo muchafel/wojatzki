@@ -95,7 +95,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static boolean saveModel=false;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
 	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
-	public static final FeSetMode feSetMode=FeSetMode.ablation;
+	public static final FeSetMode feSetMode=FeSetMode.all;
 	
 	public enum FeSetMode {
 		all,
@@ -107,7 +107,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			LuceneNGramDFE.class.getName(), 
 			TargetTransferClassificationDFE.class.getName(), //M ???
 			StackedFeatureDFE.class.getName(), //M ???
-			ClassifiedConceptDFE.class.getName(), //M
+//			ClassifiedConceptDFE.class.getName(), //M
 			StanceLexiconDFE_Tokens.class.getName(), //M S--> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M S--> un-normalized
 			SimpleSentencePolarityDFE.class.getName(),	//M S
@@ -117,7 +117,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	  		ModalVerbFeaturesDFE.class.getName(), //M S
 	  		
 //			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
-//			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
+			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
 	  		
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
@@ -141,14 +141,14 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //		preProcessing= PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
+			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true,false);
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			FavorVsAgainst_Experiment_TopicWise experiment = new FavorVsAgainst_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
 				experiment.saveModel(pSpace,folder.getName());
 			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst");
+				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst_polarConcepts");
 			}
 		}
 	}
@@ -263,9 +263,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
-//						ClassifiedConceptDFE.PARAM_TARGET,target,
-//						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
+						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
+						ClassifiedConceptDFE.PARAM_TARGET,target,
+						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
 				}));
 		return dimPipelineParameters;
 	}

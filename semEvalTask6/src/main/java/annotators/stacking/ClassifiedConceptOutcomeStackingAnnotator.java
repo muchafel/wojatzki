@@ -48,6 +48,11 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 	@ConfigurationParameter(name = PARAM_CONCEPT_TARGET, mandatory = true)
 	protected String target;
 
+	
+	public static final String PARAM_MODEL_BI_POLAR_CONCEPTS = "useStrictlyPolarConcepts";
+	@ConfigurationParameter(name = PARAM_MODEL_BI_POLAR_CONCEPTS, mandatory = true,defaultValue = "true")
+	protected boolean modelStrictlyPolarConcepts;
+	
 	private String learningMode = Constants.LM_SINGLE_LABEL;
 	private String featureMode = Constants.FM_DOCUMENT;
 
@@ -95,16 +100,16 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 				annotateBlankConcept(jcas,concept,"-");
 			}
 		}
-		//annotate polar concepts
-		for(String concept: ConceptUtils.getStrictlyPolarConcepts(target)){
-			if(conceptContained(jcas,concept)){
-				annotateBlankConcept(jcas,concept,ConceptUtils.getStrictlyPolarConceptPolarity(concept));
-			}else{
-				annotateBlankConcept(jcas,concept,"-");
+		if(modelStrictlyPolarConcepts){
+			//annotate polar concepts
+			for(String concept: ConceptUtils.getStrictlyPolarConcepts(target)){
+				if(conceptContained(jcas,concept)){
+					annotateBlankConcept(jcas,concept,ConceptUtils.getStrictlyPolarConceptPolarity(concept));
+				}else{
+					annotateBlankConcept(jcas,concept,"-");
+				}
 			}
-			
 		}
-		
 	}
 
 

@@ -49,7 +49,9 @@ public class PipelineTaskB {
 		// Map<String,List<String>> targetToTopINouns=readTargetWiseTopINouns();
 //		List<String> topiTrumpNouns = getTop60Nouns(new File("src/main/resources/top60Nouns_taskB/DonaldTrump"));
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-		String tweetsToClassify = baseDir + "/semevalTask6/testTweetsTaskB/";
+//		String tweetsToClassify = baseDir + "/semevalTask6/testTweetsTaskB/";
+		String tweetsToClassify = "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskB/";
+		
 		PipelineTaskB pipelineTaskB = new PipelineTaskB();
 		pipelineTaskB.run(targets, tweetsToClassify);
 	}
@@ -118,7 +120,7 @@ public class PipelineTaskB {
 		AnalysisEngine engine = null;
 		try {
 			builder.add(createEngineDescription(
-					createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
+					createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false, true)),
 					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top60Nouns/"+target, NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,target),
 					createEngineDescription(FavorAgainstOutcomeAnnotator_TASKB.class,FavorAgainstOutcomeAnnotator_TASKB.PARAM_TC_MODEL_LOCATION, "src/main/resources/trainedModels/favorVsAgainst/"+target, FavorAgainstOutcomeAnnotator_TASKB.PARAM_TARGET, target),
 					createEngineDescription(RemovePreprocessingAnnotator_TASKB.class)

@@ -43,8 +43,8 @@ public class StanceResolver_TASKB extends JCasAnnotator_ImplBase{
 		if((against==0 && favor==0 )||against==favor ){
 			return "UNKNOWN";
 		}
-		if(against>favor)return "AGAINST";
-		else return "FAVOR";
+		if(against>favor)return "FAVOR";
+		else return "AGAINST";
 	}
 
 }

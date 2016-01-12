@@ -449,7 +449,7 @@ public class PreprocessingPipeline {
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean useTcReader)
+	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean useTcReader, boolean useBiPolarConcepts)
 			throws ResourceInitializationException {
 		String mode = "";
 		return createEngineDescription(
@@ -485,7 +485,8 @@ public class PreprocessingPipeline {
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_MODEL_LOCATIONS,
 						"src/main/resources/trainedModels/concepts/" + target,
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_READER, useTcReader,
-						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target)
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_MODEL_BI_POLAR_CONCEPTS,useBiPolarConcepts)
 				
 				);
 	}

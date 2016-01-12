@@ -30,6 +30,9 @@ public class SimilarityHelper {
 			else if(lower_i.equals(userVariant(lower_j))){
 				return true;
 			}
+			else if(lower_i.equals(pluralS(lower_j))){
+				return true;
+			}
 			else if(lower_i.equals(genetiveS(lower_j))){
 				return true;
 			}
@@ -44,6 +47,10 @@ public class SimilarityHelper {
 	}
 	private static Object genetiveS(String lower_j) {
 		if(lower_j.endsWith("'s"))return lower_j.replace("'s", "");
+		return lower_j;
+	}
+	private static Object pluralS(String lower_j) {
+		if(lower_j.endsWith("s"))return lower_j.substring(0, lower_j.length()-1);
 		return lower_j;
 	}
 	private static String hashTagVariant(String lower_j) {

@@ -38,4 +38,16 @@ public class ComputeSemevalMeasure implements Constants{
 		System.out.println("AGAINST: "+against);
 		System.out.println((favor+against)/2);
 	}
+	public static double getSemevalMeasure(File tempId2Outcome) throws IOException, TextClassificationException {
+		Id2Outcome id2Outcome = new Id2Outcome(tempId2Outcome, LM_SINGLE_LABEL);
+		EvaluatorBase evaluator = EvaluatorFactory.createEvaluator(id2Outcome, true, true);
+		Map<String, Double> resultTempMap = evaluator.calculateEvaluationMeasures();
+		Double favor = null;
+		Double against = null;
+		for (String key : resultTempMap.keySet()) {
+			if(key.equals("MacroFScore_AGAINST"))against=resultTempMap.get(key);
+			if(key.equals("MacroFScore_FAVOR"))favor=resultTempMap.get(key);
+		}
+		return (favor+against)/2;
+	}
 }
