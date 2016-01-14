@@ -42,98 +42,96 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 	public static final String PARAM_TC_READER = "ConceptClassificationTCReader";
 	@ConfigurationParameter(name = PARAM_TC_READER, mandatory = true, defaultValue = "true")
 	protected boolean useTcReader;
-	
-	
+
 	public static final String PARAM_CONCEPT_TARGET = "ConceptClassificationTarget";
 	@ConfigurationParameter(name = PARAM_CONCEPT_TARGET, mandatory = true)
 	protected String target;
 
-	
-	public static final String PARAM_MODEL_BI_POLAR_CONCEPTS = "useStrictlyPolarConcepts";
-	@ConfigurationParameter(name = PARAM_MODEL_BI_POLAR_CONCEPTS, mandatory = true,defaultValue = "true")
-	protected boolean modelStrictlyPolarConcepts;
-	
 	private String learningMode = Constants.LM_SINGLE_LABEL;
 	private String featureMode = Constants.FM_DOCUMENT;
 
 	// private List<FeatureExtractorResource_ImplBase> featureExtractors;
 
 	private TCMachineLearningAdapter mlAdapter;
-	private Map<String,AnalysisEngine> conceptToModel;
-	
+	private Map<String, AnalysisEngine> conceptToModel;
+
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
-		conceptToModel= new HashMap<String,AnalysisEngine>();
-//		System.out.println(tcModelLocations);
-		for (File conceptFile: tcModelLocations.listFiles()){
+		conceptToModel = new HashMap<String, AnalysisEngine>();
+		// System.out.println(tcModelLocations);
+		for (File conceptFile : tcModelLocations.listFiles()) {
 			try {
-				mlAdapter = ModelPersistUtil.initMachineLearningAdapter(new File(tcModelLocations.getAbsolutePath()+"/"+conceptFile.getName()));
-				List<Object> parameters = ModelPersistUtil.initParameters(new File(tcModelLocations.getAbsolutePath()+"/"+conceptFile.getName()));
-				List<String> featureExtractors = ModelPersistUtil.initFeatureExtractors(new File(tcModelLocations.getAbsolutePath()+"/"+conceptFile.getName()));
+				mlAdapter = ModelPersistUtil.initMachineLearningAdapter(
+						new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
+				List<Object> parameters = ModelPersistUtil
+						.initParameters(new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
+				List<String> featureExtractors = ModelPersistUtil.initFeatureExtractors(
+						new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
 
-				AnalysisEngineDescription connector = getSaveModelConnector(parameters, tcModelLocations.getAbsolutePath()+"/"+conceptFile.getName(),
+				AnalysisEngineDescription connector = getSaveModelConnector(parameters,
+						tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName(),
 						mlAdapter.getDataWriterClass().toString(), learningMode, featureMode,
 						DenseFeatureStore.class.getName(), featureExtractors.toArray(new String[0]));
 
 				AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(connector,
 						TcAnnotatorUtil.getModelFeatureAwareResourceManager(tcModelLocations), null);
 				conceptToModel.put(conceptFile.getName(), engine);
-				
 
 			} catch (Exception e) {
 				throw new ResourceInitializationException(e);
 			}
 		}
 	}
-	
-	
+
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		
-		//annotate bipolar concepts
-		for(String concept: conceptToModel.keySet()){
-			if(conceptContained(jcas,concept)){
-				annotateConceptWithPrediction(jcas,concept);
-			}else{
-				annotateBlankConcept(jcas,concept,"-");
+
+		// annotate bipolar concepts
+		for (String concept : conceptToModel.keySet()) {
+			if (conceptContained(jcas, concept)) {
+				annotateConceptWithPrediction(jcas, concept);
+			} else {
+				annotateBlankConcept(jcas, concept, "-", true);
 			}
 		}
-		if(modelStrictlyPolarConcepts){
-			//annotate polar concepts
-			for(String concept: ConceptUtils.getStrictlyPolarConcepts(target)){
-				if(conceptContained(jcas,concept)){
-					annotateBlankConcept(jcas,concept,ConceptUtils.getStrictlyPolarConceptPolarity(concept));
-				}else{
-					annotateBlankConcept(jcas,concept,"-");
-				}
+		// annotate polar concepts
+		for (String concept : ConceptUtils.getStrictlyPolarConcepts(target)) {
+			if (conceptContained(jcas, concept)) {
+				annotateBlankConcept(jcas, concept, ConceptUtils.getStrictlyPolarConceptPolarity(concept), false);
+			} else {
+				annotateBlankConcept(jcas, concept, "-", false);
 			}
 		}
 	}
 
-
-/**
- * in case the concept is not contained in the cas the value is set to '-'
- * @param jcas
- * @param concept
- */
-	private void annotateBlankConcept(JCas jcas, String concept,String value) {
+	/**
+	 * in case the concept is not contained in the cas the value is set to '-'
+	 * 
+	 * @param jcas
+	 * @param concept
+	 */
+	private void annotateBlankConcept(JCas jcas, String concept, String value, boolean biPolar) {
 		ClassifiedConceptOutcome annotation = new ClassifiedConceptOutcome(jcas);
 		annotation.setClassificationOutcome(value);
 		annotation.setConceptName(concept);
+		annotation.setBiPolar(biPolar);
 		annotation.setBegin(0);
 		annotation.setEnd(jcas.getDocumentText().length());
 		annotation.addToIndexes();
 	}
 
 	/**
-	 * annotate the concept by using the concept annotation(name, classification)
+	 * annotate the concept by using the concept annotation(name,
+	 * classification)
+	 * 
 	 * @param jcas
 	 * @param concept
 	 */
 	private void annotateConceptWithPrediction(JCas jcas, String concept) throws AnalysisEngineProcessException {
-//		System.out.println("gold "+JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
+		// System.out.println("gold "+JCasUtil.selectSingle(jcas,
+		// TextClassificationOutcome.class).getOutcome());
 		String goldOutcome = "";
 		if (useTcReader) {
 			goldOutcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome();
@@ -142,13 +140,14 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 			outcome.setOutcome("");
 			outcome.addToIndexes();
 		} else {
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).size()==0) {
+			if (JCasUtil.select(jcas, TextClassificationOutcome.class).size() == 0) {
 				TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
 				outcome.setOutcome("");
 				outcome.addToIndexes();
 			}
 		}
-//		System.out.println("'' "+JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
+		// System.out.println("'' "+JCasUtil.selectSingle(jcas,
+		// TextClassificationOutcome.class).getOutcome());
 		// create new UIMA annotator in order to separate the parameter spaces
 		// this annotator will get initialized with its own set of parameters
 		// loaded from the model
@@ -157,7 +156,8 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-//		System.out.println("classified "+JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
+		// System.out.println("classified "+JCasUtil.selectSingle(jcas,
+		// TextClassificationOutcome.class).getOutcome());
 		// annotate
 		ClassifiedConceptOutcome annotation = new ClassifiedConceptOutcome(jcas);
 		// System.out.println(jcas.getDocumentText()+ "
@@ -165,6 +165,7 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		// TextClassificationOutcome.class).getOutcome());
 		annotation.setClassificationOutcome(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
 		annotation.setConceptName(concept);
+		annotation.setBiPolar(true);
 		annotation.setBegin(0);
 		annotation.setEnd(jcas.getDocumentText().length());
 		annotation.addToIndexes();
@@ -179,23 +180,25 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		} else {
 			JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).removeFromIndexes();
 		}
-//		System.out.println("again gold "+JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
-//		System.out.println("----------");
+		// System.out.println("again gold "+JCasUtil.selectSingle(jcas,
+		// TextClassificationOutcome.class).getOutcome());
+		// System.out.println("----------");
 	}
 
-
 	private boolean conceptContained(JCas jcas, String concept) {
-		//check if one noun equals the concept
-		for(Token t: JCasUtil.select(jcas, Token.class)){
-			if(t.getPos().getPosValue().equals("NN")||t.getPos().getPosValue().equals("NNS")||t.getPos().getPosValue().equals("NP")||t.getPos().getPosValue().equals("NPS")||t.getPos().getPosValue().equals("NPS")){
-				if(t.getCoveredText().equals(concept)||SimilarityHelper.wordsAreSimilar(t.getCoveredText(),concept)){
+		// check if one noun equals the concept
+		for (Token t : JCasUtil.select(jcas, Token.class)) {
+			if (t.getPos().getPosValue().equals("NN") || t.getPos().getPosValue().equals("NNS")
+					|| t.getPos().getPosValue().equals("NP") || t.getPos().getPosValue().equals("NPS")
+					|| t.getPos().getPosValue().equals("NPS")) {
+				if (t.getCoveredText().equals(concept)
+						|| SimilarityHelper.wordsAreSimilar(t.getCoveredText(), concept)) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-
 
 	/**
 	 * @param featureExtractorClassNames
@@ -225,6 +228,5 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		return AnalysisEngineFactory.createEngineDescription(mlAdapter.getLoadModelConnectorClass(),
 				parameters.toArray());
 	}
-	
-	
+
 }

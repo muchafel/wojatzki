@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Jan 08 14:00:38 CET 2016
+ * Updated by JCasGen Thu Jan 14 11:10:51 CET 2016
  * @generated */
 public class ModalVerb_Type extends Annotation_Type {
   /** @generated 

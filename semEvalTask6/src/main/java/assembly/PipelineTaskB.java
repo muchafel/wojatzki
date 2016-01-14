@@ -120,7 +120,7 @@ public class PipelineTaskB {
 		AnalysisEngine engine = null;
 		try {
 			builder.add(createEngineDescription(
-					createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false, true)),
+					createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
 					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top60Nouns/"+target, NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,target),
 					createEngineDescription(FavorAgainstOutcomeAnnotator_TASKB.class,FavorAgainstOutcomeAnnotator_TASKB.PARAM_TC_MODEL_LOCATION, "src/main/resources/trainedModels/favorVsAgainst/"+target, FavorAgainstOutcomeAnnotator_TASKB.PARAM_TARGET, target),
 					createEngineDescription(RemovePreprocessingAnnotator_TASKB.class)

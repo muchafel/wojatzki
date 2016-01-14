@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Jan 08 14:00:38 CET 2016
+ * Updated by JCasGen Thu Jan 14 11:10:51 CET 2016
  * XML source: /Users/michael/git/ucsm_git/semEvalTask6/src/main/resources/desc/type/ownArgTypes.xml
  * @generated */
 public class HashTagStancePolarity extends Annotation {

@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Jan 08 14:00:38 CET 2016
+ * Updated by JCasGen Thu Jan 14 11:10:51 CET 2016
  * XML source: /Users/michael/git/ucsm_git/semEvalTask6/src/main/resources/desc/type/ownArgTypes.xml
  * @generated */
 public class ClassifiedConceptOutcome extends Annotation {
@@ -118,6 +118,28 @@ public class ClassifiedConceptOutcome extends Annotation {
     if (ClassifiedConceptOutcome_Type.featOkTst && ((ClassifiedConceptOutcome_Type)jcasType).casFeat_classificationOutcome == null)
       jcasType.jcas.throwFeatMissing("classificationOutcome", "types.ClassifiedConceptOutcome");
     jcasType.ll_cas.ll_setStringValue(addr, ((ClassifiedConceptOutcome_Type)jcasType).casFeatCode_classificationOutcome, v);}    
+   
+    
+  //*--------------*
+  //* Feature: biPolar
+
+  /** getter for biPolar - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public boolean getBiPolar() {
+    if (ClassifiedConceptOutcome_Type.featOkTst && ((ClassifiedConceptOutcome_Type)jcasType).casFeat_biPolar == null)
+      jcasType.jcas.throwFeatMissing("biPolar", "types.ClassifiedConceptOutcome");
+    return jcasType.ll_cas.ll_getBooleanValue(addr, ((ClassifiedConceptOutcome_Type)jcasType).casFeatCode_biPolar);}
+    
+  /** setter for biPolar - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setBiPolar(boolean v) {
+    if (ClassifiedConceptOutcome_Type.featOkTst && ((ClassifiedConceptOutcome_Type)jcasType).casFeat_biPolar == null)
+      jcasType.jcas.throwFeatMissing("biPolar", "types.ClassifiedConceptOutcome");
+    jcasType.ll_cas.ll_setBooleanValue(addr, ((ClassifiedConceptOutcome_Type)jcasType).casFeatCode_biPolar, v);}    
   }
 
     

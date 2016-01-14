@@ -92,9 +92,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=false;
+	public static boolean saveModel=true;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
-	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
+	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst_wo_transfer";
 	public static final FeSetMode feSetMode=FeSetMode.all;
 	
 	public enum FeSetMode {
@@ -105,18 +105,18 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static String[] FES = {
 // 			ContextualityMeasureFeatureExtractor.class.getName(),
 //			LuceneNGramDFE.class.getName(), 
-			TargetTransferClassificationDFE.class.getName(), //M ???
-			StackedFeatureDFE.class.getName(), //M ???
+//			TargetTransferClassificationDFE.class.getName(), //M ???
+//			StackedFeatureDFE.class.getName(), //M ???
 //			ClassifiedConceptDFE.class.getName(), //M
 			StanceLexiconDFE_Tokens.class.getName(), //M S--> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M S--> un-normalized
-			SimpleSentencePolarityDFE.class.getName(),	//M S
+//			SimpleSentencePolarityDFE.class.getName(),	//M S
 			SimpleNegationDFE.class.getName(), //M S
 			ConditionalSentenceCountDFE.class.getName(), //M S
 			RepeatedPunctuationDFE.class.getName(), //M S
 	  		ModalVerbFeaturesDFE.class.getName(), //M S
 	  		
-//			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
+			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
 			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
 	  		
 //			SummedStanceDFE_functionalParts.class.getName(),
@@ -141,14 +141,14 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //		preProcessing= PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
 		
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true,false);
+			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			FavorVsAgainst_Experiment_TopicWise experiment = new FavorVsAgainst_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
 				experiment.saveModel(pSpace,folder.getName());
 			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst_polarConcepts");
+				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst_reducedModel");
 			}
 		}
 	}
@@ -263,9 +263,10 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
 						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
 						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
-						ClassifiedConceptDFE.PARAM_TARGET,target,
-						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target
+//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/favorVsAgainst/"+target+"/id2homogenizedOutcome.txt",
+//						ClassifiedConceptDFE.PARAM_TARGET,target,
+						TargetTransferClassificationDFE.PARAM_ID2OUTCOMETARGET_FOLDER,"src/main/resources/transfer/"+target,
+						StackedConceptClassificationDFE.PARAM_MODEL_ONLY_BI_POLAR_CONCEPTS,true
 				}));
 		return dimPipelineParameters;
 	}

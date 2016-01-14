@@ -54,20 +54,20 @@ import weka.classifiers.trees.J48;
 public class ConceptPolarityClassification_Experiment implements Constants {
 
 	public static final String LANGUAGE_CODE = "en";
-	public static final int NUM_FOLDS = 5;
+	public static final int NUM_FOLDS = 2;
 	public static final String TOPIC_FOLDERS = "/semevalTask6/targets/";
 	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 200;
 	public static AnalysisEngineDescription preProcessing;
 	public static boolean saveModel=true;
-	public static String modelOutputFolder="src/main/resources/trainedModels/concepts";
+	public static String modelOutputFolder="src/main/resources/trainedModels/concepts_justNgramTrained";
 
 	public static String[] FES = {
 			// ContexmDFE.class.getName(),
 			LuceneNGramDFE.class.getName(),
-			SimpleSentencePolarityDFE.class.getName(), 
-			SimpleNegationDFE.class.getName(),
+//			SimpleSentencePolarityDFE.class.getName(), 
+//			SimpleNegationDFE.class.getName(),
 			};
 
 	public static void main(String[] args) throws Exception {
@@ -101,7 +101,7 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		Set<String> removed= new HashSet<String>(); 
 		System.out.println(concepts);
 		for(String concept: concepts){
-			if(!ConceptUtils.getStrictlyPolarConcepts(folder.getName()).contains(concept)){
+			if(!ConceptUtils.getStrictlyPolarConceptsForTraining(folder.getName()).contains(concept)){
 				removed.add(concept);
 			}
 		}
@@ -189,7 +189,7 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		// add/configure classifiers
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				Arrays.asList(new String[] {
-						 J48.class.getName(),
+						J48.class.getName(),
 //						SMO.class.getName(),
 //						MultilayerPerceptron.class.getName(),
 				// ZeroR.class.getName()
@@ -228,10 +228,12 @@ public class ConceptPolarityClassification_Experiment implements Constants {
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
 				Arrays.asList(new Object[] { NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, HashTagDFE.PARAM_HASHTAGS_FILE_PATH,
-						"src/main/resources/lists/targetSpecific/" + target + "/hashTags.txt", HashTagDFE.PARAM_VARIANT,
-						"hashTagsAtTheEnd", SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON, "true",
-						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true" }));
+						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
+//						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,
+//						"src/main/resources/lists/targetSpecific/" + target + "/hashTags.txt", HashTagDFE.PARAM_VARIANT,
+//						"hashTagsAtTheEnd", SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON, "true",
+//						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true"
+						}));
 		return dimPipelineParameters;
 	}
 

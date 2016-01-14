@@ -44,6 +44,22 @@ public class ConceptUtils {
     		    Arrays.asList( "atmosphere", "#sustainability", "water", "#mission", "future","#environment")));
     }
     
+    //same as strictlyPolarConceptsbut with more filtering
+    private static final Map<String, List<String>> strictlyPolarConceptsForTraining = new HashMap<String, List<String>>();
+    static {
+    	strictlyPolarConceptsForTraining.put("HillaryClinton", new ArrayList<String>(
+    		    Arrays.asList("money", "#tcot", "#whyimnotvotingforhillary")));
+    	strictlyPolarConceptsForTraining.put("Atheism", new ArrayList<String>(
+    		    Arrays.asList("love", "heart", "#peace", "#islam", "#freethinker","pray")));
+    	strictlyPolarConceptsForTraining.put("FeministMovement", new ArrayList<String>(
+    		    Arrays.asList("#spankafeminist")));
+    	strictlyPolarConceptsForTraining.put("LegalizationofAbortion", new ArrayList<String>(
+    		    Arrays.asList("womb", "#prolifegen", "marriage","#prolifeyouth","#alllivesmatter", "matter", "murder")));
+    	strictlyPolarConceptsForTraining.put("ClimateChangeisaRealConcern", new ArrayList<String>(
+    		    Arrays.asList("generation", "atmosphere", "#sustainability", "level","planet", "#tip", "water", "#mission", "sea","future","today","#environment","day",">","time")));
+    }
+    
+    
     private static final Map<String,String> strictlyPolarConceptPolarity = new HashMap<String,String>();
     static {
     	strictlyPolarConceptPolarity.put("money","AGAINST");
@@ -133,5 +149,9 @@ public class ConceptUtils {
 			}
 		}
 		return nouns;
+	}
+
+	public static List<String> getStrictlyPolarConceptsForTraining(String target) {
+		return strictlyPolarConceptsForTraining.get(target);
 	}
 }

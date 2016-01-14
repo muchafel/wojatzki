@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Jan 08 14:00:38 CET 2016
+ * Updated by JCasGen Thu Jan 14 11:10:51 CET 2016
  * @generated */
 public class ClassifiedConceptOutcome_Type extends Annotation_Type {
   /** @generated 
@@ -93,6 +93,30 @@ public class ClassifiedConceptOutcome_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_classificationOutcome, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_biPolar;
+  /** @generated */
+  final int     casFeatCode_biPolar;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public boolean getBiPolar(int addr) {
+        if (featOkTst && casFeat_biPolar == null)
+      jcas.throwFeatMissing("biPolar", "types.ClassifiedConceptOutcome");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_biPolar);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setBiPolar(int addr, boolean v) {
+        if (featOkTst && casFeat_biPolar == null)
+      jcas.throwFeatMissing("biPolar", "types.ClassifiedConceptOutcome");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_biPolar, v);}
+    
+  
 
 
 
@@ -112,6 +136,10 @@ public class ClassifiedConceptOutcome_Type extends Annotation_Type {
  
     casFeat_classificationOutcome = jcas.getRequiredFeatureDE(casType, "classificationOutcome", "uima.cas.String", featOkTst);
     casFeatCode_classificationOutcome  = (null == casFeat_classificationOutcome) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_classificationOutcome).getCode();
+
+ 
+    casFeat_biPolar = jcas.getRequiredFeatureDE(casType, "biPolar", "uima.cas.Boolean", featOkTst);
+    casFeatCode_biPolar  = (null == casFeat_biPolar) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_biPolar).getCode();
 
   }
 }

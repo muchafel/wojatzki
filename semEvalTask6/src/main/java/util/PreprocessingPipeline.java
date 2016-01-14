@@ -16,6 +16,7 @@ import annotators.TwitterSpecificAnnotator;
 import annotators.stacking.Bi_Tri_Gram_FavorAgainstStackingAnnotator;
 import annotators.stacking.Bi_Tri_Gram_NoneStanceStackingAnnotator;
 import annotators.stacking.ClassifiedConceptOutcomeStackingAnnotator;
+import annotators.stacking.TargetTransferOutcomeAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.berkeleyparser.BerkeleyParser;
@@ -449,7 +450,7 @@ public class PreprocessingPipeline {
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean useTcReader, boolean useBiPolarConcepts)
+	public static AnalysisEngineDescription getFullPreProcessing(String target, boolean useTcReader)
 			throws ResourceInitializationException {
 		String mode = "";
 		return createEngineDescription(
@@ -483,12 +484,65 @@ public class PreprocessingPipeline {
 						Bi_Tri_Gram_NoneStanceStackingAnnotator.PARAM_TC_READER, useTcReader),
 				createEngineDescription(ClassifiedConceptOutcomeStackingAnnotator.class,
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_MODEL_LOCATIONS,
-						"src/main/resources/trainedModels/concepts/" + target,
+						"src/main/resources/trainedModels/concepts_justNgramTrained/" + target,
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_READER, useTcReader,
-						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target,
-						ClassifiedConceptOutcomeStackingAnnotator.PARAM_MODEL_BI_POLAR_CONCEPTS,useBiPolarConcepts)
-				
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target)
 				);
 	}
+	
+	/**
+	 * 1. use the break iterator to create sentence annos 2. run ark tweet
+	 * tagger and annotate tokens but keep sentence annos 3. Ark-tools pos
+	 * tagging 4. write hashtags and [at]s to TwitterSpecificAnno - User or
+	 * hashtag then remove pos-tagging 5. open NLP POS tagging 6. lemmas
+	 * (Stanford) 7. OpenNlpChunker 8. ClearNlpDependencyParser 9.
+	 * SentimentAnnotator 10. NegationAnnotator 11. FunctionalPartsAnnotator 12.
+	 * TokenStancePolarityAnnotator 13. HashTagStancePolarityAnnotator 14.
+	 * ModalVerbAnnotator
+	 * 
+	 * @return
+	 * @throws ResourceInitializationException
+	 */
+	public static AnalysisEngineDescription getFullPreProcessingPlusTransfer(String target, boolean useTcReader)
+			throws ResourceInitializationException {
+		String mode = "";
+		return createEngineDescription(
+				createEngineDescription(BreakIteratorSegmenter.class, BreakIteratorSegmenter.PARAM_WRITE_TOKEN, false),
+				createEngineDescription(MergedArktweetTokenizer.class),
+				createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
+				createEngineDescription(TwitterSpecificAnnotator.class),
+				createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
+				createEngineDescription(StanfordLemmatizer.class), createEngineDescription(OpenNlpChunker.class),
+				createEngineDescription(ClearNlpDependencyParser.class, ClearNlpDependencyParser.PARAM_PRINT_TAGSET,
+						true),
+				createEngineDescription(LexiconBasedSentimentAnnotator.class,
+						LexiconBasedSentimentAnnotator.PARAM_NRC_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/NRC_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_MPQA_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/mpqa_sentimentLexicon.txt",
+						LexiconBasedSentimentAnnotator.PARAM_BING_LIU_LEXICON_FILE_PATH,
+						"src/main/resources/lists/sentimentLexicons/bingLiu_sentimentLexicon"),
+				createEngineDescription(NegationAnnotator.class, NegationAnnotator.PARAM_NEGATIONWORDS_FILE_PATH,
+						"src/main/resources/lists/listOfNegationWords.txt"),
+				createEngineDescription(FunctionalPartsAnnotator.class),
+				createEngineDescription(ModalVerbAnnotator.class, ModalVerbAnnotator.PARAM_MODALVERBS_FILE_PATH,
+						"src/main/resources/lists/listOfModalVerbs.txt"),
+				createEngineDescription(Bi_Tri_Gram_FavorAgainstStackingAnnotator.class,
+						Bi_Tri_Gram_FavorAgainstStackingAnnotator.PARAM_TC_MODEL_LOCATION,
+						"src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst/" + target,
+						Bi_Tri_Gram_FavorAgainstStackingAnnotator.PARAM_TC_READER, useTcReader),
+				createEngineDescription(Bi_Tri_Gram_NoneStanceStackingAnnotator.class,
+						Bi_Tri_Gram_NoneStanceStackingAnnotator.PARAM_TC_MODEL_LOCATION,
+						"src/main/resources/trainedModels/bi_tri_grams/noneVsStance/" + target,
+						Bi_Tri_Gram_NoneStanceStackingAnnotator.PARAM_TC_READER, useTcReader),
+				createEngineDescription(ClassifiedConceptOutcomeStackingAnnotator.class,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_MODEL_LOCATIONS,
+						"src/main/resources/trainedModels/concepts_justNgramTrained/" + target,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_READER, useTcReader,
+						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target),
+				createEngineDescription(TargetTransferOutcomeAnnotator.class,TargetTransferOutcomeAnnotator.PARAM_TRANSFER_TARGET,target)
+				);
+	}
+	
 
 }

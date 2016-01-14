@@ -70,6 +70,7 @@ import io.TaskATweetReader;
 import io.TaskATweetReader_None_Stance;
 import moa.classifiers.functions.Perceptron;
 import stanceClassificationTaskA.FavorVsAgainst_Experiment_TopicWise.FeSetMode;
+import util.ModelUtil;
 import util.PreprocessingPipeline;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
@@ -118,16 +119,16 @@ public class None_Stance_TopicWise implements Constants {
 			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
 			SimpleSentencePolarityDFE.class.getName(), //M
 			SimpleNegationDFE.class.getName(), //M
-			ConditionalSentenceCountDFE.class.getName(), //M
+//			ConditionalSentenceCountDFE.class.getName(), //M
 			RepeatedPunctuationDFE.class.getName(), //M
 	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
-	  		NrOfTokensPerSentenceDFE.class.getName(), //M
+//	  		NrOfTokensPerSentenceDFE.class.getName(), //M
 	  		ModalVerbFeaturesDFE.class.getName(), //M
 	  		
-			ClassifiedConceptDFE.class.getName(), //M
+//			ClassifiedConceptDFE.class.getName(), //M
 			StackedFeatureDFE.class.getName(), //M
 //			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
-//			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
+			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
 			
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
@@ -155,14 +156,15 @@ public class None_Stance_TopicWise implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 //		preProcessing= PreprocessingPipeline.getPreprocessingFunctionalStanceAnno();
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
-			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true,false);
+//			FES=ModelUtil.getOptimizedModelNoneVsStance(folder.getName());
+			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
 			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
 				experiment.saveModel(pSpace,folder.getName());
 			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_polarConcepts");
+				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_reducedModel_polarConcepts");
 			}
 		}
 
@@ -280,6 +282,7 @@ public class None_Stance_TopicWise implements Constants {
 						ClassifiedConceptDFE.PARAM_TARGET,target,
 						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
 						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
+						StackedConceptClassificationDFE.PARAM_MODEL_ONLY_BI_POLAR_CONCEPTS,false
 				}));
 		return dimPipelineParameters;
 	}

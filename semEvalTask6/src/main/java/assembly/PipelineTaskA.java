@@ -58,7 +58,7 @@ public class PipelineTaskA {
 				)
 				,
 //				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
-				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false,true)),
+				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
 				//annotate none vs stance
 				AnalysisEngineFactory.createEngineDescription(
 						TcAnnotatorDocument.class,
