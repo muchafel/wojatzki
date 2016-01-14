@@ -540,7 +540,7 @@ public class PreprocessingPipeline {
 						"src/main/resources/trainedModels/concepts_justNgramTrained/" + target,
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_TC_READER, useTcReader,
 						ClassifiedConceptOutcomeStackingAnnotator.PARAM_CONCEPT_TARGET,target),
-				createEngineDescription(TargetTransferOutcomeAnnotator.class,TargetTransferOutcomeAnnotator.PARAM_TRANSFER_TARGET,target)
+				createEngineDescription(TargetTransferOutcomeAnnotator.class,TargetTransferOutcomeAnnotator.PARAM_TRANSFER_TARGET,target, TargetTransferOutcomeAnnotator.PARAM_TC_READER,useTcReader)
 				);
 	}
 	

@@ -103,14 +103,27 @@ public class TargetTransferOutcomeAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		System.out.println(jcas.getDocumentText());
+//		System.out.println(jcas.getDocumentText());
 		for (String target : targetToModel_FavorAgainst.keySet()) {
-
 			if (jcasContainsTopINoun(jcas, target)) {
-				System.out.println(target);
-
+//				System.out.println(target);
+				annotateTransferWithPrediction(jcas, target);
+			}else{
+				annotateTransferBlank(jcas, target,"-");
 			}
 		}
+//		for(TransferClassificationOutcome out: JCasUtil.select(jcas, TransferClassificationOutcome.class)){
+//			System.out.println(out.getModel()+" "+out.getOutcome());
+//		}
+	}
+
+	private void annotateTransferBlank(JCas jcas, String target, String value) {
+		TransferClassificationOutcome annotation = new TransferClassificationOutcome(jcas);
+		annotation.setOutcome(value);
+		annotation.setModel(target);
+		annotation.setBegin(0);
+		annotation.setEnd(jcas.getDocumentText().length());
+		annotation.addToIndexes();
 	}
 
 	/**
@@ -119,7 +132,7 @@ public class TargetTransferOutcomeAnnotator extends JCasAnnotator_ImplBase {
 	 * @param jcas
 	 * @param target
 	 */
-	private void annotateConceptWithPrediction(JCas jcas, String target) throws AnalysisEngineProcessException {
+	private void annotateTransferWithPrediction(JCas jcas, String target) throws AnalysisEngineProcessException {
 		// System.out.println("gold "+JCasUtil.selectSingle(jcas,
 		// TextClassificationOutcome.class).getOutcome());
 		String goldOutcome = "";
@@ -155,8 +168,6 @@ public class TargetTransferOutcomeAnnotator extends JCasAnnotator_ImplBase {
 		annotation.setEnd(jcas.getDocumentText().length());
 		annotation.addToIndexes();
 
-		System.out.println(jcas.getDocumentText()+ " "+JCasUtil.selectSingle(jcas, TransferClassificationOutcome.class).getOutcome()+ " "+JCasUtil.selectSingle(jcas, TransferClassificationOutcome.class).getModel());
-		
 		// drop outcome from stacked classification
 		if (useTcReader) {
 			JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).removeFromIndexes();

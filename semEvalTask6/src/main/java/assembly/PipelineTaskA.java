@@ -43,20 +43,21 @@ public class PipelineTaskA {
 //						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
 //				)
 				//test data
-//				CollectionReaderFactory.createReader(
-//						UnclassifiedTweetReader.class,
-//						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+target+"/",
-//						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
-//						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
-//				)
-//				,
 				CollectionReaderFactory.createReader(
 						UnclassifiedTweetReader.class,
-						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/example/",
+						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+target+"/",
 						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
 						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
 				)
 				,
+				//sand box
+//				CollectionReaderFactory.createReader(
+//						UnclassifiedTweetReader.class,
+//						UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/example/",
+//						UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml",
+//						UnclassifiedTweetReader.PARAM_LANGUAGE, "en"
+//				)
+//				,
 //				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
 				//annotate none vs stance

@@ -11,7 +11,7 @@
 10011	Atheism	If only dreams were real, now it's gone. #SingleBecause #getonyourfeet 	AGAINST
 10012	Atheism	Happy Independence Day to America and her beautiful constitution #IndependenceDay #USA 	NONE
 10013	Atheism	Let my house be built by wisdom and become strong through good sense -Prov. 24:3 	AGAINST
-10014	Atheism	These days, the cool kids are atheists.  #freethinker 	FAVOR
+10014	Atheism	These days, the cool kids are atheists.  #freethinker 	AGAINST
 10015	Atheism	Next time you hear someone say that our Founding Fathers intended a "Christian Nation," show 'em those quotes. 	AGAINST
 10016	Atheism	#ILoveIslamBecause and v should love Islam because its a Deen instead of just a 	AGAINST
 10017	Atheism	Be a sinner and sin strongly, but more strongly have faith and rejoice in Christ. ~ Martin Luther 	AGAINST
@@ -43,15 +43,15 @@
 10043	Atheism	The Irish national school system is secular under law. We can reaffirm secularism by going through the courts! @HumanismIreland 	AGAINST
 10044	Atheism	We often talk of unbelief as if it were an affliction to be pitied instead of a crime to be condemned. - Charles Spurgeon #GOD 	AGAINST
 10045	Atheism	@dsurman  Jesus is favor of all, that they would believe He died for them. Why try to wage a conflict you will lose? #God 	AGAINST
-10046	Atheism	Currently doing a piece on logical fallacies for my blog @weebly #philosophy #logicism #blog #humanist 	AGAINST
-10047	Atheism	Proud to be #TeamJinnah :) No Bhutto, no Imran's , only Jinnah's Pakistan :) #Inclusive 	AGAINST
+10046	Atheism	Currently doing a piece on logical fallacies for my blog @weebly #philosophy #logicism #blog #humanist 	NONE
+10047	Atheism	Proud to be #TeamJinnah :) No Bhutto, no Imran's , only Jinnah's Pakistan :) #Inclusive 	NONE
 10048	Atheism	Great baptism service at #woodgreen very moving stories of people's faith in #rich_lacey 	AGAINST
 10049	Atheism	Religious holidays should not be public. #RightsAndRecourse #Transformation 	AGAINST
 10050	Atheism	I officiate #humanist & most #nonreligious weddings-starting at $99. Ask me about #student discounts! #216 #celebrant #weddings 	AGAINST
-10051	Atheism	RT @br_holden: Religions are perfectly happy to peddle an afterlife that doesn't actually exist.  #freethinker 	FAVOR
+10051	Atheism	RT @br_holden: Religions are perfectly happy to peddle an afterlife that doesn't actually exist.  #freethinker 	AGAINST
 10052	Atheism	RT @br_holden: Superstition-based thoughts tend to be wasted thoughts.  #freethinker 	FAVOR
-10053	Atheism	RT @br_holden: Just say no to superstitious thought in general and religions in particular.  #freethinker 	FAVOR
-10054	Atheism	RT @br_holden: Atheists have every right to exist in the public sphere.   #freethinker 	FAVOR
+10053	Atheism	RT @br_holden: Just say no to superstitious thought in general and religions in particular.  #freethinker 	AGAINST
+10054	Atheism	RT @br_holden: Atheists have every right to exist in the public sphere.   #freethinker 	AGAINST
 10055	Atheism	RT @GMHumanistChoir: We're currently looking for new members to join our choir, all welcome, no auditions. #87RT #choir #Manchest... 	AGAINST
 10056	Atheism	@Rowdman53 Atheist are offended with Christian Symbols  + Only when when forced where they don't belong. 	AGAINST
 10057	Atheism	Pushing beyond the absurd The light in darkened minds Railing against ancient words Seeking, honest, open it is truth we find. 	AGAINST
@@ -73,7 +73,7 @@
 10073	Atheism	In other related news. Boko Haram has killed over 200 people in the last 48hrs. 	AGAINST
 10074	Atheism	Join me on #Periscope M-F @ 8am! #Entrepreneurship #Productivity #ChristianEntrepreneurs 	AGAINST
 10075	Atheism	Praise and thank God for everything in your life today. #grateful 	AGAINST
-10076	Atheism	If Jesus is present, it is impossible for your situation/environment to remain a desolate place! #Joy #Victory #NewThings #SonTalk 	NONE
+10076	Atheism	If Jesus is present, it is impossible for your situation/environment to remain a desolate place! #Joy #Victory #NewThings #SonTalk 	AGAINST
 10077	Atheism	Heaven and earth will pass away, but My words will not pass away. Matthew 24:35 #Tworship 	AGAINST
 10078	Atheism	#KCA #VoteJKT48ID premierdigi: Are Facebook and Twitter good places to defend your faith? How do you communicate?   #christianity #d... 	AGAINST
 10079	Atheism	@CrownFmradio899 however impossible it may sound, I really would have loved to be like the lord #HaveYourSay 	AGAINST
@@ -83,7 +83,7 @@
 10083	Atheism	The Lord is pleased w/every effort,even tiny,daily ones in which we strive to be more like Him.~Ezra Taft Benson  #lds #inspiration 	AGAINST
 10084	Atheism	I don't believe in the hereafter.  I believe in the here and now. 	AGAINST
 10085	Atheism	If you want to live as a healer, you must be willing to change places with those who are hurting. #God 	AGAINST
-10086	Atheism	Heb 10:12  this man, after he had offered one sacrifice for sins for ever, sat down on the right hand of God; #bible 	AGAINST
+10086	Atheism	Heb 10:12  this man, after he had offered one sacrifice for sins for ever, sat down on the right hand of God; #bible 	NONE
 10087	Atheism	Sometimes it's the broken heart that finds the truest path to love. 	AGAINST
 10088	Atheism	Religious moderation is the product of secular knowledge and scriptural ignorance. - @SamHarrisOrg  	AGAINST
 10089	Atheism	Remember, #God has it all worked out. 	AGAINST
@@ -124,7 +124,7 @@
 10124	Atheism	What other nation is so great as to have their gods near them the way the Lord our God is near us whenever we pray to him? #Eritrea 	AGAINST
 10125	Atheism	We have to #Pray with our eyes on #God, not on the difficulties. request #Godanswersprayers 	AGAINST
 10126	Atheism	Enough sneaking around, bringing in religious groups into #abed public #schools to access our kids in secrecy. #parents #SexED 	AGAINST
-10127	Atheism	@Maisie_Williams everyone feels that way at times. Not just women 	NONE
+10127	Atheism	@Maisie_Williams everyone feels that way at times. Not just women 	AGAINST
 10128	Atheism	Choose Him who died so that you may live, over him who lives so that you may die.  - WTL Apologetics  #DeadToSin #AliveInChrist 	AGAINST
 10129	Atheism	@aigkenham @ATHE1STP0WER compromise your intentional ignorance all the way to freedom from religion. The best plan ever! 	FAVOR
 10130	Atheism	With #SCOTUS done, It's time for @boyscouts to stop their bigoted practice of rejecting #LGBT scouts at age 18.  #EqualityForAll 	AGAINST
@@ -140,14 +140,14 @@
 10140	Atheism	What is the deal with #Christian people always needing to feel like they are persecuted? #ReligiousFreedom #tcot 	AGAINST
 10141	Atheism	Patriotism and Humanism are impossible for someone who takes #Islam too seriously. 	AGAINST
 10142	Atheism	Bethany Hamilton Reveals She is Resting in God's Promises Despite 'Unknow #bible #biblestudy #scripture #Christianity #ChristianNews 	AGAINST
-10143	Atheism	While scientists fantasize about bugs I am considering gods.  ~~   #TheLUPOL #theism #futurism #singularity #AncientAliens 	AGAINST
+10143	Atheism	While scientists fantasize about bugs I am considering gods.  ~~   #TheLUPOL #theism #futurism #singularity #AncientAliens 	FAVOR
 10144	Atheism	#Religions can't all be right, but they can all be wrong. 	AGAINST
 10145	Atheism	No, I'm not calling myself "agnostic" because my atheism scares you and u dont know what words mean. 	AGAINST
 10146	Atheism	Irony: When a #creationist tweets about #science being wrong on a device that couldn't have existed without it.  	FAVOR
 10147	Atheism	Husbands, love your wives, as Christ loved the church and gave himself up for her, (Ephesians 5:25 ESV) #marriage #Christian 	AGAINST
 10148	Atheism	@ACLU Get rid of religion... and all this will go away overnight... #humanist #egalitarian 	AGAINST
 10149	Atheism	Never debate with the devil... Give him an instruction to get behind you!!  	AGAINST
-10150	Atheism	Existing is something god have never been proficient at.  	AGAINST
+10150	Atheism	Existing is something god have never been proficient at.  	FAVOR
 10151	Atheism	Beginning to wonder if Rev. 13:17 mark, buying & selling is relevant ala corporations' behavior (Civil War games), etc. #bible 	AGAINST
 10152	Atheism	When we have done all in our power that the Lord will find a way to open doors. - Spencer W. Kimball #courage #hope 	AGAINST
 10153	Atheism	RT @XO_NayeLashay: In love with Gospel music .. Heals my soul ,lifts my spirits, clears my mind & makes me appreciate what I do have. 	AGAINST

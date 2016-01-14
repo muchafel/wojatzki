@@ -100,7 +100,7 @@ public class None_Stance_TopicWise implements Constants {
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 500;
 	public static AnalysisEngineDescription preProcessing;
-	public static boolean saveModel=false;
+	public static boolean saveModel=true;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
 	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
 	
@@ -126,8 +126,8 @@ public class None_Stance_TopicWise implements Constants {
 	  		ModalVerbFeaturesDFE.class.getName(), //M
 	  		
 //			ClassifiedConceptDFE.class.getName(), //M
-			StackedFeatureDFE.class.getName(), //M
-//			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
+//			StackedFeatureDFE.class.getName(), //M
+			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
 			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
 			
 //			SummedStanceDFE_functionalParts.class.getName(),
@@ -164,7 +164,7 @@ public class None_Stance_TopicWise implements Constants {
 			if(saveModel){
 				experiment.saveModel(pSpace,folder.getName());
 			}else{
-				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone_reducedModel_polarConcepts");
+				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone");
 			}
 		}
 
@@ -276,13 +276,13 @@ public class None_Stance_TopicWise implements Constants {
 //						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX, 
 //						HashTagDFE.PARAM_HASHTAGS_FILE_PATH,"src/main/resources/lists/targetSpecific/"+target+"/hashTags.txt",
 //						HashTagDFE.PARAM_VARIANT,"hashTagsAtTheEnd",
-//						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
-//						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
+						SummedStanceDFE_staticLexicon.PARAM_USE_STANCE_LEXICON,"true",
+						SummedStanceDFE_staticLexicon.PARAM_USE_HASHTAG_LEXICON, "true",
 						SummedStanceDFE_functionalParts.PARAM_USE_POLARITY,"false",
-						ClassifiedConceptDFE.PARAM_TARGET,target,
-						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
-						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
-						StackedConceptClassificationDFE.PARAM_MODEL_ONLY_BI_POLAR_CONCEPTS,false
+//						ClassifiedConceptDFE.PARAM_TARGET,target,
+//						SimpleNounFreqencyDFE.PARAM_TOP_I_NOUNS,"10",
+//						StackedFeatureDFE.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/ngram_stacking/stanceVsNone/"+target+"/id2homogenizedOutcome.txt",
+						StackedConceptClassificationDFE.PARAM_MODEL_ONLY_BI_POLAR_CONCEPTS,true
 				}));
 		return dimPipelineParameters;
 	}

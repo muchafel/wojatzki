@@ -28,7 +28,7 @@ public class ConditionalSentenceCountDFE extends FeatureExtractorResource_ImplBa
 		if(!sentences.isEmpty()){
 			for(Sentence sentence: JCasUtil.select(jcas, Sentence.class)){
 				List<Token> tokens=JCasUtil.selectCovered(Token.class,sentence);
-				if(tokens.isEmpty()){
+				if(!tokens.isEmpty()){
 					Token t=tokens.iterator().next();
 					//more advanced detection of conditional sentences ??? --> assuming that...
 					if(t.getCoveredText().toLowerCase().equals("if"))numOfConds++;

@@ -12,6 +12,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import types.ClassifiedConceptOutcome;
+import types.TransferClassificationOutcome;
 
 public class StackedTargetTransferClassificationDFE extends FeatureExtractorResource_ImplBase
 		implements DocumentFeatureExtractor {
@@ -19,17 +20,15 @@ public class StackedTargetTransferClassificationDFE extends FeatureExtractorReso
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
 		Set<Feature> featList = new HashSet<Feature>();
-		for (ClassifiedConceptOutcome concept : JCasUtil.select(jcas, ClassifiedConceptOutcome.class)) {
-			if (concept.getBiPolar()) {
+		for (TransferClassificationOutcome transferredClassification : JCasUtil.select(jcas, TransferClassificationOutcome.class)) {
 				int outcome = 0;
-				if (concept.getClassificationOutcome().equals("FAVOR"))
+				if (transferredClassification.getOutcome().equals("FAVOR"))
 					outcome = 1;
-				else if (concept.getClassificationOutcome().equals("AGAINST"))
+				else if (transferredClassification.getOutcome().equals("AGAINST"))
 					outcome = -1;
-				featList.add(new Feature( concept.getConceptName(), outcome));
+				featList.add(new Feature( transferredClassification.getModel()+"_outcome", outcome));
 				// System.out.println(jcas.getDocumentText()+"
 				// "+concept.getConceptName()+ " "+ outcome);
-			}
 		}
 		return featList;
 	}
