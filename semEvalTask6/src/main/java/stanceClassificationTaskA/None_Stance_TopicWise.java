@@ -102,7 +102,7 @@ public class None_Stance_TopicWise implements Constants {
 	public static AnalysisEngineDescription preProcessing;
 	public static boolean saveModel=true;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/noneVsStance";
-	public static String modelOutputFolder="src/main/resources/trainedModels/noneVsStance";
+	public static String modelOutputFolder="src/main/resources/trainedModels/ablation/noneVsStance";
 	
 	public static final FeSetMode feSetMode=FeSetMode.all;
 	
@@ -117,18 +117,17 @@ public class None_Stance_TopicWise implements Constants {
 			
 			StanceLexiconDFE_Tokens_normalized.class.getName(), //M
 			StanceLexiconDFE_Hashtags_normalized.class.getName(), //M
-			SimpleSentencePolarityDFE.class.getName(), //M
-			SimpleNegationDFE.class.getName(), //M
+//			SimpleNegationDFE.class.getName(), //M
 //			ConditionalSentenceCountDFE.class.getName(), //M
-			RepeatedPunctuationDFE.class.getName(), //M
-	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
+//			RepeatedPunctuationDFE.class.getName(), //M
+//	  		LongWordsFeatureExtractor.class.getName(), //M //configure to 6!
 //	  		NrOfTokensPerSentenceDFE.class.getName(), //M
-	  		ModalVerbFeaturesDFE.class.getName(), //M
+//	  		ModalVerbFeaturesDFE.class.getName(), //M
 	  		
 //			ClassifiedConceptDFE.class.getName(), //M
 //			StackedFeatureDFE.class.getName(), //M
-			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
-			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
+//			StackedBi_Tri_GramStanceNoneDFE.class.getName(), //--> just for saving the model
+//			StackedConceptClassificationDFE.class.getName(),//--> just for saving the model
 			
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			AspectBasedSentimentDFE_domainIndependent.class.getName(),
@@ -158,11 +157,11 @@ public class None_Stance_TopicWise implements Constants {
 		for (File folder : getTopicFolders(baseDir+TOPIC_FOLDERS)) {
 //			FES=ModelUtil.getOptimizedModelNoneVsStance(folder.getName());
 			preProcessing=PreprocessingPipeline.getFullPreProcessing(folder.getName(), true);
-			System.out.println("experiments for "+folder.getName()+"_stanceDetection");
+			System.out.println("experiments for "+folder.getName()+"_lexicon");
 			None_Stance_TopicWise experiment = new None_Stance_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
-				experiment.saveModel(pSpace,folder.getName());
+				experiment.saveModel(pSpace,folder.getName()+"ngrams");
 			}else{
 				experiment.runCrossValidation(pSpace, folder.getName()+"_stanceVsNone");
 			}

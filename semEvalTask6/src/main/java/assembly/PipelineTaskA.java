@@ -19,14 +19,18 @@ import io.StanceResultWriter;
 import util.PreprocessingPipeline;
 
 public class PipelineTaskA {
+	
+	public static String ablationPostfixnoneVsStance="_wo_lightWeight";
+	public static String ablationPostfixfavorVsAgainst="_wo_lightWeight";
+	
 	public static void main(String[] args) throws IOException, ResourceInitializationException, UIMAException {
 		ArrayList<String> targets = new ArrayList<String>(
 			    Arrays.asList("Atheism","FeministMovement", "ClimateChangeisaRealConcern","HillaryClinton", "LegalizationofAbortion"));
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		for(String target: targets){
 //			if(target.equals("Atheism"))continue;
-			String modelFolderStanceVsNone="src/main/resources/trainedModels/noneVsStance/"+target;
-			String modelFolderFavorAgainst="src/main/resources/trainedModels/favorVsAgainst/"+target;
+			String modelFolderStanceVsNone="src/main/resources/trainedModels/ablation/noneVsStance/"+target+ablationPostfixnoneVsStance;
+			String modelFolderFavorAgainst="src/main/resources/trainedModels/ablation/favorVsAgainst/"+target+ablationPostfixfavorVsAgainst;
 			PipelineTaskA pipelineTaskA= new PipelineTaskA();
 			System.out.println(modelFolderStanceVsNone+" "+modelFolderFavorAgainst+" "+target);
 			pipelineTaskA.run(baseDir,modelFolderStanceVsNone,modelFolderFavorAgainst,target);
@@ -74,7 +78,7 @@ public class PipelineTaskA {
 						OutcomeInspection.class
 				),
 				AnalysisEngineFactory.createEngineDescription(
-						StanceResultWriter.class, StanceResultWriter.PARAM_RESULT_OUTPUT_TARGET,target
+						StanceResultWriter.class, StanceResultWriter.PARAM_RESULT_OUTPUT_TARGET,target+ablationPostfixnoneVsStance+ablationPostfixfavorVsAgainst
 				)
 		);	
 	}

@@ -31,17 +31,22 @@ public class NoneStanceAnnotator_TASKB extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_TOPI_NOUNS, mandatory = true)
 	protected File topINounsFile;
 	
+	public static final String PARAM_FREQUENCY_CUT_OFF = "frqCutOff_StanceVs_None";
 	public static final String PARAM_STANCE_TARGET = "target";
+	
 	@ConfigurationParameter(name = PARAM_STANCE_TARGET, mandatory = true)
 	protected String target;
 
+	@ConfigurationParameter(name = PARAM_FREQUENCY_CUT_OFF, mandatory = false, defaultValue="60")
+	private int cutOff;
+	
 	private List<String> topiNouns;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			topiNouns = getTop60Nouns(topINounsFile);
+			topiNouns = getTop60Nouns(topINounsFile,cutOff);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -70,7 +75,7 @@ public class NoneStanceAnnotator_TASKB extends JCasAnnotator_ImplBase {
 		annotation.addToIndexes();
 	}
 	
-	private  List<String> getTop60Nouns(File target) throws FileNotFoundException, IOException {
+	private  List<String> getTop60Nouns(File target, int cutOff) throws FileNotFoundException, IOException {
 		List<String> top60Nouns = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(target.getAbsolutePath()))) {
 			String line = null;
@@ -79,7 +84,7 @@ public class NoneStanceAnnotator_TASKB extends JCasAnnotator_ImplBase {
 					top60Nouns.add(noun.replace(" ", ""));
 			}
 		}
-		return top60Nouns;
+		return top60Nouns.subList(0, cutOff);
 	}
 
 }

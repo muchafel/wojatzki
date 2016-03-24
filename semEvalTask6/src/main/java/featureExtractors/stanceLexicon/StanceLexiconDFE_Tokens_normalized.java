@@ -94,9 +94,9 @@ public class StanceLexiconDFE_Tokens_normalized extends SummedStance_base{
 					}
 				}
 				System.out.println("original samples :"+ favor.getN());
-				writeLexicon("test1",createLexiconMap(favor, against));
+//				writeLexicon("test1",createLexiconMap(favor, against));
 				favor= new TokenThesaurus(favor).getNormalizedFrequencyDistribution();
-				writeLexicon("test2",createLexiconMap(favor, against));
+//				writeLexicon("test2",createLexiconMap(favor, against));
 				System.out.println("normalized samples :"+ favor.getN());
 				Map<String, Float> lexicon = createLexiconMap(favor, against);
 				return new StanceLexicon(lexicon);

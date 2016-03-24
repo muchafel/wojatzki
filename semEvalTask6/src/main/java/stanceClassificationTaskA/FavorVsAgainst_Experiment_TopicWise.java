@@ -96,7 +96,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 	public static boolean saveModel=true;
 //	public static String modelOutputFolder="src/main/resources/trainedModels/bi_tri_grams/favorVsAgainst";
 //	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst_wo_transfer";
-	public static String modelOutputFolder="src/main/resources/trainedModels/favorVsAgainst";
+	public static String modelOutputFolder="src/main/resources/trainedModels/ablation/favorVsAgainst";
 	
 	public static final FeSetMode feSetMode=FeSetMode.all;
 	
@@ -114,29 +114,24 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 			StanceLexiconDFE_Tokens.class.getName(), //M S--> un-normalized
 			StanceLexiconDFE_Hashtags.class.getName(), //M S--> un-normalized
 //			SimpleSentencePolarityDFE.class.getName(),	//M S
-			SimpleNegationDFE.class.getName(), //M S
-			ConditionalSentenceCountDFE.class.getName(), //M S
-			RepeatedPunctuationDFE.class.getName(), //M S
-	  		ModalVerbFeaturesDFE.class.getName(), //M S
+//			SimpleNegationDFE.class.getName(), //M S
+//			ConditionalSentenceCountDFE.class.getName(), //M S
+//			RepeatedPunctuationDFE.class.getName(), //M S
+//	  		ModalVerbFeaturesDFE.class.getName(), //M S
 	  		
-			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
-			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
-			StackedTargetTransferClassificationDFE.class.getName(),
+//			StackedBi_Tri_GramFavorAgainstDFE.class.getName(), //S--> just for saving the model
+//			StackedConceptClassificationDFE.class.getName(), //S--> just for saving the model
+//			StackedTargetTransferClassificationDFE.class.getName(),
 	  		
 //			SummedStanceDFE_functionalParts.class.getName(),
 //			HashTagDFE.class.getName(),
 //			LuceneNGramDFE.class.getName(),
-
-
 //			EmoticonRatioDFE.class.getName(),
 //			LuceneNgramInspection.class.getName(),
 //			NrOfTokensDFE.class.getName(),
 //		  	LongWordsFeatureExtractor.class.getName(), //configure to 6?
 //			NrOfTokensPerSentenceDFE.class.getName(),
-
 //			TypeTokenRatioFeatureExtractor.class.getName(),
-
-
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -150,7 +145,7 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 			FavorVsAgainst_Experiment_TopicWise experiment = new FavorVsAgainst_Experiment_TopicWise();
 			ParameterSpace pSpace = experiment.setup(baseDir,folder);
 			if(saveModel){
-				experiment.saveModel(pSpace,folder.getName());
+				experiment.saveModel(pSpace,folder.getName()+"_lexicon");
 			}else{
 				experiment.runCrossValidation(pSpace, folder.getName()+"_favorVsAgainst");
 			}
@@ -166,9 +161,9 @@ public class FavorVsAgainst_Experiment_TopicWise implements Constants {
 //			if(!f.getName().equals("FeministMovement")){
 //				continue;
 //			}
-			if(!f.getName().equals("LegalizationofAbortion")){
-				continue;
-			}
+//			if(!f.getName().equals("LegalizationofAbortion")){
+//				continue;
+//			}
 //			if(!f.getName().equals("HillaryClinton")){
 //				continue;
 //			}

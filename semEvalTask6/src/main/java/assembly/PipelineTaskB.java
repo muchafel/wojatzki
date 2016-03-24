@@ -53,18 +53,22 @@ public class PipelineTaskB {
 		String tweetsToClassify = "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskB/";
 		
 		PipelineTaskB pipelineTaskB = new PipelineTaskB();
-		pipelineTaskB.run(targets, tweetsToClassify);
+		for(int i=1; i<20;i++){
+//			for(int j=1; j<20;i++){
+			pipelineTaskB.run(targets, tweetsToClassify,i,i);
+//			}
+		}
 	}
 
-	private void run(List<String> targets, String path)
+	private void run(List<String> targets, String path, int i, int j)
 			throws ResourceInitializationException, AnalysisEngineProcessException {
 
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
 				UnclassifiedTweetReader.class, UnclassifiedTweetReader.PARAM_SOURCE_LOCATION, path,
 				UnclassifiedTweetReader.PARAM_PATTERNS, "*.xml", UnclassifiedTweetReader.PARAM_LANGUAGE, "en");
-		AnalysisEngine trumpEngine = getTrumpEngine();
-		AnalysisEngine resolvingEngine=getResolvingEngine("DonaldTrump");
-		Map<String,AnalysisEngine> targetToEngine= getTargetEngines(targets);
+		AnalysisEngine trumpEngine = getTrumpEngine(i*10);
+		AnalysisEngine resolvingEngine=getResolvingEngine("DonaldTrump_trump_"+String.valueOf(i)+"_other_"+String.valueOf(j));
+		Map<String,AnalysisEngine> targetToEngine= getTargetEngines(targets,j*10);
 		System.out.println("all engines built");
 		for (JCas jcas : new JCasIterable(reader)) {
 				// preprocessing
@@ -107,21 +111,21 @@ public class PipelineTaskB {
 		return engine;
 	}
 
-	private Map<String, AnalysisEngine> getTargetEngines(List<String> targets) {
+	private Map<String, AnalysisEngine> getTargetEngines(List<String> targets, int j) {
 		Map<String, AnalysisEngine> result= new HashMap<String, AnalysisEngine>();
 		for (String target : targets) {
-			result.put(target, getTargetEngine(target));
+			result.put(target, getTargetEngine(target,j));
 		}
 		return result;
 	}
 
-	private AnalysisEngine getTargetEngine(String target) {
+	private AnalysisEngine getTargetEngine(String target, int cutOff) {
 		AggregateBuilder builder = new AggregateBuilder();
 		AnalysisEngine engine = null;
 		try {
 			builder.add(createEngineDescription(
 					createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
-					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top60Nouns/"+target, NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,target),
+					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top200Nouns/"+target, NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,target,NoneStanceAnnotator_TASKB.PARAM_FREQUENCY_CUT_OFF,cutOff),
 					createEngineDescription(FavorAgainstOutcomeAnnotator_TASKB.class,FavorAgainstOutcomeAnnotator_TASKB.PARAM_TC_MODEL_LOCATION, "src/main/resources/trainedModels/favorVsAgainst/"+target, FavorAgainstOutcomeAnnotator_TASKB.PARAM_TARGET, target),
 					createEngineDescription(RemovePreprocessingAnnotator_TASKB.class)
 						)
@@ -133,7 +137,7 @@ public class PipelineTaskB {
 		return engine;
 	}
 
-	private AnalysisEngine getTrumpEngine() {
+	private AnalysisEngine getTrumpEngine(int cutOff) {
 		AggregateBuilder builder = new AggregateBuilder();
 		AnalysisEngine engine = null;
 		try {
@@ -143,7 +147,7 @@ public class PipelineTaskB {
 					createEngineDescription(ArktweetPosTagger.class, ArktweetPosTagger.PARAM_VARIANT, "default"),
 					createEngineDescription(TwitterSpecificAnnotator.class),
 					createEngineDescription(OpenNlpPosTagger.class, OpenNlpPosTagger.PARAM_PRINT_TAGSET, true),
-					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top60Nouns_taskB/DonaldTrump", NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,"DonaldTrump"),
+					createEngineDescription(NoneStanceAnnotator_TASKB.class, NoneStanceAnnotator_TASKB.PARAM_TOPI_NOUNS,"src/main/resources/top200Nouns_taskB/DonaldTrump", NoneStanceAnnotator_TASKB.PARAM_STANCE_TARGET,"DonaldTrump",NoneStanceAnnotator_TASKB.PARAM_FREQUENCY_CUT_OFF,cutOff),
 					createEngineDescription(RemovePreprocessingAnnotator_TASKB.class)
 						)
 					);

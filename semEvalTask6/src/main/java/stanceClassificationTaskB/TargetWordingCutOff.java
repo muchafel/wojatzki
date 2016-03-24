@@ -25,7 +25,7 @@ public class TargetWordingCutOff {
 
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 
-		int topI = 50;
+		int topI = 200;
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		ArrayList<String> targets = new ArrayList<String>(Arrays.asList("Atheism", "ClimateChangeisaRealConcern",
 				"HillaryClinton", "FeministMovement", "LegalizationofAbortion"));
@@ -35,16 +35,16 @@ public class TargetWordingCutOff {
 				TaskATweetReader.class, TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/tweetsTaskB/",
 				TaskATweetReader.PARAM_PATTERNS, "*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",
 				TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
-
-		for (String target : targets) {
-
-			CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
-					TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/" + target + "/",
-					TaskATweetReader.PARAM_PATTERNS, "*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",
-					TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
+//
+//		for (String target : targets) {
+//
+//			CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
+//					TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/" + target + "/",
+//					TaskATweetReader.PARAM_PATTERNS, "*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",
+//					TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
 
 			Iterator<JCas> it = SimplePipeline
-					.iteratePipeline(reader, PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos())
+					.iteratePipeline(trumpReader, PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos())
 					.iterator();
 			FrequencyDistribution<String> fd = new FrequencyDistribution<>();
 			int numberOfTweets = 0;
@@ -62,30 +62,30 @@ public class TargetWordingCutOff {
 				}
 			}
 			System.out.println(fd.getMostFrequentSamples(topI));
-			targetToFd.put(target, fd);
-		}
-		Iterator<JCas> it2 = SimplePipeline
-				.iteratePipeline(trumpReader, PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos())
-				.iterator();
-		FrequencyDistribution<String> combined = new FrequencyDistribution<>();
-
-		
-		while (it2.hasNext()) {
-			String result="";
-			JCas jcas = it2.next();
-			for (String target : targetToFd.keySet()) {
-				for (Token t : JCasUtil.select(jcas, Token.class)) {
-					if (targetToFd.get(target).getMostFrequentSamples(topI).contains(t.getCoveredText().toLowerCase())) {
-						result+=" "+target;
-						break;
-					}
-				}
-			}
-			combined.inc(result);
-		}
-		for(String combi: combined.getKeys()){
-			System.out.println(combi+" "+combined.getCount(combi));
-		}
+//			targetToFd.put(target, fd);
+//		}
+//		Iterator<JCas> it2 = SimplePipeline
+//				.iteratePipeline(trumpReader, PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos())
+//				.iterator();
+//		FrequencyDistribution<String> combined = new FrequencyDistribution<>();
+//
+//		
+//		while (it2.hasNext()) {
+//			String result="";
+//			JCas jcas = it2.next();
+//			for (String target : targetToFd.keySet()) {
+//				for (Token t : JCasUtil.select(jcas, Token.class)) {
+//					if (targetToFd.get(target).getMostFrequentSamples(topI).contains(t.getCoveredText().toLowerCase())) {
+//						result+=" "+target;
+//						break;
+//					}
+//				}
+//			}
+//			combined.inc(result);
+//		}
+//		for(String combi: combined.getKeys()){
+//			System.out.println(combi+" "+combined.getCount(combi));
+//		}
 		
 		// total: 68.513
 		// HillaryClinton top 50 nouns words in trump: 28.696
