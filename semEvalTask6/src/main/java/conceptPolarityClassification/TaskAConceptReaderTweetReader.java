@@ -34,8 +34,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.io.JCasResourceCollectionReader_ImplBas
 import de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.Resource;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceUtils;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.io.TCReaderSingleLabel;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.io.TCReaderSingleLabel;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import io.TaskATweetReader;
 import io.TaskATweetReader_base;
 import types.OriginalResource;
