@@ -19,7 +19,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import dataInspection.PreprocessingTwitterSpecificAnnotatorInspector;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import io.TaskATweetReader;
 import types.TwitterSpecificPOS;
 import util.PreprocessingPipeline;

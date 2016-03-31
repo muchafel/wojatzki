@@ -3,7 +3,7 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.tudarmstadt.ukp.dkpro.tc.features.style.LongWordsFeatureExtractor;
+import org.dkpro.tc.features.style.LongWordsFeatureExtractor;
 import featureExtractors.ModalVerbFeaturesDFE;
 import featureExtractors.RepeatedPunctuationDFE;
 import featureExtractors.SimpleNegationDFE;

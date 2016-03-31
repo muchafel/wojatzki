@@ -17,7 +17,7 @@ import org.jaxen.dom4j.Dom4jXPath;
 
 import de.tudarmstadt.ukp.dkpro.core.api.io.JCasResourceCollectionReader_ImplBase;
 import de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.Resource;
-import de.tudarmstadt.ukp.dkpro.tc.api.io.TCReaderSingleLabel;
+import org.dkpro.tc.api.io.TCReaderSingleLabel;
 import types.StanceAnnotation;
 
 public abstract class TaskATweetReader_base extends JCasResourceCollectionReader_ImplBase

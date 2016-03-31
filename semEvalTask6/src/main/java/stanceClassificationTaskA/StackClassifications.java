@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.Id2Outcome;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.SingleOutcome;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorBase;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.evaluation.Id2Outcome;
+import org.dkpro.tc.evaluation.SingleOutcome;
+import org.dkpro.tc.evaluation.evaluator.EvaluatorBase;
+import org.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
 import opennlp.tools.util.eval.FMeasure;
 import util.ComputeSemevalMeasure;
 import weka.core.SerializationHelper;

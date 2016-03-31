@@ -16,7 +16,7 @@ import org.jaxen.dom4j.Dom4jXPath;
 
 import de.tudarmstadt.ukp.dkpro.core.api.io.JCasResourceCollectionReader_ImplBase;
 import de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.Resource;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import types.OriginalResource;
 import types.StanceAnnotation;
 

@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.tudarmstadt.ukp.dkpro.lab.storage.impl.PropertiesAdapter;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.lab.storage.impl.PropertiesAdapter;
+import org.dkpro.tc.api.exception.TextClassificationException;
 import util.ComputeSemevalMeasure;
 
 public class StackAblation {
@@ -89,7 +89,7 @@ public class StackAblation {
 			File discriminatorsFile= new File(cvFoler.getAbsolutePath()+"/DISCRIMINATORS.txt");
 			PropertiesAdapter adapter=new PropertiesAdapter();
 			adapter.read(new FileInputStream(discriminatorsFile));
-			String feSet= adapter.getMap().get("de.tudarmstadt.ukp.dkpro.tc.core.task.InitTask|featureSet");
+			String feSet= adapter.getMap().get("org.dkpro.tc.core.task.InitTask|featureSet");
 			feSet2Id2Outcome.put(feSet, id2Outcome);
 		}
 		

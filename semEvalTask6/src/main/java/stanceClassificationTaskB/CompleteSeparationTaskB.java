@@ -25,7 +25,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import io.TaskATweetReader;
 import util.PreprocessingPipeline;
 
@@ -110,7 +110,7 @@ public class CompleteSeparationTaskB {
 			for (Token t : JCasUtil.select(jcas, Token.class)) {
 				if (trumpFd.getMostFrequentSamples(topI).contains(t.getCoveredText().toLowerCase())) {
 //					System.out.println(t.getCoveredText());
-					stanceCasIds.add(DocumentMetaData.get(jcas).getDocumentId());
+					stanceCasIds.add(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId());
 //					stanceJcases.add(jcas);
 					stance=true;
 					break;
@@ -129,7 +129,7 @@ public class CompleteSeparationTaskB {
 		Iterator<JCas> it4= SimplePipeline.iteratePipeline(trumpReader,PreprocessingPipeline.getPreprocessingBreakTwokenizerTweetAnnos()).iterator();
 		while (it4.hasNext()) {
 			JCas jcas = it4.next();
-			if(stanceCasIds.contains(DocumentMetaData.get(jcas).getDocumentId())){
+			if(stanceCasIds.contains(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId())){
 				String result="";
 				for (String target : targetToFd.keySet()) {
 					for (Token t : JCasUtil.select(jcas, Token.class)) {
@@ -206,8 +206,11 @@ public class CompleteSeparationTaskB {
 			try {
 				jcas = engine.newJCas();
 				jcas.setDocumentText( read.getDocumentText() );
-				DocumentMetaData.create( jcas );
-				DocumentMetaData.get( jcas ).setLanguage( "en" );
+				DocumentMetaData metaData=new DocumentMetaData(jcas);
+				metaData.setLanguage("en");
+				metaData.addToIndexes();
+//				DocumentMetaData.create( jcas );
+//				DocumentMetaData.get( jcas ).setLanguage( "en" );
 				System.out.println(i);
 				i++;
 				engine.process( jcas );

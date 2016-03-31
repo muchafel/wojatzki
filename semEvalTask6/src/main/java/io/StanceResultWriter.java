@@ -18,10 +18,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
-import de.tudarmstadt.ukp.dkpro.tc.fstore.simple.DenseFeatureStore;
-import de.tudarmstadt.ukp.dkpro.tc.ml.modelpersist.ModelPersistUtil;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorUtil;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.fstore.simple.DenseFeatureStore;
 import types.StanceAnnotation;
 
 public class StanceResultWriter extends JCasAnnotator_ImplBase {

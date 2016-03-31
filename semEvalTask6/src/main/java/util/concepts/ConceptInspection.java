@@ -27,8 +27,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.lab.task.ParameterSpace;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import io.TaskATweetReader;
 import types.StanceAnnotation;
 import util.PreprocessingPipeline;
@@ -78,12 +78,12 @@ public class ConceptInspection {
 				String outcome= JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome();
 				if (outcome.equals("FAVOR")) {
 					if(conceptContained(concept,jcas,engine)){
-						System.out.println(DocumentMetaData.get(jcas).getDocumentId()+"=0,1;1,0;-1.0");
+						System.out.println(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId()+"=0,1;1,0;-1.0");
 						pro++;
 					}
 				}else if(outcome.equals("AGAINST")){
 					if(conceptContained(concept,jcas,engine)){
-						System.out.println(DocumentMetaData.get(jcas).getDocumentId()+"=1,0;1,0;-1.0");
+						System.out.println(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId()+"=1,0;1,0;-1.0");
 						contra++;
 					}
 				}

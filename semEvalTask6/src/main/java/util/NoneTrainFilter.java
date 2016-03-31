@@ -3,9 +3,9 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureStore;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Instance;
-import de.tudarmstadt.ukp.dkpro.tc.fstore.filter.FeatureStoreFilter;
+import org.dkpro.tc.api.features.FeatureStore;
+import org.dkpro.tc.api.features.Instance;
+import org.dkpro.tc.fstore.filter.FeatureStoreFilter;
 
 public class NoneTrainFilter implements FeatureStoreFilter {
 

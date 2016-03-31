@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
-import de.tudarmstadt.ukp.dkpro.lab.reporting.ReportBase;
-import de.tudarmstadt.ukp.dkpro.lab.storage.StorageService.AccessMode;
-import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.Id2Outcome;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorBase;
-import de.tudarmstadt.ukp.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
-import de.tudarmstadt.ukp.dkpro.tc.weka.task.WekaTestTask;
+import org.dkpro.lab.reporting.ReportBase;
+import org.dkpro.lab.storage.StorageService.AccessMode;
+import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.evaluation.Id2Outcome;
+import org.dkpro.tc.evaluation.evaluator.EvaluatorBase;
+import org.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
+import org.dkpro.tc.weka.task.WekaTestTask;
 import weka.core.SerializationHelper;
 
 public class ConfusionMatrixOutput extends ReportBase implements Constants{
