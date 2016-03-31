@@ -10,11 +10,11 @@ import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.LuceneNgramFeatureExtractorBase;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.features.ngram.base.LuceneNgramFeatureExtractorBase;
+import org.dkpro.tc.features.ngram.util.NGramUtils;
 import types.StanceAnnotation;
 
 /**

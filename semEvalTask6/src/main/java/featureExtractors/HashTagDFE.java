@@ -16,11 +16,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.util.FeatureUtil;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.util.FeatureUtil;
 import types.TwitterSpecificPOS;
 
 public class HashTagDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {

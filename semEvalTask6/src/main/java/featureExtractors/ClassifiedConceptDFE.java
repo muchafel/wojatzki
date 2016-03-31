@@ -23,10 +23,10 @@ import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import util.SimilarityHelper;
 
 public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
@@ -134,11 +134,12 @@ public class ClassifiedConceptDFE extends FeatureExtractorResource_ImplBase impl
 			if (conceptContained(concept, jcas)) {
 //				System.out.println(concept+ " similar to "+ jcas.getDocumentText());
 //				System.out.println(conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()));
-				if (conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()).equals("FAVOR")){
+				
+				if (conceptToId2Outcome.get(concept).get(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId()).equals("FAVOR")){
 					polarity=1;
 					summedConceptPolarity+=1;
 					numberOfPositiveConcepts++;
-				}else if(conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(DocumentMetaData.get(jcas).getDocumentId()).equals("AGAINST")){
+				}else if(conceptToId2Outcome.get(concept).get(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId())!=null && conceptToId2Outcome.get(concept).get(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId()).equals("AGAINST")){
 					polarity=-1;
 					summedConceptPolarity+=-1;
 					numberOfNegativeConcepts++;

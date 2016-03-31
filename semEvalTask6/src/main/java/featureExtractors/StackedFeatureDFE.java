@@ -12,15 +12,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 public class StackedFeatureDFE extends FeatureExtractorResource_ImplBase
 implements DocumentFeatureExtractor{
@@ -67,7 +68,7 @@ implements DocumentFeatureExtractor{
 
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
-		String docId = DocumentMetaData.get(jcas).getDocumentId();
+		String docId = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		Set<Feature> featList = new HashSet<Feature>();
 //		System.out.println(docId+ " "+ id2Outcome_ngram.get(docId));
 		featList.add(new Feature("stacked_ngram_outcome",  id2Outcome_ngram.get(docId)));

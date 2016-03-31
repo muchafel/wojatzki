@@ -18,9 +18,9 @@ import org.apache.uima.resource.ResourceSpecifier;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.features.ngram.util.NGramUtils;
 import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 
 public class SummedStanceDFE_functionalParts extends SummedStance_base {

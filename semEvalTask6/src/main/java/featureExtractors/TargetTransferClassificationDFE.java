@@ -20,10 +20,10 @@ import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import util.SimilarityHelper;
 
 public class TargetTransferClassificationDFE extends FeatureExtractorResource_ImplBase
@@ -109,7 +109,7 @@ implements DocumentFeatureExtractor{
 
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
-		String docId = DocumentMetaData.get(jcas).getDocumentId();
+		String docId = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		Set<Feature> featList = new HashSet<Feature>();
 		for(String target : id2Outcome_perTargets.keySet()){
 //			System.out.println(target);

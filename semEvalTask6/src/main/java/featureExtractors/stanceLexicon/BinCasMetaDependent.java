@@ -10,10 +10,10 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaCollector;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.meta.MetaDependent;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.meta.MetaCollector;
+import org.dkpro.tc.api.features.meta.MetaDependent;
 import featureExtractors.BinCasMetaCollector;
 import types.FunctionalPartAnnotation;
 import util.StanceConstants;

@@ -12,8 +12,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.Feature;
 import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 
 public class StanceLexiconDFE_Hashtags extends SummedStance_base{

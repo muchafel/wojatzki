@@ -20,11 +20,11 @@ import org.apache.uima.resource.ResourceSpecifier;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
-import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.DocumentFeatureExtractor;
+import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import featureExtractors.stanceLexicon.BinCasMetaDependent;
 import featureExtractors.stanceLexicon.BinCasMetaDependent.RelevantTokens;
 
