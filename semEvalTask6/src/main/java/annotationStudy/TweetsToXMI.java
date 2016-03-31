@@ -20,7 +20,6 @@ import dataInspection.OutcomeInspection;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
 import io.PlainTaskATweetReader;
 import io.StanceResultWriter;
 import io.TaskATweetReader;
