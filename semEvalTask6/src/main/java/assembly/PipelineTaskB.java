@@ -36,7 +36,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
 import io.StanceResultWriter;
 import types.TaskBStanceAnnotation;
 import util.PreprocessingPipeline;

@@ -17,9 +17,9 @@ import org.junit.Assert;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.util.NGramUtils;
+import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.features.ngram.util.NGramUtils;
 import io.TaskATweetReader;
 import mulan.examples.GettingPredictionsOnUnlabeledData;
 import types.OriginalResource;

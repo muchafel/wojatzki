@@ -10,7 +10,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import dataInspection.OutcomeInspection;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
+
+import org.dkpro.tc.ml.uima.TcAnnotator;
 import io.TaskATweetReader;
 import util.PreprocessingPipeline;
 
@@ -34,8 +35,8 @@ public class LoadModels {
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getPreprocessingSentimentFunctionalStanceAnno()),
 				//annotate stance
 				AnalysisEngineFactory.createEngineDescription(
-						TcAnnotatorDocument.class,
-						TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION, modelFolder
+						TcAnnotator.class,
+						TcAnnotator.PARAM_TC_MODEL_LOCATION, modelFolder
 				),
 				AnalysisEngineFactory.createEngineDescription(
 						OutcomeInspection.class

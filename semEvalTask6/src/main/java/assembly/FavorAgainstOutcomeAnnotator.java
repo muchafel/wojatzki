@@ -17,14 +17,13 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
-import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.core.ml.ModelSerialization_ImplBase;
-import de.tudarmstadt.ukp.dkpro.tc.core.ml.TCMachineLearningAdapter;
-import de.tudarmstadt.ukp.dkpro.tc.fstore.simple.DenseFeatureStore;
-import de.tudarmstadt.ukp.dkpro.tc.ml.modelpersist.ModelPersistUtil;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorUtil;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.core.ml.ModelSerialization_ImplBase;
+import org.dkpro.tc.core.ml.TCMachineLearningAdapter;
+import org.dkpro.tc.core.util.SaveModelUtils;
+import org.dkpro.tc.fstore.simple.DenseFeatureStore;
+import org.dkpro.tc.ml.uima.TcAnnotator;
 
 public class FavorAgainstOutcomeAnnotator extends JCasAnnotator_ImplBase {
 
@@ -51,9 +50,9 @@ public class FavorAgainstOutcomeAnnotator extends JCasAnnotator_ImplBase {
         super.initialize(context);
 
         try {
-            mlAdapter = ModelPersistUtil.initMachineLearningAdapter(tcModelLocation);
-            parameters = ModelPersistUtil.initParameters(tcModelLocation);
-            featureExtractors = ModelPersistUtil.initFeatureExtractors(tcModelLocation);
+            mlAdapter = SaveModelUtils.initMachineLearningAdapter(tcModelLocation);
+            parameters = SaveModelUtils.initParameters(tcModelLocation);
+            featureExtractors = SaveModelUtils.initFeatureExtractors(tcModelLocation);
             
             AnalysisEngineDescription connector = getSaveModelConnector(parameters,
                     tcModelLocation.getAbsolutePath(), mlAdapter.getDataWriterClass().toString(),
@@ -61,7 +60,7 @@ public class FavorAgainstOutcomeAnnotator extends JCasAnnotator_ImplBase {
                     featureExtractors.toArray(new String[0]));
            
             engine = UIMAFramework.produceAnalysisEngine(connector,
-					TcAnnotatorUtil.getModelFeatureAwareResourceManager(tcModelLocation), null);
+            		SaveModelUtils.getModelFeatureAwareResourceManager(tcModelLocation), null);
             
         }
         catch (Exception e) {
@@ -99,13 +98,13 @@ public class FavorAgainstOutcomeAnnotator extends JCasAnnotator_ImplBase {
         throws ResourceInitializationException
     {
         // convert parameters to string as external resources only take string parameters
-    	List<Object> convertedParameters = TcAnnotatorUtil.convertParameters(parameters);
+    	List<Object> convertedParameters = SaveModelUtils.convertParameters(parameters);
         
-    	List<ExternalResourceDescription> extractorResources = TcAnnotatorUtil.loadExternalResourceDescriptionOfFeatures(
+    	List<ExternalResourceDescription> extractorResources = SaveModelUtils.loadExternalResourceDescriptionOfFeatures(
 				outputPath, featureExtractorClassNames, convertedParameters);
 
         // add the rest of the necessary parameters with the correct types
-        parameters.addAll(Arrays.asList(TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION,
+        parameters.addAll(Arrays.asList(TcAnnotator.PARAM_TC_MODEL_LOCATION,
                 tcModelLocation, ModelSerialization_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
                 ModelSerialization_ImplBase.PARAM_DATA_WRITER_CLASS, dataWriter,
                 ModelSerialization_ImplBase.PARAM_LEARNING_MODE, learningMode,

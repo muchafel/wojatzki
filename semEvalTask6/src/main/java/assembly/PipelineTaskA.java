@@ -14,7 +14,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import dataInspection.OutcomeInspection;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
+
+import org.dkpro.tc.ml.uima.TcAnnotator;
 import io.StanceResultWriter;
 import util.PreprocessingPipeline;
 
@@ -66,8 +67,8 @@ public class PipelineTaskA {
 				AnalysisEngineFactory.createEngineDescription(PreprocessingPipeline.getFullPreProcessing(target, false)),
 				//annotate none vs stance
 				AnalysisEngineFactory.createEngineDescription(
-						TcAnnotatorDocument.class,
-						TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION, modelFolder
+						TcAnnotator.class,
+						TcAnnotator.PARAM_TC_MODEL_LOCATION, modelFolder
 				),
 				//annotate fav vs against
 				AnalysisEngineFactory.createEngineDescription(
