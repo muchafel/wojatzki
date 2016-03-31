@@ -20,14 +20,14 @@ import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
-import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.core.ml.ModelSerialization_ImplBase;
-import de.tudarmstadt.ukp.dkpro.tc.core.ml.TCMachineLearningAdapter;
-import de.tudarmstadt.ukp.dkpro.tc.fstore.simple.DenseFeatureStore;
-import de.tudarmstadt.ukp.dkpro.tc.ml.modelpersist.ModelPersistUtil;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorDocument;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorUtil;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.core.ml.ModelSerialization_ImplBase;
+import org.dkpro.tc.core.ml.TCMachineLearningAdapter;
+import org.dkpro.tc.core.util.SaveModelUtils;
+import org.dkpro.tc.fstore.simple.DenseFeatureStore;
+import org.dkpro.tc.ml.uima.TcAnnotator;
+
 import types.BiTriGramOutcomeStanceNone;
 import types.ClassifiedConceptOutcome;
 import util.SimilarityHelper;
@@ -63,11 +63,11 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 		// System.out.println(tcModelLocations);
 		for (File conceptFile : tcModelLocations.listFiles()) {
 			try {
-				mlAdapter = ModelPersistUtil.initMachineLearningAdapter(
+				mlAdapter = SaveModelUtils.initMachineLearningAdapter(
 						new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
-				List<Object> parameters = ModelPersistUtil
+				List<Object> parameters = SaveModelUtils
 						.initParameters(new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
-				List<String> featureExtractors = ModelPersistUtil.initFeatureExtractors(
+				List<String> featureExtractors = SaveModelUtils.initFeatureExtractors(
 						new File(tcModelLocations.getAbsolutePath() + "/" + conceptFile.getName()));
 
 				AnalysisEngineDescription connector = getSaveModelConnector(parameters,
@@ -76,7 +76,7 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 						DenseFeatureStore.class.getName(), featureExtractors.toArray(new String[0]));
 
 				AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(connector,
-						TcAnnotatorUtil.getModelFeatureAwareResourceManager(tcModelLocations), null);
+						SaveModelUtils.getModelFeatureAwareResourceManager(tcModelLocations), null);
 				conceptToModel.put(conceptFile.getName(), engine);
 
 			} catch (Exception e) {
@@ -210,13 +210,13 @@ public class ClassifiedConceptOutcomeStackingAnnotator extends JCasAnnotator_Imp
 			String... featureExtractorClassNames) throws ResourceInitializationException {
 		// convert parameters to string as external resources only take string
 		// parameters
-		List<Object> convertedParameters = TcAnnotatorUtil.convertParameters(parameters);
+		List<Object> convertedParameters = SaveModelUtils.convertParameters(parameters);
 
-		List<ExternalResourceDescription> extractorResources = TcAnnotatorUtil
+		List<ExternalResourceDescription> extractorResources = SaveModelUtils
 				.loadExternalResourceDescriptionOfFeatures(outputPath, featureExtractorClassNames, convertedParameters);
 
 		// add the rest of the necessary parameters with the correct types
-		parameters.addAll(Arrays.asList(TcAnnotatorDocument.PARAM_TC_MODEL_LOCATION, outputPath,
+		parameters.addAll(Arrays.asList(TcAnnotator.PARAM_TC_MODEL_LOCATION, outputPath,
 				ModelSerialization_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
 				ModelSerialization_ImplBase.PARAM_DATA_WRITER_CLASS, dataWriter,
 				ModelSerialization_ImplBase.PARAM_LEARNING_MODE, learningMode,

@@ -20,9 +20,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.tc.fstore.simple.DenseFeatureStore;
-import de.tudarmstadt.ukp.dkpro.tc.ml.modelpersist.ModelPersistUtil;
-import de.tudarmstadt.ukp.dkpro.tc.ml.uima.TcAnnotatorUtil;
+import org.dkpro.tc.fstore.simple.DenseFeatureStore;
 import types.TaskBStanceAnnotation;
 
 public class NoneStanceAnnotator_TASKB extends JCasAnnotator_ImplBase {
