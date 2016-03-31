@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import dataInspection.PreprocessingTokenizationInspector;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationOutcome;
 import types.StanceAnnotation;
 
 public class TaskATweetReaderInspectionTest {
