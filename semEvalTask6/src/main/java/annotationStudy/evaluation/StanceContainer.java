@@ -1,11 +1,47 @@
 package annotationStudy.evaluation;
 
+import webanno.custom.Central_Target;
+import webanno.custom.Ground_Attitudes;
 import webanno.custom.Stance;
 
 public class StanceContainer {
+	/**
+	 * constructor from Stance Anno
+	 * @param stance
+	 */
 	public StanceContainer(Stance stance) {
 		this.target= stance.getStance_Polarity();
 		this.polarity= stance.getStance_Target();
+		this.start=stance.getBegin();
+		this.end=stance.getEnd();
+	}
+	/**
+	 * constructor from Central_Target Anno
+	 * @param stance
+	 * @param mappedTarget
+	 */
+	public StanceContainer(Central_Target stance, String mappedTarget) {
+		this.target= mappedTarget;
+		if(stance.getPolarity()==null){
+			this.polarity="NONE";
+		}else{
+			this.polarity= stance.getPolarity();
+		}
+		this.start=stance.getBegin();
+		this.end=stance.getEnd();
+	}
+	/**
+	 * constructor from Ground_Attitudes Anno
+	 * @param stance
+	 * @param mappedTarget
+	 */
+	public StanceContainer(Ground_Attitudes stance, String mappedTarget) {
+		this.target= mappedTarget;
+		if(stance.getPolarity()==null){
+			this.polarity="NONE";
+		}else{
+			this.polarity= stance.getPolarity();
+		}
 		this.start=stance.getBegin();
 		this.end=stance.getEnd();
 	}

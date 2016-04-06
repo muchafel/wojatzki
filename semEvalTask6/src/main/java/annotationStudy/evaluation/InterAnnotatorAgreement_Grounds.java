@@ -1,7 +1,12 @@
 package annotationStudy.evaluation;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,18 +35,20 @@ import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import io.TaskATweetReader;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import webanno.custom.Central_Target;
+import webanno.custom.Ground_Attitudes;
 import webanno.custom.Stance;
 
-public class InterAnnotatorAgreement {
+public class InterAnnotatorAgreement_Grounds {
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 //		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation"));
-//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation"));
+//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-05_1424/annotation"));
 		
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation_unzipped");
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation_unzipped");
-		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-04_1132/annotation_unzipped");
+		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-05_1424/annotation_unzipped");
 	}
 
 	private static void interAnnotatorAgreement(String path) throws Exception {
@@ -68,12 +75,28 @@ public class InterAnnotatorAgreement {
 
 			String docAnnotator = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId().split(" ")[0];
 
+			//handle Stance annos
 			for (Stance stance : JCasUtil.select(jcas, Stance.class)) {
 				all.inc(stance.getStance_Polarity());
 				allAnnos.inc(stance.getStance_Polarity()+" ("+stance.getStance_Target()+")");
 				stances.add(new StanceContainer(stance));
 			}
+			
+			//handle Central_Target annos
+			for (Ground_Attitudes stance : JCasUtil.select(jcas, Ground_Attitudes.class)) {
+				String mappedTarget=stance.getAttitudes();
+				all.inc(mappedTarget);
+				
+				//handle missing values
+				if(stance.getPolarity()==null){
+					allAnnos.inc(mappedTarget+" (NONE)");
+				}else{
+					allAnnos.inc(mappedTarget+" ("+stance.getPolarity()+")");
+				}
+				stances.add(new StanceContainer(stance,mappedTarget));
+			}
 
+			//assemble map from found annotations
 			if (docToAnno.containsKey(docId)) {
 				docToAnno.get(docId).getAnnotatorToAnnotations().put(docAnnotator, stances);
 			} else {
@@ -84,17 +107,16 @@ public class InterAnnotatorAgreement {
 			for (StanceContainer stance : stances) {
 				System.out.println("stance target: " + stance.getTarget() + " " + stance.getPolarity());
 			}
-			if (currentId.equals(docId)) {
-				System.out.println(docToAnno.get(currentId).getAnnotatorToAnnotations());
-			} else {
-				currentId = docId;
-			}
+//			if (currentId.equals(docId)) {
+//				System.out.println(docToAnno.get(currentId).getAnnotatorToAnnotations());
+//			} else {
+//				currentId = docId;
+//			}
 		}
-//		inspectAgreement(docToAnno);
+//		inspectAgreement(docToAnno,new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator")),"Abortion");
 //		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer"));
-//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "TobiasHorsmann","michael_the_annotator"));
-		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
-		
+		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer","michael_the_annotator"));
+//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
 		
 		for(String target:all.getKeys()){
 			System.out.println("*** Statistics for "+target+ " ***");
@@ -106,8 +128,34 @@ public class InterAnnotatorAgreement {
 			System.out.println("class distribution");
 			System.out.println("FAVOR: "+favor+" AGAINST: "+against+" NONE: "+none);
 			System.out.println(target+" :"+favor+":"+against+":"+none);
-			calculateInterAnnotatorAgreement(docToAnno,annotators,target);
+			
+			//FIXME real handling!!! 
+			//skip calculation if we do not have at least two categories (as NONE is the default this should get almost all cases)
+			if(favor<1  && against<1){
+				System.err.println("there are not at least two different categories for "+target);
+				continue;
+			}
+			calculateInterAnnotatorAgreement(docToAnno,annotators,target,target+" :"+favor+":"+against+":"+none,path);
 		}
+	}
+
+	private static String getMappedTarget(String target) {
+//		if(target.equals("killing unborn")||target.equals("Abortion is murder") || target.equals("killing unborn children")||target.equals("Abortion is Killing")){
+//			return "Abortion is murder";
+//		}
+		if(target.equals("God")||target.equals("religious bullshit")){
+			return "God";
+		}
+		if(target.equals("Killing is valuable business")||target.equals("business / making money with unborn child")){
+			return "abortion business";
+		}
+		if(target.equals("human rights")||target.equals("self determination")||target.equals("One has the right to choose over the own body")||target.equals("woman right of self determination")){
+			return "choice";
+		}
+		if(target.equals("Abortion is reproductive healthcare")||target.equals("healthcare system")){
+			return "healthcare";
+		}
+		return target;
 	}
 
 	/**
@@ -115,10 +163,12 @@ public class InterAnnotatorAgreement {
 	 * FIXME: At the moment we can only handle 2 or 3 annotators. should be generalized to n!
 	 * @param docToAnno
 	 * @param annotators 
+	 * @param toPrint 
+	 * @param path 
 	 * @param all
 	 * @throws Exception 
 	 */
-	private static void calculateInterAnnotatorAgreement(Map<String, AnnotatedDocument> docToAnno, ArrayList<String> annotators, String target) throws Exception {
+	private static void calculateInterAnnotatorAgreement(Map<String, AnnotatedDocument> docToAnno, ArrayList<String> annotators, String target, String toPrint, String path) throws Exception {
 		
 		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
 		if(annotators.size()>3){
@@ -148,24 +198,37 @@ public class InterAnnotatorAgreement {
 		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
 		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
 //		System.out.println("COHENKAPPA " + cohenKappaAgreement.calculateAgreement());
+		writeToFile(toPrint,pa.calculateAgreement(),fleissKappa.calculateAgreement(),path);
 
+	}
+
+	private static void writeToFile(String toPrint, double percentageAgreement, double fleissKappa, String path) throws UnsupportedEncodingException, FileNotFoundException, IOException {
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path+"/agreement.csv",true), "UTF-8"));
+		try {
+			out.write(toPrint+";"+String.valueOf(percentageAgreement)+";"+fleissKappa+""+System.lineSeparator());
+		} finally {
+			out.close();
+		}
+		
 	}
 
 	/**
 	 * quantitative and qualitative inspection based on Number of (mis)matches 
+	 * FIXME: cannot handle more than two annotators
 	 * 
 	 * @param docToAnno
+	 * @param annotators 
 	 */
-	private static void inspectAgreement(Map<String, AnnotatedDocument> docToAnno) {
+	private static void inspectAgreement(Map<String, AnnotatedDocument> docToAnno, ArrayList<String> annotators, String majorTarget) {
 		int totalDiscrepancy = 0;
 		StanceAnnotationComparator comparator = new StanceAnnotationComparator();
 		for (String docId : docToAnno.keySet()) {
 			System.out.println(docId);
 			Map<String, List<StanceContainer>> annotatedDoc = docToAnno.get(docId).getAnnotatorToAnnotations();
-			int discrepancy = comparator.compare(annotatedDoc.get("DominikLawatsch"), annotatedDoc.get("NiklasMeyer"));
+			int discrepancy = comparator.compare(annotatedDoc.get(annotators.get(0)), annotatedDoc.get(annotators.get(1)));
 			totalDiscrepancy += discrepancy;
-			System.out.println(getCoding(annotatedDoc.get("DominikLawatsch"), "Abortion") + " "
-					+ getCoding(annotatedDoc.get("NiklasMeyer"), "Abortion"));
+			System.out.println(getCoding(annotatedDoc.get(annotators.get(0)), majorTarget) + " "
+					+ getCoding(annotatedDoc.get(annotators.get(1)), majorTarget));
 		}
 		System.out.println("total dicrepancy " + totalDiscrepancy);
 	}
