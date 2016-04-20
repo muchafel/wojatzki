@@ -1,9 +1,13 @@
 package annotationStudy;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,15 +41,25 @@ import util.PreprocessingPipeline;
 
 public class Keyphrase_Extraction {
 
+//	private static final String semEvalTarget="LegalizationofAbortion";
+//	private static final String semEvalTarget="FeministMovement";
+	private static final String semEvalTarget = "Atheism";
+
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 		
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-		String target="LegalizationofAbortion";
+
+		
 		
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
-				TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/",
+				TaskATweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+semEvalTarget+"/",
 				TaskATweetReader.PARAM_PATTERNS, "*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",
 				TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
+		
+//		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
+//				TaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+semEvalTarget+"/",
+//				TaskATweetReader.PARAM_PATTERNS, "*.xml", TaskATweetReader.PARAM_LANGUAGE, "en",
+//				TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
 		
 		FrequencyDistribution<String> fd_chunks= new FrequencyDistribution<String>();
 		FrequencyDistribution<String> fd_concepts= new FrequencyDistribution<String>();
@@ -57,49 +71,45 @@ public class Keyphrase_Extraction {
 			JCas jcas = it.next();
 //			System.out.println("-------------------------");
 //			System.out.println(jcas.getDocumentText()+ " ");
-//			for(Chunk chunk: JCasUtil.select(jcas, Chunk.class)){
-//				System.out.println(chunk.getCoveredText()+ " "+ chunk.getChunkValue());
-//				if(chunk.getChunkValue().equals("NP")){
-//					fd_chunks.inc(chunk.getCoveredText());
+			for(Chunk chunk: JCasUtil.select(jcas, Chunk.class)){
+				if(chunk.getChunkValue().equals("NP")){
+					fd_chunks.inc(chunk.getCoveredText());
 //					System.out.println(chunk.getCoveredText()+ " "+ chunk.getChunkValue());
-//				}
+				}
+			}
+			
+//			Collection<Token> relevantTokens = getRelevantTokens(jcas);
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+//					.equals("FAVOR")) {
+////				System.out.println("FAVOR");
+//				favor = incAll(favor, relevantTokens);
+//			}
+//
+//			// if tweet is against add tokens to favor frequency
+//			// distribution
+//			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
+//					.equals("AGAINST")) {
+//				against = incAll(against, relevantTokens);
 //			}
 			
-			Collection<Token> relevantTokens = getRelevantTokens(jcas);
-			for(Token t: relevantTokens){
-				System.out.println(t.getCoveredText());
-			}
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
-					.equals("FAVOR")) {
-				System.out.println("FAVOR");
-				favor = incAll(favor, relevantTokens);
-			}
-
-			// if tweet is against add tokens to favor frequency
-			// distribution
-			if (JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next().getOutcome()
-					.equals("AGAINST")) {
-				against = incAll(against, relevantTokens);
-			}
 			
-			
-//			for(Token t: JCasUtil.select(jcas, Token.class)){
-////				System.out.println(chunk.getCoveredText()+ " "+ chunk.getChunkValue());
-//				if(t.getPos().getClass().getSimpleName().equals("NN") || t.getPos().getClass().getSimpleName().equals("NP")){
+			for(Token t: JCasUtil.select(jcas, Token.class)){
+//				System.out.println(chunk.getCoveredText()+ " "+ chunk.getChunkValue());
+				if(t.getPos().getClass().getSimpleName().equals("NN") || t.getPos().getClass().getSimpleName().equals("NP")){
 //					System.out.println(t.getCoveredText()+ " "+ t.getPos().getClass().getSimpleName());
-//					fd_concepts.inc(t.getLemma().getValue());
-//				}
-//			}
+					fd_concepts.inc(t.getLemma().getValue());
+				}
+			}
 		}
-//		for(String chunk : fd_chunks.getMostFrequentSamples(250)){
-//			System.out.println(chunk+ "\t"+fd_chunks.getCount(chunk));
-//		}
-//		System.out.println("-------------");
-//		for(String t : fd_concepts.getMostFrequentSamples(150)){
-//			System.out.println(t+ "\t"+fd_concepts.getCount(t));
-//		}
-		Map<String, Float> lexicon = createLexiconMap(favor, against);
-		showLexicon(target, sortMap(lexicon));
+		for(String chunk : fd_chunks.getMostFrequentSamples(250)){
+			System.out.println(chunk+ "\t"+fd_chunks.getCount(chunk));
+		}
+		System.out.println("-------------");
+		for(String t : fd_concepts.getMostFrequentSamples(150)){
+			System.out.println(t+ "\t"+fd_concepts.getCount(t));
+		}
+//		Map<String, Float> lexicon = createLexiconMap(favor, against);
+//		showLexicon(semEvalTarget, sortMap(lexicon));
 	}
 
 	private static Map<String, Float> createLexiconMap(FrequencyDistribution<String> favor,
@@ -123,7 +133,8 @@ public class Keyphrase_Extraction {
 	private static FrequencyDistribution<String> incAll(FrequencyDistribution<String> favor,
 			Collection<Token> relevantTokens) {
 		for(Token t: relevantTokens){
-			favor.inc(t.getCoveredText().toLowerCase());
+//			favor.inc(t.getLemma().getValue());
+			favor.inc(t.getCoveredText());
 		}
 		return favor;
 	}
@@ -144,12 +155,26 @@ public class Keyphrase_Extraction {
 	 * 
 	 * @param target
 	 * @param lexcicon
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws UnsupportedEncodingException 
 	 */
-	private static void showLexicon(String target, Map<String, Float> lexcicon) {
-		for (String key : lexcicon.keySet()) {
-			System.out.println(key + ":" + lexcicon.get(key));
+	private static void showLexicon(String target, Map<String, Float> lexicon) throws UnsupportedEncodingException, FileNotFoundException, IOException {
+		for (String key : lexicon.keySet()) {
+			System.out.println(key + ":" + lexicon.get(key));
+			writeToFile(key+"\t"+lexicon.get(key),DkproContext.getContext().getWorkspace().getAbsolutePath()+"/semevalTask6/prestudy_annotation/"+target);
 		}
 	}
+	private static void writeToFile(String toPrint, String path) throws UnsupportedEncodingException, FileNotFoundException, IOException {
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path+"/dice_scored_noun_caseSensitive.csv",true), "UTF-8"));
+		try {
+			out.write(toPrint+System.lineSeparator());
+		} finally {
+			out.close();
+		}
+		
+	}
+
 	private static Map<String, Float> sortMap(Map<String, Float> unsortMap) {
 		// Convert Map to List
 		List<Map.Entry<String, Float>> list = new LinkedList<Map.Entry<String, Float>>(unsortMap.entrySet());

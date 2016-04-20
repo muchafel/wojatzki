@@ -44,11 +44,11 @@ public class InterAnnotatorAgreement_Grounds {
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 //		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation"));
-//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-05_1424/annotation"));
+//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-07_1426/annotation"));
 		
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation_unzipped");
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation_unzipped");
-		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-05_1424/annotation_unzipped");
+		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-07_1426/annotation_unzipped");
 	}
 
 	private static void interAnnotatorAgreement(String path) throws Exception {
@@ -115,8 +115,8 @@ public class InterAnnotatorAgreement_Grounds {
 		}
 //		inspectAgreement(docToAnno,new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator")),"Abortion");
 //		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer"));
-		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer","michael_the_annotator"));
-//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
+//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer","michael_the_annotator"));
+		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
 		
 		for(String target:all.getKeys()){
 			System.out.println("*** Statistics for "+target+ " ***");

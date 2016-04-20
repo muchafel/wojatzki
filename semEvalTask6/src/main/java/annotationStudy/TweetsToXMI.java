@@ -40,13 +40,19 @@ public class TweetsToXMI {
 	private void run(String baseDir, String target) throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(
 				//training data
+//				CollectionReaderFactory.createReader(
+//						PlainTaskATweetReader.class,
+//						PlainTaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/", PlainTaskATweetReader.PARAM_PATTERNS,
+//						"*.xml", PlainTaskATweetReader.PARAM_LANGUAGE, "en",PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE,true
+//				),
+				//test data
 				CollectionReaderFactory.createReader(
 						PlainTaskATweetReader.class,
-						PlainTaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/"+target+"/", PlainTaskATweetReader.PARAM_PATTERNS,
+						PlainTaskATweetReader.PARAM_SOURCE_LOCATION, "/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/"+target, PlainTaskATweetReader.PARAM_PATTERNS,
 						"*.xml", PlainTaskATweetReader.PARAM_LANGUAGE, "en",PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE,true
 				),
 				AnalysisEngineFactory.createEngineDescription(createEngineDescription(ArktweetTokenizer.class)),
-				AnalysisEngineFactory.createEngineDescription(createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION, baseDir + "/semevalTask6/TweetsTaskA_xmi/"+target+"/"))
+				AnalysisEngineFactory.createEngineDescription(createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION, baseDir + "/semevalTask6/TweetsTaskA_xmi_test/"+target+"/"))
 		);	
 	}
 
