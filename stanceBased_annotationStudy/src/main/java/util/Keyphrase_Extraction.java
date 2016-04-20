@@ -35,7 +35,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.api.syntax.type.chunk.Chunk;
 import io.TaskATweetReader;
-import lexicons.StanceLexicon;
 import util.CollocationMeasureHelper;
 import util.PreprocessingPipeline;
 
