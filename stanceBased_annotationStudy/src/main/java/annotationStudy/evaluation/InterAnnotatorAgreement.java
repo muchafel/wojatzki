@@ -1,7 +1,12 @@
 package annotationStudy.evaluation;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,12 +41,11 @@ public class InterAnnotatorAgreement {
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation"));
-//		extract(new File(baseDir+"/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation"));
-		
-//		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation_unzipped");
-//		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation_unzipped");
-		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-04_1132/annotation_unzipped");
+		// extract(new File(baseDir+
+		// "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-20_1022/annotation"));
+
+		interAnnotatorAgreement(
+				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-20_1022/annotation_unzipped");
 	}
 
 	private static void interAnnotatorAgreement(String path) throws Exception {
@@ -49,11 +53,11 @@ public class InterAnnotatorAgreement {
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
 				XmiReader.PARAM_SOURCE_LOCATION, path, XmiReader.PARAM_PATTERNS, "**/*.xmi", XmiReader.PARAM_LANGUAGE,
 				"en");
-		
-		int allAnnotationCount=0;
+
+		int allAnnotationCount = 0;
 		FrequencyDistribution<String> all = new FrequencyDistribution<String>();
 		FrequencyDistribution<String> allAnnos = new FrequencyDistribution<String>();
-		
+
 		Map<String, AnnotatedDocument> docToAnno = new HashMap<>();
 		List<JCas> allDocs = new ArrayList<>();
 
@@ -70,7 +74,7 @@ public class InterAnnotatorAgreement {
 
 			for (Stance stance : JCasUtil.select(jcas, Stance.class)) {
 				all.inc(stance.getStance_Polarity());
-				allAnnos.inc(stance.getStance_Polarity()+" ("+stance.getStance_Target()+")");
+				allAnnos.inc(stance.getStance_Polarity() + " (" + stance.getStance_Target() + ")");
 				stances.add(new StanceContainer(stance));
 			}
 
@@ -90,69 +94,81 @@ public class InterAnnotatorAgreement {
 				currentId = docId;
 			}
 		}
-//		inspectAgreement(docToAnno);
-//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer"));
-//		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "TobiasHorsmann","michael_the_annotator"));
-		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
-		
-		
-		for(String target:all.getKeys()){
-			System.out.println("*** Statistics for "+target+ " ***");
-			System.out.println("used "+all.getCount(target)+ " times");
-			long favor=allAnnos.getCount(target+ " (FAVOR)");
-			long against=allAnnos.getCount(target+ " (AGAINST)");
-			long none=allAnnos.getCount(target+ " (NONE)");
-			none+=allAnnotationCount-(favor+against+none);
+		// inspectAgreement(docToAnno);
+		// ArrayList<String> annotators = new
+		// ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer"));
+		// ArrayList<String> annotators = new
+		// ArrayList<String>(Arrays.asList("DominikLawatsch",
+		// "TobiasHorsmann","michael_the_annotator"));
+		ArrayList<String> annotators = new ArrayList<String>(
+				Arrays.asList("DominikLawatsch", "NiklasMeyer", "michael_the_annotator"));
+
+		for (String target : all.getKeys()) {
+			System.out.println("*** Statistics for " + target + " ***");
+			System.out.println("used " + all.getCount(target) + " times");
+			long favor = allAnnos.getCount(target + " (FAVOR)");
+			long against = allAnnos.getCount(target + " (AGAINST)");
+			long none = allAnnos.getCount(target + " (NONE)");
+			none += allAnnotationCount - (favor + against + none);
 			System.out.println("class distribution");
-			System.out.println("FAVOR: "+favor+" AGAINST: "+against+" NONE: "+none);
-			System.out.println(target+" :"+favor+":"+against+":"+none);
-			calculateInterAnnotatorAgreement(docToAnno,annotators,target);
+			System.out.println("FAVOR: " + favor + " AGAINST: " + against + " NONE: " + none);
+			System.out.println(target + " :" + favor + ":" + against + ":" + none);
+			calculateInterAnnotatorAgreement(docToAnno, annotators, target,
+					target + " :" + favor + ":" + against + ":" + none, path);
 		}
 	}
 
 	/**
-	 * compute different kappa statistics for a given target for a given list of annotators
-	 * FIXME: At the moment we can only handle 2 or 3 annotators. should be generalized to n!
+	 * compute different kappa statistics for a given target for a given list of
+	 * annotators FIXME: At the moment we can only handle 2 or 3 annotators.
+	 * should be generalized to n!
+	 * 
 	 * @param docToAnno
-	 * @param annotators 
+	 * @param annotators
 	 * @param all
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private static void calculateInterAnnotatorAgreement(Map<String, AnnotatedDocument> docToAnno, ArrayList<String> annotators, String target) throws Exception {
-		
+	private static void calculateInterAnnotatorAgreement(Map<String, AnnotatedDocument> docToAnno,
+			ArrayList<String> annotators, String target, String toPrint, String path) throws Exception {
+
 		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
-		if(annotators.size()>3){
+		if (annotators.size() > 3) {
 			throw new Exception("unhandled number of annotators");
 		}
 
 		for (String docId : docToAnno.keySet()) {
-//			System.out.println(docId);
+			// System.out.println(docId);
 			Map<String, List<StanceContainer>> annotatedDoc = docToAnno.get(docId).getAnnotatorToAnnotations();
-			if(annotators.size()==2){
+			if (annotators.size() == 2) {
 				study.addItem(getCoding(annotatedDoc.get(annotators.get(0)), target),
 						getCoding(annotatedDoc.get(annotators.get(1)), target));
-//				System.out.println(getCoding(annotatedDoc.get("DominikLawatsch"), target) + " "
-//						+ getCoding(annotatedDoc.get("NiklasMeyer"), "Abortion"));
-			}else{
+				// System.out.println(getCoding(annotatedDoc.get("DominikLawatsch"),
+				// target) + " "
+				// + getCoding(annotatedDoc.get("NiklasMeyer"), "Abortion"));
+			} else {
 				study.addItem(getCoding(annotatedDoc.get(annotators.get(0)), target),
-						getCoding(annotatedDoc.get(annotators.get(1)), target),getCoding(annotatedDoc.get(annotators.get(2)), target));
+						getCoding(annotatedDoc.get(annotators.get(1)), target),
+						getCoding(annotatedDoc.get(annotators.get(2)), target));
 			}
-			
+
 		}
 
-		System.out.println(study.getCategoryCount()+ " "+study.getCategories());
+		System.out.println(study.getCategoryCount() + " " + study.getCategories());
 		PercentageAgreement pa = new PercentageAgreement(study);
 		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
-//		CohenKappaAgreement cohenKappaAgreement= new CohenKappaAgreement(study);
-		
+		// CohenKappaAgreement cohenKappaAgreement= new
+		// CohenKappaAgreement(study);
+
 		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
 		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
-//		System.out.println("COHENKAPPA " + cohenKappaAgreement.calculateAgreement());
-
+		// System.out.println("COHENKAPPA " +
+		// cohenKappaAgreement.calculateAgreement());
+		System.out.println("write to" + path);
+		writeToFile(toPrint, pa.calculateAgreement(), fleissKappa.calculateAgreement(), path);
 	}
 
 	/**
-	 * quantitative and qualitative inspection based on Number of (mis)matches 
+	 * quantitative and qualitative inspection based on Number of (mis)matches
 	 * 
 	 * @param docToAnno
 	 */
@@ -190,6 +206,7 @@ public class InterAnnotatorAgreement {
 
 	/**
 	 * extracts the zipped files from the webanno structure
+	 * 
 	 * @param folder
 	 */
 	private static void extract(File folder) {
@@ -209,6 +226,19 @@ public class InterAnnotatorAgreement {
 				}
 			}
 		}
+	}
+
+	private static void writeToFile(String toPrint, double percentageAgreement, double fleissKappa, String path)
+			throws UnsupportedEncodingException, FileNotFoundException, IOException {
+		BufferedWriter out = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(path + "/agreement.csv", true), "UTF-8"));
+		try {
+			out.write(toPrint + ";" + String.valueOf(percentageAgreement) + ";" + fleissKappa + ""
+					+ System.lineSeparator());
+		} finally {
+			out.close();
+		}
+
 	}
 
 	private static void unzip(File fileEntry, File folder) {
