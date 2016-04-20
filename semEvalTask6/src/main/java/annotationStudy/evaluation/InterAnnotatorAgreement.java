@@ -41,7 +41,8 @@ public class InterAnnotatorAgreement {
 		
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-23_1639/annotation_unzipped");
 //		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-03-31_1510/annotation_unzipped");
-		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-04_1132/annotation_unzipped");
+		interAnnotatorAgreement(baseDir+ "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-20_1022/annotation_unzipped");
+//		interAnnotatorAgreement(baseDir+ "/semevalTask6/prestudy_annotation/Stance_Arguments_Prestudy_2016-04-04_1132/annotation_unzipped");
 	}
 
 	private static void interAnnotatorAgreement(String path) throws Exception {
@@ -93,7 +94,7 @@ public class InterAnnotatorAgreement {
 //		inspectAgreement(docToAnno);
 //		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer"));
 //		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "TobiasHorsmann","michael_the_annotator"));
-		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("TobiasHorsmann","michael_the_annotator"));
+		ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("DominikLawatsch", "NiklasMeyer","michael_the_annotator"));
 		
 		
 		for(String target:all.getKeys()){
