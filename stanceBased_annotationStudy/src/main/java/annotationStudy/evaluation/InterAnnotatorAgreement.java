@@ -15,9 +15,12 @@ import java.util.Map;
 
 import org.apache.bcel.generic.Select;
 import org.apache.tools.ant.taskdefs.Mkdir;
+import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -28,10 +31,12 @@ import org.dkpro.statistics.agreement.coding.FleissKappaAgreement;
 import org.dkpro.statistics.agreement.coding.KrippendorffAlphaAgreement;
 import org.dkpro.statistics.agreement.coding.PercentageAgreement;
 
+import annotators.AnnotationConsolidator;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
+import io.PlainTaskATweetReader;
 import io.TaskATweetReader;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -41,13 +46,42 @@ public class InterAnnotatorAgreement {
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-		// extract(new File(baseDir+
-		// "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-20_1022/annotation"));
+//		 extract(new File(baseDir+
+//		 "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation"));
 
-		interAnnotatorAgreement(
-				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-20_1022/annotation_unzipped");
+//		interAnnotatorAgreement(
+//				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped");
+		
+		consolidateAnnotations(baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped",baseDir);
 	}
 
+	/**
+	 * generates jcases that contain the final annotation and each annotators anno
+	 * @param baseDir 
+	 * @throws IOException 
+	 * @throws UIMAException 
+	 */
+	private static void consolidateAnnotations(String path, String baseDir) throws UIMAException, IOException {
+		//training data 
+		SimplePipeline.runPipeline(
+		CollectionReaderFactory.createReader(
+				PlainTaskATweetReader.class,
+				PlainTaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/Atheism/", PlainTaskATweetReader.PARAM_PATTERNS,
+				"*.xml", PlainTaskATweetReader.PARAM_LANGUAGE, "en",PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE,true
+		),
+		//consolidate
+		AnalysisEngineFactory.createEngineDescription(AnnotationConsolidator.class, AnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
+		// write bin cases
+		AnalysisEngineFactory.createEngineDescription()
+		);
+		
+	}
+
+	
+/**
+ * consolidates all annotations in a datastructure that enables to caluculate interrater agrrement
+ * writes the results for all subdescisison (each target) into a csv file in the path
+ */
 	private static void interAnnotatorAgreement(String path) throws Exception {
 		System.out.println(path);
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
@@ -61,7 +95,6 @@ public class InterAnnotatorAgreement {
 		Map<String, AnnotatedDocument> docToAnno = new HashMap<>();
 		List<JCas> allDocs = new ArrayList<>();
 
-		String currentId = "";
 		for (JCas jcas : new JCasIterable(reader)) {
 			allAnnotationCount++;
 			System.out.println(
@@ -84,14 +117,6 @@ public class InterAnnotatorAgreement {
 				Map<String, List<StanceContainer>> annotatorToAnnotations = new HashMap<String, List<StanceContainer>>();
 				annotatorToAnnotations.put(docAnnotator, stances);
 				docToAnno.put(docId, new AnnotatedDocument(docId, annotatorToAnnotations));
-			}
-			for (StanceContainer stance : stances) {
-				System.out.println("stance target: " + stance.getTarget() + " " + stance.getPolarity());
-			}
-			if (currentId.equals(docId)) {
-				System.out.println(docToAnno.get(currentId).getAnnotatorToAnnotations());
-			} else {
-				currentId = docId;
 			}
 		}
 		// inspectAgreement(docToAnno);
