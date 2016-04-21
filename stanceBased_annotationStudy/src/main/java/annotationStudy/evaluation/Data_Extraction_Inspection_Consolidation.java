@@ -31,12 +31,14 @@ import org.dkpro.statistics.agreement.coding.FleissKappaAgreement;
 import org.dkpro.statistics.agreement.coding.KrippendorffAlphaAgreement;
 import org.dkpro.statistics.agreement.coding.PercentageAgreement;
 
+import annotators.AnnotationCurator;
 import annotators.IronyAnnotationConsolidator;
 import annotators.TargetAnnotationConsolidator;
 import annotators.UnderstandabilityAnnotationConsolidator;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
+import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import io.PlainTaskATweetReader;
 import io.TaskATweetReader;
@@ -44,48 +46,65 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import webanno.custom.Stance;
 
-public class InterAnnotatorAgreement {
+public class Data_Extraction_Inspection_Consolidation {
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-//		 extract(new File(baseDir+
-//		 "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation"));
+		// extract(new File(baseDir+
+		// "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation"));
 
-//		interAnnotatorAgreement(
-//				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped");
-		
-		consolidateAnnotations(baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped",baseDir);
+		// interAnnotatorAgreement(
+		// baseDir +
+		// "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped");
+
+		consolidateAnnotations(
+				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped",
+				baseDir, baseDir + "/semevalTask6/targets/Atheism/",
+				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/train");
+		consolidateAnnotations(
+				baseDir + "/semevalTask6/annotationStudy/Stance_Arguments_Study_2016-04-21_0903/annotation_unzipped",
+				baseDir,
+				"/Users/michael/ArgumentMiningCoprora/semEval2016/SemEval2016-Task6-testdata/xmls/tweets/taskA_targetWise/Atheism",
+				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/test");
+
 	}
 
 	/**
-	 * generates jcases that contain the final annotation and each annotators anno
-	 * @param baseDir 
-	 * @throws IOException 
-	 * @throws UIMAException 
+	 * generates jcases that contain the final annotation and each annotators
+	 * anno
+	 * 
+	 * @param baseDir
+	 * @throws IOException
+	 * @throws UIMAException
 	 */
-	private static void consolidateAnnotations(String path, String baseDir) throws UIMAException, IOException {
-		//training data 
-		SimplePipeline.runPipeline(
-		CollectionReaderFactory.createReader(
-				PlainTaskATweetReader.class,
-				PlainTaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/Atheism/", PlainTaskATweetReader.PARAM_PATTERNS,
-				"*.xml", PlainTaskATweetReader.PARAM_LANGUAGE, "en",PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE,true
-		),
-		//consolidate annos
-		AnalysisEngineFactory.createEngineDescription(TargetAnnotationConsolidator.class, TargetAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
-		AnalysisEngineFactory.createEngineDescription(IronyAnnotationConsolidator.class, IronyAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
-		AnalysisEngineFactory.createEngineDescription(UnderstandabilityAnnotationConsolidator.class, UnderstandabilityAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
-		// write bin cases
-		AnalysisEngineFactory.createEngineDescription()
-		);
-		
+	private static void consolidateAnnotations(String path, String baseDir, String readFrom, String writeTo)
+			throws UIMAException, IOException {
+		// training data
+		SimplePipeline.runPipeline(CollectionReaderFactory.createReader(PlainTaskATweetReader.class,
+				PlainTaskATweetReader.PARAM_SOURCE_LOCATION, readFrom, PlainTaskATweetReader.PARAM_PATTERNS, "*.xml",
+				PlainTaskATweetReader.PARAM_LANGUAGE, "en", PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE, true),
+				// consolidate annos
+				AnalysisEngineFactory.createEngineDescription(TargetAnnotationConsolidator.class,
+						TargetAnnotationConsolidator.PARAM_ANNOTATIONS_PATH, path),
+				AnalysisEngineFactory.createEngineDescription(IronyAnnotationConsolidator.class,
+						IronyAnnotationConsolidator.PARAM_ANNOTATIONS_PATH, path),
+				AnalysisEngineFactory.createEngineDescription(UnderstandabilityAnnotationConsolidator.class,
+						UnderstandabilityAnnotationConsolidator.PARAM_ANNOTATIONS_PATH, path),
+				// curate differing opinions
+				AnalysisEngineFactory.createEngineDescription(AnnotationCurator.class)
+				,
+				// write bin cases
+				AnalysisEngineFactory.createEngineDescription(BinaryCasWriter.class, BinaryCasWriter.PARAM_FORMAT, "6+",
+						BinaryCasWriter.PARAM_TARGET_LOCATION, writeTo, BinaryCasWriter.PARAM_TYPE_SYSTEM_LOCATION,
+						"typesystem.bin")
+				);
 	}
 
-	
-/**
- * consolidates all annotations in a datastructure that enables to caluculate interrater agrrement
- * writes the results for all subdescisison (each target) into a csv file in the path
- */
+	/**
+	 * consolidates all annotations in a datastructure that enables to
+	 * caluculate interrater agrrement writes the results for all subdescisison
+	 * (each target) into a csv file in the path
+	 */
 	private static void interAnnotatorAgreement(String path) throws Exception {
 		System.out.println(path);
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
