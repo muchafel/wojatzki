@@ -31,7 +31,9 @@ import org.dkpro.statistics.agreement.coding.FleissKappaAgreement;
 import org.dkpro.statistics.agreement.coding.KrippendorffAlphaAgreement;
 import org.dkpro.statistics.agreement.coding.PercentageAgreement;
 
-import annotators.AnnotationConsolidator;
+import annotators.IronyAnnotationConsolidator;
+import annotators.TargetAnnotationConsolidator;
+import annotators.UnderstandabilityAnnotationConsolidator;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
@@ -69,8 +71,10 @@ public class InterAnnotatorAgreement {
 				PlainTaskATweetReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/targets/Atheism/", PlainTaskATweetReader.PARAM_PATTERNS,
 				"*.xml", PlainTaskATweetReader.PARAM_LANGUAGE, "en",PlainTaskATweetReader.PARAM_MEMORIZE_RESOURCE,true
 		),
-		//consolidate
-		AnalysisEngineFactory.createEngineDescription(AnnotationConsolidator.class, AnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
+		//consolidate annos
+		AnalysisEngineFactory.createEngineDescription(TargetAnnotationConsolidator.class, TargetAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
+		AnalysisEngineFactory.createEngineDescription(IronyAnnotationConsolidator.class, IronyAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
+		AnalysisEngineFactory.createEngineDescription(UnderstandabilityAnnotationConsolidator.class, UnderstandabilityAnnotationConsolidator.PARAM_ANNOTATIONS_PATH,path),
 		// write bin cases
 		AnalysisEngineFactory.createEngineDescription()
 		);
