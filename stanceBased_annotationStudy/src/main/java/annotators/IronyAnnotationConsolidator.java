@@ -80,11 +80,9 @@ public class IronyAnnotationConsolidator extends JCasAnnotator_ImplBase{
 		String id= JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		id=id.replace(".xml", "");
 		id=id.replace("tweets", "");
-		System.out.println(id);
 		if(docToAnno.get(id) != null){
 			Map<String, String> annotatedDoc = docToAnno.get(id);
 			for(String annotator: annotatedDoc.keySet()){
-				System.out.println(annotator);
 				createAnnotation(jcas,annotatedDoc.get(annotator), annotator);
 			}
 		}

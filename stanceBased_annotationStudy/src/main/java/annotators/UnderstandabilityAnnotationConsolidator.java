@@ -21,6 +21,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import webanno.custom.Irony;
 import webanno.custom.UnUnderstandability;
+import webanno.custom.Undersatndability;
 
 public class UnderstandabilityAnnotationConsolidator extends JCasAnnotator_ImplBase{
 	public static final String PARAM_ANNOTATIONS_PATH = "webAnnoUnderstandabilityAnnotationPath";
@@ -45,7 +46,6 @@ public class UnderstandabilityAnnotationConsolidator extends JCasAnnotator_ImplB
 	private Map<String, Map<String,String>> getConsolidationMapping(String annotationPath) throws ResourceInitializationException {
 		Map<String, Map<String,String>> docToAnno = new HashMap<>();
 
-		System.out.println(annotationPath);
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
 				XmiReader.PARAM_SOURCE_LOCATION, annotationPath, XmiReader.PARAM_PATTERNS, "**/*.xmi", XmiReader.PARAM_LANGUAGE,
 				"en");
@@ -55,7 +55,7 @@ public class UnderstandabilityAnnotationConsolidator extends JCasAnnotator_ImplB
 
 			String docAnnotator = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId().split(" ")[0];
 
-			for (UnUnderstandability understandability : JCasUtil.select(jcas, UnUnderstandability.class)) {
+			for (Undersatndability understandability : JCasUtil.select(jcas, Undersatndability.class)) {
 				if (docToAnno.containsKey(docId)) {
 					docToAnno.get(docId).put(docAnnotator, "UnUnderstandability");
 				}else{
@@ -73,11 +73,9 @@ public class UnderstandabilityAnnotationConsolidator extends JCasAnnotator_ImplB
 		String id= JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		id=id.replace(".xml", "");
 		id=id.replace("tweets", "");
-		System.out.println(id);
 		if(docToAnno.get(id)!=null){
 			Map<String, String> annotatedDoc = docToAnno.get(id);
 			for(String annotator: annotatedDoc.keySet()){
-				System.out.println(annotator);
 				createAnnotation(jcas,annotatedDoc.get(annotator), annotator);
 			}
 		}

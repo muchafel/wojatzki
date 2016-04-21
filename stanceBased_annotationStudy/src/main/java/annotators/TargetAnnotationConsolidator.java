@@ -83,14 +83,11 @@ public class TargetAnnotationConsolidator extends JCasAnnotator_ImplBase{
 		String id= JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		id=id.replace(".xml", "");
 		id=id.replace("tweets", "");
-		System.out.println(id);
 		Map<String, List<StanceContainer>> annotatedDoc = docToAnno.get(id).getAnnotatorToAnnotations();
 		for(String annotator: annotatedDoc.keySet()){
-			System.out.println(annotator);
 			Set<String> wo_dublicates= new HashSet<String>();
 			//remove dublicates
 			for(StanceContainer stanceContainer: annotatedDoc.get(annotator)){
-				System.out.println(stanceContainer.getTarget()+ " "+ stanceContainer.getPolarity());
 				wo_dublicates.add(stanceContainer.getTarget()+ ":"+ stanceContainer.getPolarity());
 			}
 			for(String anno: wo_dublicates){
