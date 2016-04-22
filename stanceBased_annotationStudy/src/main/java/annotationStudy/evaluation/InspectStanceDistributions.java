@@ -19,9 +19,18 @@ import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;
 import curatedTypes.CuratedUnderstandability;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 
+/**
+ * class for inspection the class distributions of 
+ * a) FAVOR,AGAINST,NONE 
+ * b) all used sub target-stance pairs (combined into usage patterns)
+ * class has filtering functions for irony and understandability
+ * @author michael
+ *
+ */
 public class InspectStanceDistributions {
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sex marriage",
@@ -31,8 +40,8 @@ public class InspectStanceDistributions {
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 		InspectStanceDistributions inspection = new InspectStanceDistributions();
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-//		inspection.inspectDistributionForMainTarget(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
-		inspection.inspectPatterns(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+		inspection.inspectDistributionForMainTarget(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+//		inspection.inspectPatterns(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
 	}
 
 	private void inspectPatterns(String location) throws ResourceInitializationException{
@@ -91,6 +100,9 @@ public class InspectStanceDistributions {
 			}
 			if (JCasUtil.select(jcas, CuratedIrony.class).isEmpty() && JCasUtil.select(jcas, CuratedUnderstandability.class).isEmpty()) {
 				fd4.inc(JCasUtil.selectSingle(jcas, CuratedMainTarget.class).getPolarity());
+			}else{
+				//display tweets that are excluded
+				System.out.println(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId());
 			}
 
 		}
