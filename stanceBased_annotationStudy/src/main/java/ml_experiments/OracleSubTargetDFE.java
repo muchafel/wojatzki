@@ -16,9 +16,19 @@ import curatedTypes.CuratedSubTarget;
 
 public class OracleSubTargetDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
 
-	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sex marriage",
-			"religious_freedom", "Conservative_Movement", "Freethinking", "Islam", "No_evidence_for_religion", "USA",
-			"Supernatural_Power_Being", "Life_after_death", "Christianity"));
+	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(
+			"secularism",
+			"Same-sex marriage",
+			"religious_freedom", 
+			"Conservative_Movement",
+			"Freethinking",
+			"Islam"
+			,"No_evidence_for_religion"
+			,"USA"
+			,"Supernatural_Power_Being"
+			, "Life_after_death"
+			, "Christianity"
+			));
 	
 	@Override
 	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
