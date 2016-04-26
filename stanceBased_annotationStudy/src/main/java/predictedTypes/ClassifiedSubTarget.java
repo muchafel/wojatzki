@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Apr 22 16:04:08 CEST 2016
+ * Updated by JCasGen Mon Apr 25 15:05:07 CEST 2016
  * XML source: /Users/michael/git/ucsm_git/stanceBased_annotationStudy/src/main/resources/desc/type/stackingTypes.xml
  * @generated */
 public class ClassifiedSubTarget extends Annotation {

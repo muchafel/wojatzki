@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Apr 22 16:04:08 CEST 2016
+ * Updated by JCasGen Mon Apr 25 15:05:07 CEST 2016
  * @generated */
 public class ClassifiedSubTarget_Type extends Annotation_Type {
   /** @generated 
