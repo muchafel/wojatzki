@@ -12,6 +12,7 @@ import org.dkpro.tc.api.type.TextClassificationOutcome;
 
 import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import types.StanceAnnotation;
 
@@ -57,7 +58,11 @@ public class SubStanceReader extends BinaryCasReader{
 	private String getTextClassificationOutcome(JCas jcas, String targetLabel2) throws Exception {
 		for(CuratedSubTarget subTarget: JCasUtil.select(jcas, CuratedSubTarget.class)){
 			if(targetLabel2.equals(subTarget.getTarget())){
-				return subTarget.getPolarity();
+				String polarity=subTarget.getPolarity();
+				if(!polarity.equals("FAVOR") && !polarity.equals("AGAINST")){
+					return "NONE";
+				}
+				return polarity;
 			}
 		}
 		throw new Exception("target Lable not annotated");

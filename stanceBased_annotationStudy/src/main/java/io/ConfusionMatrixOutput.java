@@ -30,7 +30,7 @@ public class ConfusionMatrixOutput extends ReportBase implements Constants{
 		System.out.println(eval.toMatrixString());
 		System.out.println("F(a): "+eval.fMeasure(0));
 		System.out.println("F(b): "+eval.fMeasure(1));
-		System.out.println("F(c): "+eval.fMeasure(2));
+//		System.out.println("F(c): "+eval.fMeasure(2));
 		System.out.println("F(weighted): "+eval.weightedFMeasure());
 		System.out.println("(F(a)+F(b))/2: "+(eval.fMeasure(0)+eval.fMeasure(1))/2);
 	}
