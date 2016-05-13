@@ -38,8 +38,8 @@ import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
  */
 public class InspectStanceDistributions {
 
-	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sex marriage",
-			"religious_freedom", "Conservative_Movement", "Freethinking", "Islam", "No_evidence_for_religion", "USA",
+	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(
+			"secularism", "Same-sex marriage","religious_freedom", "Conservative_Movement", "Freethinking", "Islam", "No_evidence_for_religion", "USA",
 			"Supernatural_Power_Being", "Life_after_death", "Christianity"));
 
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
@@ -49,8 +49,47 @@ public class InspectStanceDistributions {
 //				.inspectDistributionForMainTarget(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
 //		inspection
 //				.inspectDistributionForSubTargets(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
-		 inspection.inspectPatterns(baseDir +
-		 "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+//		 inspection.inspectPatterns(baseDir +
+//		 "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+		inspection.inspectCumulatedPatterns(baseDir +
+				 "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+	}
+
+	private void inspectCumulatedPatterns(String location) throws ResourceInitializationException {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(BinaryCasReader.class,
+				BinaryCasReader.PARAM_SOURCE_LOCATION, location, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+				BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
+		
+		Map<String,FrequencyDistribution<String>> targetToFd= new HashMap<>();
+		for (String subTarget : subTargets) {
+			targetToFd.put(subTarget, new FrequencyDistribution<>());
+		}
+		
+		for (JCas jcas : new JCasIterable(reader)) {
+			// ignore irony and ununderstandability
+			if (JCasUtil.select(jcas, CuratedIrony.class).isEmpty()
+					&& JCasUtil.select(jcas, CuratedUnderstandability.class).isEmpty()
+					&& JCasUtil.selectSingle(jcas, CuratedMainTarget.class).getPolarity().equals("AGAINST")) {
+				
+				for (String subTarget : subTargets) {
+					for (CuratedSubTarget target : JCasUtil.select(jcas, CuratedSubTarget.class)) {
+						if (target.getTarget().equals(subTarget)  ) {
+//							targetToFd.get(subTarget).inc(getTargetString(jcas));
+							targetToFd.get(subTarget).inc(target.getTarget()+"_"+target.getPolarity());
+						}
+					}
+				}
+			}
+		}
+		for (String subTarget : subTargets) {
+			FrequencyDistribution<String> fd =targetToFd.get(subTarget);
+			if(fd.getN()>0){
+//				System.out.println(fd.getN());
+				for (String pattern : fd.getMostFrequentSamples(fd.getKeys().size())) {
+					System.out.println(pattern + " " + fd.getCount(pattern));
+				}
+			}
+		}
 	}
 
 	private void inspectDistributionForSubTargets(String location) throws ResourceInitializationException {
@@ -68,11 +107,16 @@ public class InspectStanceDistributions {
 			if (JCasUtil.select(jcas, CuratedIrony.class).isEmpty()
 					&& JCasUtil.select(jcas, CuratedUnderstandability.class).isEmpty()) {
 				for (String subTarget : subTargets) {
-					for (CuratedSubTarget target : JCasUtil.select(jcas, CuratedSubTarget.class)) {
+					for (SubTarget target : JCasUtil.select(jcas, SubTarget.class)) {
 						if (target.getTarget().equals(subTarget)) {
 							targetToFd.get(subTarget).inc(target.getTarget()+"_"+target.getPolarity());
 						}
 					}
+//					for (CuratedSubTarget target : JCasUtil.select(jcas, CuratedSubTarget.class)) {
+//						if (target.getTarget().equals(subTarget)) {
+//							targetToFd.get(subTarget).inc(target.getTarget()+"_"+target.getPolarity());
+//						}
+//					}
 				}
 			} else {
 			}

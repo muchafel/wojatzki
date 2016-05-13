@@ -20,8 +20,10 @@ import org.dkpro.statistics.agreement.coding.CodingAnnotationStudy;
 import org.dkpro.statistics.agreement.coding.FleissKappaAgreement;
 import org.dkpro.statistics.agreement.coding.PercentageAgreement;
 
+import consolidatedTypes.Irony;
 import consolidatedTypes.MainTarget;
 import consolidatedTypes.SubTarget;
+import consolidatedTypes.Understandability;
 import curatedTypes.CuratedIrony;
 import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;
@@ -45,10 +47,105 @@ public class InterAnnotatorAgreement {
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		InterAnnotatorAgreement agreementCalculator = new InterAnnotatorAgreement();
-		agreementCalculator.calculateIAA(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
-				useSubTargets);
+		// agreementCalculator.calculateIAA(baseDir +
+		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
+		// useSubTargets);
+		// agreementCalculator.calculateIAAForIronyandUnderstandbility(baseDir +
+		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
+		// useSubTargets);
+		agreementCalculator.calculateIAAForNoExplicitStance(
+				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all", useSubTargets);
 		// agreementCalculator.calculateTotalIAA(baseDir +
 		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
+	}
+
+	private void calculateIAAForNoExplicitStance(String path, boolean useSubTargets2) throws Exception {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(BinaryCasReader.class,
+				BinaryCasReader.PARAM_SOURCE_LOCATION, path, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+				BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
+
+		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
+		FrequencyDistribution<String> fd = new FrequencyDistribution<>();
+		if (annotators.size() > 3) {
+			throw new Exception("unhandled number of annotators");
+		}
+
+		for (JCas jcas : new JCasIterable(reader)) {
+			// ignore irony and ununderstandability
+			if (JCasUtil.select(jcas, CuratedIrony.class).isEmpty()
+					&& JCasUtil.select(jcas, CuratedUnderstandability.class).isEmpty()) {
+				List<String> decisions = new ArrayList<>();
+				for (String annotator : annotators) {
+					decisions.add(getAnnotatorDecisisonExplicitStance(jcas, annotator));
+				}
+				fd.incAll(decisions);
+				study.addItem(decisions.get(0), decisions.get(1), decisions.get(2));
+			}
+		}
+		PercentageAgreement pa = new PercentageAgreement(study);
+		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
+		System.out.println("explicit fleiss " + fleissKappa.calculateAgreement());
+
+	}
+
+	private String getAnnotatorDecisisonExplicitStance(JCas jcas, String annotator) {
+		
+		
+		
+//		System.out.println(JCasUtil.select(jcas, SubTarget.class).size());
+		for(SubTarget target:JCasUtil.select(jcas, SubTarget.class)){
+			if(target.getAnnotator().equals(annotator)){
+				return "TRUE";
+			}
+		}
+		return "FALSE";
+	}
+
+	private void calculateIAAForIronyandUnderstandbility(String path, boolean useSubTargets2) throws Exception {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(BinaryCasReader.class,
+				BinaryCasReader.PARAM_SOURCE_LOCATION, path, BinaryCasReader.PARAM_PATTERNS, "*.bin",
+				BinaryCasReader.PARAM_TYPE_SYSTEM_LOCATION, "typesystem.bin");
+
+		CodingAnnotationStudy studyirony = new CodingAnnotationStudy(annotators.size());
+		CodingAnnotationStudy studyUnderstandability = new CodingAnnotationStudy(annotators.size());
+		if (annotators.size() > 3) {
+			throw new Exception("unhandled number of annotators");
+		}
+
+		for (JCas jcas : new JCasIterable(reader)) {
+			List<String> decisionsIrony = new ArrayList<>();
+			List<String> decisionsUnderstandability = new ArrayList<>();
+			for (String annotator : annotators) {
+				decisionsIrony.add(getAnnotatorDecisisonIrony(jcas, annotator));
+				decisionsUnderstandability.add(getAnnotatorDecisisonUnderstandability(jcas, annotator));
+			}
+			studyirony.addItem(decisionsIrony.get(0), decisionsIrony.get(1), decisionsIrony.get(2));
+			studyUnderstandability.addItem(decisionsUnderstandability.get(0), decisionsUnderstandability.get(1),
+					decisionsUnderstandability.get(2));
+		}
+		FleissKappaAgreement fleissKappaIrony = new FleissKappaAgreement(studyirony);
+		System.out.println("Irony fleiss " + fleissKappaIrony.calculateAgreement());
+
+		FleissKappaAgreement fleissKappaUnderstandability = new FleissKappaAgreement(studyUnderstandability);
+		System.out.println("Understandability fleiss " + fleissKappaUnderstandability.calculateAgreement());
+	}
+
+	private String getAnnotatorDecisisonUnderstandability(JCas jcas, String annotator) {
+		for (Understandability irony : JCasUtil.select(jcas, Understandability.class)) {
+			if (irony.getAnnotator().equals(annotator)) {
+				return "TRUE";
+			}
+		}
+		return "FALSE";
+	}
+
+	private String getAnnotatorDecisisonIrony(JCas jcas, String annotator) {
+		for (Irony irony : JCasUtil.select(jcas, Irony.class)) {
+			if (irony.getAnnotator().equals(annotator)) {
+				return "TRUE";
+			}
+		}
+		return "FALSE";
 	}
 
 	private void calculateTotalIAA(String path) throws Exception {
@@ -135,12 +232,11 @@ public class InterAnnotatorAgreement {
 		}
 		PercentageAgreement pa = new PercentageAgreement(study);
 		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
-		
-		String toPrint = String.valueOf(fd.getCount("ATHEISM_FAVOR")) + "\t"
-				+ String.valueOf(fd.getCount("ATHEISM_AGAINST")) + "\t"
-				+ String.valueOf(fd.getCount("ATHEISM_NONE"));
 
-		return toPrint+"\t"+pa.calculateAgreement() + "\t" + fleissKappa.calculateAgreement();
+		String toPrint = String.valueOf(fd.getCount("ATHEISM_FAVOR")) + "\t"
+				+ String.valueOf(fd.getCount("ATHEISM_AGAINST")) + "\t" + String.valueOf(fd.getCount("ATHEISM_NONE"));
+
+		return toPrint + "\t" + pa.calculateAgreement() + "\t" + fleissKappa.calculateAgreement();
 	}
 
 	private String getAnnotatorDecisisonMain(JCas jcas, String annotator) {
