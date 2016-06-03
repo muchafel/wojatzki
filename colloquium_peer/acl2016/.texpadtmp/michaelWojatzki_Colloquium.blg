@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: /Users/michael/Desktop/colloquium_peer/acl2016/.texpadtmp/michaelWojatzki_Colloquium.aux
+The style file: ../acl2016.bst
+Database file #1: ../acl2016.bib
+You've used 24 entries,
+            2490 wiz_defined-function locations,
+            691 strings with 10503 characters,
+and the built_in function-call counts, 12097 in all, are:
+= -- 1298
+> -- 503
+< -- 19
++ -- 176
+- -- 172
+* -- 862
+:= -- 1837
+add.period$ -- 101
+call.type$ -- 24
+change.case$ -- 179
+chr.to.int$ -- 21
+cite$ -- 24
+duplicate$ -- 552
+empty$ -- 898
+format.name$ -- 206
+if$ -- 2649
+int.to.chr$ -- 4
+int.to.str$ -- 0
+missing$ -- 24
+newline$ -- 147
+num.names$ -- 73
+pop$ -- 238
+preamble$ -- 1
+purify$ -- 204
+quote$ -- 0
+skip$ -- 419
+stack$ -- 0
+substring$ -- 591
+swap$ -- 181
+text.length$ -- 19
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 188
+warning$ -- 0
+while$ -- 98
+width$ -- 28
+write$ -- 361
