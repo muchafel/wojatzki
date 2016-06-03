@@ -25,6 +25,7 @@ import util.PreprocessingPipeline;
 
 public class TweetsToXMI {
 
+	
 	public static void main(String[] args) throws IOException, ResourceInitializationException, UIMAException {
 		ArrayList<String> targets = new ArrayList<String>(
 			    Arrays.asList("Atheism","FeministMovement", "ClimateChangeisaRealConcern","HillaryClinton", "LegalizationofAbortion"));

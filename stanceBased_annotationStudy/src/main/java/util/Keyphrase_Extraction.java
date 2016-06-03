@@ -109,6 +109,10 @@ public class Keyphrase_Extraction {
 		}
 //		Map<String, Float> lexicon = createLexiconMap(favor, against);
 //		showLexicon(semEvalTarget, sortMap(lexicon));
+		
+		System.err.println(fd_concepts.getCount("atheism"));
+		System.err.println(fd_concepts.getCount("atheist"));
+		
 	}
 
 	private static Map<String, Float> createLexiconMap(FrequencyDistribution<String> favor,
