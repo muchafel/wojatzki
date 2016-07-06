@@ -1,4 +1,4 @@
-package ml_experiments;
+package featureExtractors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +16,11 @@ import curatedTypes.CuratedSubTarget;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import predictedTypes.ClassifiedSubTarget;
 
+/**
+ * feature extractor works on a annotation that are made based on a previously trained model. The predictions by the model are stored in ClassifiedSubTarget Annotations
+ * @author michael
+ *
+ */
 public class ClassifiedSubTargetDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sex marriage",

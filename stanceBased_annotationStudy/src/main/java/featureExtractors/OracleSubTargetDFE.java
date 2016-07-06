@@ -1,4 +1,4 @@
-package ml_experiments;
+package featureExtractors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,11 @@ import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 import curatedTypes.CuratedSubTarget;
 
+/**
+ * informed upperbound prediction. Relies on human labled annotations (CuratedSubTarget) in the data.
+ * @author michael
+ *
+ */
 public class OracleSubTargetDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(

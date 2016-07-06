@@ -1,4 +1,4 @@
-package ml_experiments;
+package featureExtractors;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,6 +20,11 @@ import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
+/**
+ * assigns feature values based on a id2outcome file from a previous experiment (one value for char n-grams; one for word n-grams)
+ * @author michael
+ *
+ */
 public class StackedNGramAnnotator_id2outcomeDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
 
 	public static final String PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH = "id2outcomeWordNgramFilePath";

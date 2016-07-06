@@ -12,7 +12,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
-import io.SubStanceReader;
+import io.StanceReader;
 
 public class BinToXMI {
 //	private static final String FilteringPostfix = "_wo_irony_understandability";
@@ -28,9 +28,9 @@ public class BinToXMI {
 	private void run(String baseDir) throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createReader(
-						SubStanceReader.class,
-						SubStanceReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all"+FilteringPostfix, SubStanceReader.PARAM_LANGUAGE,
-						"en", SubStanceReader.PARAM_PATTERNS, "*.bin", SubStanceReader.PARAM_TARGET_LABEL,"ATHEISM"),
+						StanceReader.class,
+						StanceReader.PARAM_SOURCE_LOCATION, baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all"+FilteringPostfix, StanceReader.PARAM_LANGUAGE,
+						"en", StanceReader.PARAM_PATTERNS, "*.bin", StanceReader.PARAM_TARGET_LABEL,"ATHEISM"),
 				AnalysisEngineFactory.createEngineDescription(createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION, baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all_xmi"))
 		);	
 	}

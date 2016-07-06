@@ -1,4 +1,4 @@
-package ml_experiments;
+package featureExtractors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +17,11 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import predictedTypes.ClassifiedSubTarget;
 import predictedTypes.NgramClassification;
 
+/**
+ * same as id2outcome n-gram DFE but relies on annotations that have been made using a pretrained model
+ * @author michael
+ *
+ */
 public class StackedNGramAnnotatorDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	private ArrayList<String> ngramVariants = new ArrayList<String>(Arrays.asList("ATHEISM_char", "ATHEISM_word"));
 

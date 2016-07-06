@@ -16,7 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import types.StanceAnnotation;
 
-public class SubStanceReader extends BinaryCasReader{
+public class StanceReader extends BinaryCasReader{
 
     public static final String PARAM_TARGET_LABEL = "TargetLabel";
     @ConfigurationParameter(name = PARAM_TARGET_LABEL, mandatory = true)

@@ -1,4 +1,4 @@
-package ml_experiments;
+package featureExtractors;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,6 +22,12 @@ import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
+/**
+ * uses a generated id2outcome file to assign feature values
+ * id2outcome results from a previously executed classification
+ * @author michael
+ *
+ */
 public class ClassifiedSubTarget_id2outcomeDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(
@@ -56,7 +62,11 @@ public class ClassifiedSubTarget_id2outcomeDFE extends FeatureExtractorResource_
 		return true;
 	}
 	
-	
+	/**
+	 * reads a map taht stores the id2outcomes
+	 * @param path
+	 * @return
+	 */
 	private Map<String, Integer> getId2OutcomeMap(String path) {
 		Map<String, Integer> id2Outcome= new HashMap<String,Integer>();
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
