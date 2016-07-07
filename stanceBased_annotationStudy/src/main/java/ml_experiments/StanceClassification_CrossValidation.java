@@ -166,8 +166,8 @@ public class StanceClassification_CrossValidation implements Constants {
 		// XXX uncomment/comment other ML Algorithms (SMO, J48 are relevant for the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-				, 
-				 asList(new String[] { ZeroR.class.getName() })
+//				, 
+//				 asList(new String[] { ZeroR.class.getName() })
 		// ,
 		// asList(new String[] { RandomTree.class.getName() })
 		// ,
