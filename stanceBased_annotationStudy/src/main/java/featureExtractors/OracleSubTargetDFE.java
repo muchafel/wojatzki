@@ -8,9 +8,10 @@ import java.util.Set;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.dkpro.tc.api.exception.TextClassificationException;
-import org.dkpro.tc.api.features.DocumentFeatureExtractor;
 import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import curatedTypes.CuratedSubTarget;
 
@@ -19,7 +20,7 @@ import curatedTypes.CuratedSubTarget;
  * @author michael
  *
  */
-public class OracleSubTargetDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
+public class OracleSubTargetDFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor{
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(
 //			"secularism",
@@ -36,12 +37,12 @@ public class OracleSubTargetDFE extends FeatureExtractorResource_ImplBase implem
 			));
 	
 	@Override
-	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
+	public Set<Feature> extract(JCas jcas,TextClassificationTarget target) throws TextClassificationException {
 		Set<Feature> features= new HashSet<Feature>();
 		for(CuratedSubTarget subtarget: JCasUtil.select(jcas, CuratedSubTarget.class)){
-			for(String target: subTargets){
-				if(target.equals(subtarget.getTarget())){
-					features.add(new Feature("Oracle_SubTarget_"+target,resolvePolarity(subtarget.getPolarity())));
+			for(String subTarget: subTargets){
+				if(subTarget.equals(subtarget.getTarget())){
+					features.add(new Feature("Oracle_SubTarget_"+subTarget,resolvePolarity(subtarget.getPolarity())));
 				}
 			}
 		}

@@ -23,7 +23,11 @@ public class ConfusionMatrixOutput extends ReportBase implements Constants{
 
 		Properties props = new Properties();
 
-		File evaluationFile = new File(storage.getAbsolutePath() + "/evaluation.bin");
+//		System.out.println(storage.getAbsolutePath());
+//		for(File file: storage.getParentFile().listFiles()){
+//			System.out.println(file.getAbsolutePath());
+//		}
+		File evaluationFile = new File(storage.getParentFile().getAbsolutePath() + "/evaluation.bin");
 
 		weka.classifiers.Evaluation eval = (weka.classifiers.Evaluation) SerializationHelper
 				.read(evaluationFile.getAbsolutePath());

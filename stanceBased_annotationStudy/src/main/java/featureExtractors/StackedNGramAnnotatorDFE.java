@@ -8,10 +8,11 @@ import java.util.Set;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.dkpro.tc.api.exception.TextClassificationException;
-import org.dkpro.tc.api.features.DocumentFeatureExtractor;
 import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import predictedTypes.ClassifiedSubTarget;
@@ -22,11 +23,11 @@ import predictedTypes.NgramClassification;
  * @author michael
  *
  */
-public class StackedNGramAnnotatorDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class StackedNGramAnnotatorDFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor {
 	private ArrayList<String> ngramVariants = new ArrayList<String>(Arrays.asList("ATHEISM_char", "ATHEISM_word"));
 
 	@Override
-	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
+	public Set<Feature> extract(JCas jcas,TextClassificationTarget target) throws TextClassificationException {
 		Set<Feature> features = new HashSet<Feature>();
 		for (NgramClassification prediction : JCasUtil.select(jcas, NgramClassification.class)) {
 			for (String variant : ngramVariants) {
@@ -48,5 +49,4 @@ public class StackedNGramAnnotatorDFE extends FeatureExtractorResource_ImplBase 
 		} else
 			return 0;
 	}
-
 }

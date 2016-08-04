@@ -49,7 +49,7 @@ public class Stacked_NgramClassification extends JCasAnnotator_ImplBase{
 			try {
 				mlAdapter = SaveModelUtils.initMachineLearningAdapter(modelFile);
 				List<Object> parameters = SaveModelUtils.initParameters(modelFile);
-				List<String> featureExtractors = SaveModelUtils.initFeatureExtractors(modelFile);
+				List<ExternalResourceDescription> featureExtractors = SaveModelUtils.loadExternalResourceDescriptionOfFeatures(modelFile,context);
 
 				AnalysisEngineDescription connector = getSaveModelConnector(parameters, modelFile.getAbsolutePath(),
 						mlAdapter.getDataWriterClass().toString(), learningMode, featureMode,

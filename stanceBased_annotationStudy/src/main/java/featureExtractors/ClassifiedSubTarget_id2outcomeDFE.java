@@ -16,9 +16,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.dkpro.tc.api.exception.TextClassificationException;
-import org.dkpro.tc.api.features.DocumentFeatureExtractor;
 import org.dkpro.tc.api.features.Feature;
+import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
@@ -28,7 +29,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
  * @author michael
  *
  */
-public class ClassifiedSubTarget_id2outcomeDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor{
+public class ClassifiedSubTarget_id2outcomeDFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor{
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList(
 //			"secularism", "Same-sex marriage",
@@ -108,12 +109,12 @@ public class ClassifiedSubTarget_id2outcomeDFE extends FeatureExtractorResource_
 	}
 
 	@Override
-	public Set<Feature> extract(JCas jcas) throws TextClassificationException {
+	public Set<Feature> extract(JCas jcas, TextClassificationTarget target) throws TextClassificationException {
 		String docId = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		Set<Feature> featList = new HashSet<Feature>();
 //		System.out.println(docId+ " "+ id2Outcome_word_ngram.get(docId)+" "+ id2Outcome_char_ngram.get(docId));
-		for (String target : subTargets) {
-			featList.add(new Feature("stacked_outcome_"+target,  subtarget2id2Outcome_word_ngram.get(target).get(docId)));
+		for (String subTarget : subTargets) {
+			featList.add(new Feature("stacked_outcome_"+subTarget,  subtarget2id2Outcome_word_ngram.get(subTarget).get(docId)));
 		}
 		return featList;
 	}

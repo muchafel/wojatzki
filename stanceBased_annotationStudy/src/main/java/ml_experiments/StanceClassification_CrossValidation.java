@@ -12,22 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.lab.Lab;
 import org.dkpro.lab.task.Dimension;
 import org.dkpro.lab.task.ParameterSpace;
 import org.dkpro.lab.task.BatchTask.ExecutionPolicy;
+import org.dkpro.tc.api.features.TcFeatureFactory;
+import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
-import org.dkpro.tc.features.ngram.LuceneCharacterNGramDFE;
-import org.dkpro.tc.features.ngram.LuceneNGramDFE;
+import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
+import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
-import org.dkpro.tc.weka.WekaClassificationUsingTCEvaluationAdapter;
+import org.dkpro.tc.weka.WekaClassificationAdapter;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import featureExtractors.ClassifiedSubTarget_id2outcomeDFE;
+import featureExtractors.OracleSubTargetDFE;
 import featureExtractors.StackedNGramAnnotator_id2outcomeDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
@@ -36,8 +40,9 @@ import weka.classifiers.functions.SMO;
 import weka.classifiers.rules.ZeroR;
 
 /**
- * class for executing machine learning experiments on stance data 
- * configuration options are marked with an X
+ * class for executing machine learning experiments on stance data configuration
+ * options are marked with an X
+ * 
  * @author michael
  *
  */
@@ -47,25 +52,21 @@ public class StanceClassification_CrossValidation implements Constants {
 	 * XXX CONSTANTS
 	 */
 	public static final String LANGUAGE_CODE = "en";
-	private static final String FilteringPostfix = "_wo_irony_understandability"; //use if you want to filter irony and understandability
+	private static final String FilteringPostfix = "_wo_irony_understandability"; // use if you want to filter irony and understandability
 	// private static final String FilteringPostfix = "";
 	private static final String modelOutputFolder = "src/main/resources/models";
-	public static boolean useUniformClassDistributionFilering = false; // for filtering (be careful when using this)
-	public static int N_GRAM_MIN = 1; 
+	public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
+	public static int N_GRAM_MIN = 1;
 	public static int N_GRAM_MAX = 3;
 	public static int N_GRAM_MAXCANDIDATES = 1000;
-	
-	
+
 	/**
 	 * XXX specify target here (TARGET_LABLE or Array)
 	 */
-	private static ArrayList<String> explicitTargets = new ArrayList<String>(Arrays.asList(
-			"secularism", "Same-sex marriage",
-			"religious_freedom", "Conservative_Movement", "Freethinking", 
-			"Islam", "No_evidence_for_religion", "USA",
-			"Supernatural_Power_Being", "Life_after_death", 
-			"Christianity"));
-	
+	private static ArrayList<String> explicitTargets = new ArrayList<String>(Arrays.asList("secularism",
+			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
+			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
+
 	public static final String TARGET_LABLE = "ATHEISM"; // ,67
 	// public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
@@ -73,7 +74,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	// //.76
 	// public static final String TARGET_LABLE = "Christianity"; //.8
 	// public static final String TARGET_LABLE = "Freethinking"; // XX
-    // public static final String TARGET_LABLE = "Islam"; // .95
+	// public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
 	// public static final String TARGET_LABLE = "No_evidence_for_religion"; //
 	// XX
@@ -98,53 +99,58 @@ public class StanceClassification_CrossValidation implements Constants {
 	/**
 	 * XXX specify features here
 	 */
-	public static String[] FES = {
-//			 StackedNGramAnnotator_id2outcomeDFE.class.getName(),
-			// StackedNGramAnnotatorDFE.class.getName(),
-			LuceneNGramDFE.class.getName(), 
-			LuceneCharacterNGramDFE.class.getName(),
-//			OracleExplicitTargetDFE.class.getName(),
-			// ClassifiedSubTargetDFE.class.getName()
-//			ClassifiedSubTarget_id2outcomeDFE.class.getName()
-	};
+	public TcFeatureSet featureSet = new TcFeatureSet(
+			// TcFeatureFactory.create(StackedNGramAnnotator_id2outcomeDFE.class,
+			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_CHARNGRAM_FILE_PATH,
+			// "src/main/resources/lists/id2outcome_char_ngrams.txt",
+			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH,
+			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
+			// TcFeatureFactory.create(OracleSubTargetDFE.class),
+			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
+					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX),
+			TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
+					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX));
 
-	
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 		StanceClassification_CrossValidation experiment = new StanceClassification_CrossValidation();
 
-
-		//XXX CV for getting the id2outcome file for the DFE
-		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir,TARGET_LABLE);
+		// XXX CV for getting the id2outcome file for the DFE
+		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir, TARGET_LABLE);
 		experiment.runCrossValidation(pSpace, "stanceExperiment");
 
-		//XXX run CV for each explicit target in Array
-//		for(String explicitTarget: explicitTargets){
-//			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir,explicitTarget);
-//			String experimentName=explicitTarget.replace("-", "");
-//			experimentName=explicitTarget.replace(" ", "");
-//			 	
-//			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_"+experimentName);
-//		}
+		// XXX run CV for each explicit target in Array
+		// for(String explicitTarget: explicitTargets){
+		// ParameterSpace pSpace_explicit =
+		// experiment.setupCrossValidation(baseDir,explicitTarget);
+		// String experimentName=explicitTarget.replace("-", "");
+		// experimentName=explicitTarget.replace(" ", "");
+		//
+		// experiment.runCrossValidation(pSpace_explicit,
+		// "stanceExperiment_"+experimentName);
+		// }
 	}
 
 	/**
-	 * runs the classification pipeline with added reports
-	 * XXX reports print classification result to console for every fold and write them to excel files in org.dkpro.lab
+	 * runs the classification pipeline with added reports XXX reports print
+	 * classification result to console for every fold and write them to excel
+	 * files in org.dkpro.lab
+	 * 
 	 * @param pSpace
 	 * @param experimentName
 	 * @throws Exception
 	 */
 	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName,
-				WekaClassificationUsingTCEvaluationAdapter.class, 10);
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
+				10);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 		batch.addInnerReport(ConfusionMatrixOutput.class);
-//		batch.addReport(BatchCrossValidationUsingTCEvaluationReport.class);
 		batch.addReport(CrossValidationReport.class);
 
 		// Run
@@ -152,22 +158,26 @@ public class StanceClassification_CrossValidation implements Constants {
 	}
 
 	/**
-	 * settings for CV (calls getters for readers, pipeline params (feature extractor params), set the ML algorithm)
+	 * settings for CV (calls getters for readers, pipeline params (feature
+	 * extractor params), set the ML algorithm)
+	 * 
 	 * @param baseDir
 	 * @param subTarget
 	 * @return
+	 * @throws ResourceInitializationException 
 	 */
 	@SuppressWarnings("unchecked")
-	private ParameterSpace setupCrossValidation(String baseDir, String subTarget) {
+	private ParameterSpace setupCrossValidation(String baseDir, String subTarget) throws ResourceInitializationException {
 		// configure reader dimension
 		Map<String, Object> dimReaders = getDimReaders(
 				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, subTarget);
 
-		// XXX uncomment/comment other ML Algorithms (SMO, J48 are relevant for the paper; ZeroR is majority class classifier)
+		// XXX uncomment/comment other ML Algorithms (SMO, J48 are relevant for
+		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-//				, 
-//				 asList(new String[] { ZeroR.class.getName() })
+		// ,
+		// asList(new String[] { ZeroR.class.getName() })
 		// ,
 		// asList(new String[] { RandomTree.class.getName() })
 		// ,
@@ -175,101 +185,77 @@ public class StanceClassification_CrossValidation implements Constants {
 		// ,
 		// asList(new String[] { Logistic.class.getName() })
 		);
-		
-		Dimension<List<Object>> dimPipelineParameters = getPipelineParameters(baseDir);
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(FES));
+		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
 		// bundle parameterspace
-		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimPipelineParameters, dimFeatureSets,
-				dimClassificationArgs);
+		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimFeatureSets, dimClassificationArgs);
 
 		return pSpace;
 	}
 
 	/**
-	 * configures the reader (STanceReader is actually a BinCas reader that assigns TextClassificationOutcome and is sensitive to different target labels) 
+	 * configures the reader (STanceReader is actually a BinCas reader that
+	 * assigns TextClassificationOutcome and is sensitive to different target
+	 * labels)
+	 * 
 	 * @param dir
 	 * @param subTarget
 	 * @return
+	 * @throws ResourceInitializationException 
 	 */
-	private Map<String, Object> getDimReaders(String dir, String subTarget) {
+	private Map<String, Object> getDimReaders(String dir, String subTarget) throws ResourceInitializationException {
 		String inputTrainFolder = dir;
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 
-		dimReaders.put(DIM_READER_TRAIN, StanceReader.class);
-		dimReaders.put(DIM_READER_TRAIN_PARAMS,
-				Arrays.asList(StanceReader.PARAM_SOURCE_LOCATION, inputTrainFolder, StanceReader.PARAM_LANGUAGE,
-						LANGUAGE_CODE, StanceReader.PARAM_PATTERNS, "*.bin", StanceReader.PARAM_TARGET_LABEL,
-						subTarget));
+		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(StanceReader.class, StanceReader.PARAM_SOURCE_LOCATION, inputTrainFolder, StanceReader.PARAM_LANGUAGE,
+				LANGUAGE_CODE, StanceReader.PARAM_PATTERNS, "*.bin", StanceReader.PARAM_TARGET_LABEL,subTarget));
 
 		return dimReaders;
 	}
 
 	/**
-	 * bundle paramterSpace (implement feature Selection here)
-	 * use filtering if flag set
+	 * bundle paramterSpace (implement feature Selection here) use filtering if
+	 * flag set
 	 * 
 	 * @param dimReaders
-	 * @param dimPipelineParameters
 	 * @param dimFeatureSets
 	 * @param dimClassificationArgs
 	 * @param dimFeatureFilters
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders,
-			Dimension<List<Object>> dimPipelineParameters, Dimension<List<String>> dimFeatureSets,
+	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders, Dimension<TcFeatureSet> dimFeatureSets,
 			Dimension<List<String>> dimClassificationArgs) {
-		
-		if(useUniformClassDistributionFilering){
+
+		if (useUniformClassDistributionFilering) {
 			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
 					Arrays.asList(new String[] { UniformClassDistributionFilter.class.getName() }));
 
 			return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
-					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
-					dimPipelineParameters, dimFeatureSets, dimFeatureFilters , dimClassificationArgs);
-		}else{
+					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL),
+					Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets, dimFeatureFilters,
+					dimClassificationArgs);
+		} else {
 			return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
-					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
-					dimPipelineParameters, dimFeatureSets , dimClassificationArgs);
+					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL),
+					Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets, dimClassificationArgs);
 		}
-		
+
 	}
 
 	/**
-	 * PARAMS for feature extractors 
-	 * XXX needs to be adjusted for sophisticated feature extractors (e.g. specify DFE resources here)
-	 * @param baseDir
-	 * @return
-	 */
-	private Dimension<List<Object>> getPipelineParameters(String baseDir) {
-		@SuppressWarnings("unchecked")
-		Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
-				Arrays.asList(new Object[] { 
-						NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX,
-						StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_CHARNGRAM_FILE_PATH,
-						"src/main/resources/lists/id2outcome_char_ngrams.txt",
-						StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH,
-						"src/main/resources/lists/id2outcome_word_ngrams.txt",
-						ClassifiedSubTarget_id2outcomeDFE.PARAM_ID2OUTCOME_SUBTARGET_FOLDER_PATH,"src/main/resources/lists/id2OutcomeSubTargets/ngrams"
-				}));
-		return dimPipelineParameters;
-	}
-
-	/**
-	 * simple getter for Preprocessing currently
-	 * XXX add more sophisticated preprocessing if feature set needs it
+	 * simple getter for Preprocessing currently XXX add more sophisticated
+	 * preprocessing if feature set needs it
+	 * 
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
 	private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
 		return createEngineDescription(createEngineDescription(ArktweetTokenizer.class)
-//				,
-//				createEngineDescription(Stacked_SubTargetClassification.class),
-//				createEngineDescription(Stacked_NgramClassification.class)
-				);
+		// ,
+		// createEngineDescription(Stacked_SubTargetClassification.class),
+		// createEngineDescription(Stacked_NgramClassification.class)
+		);
 	}
 }
