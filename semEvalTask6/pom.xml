@@ -40,6 +40,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-testing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dkpro.tc</groupId>
 			<artifactId>dkpro-tc-fstore-simple</artifactId>
 		</dependency>
 		<dependency>
