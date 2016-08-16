@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gloVeClusteringConfig>
+    <arffLocation>src/main/resources/wordEmbeddings/glove.twitter.27B/25.arff</arffLocation>
+    <centroidLocation>src/main/resources/centroids.txt</centroidLocation>
+    <clusterIdToWordLocation>src/main/resources/clusters.txt</clusterIdToWordLocation>
+    <embeddingsDimensions>25</embeddingsDimensions>
+    <embeddingsLocation>src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt</embeddingsLocation>
+    <maxIterations>15</maxIterations>
+    <numberOfClusters>300</numberOfClusters>
+    <wordToCluserLocation>src/main/resources/wordsToClusters.txt</wordToCluserLocation>
+    <writeARFF>false</writeARFF>
+</gloVeClusteringConfig>
