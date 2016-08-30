@@ -27,12 +27,16 @@ import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.weka.WekaClassificationAdapter;
+import org.springframework.util.Log4jConfigurer;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
+import featureExtractors.BrownClusterMembershipDFE;
 import featureExtractors.ClassifiedSubTarget_id2outcomeDFE;
+import featureExtractors.NearestGloVeCluster;
 import featureExtractors.OracleSubTargetDFE;
 import featureExtractors.StackedNGramAnnotator_id2outcomeDFE;
+import featureExtractors.WordEmbeddingClusterMembershipDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;
@@ -56,8 +60,11 @@ public class StanceClassification_CrossValidation implements Constants {
 	// private static final String FilteringPostfix = "";
 	private static final String modelOutputFolder = "src/main/resources/models";
 	public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
-	public static int N_GRAM_MIN = 1;
-	public static int N_GRAM_MAX = 3;
+	public static int WORD_N_GRAM_MIN = 1;
+	public static int WORD_N_GRAM_MAX = 3;
+	public static int CHAR_N_GRAM_MIN = 1;
+	public static int CHAR_N_GRAM_MAX = 3;
+	
 	public static int N_GRAM_MAXCANDIDATES = 1000;
 
 	/**
@@ -70,9 +77,9 @@ public class StanceClassification_CrossValidation implements Constants {
 	public static final String TARGET_LABLE = "ATHEISM"; // ,67
 	// public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
-	// public static final String TARGET_LABLE = "Supernatural_Power_Being";
+//	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
-	// public static final String TARGET_LABLE = "Christianity"; //.8
+//	 public static final String TARGET_LABLE = "Christianity"; //.8
 	// public static final String TARGET_LABLE = "Freethinking"; // XX
 	// public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
@@ -106,14 +113,22 @@ public class StanceClassification_CrossValidation implements Constants {
 			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH,
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
 			// TcFeatureFactory.create(OracleSubTargetDFE.class),
+			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
+			,
+//			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/paths_atheism_2013.txt")
+//			,
+//			TcFeatureFactory.create(NearestGloVeCluster.class, NearestGloVeCluster.PARAM_PRETRAINEDFILE,"src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt"),
 			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX),
+					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 			TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, N_GRAM_MIN,
-					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, N_GRAM_MAX));
+					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+			);
 
 	public static void main(String[] args) throws Exception {
+		
+		
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 		StanceClassification_CrossValidation experiment = new StanceClassification_CrossValidation();

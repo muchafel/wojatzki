@@ -9,6 +9,7 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationOutcome_Type;
 
 import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;

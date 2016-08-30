@@ -29,6 +29,7 @@ import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;
 import curatedTypes.CuratedUnderstandability;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
@@ -50,11 +51,11 @@ public class InterAnnotatorAgreement {
 		// agreementCalculator.calculateIAA(baseDir +
 		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
 		// useSubTargets);
-		// agreementCalculator.calculateIAAForIronyandUnderstandbility(baseDir +
-		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
-		// useSubTargets);
-		agreementCalculator.calculateIAAForNoExplicitStance(
-				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all", useSubTargets);
+		 agreementCalculator.calculateIAAForIronyandUnderstandbility(baseDir +
+		 "/semevalTask6/annotationStudy/curatedTweets/Atheism/all",
+		 useSubTargets);
+//		agreementCalculator.calculateIAAForNoExplicitStance(
+//				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all", useSubTargets);
 		// agreementCalculator.calculateTotalIAA(baseDir +
 		// "/semevalTask6/annotationStudy/curatedTweets/Atheism/all");
 	}
@@ -120,8 +121,11 @@ public class InterAnnotatorAgreement {
 				decisionsUnderstandability.add(getAnnotatorDecisisonUnderstandability(jcas, annotator));
 			}
 			studyirony.addItem(decisionsIrony.get(0), decisionsIrony.get(1), decisionsIrony.get(2));
+//			System.out.println(DocumentMetaData.get(jcas).getDocumentId()+" "+decisionsIrony.get(0) +" "+ decisionsIrony.get(1)+" "+decisionsIrony.get(2));
 			studyUnderstandability.addItem(decisionsUnderstandability.get(0), decisionsUnderstandability.get(1),
 					decisionsUnderstandability.get(2));
+			System.out.println(DocumentMetaData.get(jcas).getDocumentId()+" "+decisionsUnderstandability.get(0) +" "+ decisionsUnderstandability.get(1)+" "+decisionsUnderstandability.get(2));
+			
 		}
 		FleissKappaAgreement fleissKappaIrony = new FleissKappaAgreement(studyirony);
 		System.out.println("Irony fleiss " + fleissKappaIrony.calculateAgreement());
