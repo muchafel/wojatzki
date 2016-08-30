@@ -1,4 +1,4 @@
-package util;
+package util.wordembeddings;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +21,6 @@ import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
-import util.wordembeddings.GloVeClusteringConfig;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
@@ -53,7 +52,7 @@ public class CreateGloVeCluster {
 		System.out.println("Max Iterations " + maxIterations);
 		System.out.println("Embeddings " + embeddingsLocation);
 		if (writeARFF) {
-			System.out.println("WriteArff to ");
+			System.out.println("WriteArff to "+arffLocation);
 		}
 
 		WordVectors wordVectors = null;
@@ -83,6 +82,7 @@ public class CreateGloVeCluster {
 		 * transform GloVe files into arffs
 		 */
 		if (writeARFF) {
+			
 			arff = writeARFF(new File(embeddingsLocation), embeddingsDimensions, arffLocation);
 			System.out.println("done writing arff");
 		} else {
