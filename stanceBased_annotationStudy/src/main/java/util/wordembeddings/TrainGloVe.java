@@ -19,6 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.models.glove.Glove;
+import org.deeplearning4j.plot.BarnesHutTsne;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
@@ -39,7 +40,12 @@ public class TrainGloVe {
 
 	public static void main(String[] args) throws Exception {
 
-		int dimensions=75;
+		int dimensions=50;
+		double alpha= 0.75;
+		double learningRate=0.1;
+		int epochs=25;
+		int xMax=100;
+		int batchSize=1000;
 		
 		 File inputFile = new File("/Users/michael/Desktop/atheism2013-12.txt");
 
@@ -53,20 +59,20 @@ public class TrainGloVe {
 	        Glove glove = new Glove.Builder()
 	                .iterate(iter)
 	                .tokenizerFactory(t)
-	                .alpha(0.75)
-	                .learningRate(0.1)
+	                .alpha(alpha)
+	                .learningRate(learningRate)
 
 	                //set dimensions
 	                .layerSize(dimensions)
 	                
 	                // number of epochs for training
-	                .epochs(25)
+	                .epochs(epochs)
 
 	                // cutoff for weighting function
-	                .xMax(100)
+	                .xMax(xMax)
 
 	                // training is done in batches taken from training corpus
-	                .batchSize(1000)
+	                .batchSize(batchSize)
 
 	                // if set to true, batches will be shuffled before training
 	                .shuffle(true)
@@ -76,9 +82,23 @@ public class TrainGloVe {
 	                .build();
 
 	        glove.fit();
+	        System.out.println("Training Done");
 	        
-	    WordVectorSerializer.writeWordVectors(glove, "atheismEmbeddings_"+String.valueOf(dimensions)+".txt");
+	    WordVectorSerializer.writeWordVectors(glove, "atheismGloVeEmbeddings_"+String.valueOf(dimensions)+".txt");
 
+//        BarnesHutTsne tsne = new BarnesHutTsne.Builder()
+//                .setMaxIter(1000)
+//                .stopLyingIteration(250)
+//                .learningRate(500)
+//                .useAdaGrad(false)
+//                .theta(0.5)
+//                .setMomentum(0.5)
+//                .normalize(true)
+//                .usePca(false)
+//                .build();
+//        glove.lookupTable().plotVocab(tsne,500, new File("test_TSNE"));
+        System.out.println("Plotting Done");
+	    
 //		WordVectors wordVectors = null;
 //		try {
 //			wordVectors = WordVectorSerializer.loadTxtVectors(new File("atheismEmbeddings.txt"));

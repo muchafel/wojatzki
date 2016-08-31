@@ -74,14 +74,14 @@ public class StanceClassification_CrossValidation implements Constants {
 			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
 
-	public static final String TARGET_LABLE = "ATHEISM"; // ,67
+//	public static final String TARGET_LABLE = "ATHEISM"; // ,67
 	// public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
 //	 public static final String TARGET_LABLE = "Christianity"; //.8
 	// public static final String TARGET_LABLE = "Freethinking"; // XX
-	// public static final String TARGET_LABLE = "Islam"; // .95
+	 public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
 	// public static final String TARGET_LABLE = "No_evidence_for_religion"; //
 	// XX
@@ -113,9 +113,9 @@ public class StanceClassification_CrossValidation implements Constants {
 			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH,
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
 			// TcFeatureFactory.create(OracleSubTargetDFE.class),
-			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
-			,
-//			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/paths_atheism_2013.txt")
+//			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
+//			,
+//			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
 //			,
 //			TcFeatureFactory.create(NearestGloVeCluster.class, NearestGloVeCluster.PARAM_PRETRAINEDFILE,"src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt"),
 			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
@@ -135,7 +135,7 @@ public class StanceClassification_CrossValidation implements Constants {
 
 		// XXX CV for getting the id2outcome file for the DFE
 		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir, TARGET_LABLE);
-		experiment.runCrossValidation(pSpace, "stanceExperiment");
+		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
 
 		// XXX run CV for each explicit target in Array
 		// for(String explicitTarget: explicitTargets){

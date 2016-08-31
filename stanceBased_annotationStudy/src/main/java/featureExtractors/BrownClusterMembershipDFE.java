@@ -93,11 +93,11 @@ public class BrownClusterMembershipDFE extends FeatureExtractorResource_ImplBase
 			String line = null;
 			while ((line = bf.readLine()) != null) {
 				String[] split = line.split("\t");
-				String clusterId=split[0].substring(0, split[0].length()-1);
-				wordToCluster.put(split[1], clusterId);
-				distinctClusters.add(clusterId);
-//				wordToCluster.put(split[1], split[0]);
-//				distinctClusters.add(split[0]);
+//				String clusterId=split[0].substring(0, split[0].length()-1);
+//				wordToCluster.put(split[1], clusterId);
+//				distinctClusters.add(clusterId);
+				wordToCluster.put(split[1], split[0]);
+				distinctClusters.add(split[0]);
 			}
 
 		} catch (Exception e) {
