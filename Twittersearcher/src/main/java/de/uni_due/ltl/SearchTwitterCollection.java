@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.JCasIterable;
@@ -34,12 +37,35 @@ public class SearchTwitterCollection {
 		
 		for (JCas jcas : new JCasIterable(reader)) {
 			String text=jcas.getDocumentText().toLowerCase();
-			if(hashtagContainedInTweet(text,keywordsArray)){
-				System.out.println(text);
-				FileUtils.write(targetFile, text+"\n", "UTF-8",true);
+			if(hashtagContainedInTweet(text,keywordsArray) && tweetValid(text)){
+				FileUtils.write(targetFile, text.replaceAll(System.lineSeparator(), " ")+"\n", "UTF-8",true);
+				System.out.println(text.replaceAll(System.lineSeparator(), " "));
 			}
 		}
 
+	}
+
+	/**
+	 * check whether at least half of the text is encoded in latin + extensions
+	 * @param text
+	 * @return
+	 */
+	private static boolean tweetValid(String text) {
+		String[] tokens= text.split(" ");
+        int textSize=tokens.length;
+        int validWordCount = 0;
+        for(String token: tokens){
+        	//check whether ctsing contains allowed characters
+        	if(StringUtils.isAsciiPrintable(token) || token.contains("#") || token.contains("@") || token.matches(".*\\p{Punct}.*") || token.matches(".*\\d.*")){
+        		validWordCount++;
+        		//early stopping
+        		if(validWordCount>=textSize*0.5){
+            		return true;
+                }
+        	}
+        }
+        System.out.println("invalid text"+ text);
+		return false;
 	}
 
 	/**
