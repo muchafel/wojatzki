@@ -18,6 +18,7 @@ import org.dkpro.lab.Lab;
 import org.dkpro.lab.task.Dimension;
 import org.dkpro.lab.task.ParameterSpace;
 import org.dkpro.lab.task.BatchTask.ExecutionPolicy;
+import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
@@ -26,12 +27,17 @@ import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
+import org.dkpro.tc.ml.ExperimentSaveModel;
+import org.dkpro.tc.weka.MekaClassificationAdapter;
 import org.dkpro.tc.weka.WekaClassificationAdapter;
 import org.springframework.util.Log4jConfigurer;
 
+import annotators.stackedAnnotators.Stacked_SubTargetClassification;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
+import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import featureExtractors.BrownClusterMembershipDFE;
+import featureExtractors.ClassifiedSubTargetDFE;
 import featureExtractors.ClassifiedSubTarget_id2outcomeDFE;
 import featureExtractors.NearestGloVeCluster;
 import featureExtractors.OracleSubTargetDFE;
@@ -42,6 +48,7 @@ import io.CrossValidationReport;
 import io.StanceReader;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.rules.ZeroR;
+import weka.classifiers.trees.J48;
 
 /**
  * class for executing machine learning experiments on stance data configuration
@@ -60,6 +67,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	// private static final String FilteringPostfix = "";
 	private static final String modelOutputFolder = "src/main/resources/models";
 	public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
+	public static boolean saveModel = false; // for writing the Models (used for stacking)
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 1;
@@ -74,14 +82,14 @@ public class StanceClassification_CrossValidation implements Constants {
 			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
 
-//	public static final String TARGET_LABLE = "ATHEISM"; // ,67
+	public static final String TARGET_LABLE = "ATHEISM"; // ,67
 	// public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
 //	 public static final String TARGET_LABLE = "Christianity"; //.8
 	// public static final String TARGET_LABLE = "Freethinking"; // XX
-	 public static final String TARGET_LABLE = "Islam"; // .95
+//	 public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
 	// public static final String TARGET_LABLE = "No_evidence_for_religion"; //
 	// XX
@@ -112,18 +120,20 @@ public class StanceClassification_CrossValidation implements Constants {
 			// "src/main/resources/lists/id2outcome_char_ngrams.txt",
 			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_WORDNGRAM_FILE_PATH,
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
-			// TcFeatureFactory.create(OracleSubTargetDFE.class),
+			TcFeatureFactory.create(OracleSubTargetDFE.class)
+//			TcFeatureFactory.create(ClassifiedSubTargetDFE.class)
+//			,
 //			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
 //			,
 //			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
 //			,
 //			TcFeatureFactory.create(NearestGloVeCluster.class, NearestGloVeCluster.PARAM_PRETRAINEDFILE,"src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt"),
-			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-			TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+//			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+//					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
+//			TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+//					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 			);
 
 	public static void main(String[] args) throws Exception {
@@ -138,16 +148,20 @@ public class StanceClassification_CrossValidation implements Constants {
 		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
 
 		// XXX run CV for each explicit target in Array
-		// for(String explicitTarget: explicitTargets){
-		// ParameterSpace pSpace_explicit =
-		// experiment.setupCrossValidation(baseDir,explicitTarget);
-		// String experimentName=explicitTarget.replace("-", "");
-		// experimentName=explicitTarget.replace(" ", "");
-		//
-		// experiment.runCrossValidation(pSpace_explicit,
-		// "stanceExperiment_"+experimentName);
-		// }
+//		for (String explicitTarget : explicitTargets) {
+//			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir, explicitTarget);
+//			String experimentName = explicitTarget.replace("-", "");
+//			experimentName = explicitTarget.replace(" ", "");
+//
+//			if(saveModel){
+//				experiment.saveModel(pSpace_explicit, experimentName);
+//			}else{
+//				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
+//			}
+//		}
 	}
+
+	
 
 	/**
 	 * runs the classification pipeline with added reports XXX reports print
@@ -162,11 +176,29 @@ public class StanceClassification_CrossValidation implements Constants {
 		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
 				10);
 
-		batch.setPreprocessing(getPreprocessing());
+		batch.setPreprocessing(getPreprocessing(saveModel));
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 		batch.addInnerReport(ConfusionMatrixOutput.class);
 		batch.addReport(CrossValidationReport.class);
+
+		// Run
+		Lab.getInstance().run(batch);
+	}
+	
+	/**
+	 * trains the models and saves them to the designated folder
+	 * @param pSpace_explicit
+	 * @param experimentName
+	 * @throws Exception
+	 */
+	private void saveModel(ParameterSpace paramSpace, String experimentName) throws Exception {
+		
+		ExperimentSaveModel batch = new ExperimentSaveModel(
+				experimentName, WekaClassificationAdapter.class,new File(modelOutputFolder+"/"+experimentName));
+		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
+		batch.setPreprocessing(getPreprocessing(saveModel));
+		batch.setParameterSpace(paramSpace);
 
 		// Run
 		Lab.getInstance().run(batch);
@@ -191,10 +223,10 @@ public class StanceClassification_CrossValidation implements Constants {
 		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-		// ,
-		// asList(new String[] { ZeroR.class.getName() })
-		// ,
-		// asList(new String[] { RandomTree.class.getName() })
+		 ,
+		 asList(new String[] { ZeroR.class.getName() })
+		 ,
+		 asList(new String[] { J48.class.getName() })
 		// ,
 		// asList(new String[] { RandomForest.class.getName() })
 		// ,
@@ -256,7 +288,6 @@ public class StanceClassification_CrossValidation implements Constants {
 					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL),
 					Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets, dimClassificationArgs);
 		}
-
 	}
 
 	/**
@@ -266,11 +297,15 @@ public class StanceClassification_CrossValidation implements Constants {
 	 * @return
 	 * @throws ResourceInitializationException
 	 */
-	private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
-		return createEngineDescription(createEngineDescription(ArktweetTokenizer.class)
-		// ,
-		// createEngineDescription(Stacked_SubTargetClassification.class),
-		// createEngineDescription(Stacked_NgramClassification.class)
-		);
+	private AnalysisEngineDescription getPreprocessing(boolean saveModel) throws ResourceInitializationException {
+		if (saveModel) {
+			return createEngineDescription(createEngineDescription(ArktweetTokenizer.class));
+		} else {
+			return createEngineDescription(createEngineDescription(ArktweetTokenizer.class),
+					createEngineDescription(Stacked_SubTargetClassification.class)
+			// ,
+			// createEngineDescription(Stacked_NgramClassification.class)
+			);
+		}
 	}
 }

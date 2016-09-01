@@ -31,14 +31,15 @@ import predictedTypes.ClassifiedSubTarget;
 
 public class Stacked_SubTargetClassification extends JCasAnnotator_ImplBase{
 
-	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sex marriage",
+	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sexmarriage",
 			"religious_freedom", "Conservative_Movement", "Freethinking", "Islam", "No_evidence_for_religion", "USA",
 			"Supernatural_Power_Being", "Life_after_death", "Christianity"));
 	
 	private Map<String, AnalysisEngine> subTargetToModel;
-	private TCMachineLearningAdapter mlAdapter;
+//	private TCMachineLearningAdapter mlAdapter;
 	private String learningMode = Constants.LM_SINGLE_LABEL;
 	private String featureMode = Constants.FM_DOCUMENT;
+	 public static final String PARAM_TC_MODEL_LOCATION = "tcModel";
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -48,14 +49,19 @@ public class Stacked_SubTargetClassification extends JCasAnnotator_ImplBase{
 		// System.out.println(tcModelLocations);
 		for (String subTarget : subTargets) {
 			File modelFile=new File("src/main/resources/models/"+subTarget);
+			System.out.println(modelFile.getPath());
 			try {
-				mlAdapter = SaveModelUtils.initMachineLearningAdapter(modelFile);
-				List<Object> parameters = SaveModelUtils.initParameters(modelFile);
-				List<ExternalResourceDescription> featureExtractors = SaveModelUtils.loadExternalResourceDescriptionOfFeatures(modelFile,context);
+				List<ExternalResourceDescription> featureExtractors = SaveModelUtils
+	                    .loadExternalResourceDescriptionOfFeatures(modelFile, context);
+				TCMachineLearningAdapter mlAdapter = SaveModelUtils.initMachineLearningAdapter(modelFile);
+	            featureMode = SaveModelUtils.initFeatureMode(modelFile);
+	            learningMode = SaveModelUtils.initLearningMode(modelFile);
 
-				AnalysisEngineDescription connector = getSaveModelConnector(parameters, modelFile.getAbsolutePath(),
-						mlAdapter.getDataWriterClass().toString(), learningMode, featureMode,
-						DenseFeatureStore.class.getName(), featureExtractors.toArray(new String[0]));
+
+	            AnalysisEngineDescription connector = getSaveModelConnector(modelFile,modelFile.getAbsolutePath(), mlAdapter.getDataWriterClass().toString(),
+	                    learningMode, featureMode, mlAdapter.getFeatureStore(),
+	                    featureExtractors, mlAdapter);
+				
 
 				AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(connector,
 						SaveModelUtils.getModelFeatureAwareResourceManager(modelFile), null);
@@ -66,6 +72,7 @@ public class Stacked_SubTargetClassification extends JCasAnnotator_ImplBase{
 			}
 		}
 	}
+	
 	
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -101,36 +108,34 @@ public class Stacked_SubTargetClassification extends JCasAnnotator_ImplBase{
 			
 		}
 	}
-
-	/**
+	
+	 /**
+     * @param parameters2 
+	 * @param modelFile 
 	 * @param featureExtractorClassNames
-	 * @return A fully configured feature extractor connector
-	 * @throws ResourceInitializationException
-	 */
-	private AnalysisEngineDescription getSaveModelConnector(List<Object> parameters, String outputPath,
-			String dataWriter, String learningMode, String featureMode, String featureStore,
-			String... featureExtractorClassNames) throws ResourceInitializationException {
-		// convert parameters to string as external resources only take string
-		// parameters
-		List<Object> convertedParameters = SaveModelUtils.convertParameters(parameters);
+     * @return A fully configured feature extractor connector
+     * @throws ResourceInitializationException
+     */
+    private AnalysisEngineDescription getSaveModelConnector(File modelFile, String outputPath, String dataWriter, String learningMode, String featureMode,
+            String featureStore, List<ExternalResourceDescription> featureExtractor, TCMachineLearningAdapter mlAdapter)
+                throws ResourceInitializationException
+    {
+        List<Object> parameters=new ArrayList<>();
 
-		List<ExternalResourceDescription> extractorResources = SaveModelUtils
-				.loadExternalResourceDescriptionOfFeatures(outputPath, featureExtractorClassNames, convertedParameters);
+        // add the rest of the necessary parameters with the correct types
+        parameters.addAll(Arrays.asList(
+        		PARAM_TC_MODEL_LOCATION, modelFile,
+                ModelSerialization_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
+                ModelSerialization_ImplBase.PARAM_DATA_WRITER_CLASS, dataWriter,
+                ModelSerialization_ImplBase.PARAM_LEARNING_MODE, learningMode,
+                ModelSerialization_ImplBase.PARAM_FEATURE_EXTRACTORS, featureExtractor,
+                ModelSerialization_ImplBase.PARAM_FEATURE_FILTERS, null,
+                ModelSerialization_ImplBase.PARAM_IS_TESTING, true,
+                ModelSerialization_ImplBase.PARAM_FEATURE_MODE, featureMode,
+                ModelSerialization_ImplBase.PARAM_FEATURE_STORE_CLASS, featureStore));
 
-		// add the rest of the necessary parameters with the correct types
-		parameters.addAll(Arrays.asList(TcAnnotator.PARAM_TC_MODEL_LOCATION, outputPath,
-				ModelSerialization_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
-				ModelSerialization_ImplBase.PARAM_DATA_WRITER_CLASS, dataWriter,
-				ModelSerialization_ImplBase.PARAM_LEARNING_MODE, learningMode,
-				ModelSerialization_ImplBase.PARAM_FEATURE_EXTRACTORS, extractorResources,
-				ModelSerialization_ImplBase.PARAM_FEATURE_FILTERS, null, ModelSerialization_ImplBase.PARAM_IS_TESTING,
-				true, ModelSerialization_ImplBase.PARAM_FEATURE_MODE, featureMode,
-				ModelSerialization_ImplBase.PARAM_FEATURE_STORE_CLASS, featureStore));
-
-		return AnalysisEngineFactory.createEngineDescription(mlAdapter.getLoadModelConnectorClass(),
-				parameters.toArray());
-	}
-	
-	
+        return AnalysisEngineFactory.createEngineDescription(mlAdapter.getLoadModelConnectorClass(),
+                parameters.toArray());
+    }
 	
 }

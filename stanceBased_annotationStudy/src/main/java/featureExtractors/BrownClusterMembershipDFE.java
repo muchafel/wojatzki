@@ -45,6 +45,7 @@ public class BrownClusterMembershipDFE extends FeatureExtractorResource_ImplBase
 		}
 
 		try {
+			System.out.println("++++ "+inputFile.getAbsolutePath());
 			init();
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
