@@ -29,6 +29,12 @@ import org.dkpro.tc.ml.uima.TcAnnotator;
 
 import predictedTypes.ClassifiedSubTarget;
 
+/**
+ * XXX 
+ * be extremly careful when using this class as it bears the danger to use test data during training (called cheating)
+ * @author michael
+ *
+ */
 public class Stacked_SubTargetClassification extends JCasAnnotator_ImplBase{
 
 	private ArrayList<String> subTargets = new ArrayList<String>(Arrays.asList("secularism", "Same-sexmarriage",

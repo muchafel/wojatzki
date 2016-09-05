@@ -35,10 +35,10 @@ import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.report.BatchTrainTestReport;
 import org.dkpro.tc.weka.WekaClassificationAdapter;
 
+import annotators.stackedAnnotators.StackedNGramAnnotator_id2outcomeDFE;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import featureExtractors.OracleSubTargetDFE;
-import featureExtractors.StackedNGramAnnotator_id2outcomeDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;

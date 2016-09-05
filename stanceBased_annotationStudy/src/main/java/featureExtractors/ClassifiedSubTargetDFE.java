@@ -35,8 +35,7 @@ public class ClassifiedSubTargetDFE extends FeatureExtractorResource_ImplBase im
 			for (String subTarget : subTargets) {
 				if (subTarget.equals(subtarget.getSubTarget())) {
 //					System.out.println(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId()+ " "+target+" "+subtarget.getClassificationOutcome());
-					features.add(new Feature("Predicted_SubTarget_" + subTarget,
-							resolvePolarity(subtarget.getClassificationOutcome())));
+					features.add(new Feature("Predicted_SubTarget_" + subTarget,resolvePolarity((subtarget.getClassificationOutcome()))));
 				}
 			}
 		}

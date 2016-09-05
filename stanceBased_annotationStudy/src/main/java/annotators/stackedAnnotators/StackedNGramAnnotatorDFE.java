@@ -1,4 +1,4 @@
-package featureExtractors;
+package annotators.stackedAnnotators;
 
 import java.util.ArrayList;
 import java.util.Arrays;

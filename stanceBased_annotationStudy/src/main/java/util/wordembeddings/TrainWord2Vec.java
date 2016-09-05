@@ -15,7 +15,7 @@ import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 
 public class TrainWord2Vec {
 	public static void main(String[] args) throws IOException {
-		File inputFile = new File("/Users/michael/Desktop/atheism2013-12.txt");
+		File inputFile = new File("/Users/michael/Desktop/TwitterSearcher/atheism2015.txt");
 
 		 int dimensions=75;
 	     // creating SentenceIterator wrapping our training corpus
@@ -27,7 +27,7 @@ public class TrainWord2Vec {
 		
 	    Word2Vec vec = new Word2Vec.Builder()
 	            .minWordFrequency(1)
-	            .iterations(1)
+	            .iterations(5)
 	            .layerSize(dimensions)
 	            .seed(42)
 	            .windowSize(5)
@@ -38,6 +38,6 @@ public class TrainWord2Vec {
 	    vec.fit();
 	    
 	  
-		WordVectorSerializer.writeWordVectors(vec, "atheismWord2VecEmbeddings_"+String.valueOf(dimensions)+".txt");
+		WordVectorSerializer.writeWordVectors(vec, "src/main/resources/wordEmbeddings/atheismWord2VecEmbeddings_"+String.valueOf(dimensions)+".txt");
 	}
 }

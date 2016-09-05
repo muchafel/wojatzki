@@ -1,4 +1,4 @@
-package featureExtractors;
+package annotators.stackedAnnotators;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
