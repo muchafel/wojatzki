@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gloVeClusteringConfig>
+    <arffLocation>src/main/resources/wordEmbeddings/glove.twitter.27B/25_atheism_d_75_c_1000_w2v.arff</arffLocation>
+    <centroidLocation>src/main/resources/centroids_d_75_c_1000_w2v.txt</centroidLocation>
+    <clusterIdToWordLocation>src/main/resources/clusters_atheism_d_75_c_1000_w2v.txt</clusterIdToWordLocation>
+    <embeddingsDimensions>75</embeddingsDimensions>
+    <embeddingsLocation>src/main/resources/wordEmbeddings/atheismWord2VecEmbeddings_75.txt</embeddingsLocation>
+    <maxIterations>15</maxIterations>
+    <numberOfClusters>1000</numberOfClusters>
+    <wordToCluserLocation>src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt</wordToCluserLocation>
+    <writeARFF>true</writeARFF>
+</gloVeClusteringConfig>

@@ -26,11 +26,11 @@ public class TrainWord2Vec {
 	     t.setTokenPreProcessor(new CommonPreprocessor());
 		
 	    Word2Vec vec = new Word2Vec.Builder()
-	            .minWordFrequency(1)
+	            .minWordFrequency(2)
 	            .iterations(5)
 	            .layerSize(dimensions)
 	            .seed(42)
-	            .windowSize(5)
+	            .windowSize(10)
 	            .iterate(iter)
 	            .tokenizerFactory(t)
 	            .build();

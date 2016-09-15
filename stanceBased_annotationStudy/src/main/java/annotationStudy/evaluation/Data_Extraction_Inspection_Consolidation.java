@@ -102,7 +102,7 @@ public class Data_Extraction_Inspection_Consolidation {
 
 	/**
 	 * consolidates all annotations in a datastructure that enables to
-	 * caluculate interrater agrrement writes the results for all subdescisison
+	 * Calculates interrater agreement writes the results for all subdescisison
 	 * (each target) into a csv file in the path
 	 */
 	private static void interAnnotatorAgreement(String path) throws Exception {
