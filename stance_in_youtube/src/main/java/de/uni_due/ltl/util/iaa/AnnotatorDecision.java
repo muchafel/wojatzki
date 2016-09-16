@@ -1,9 +1,13 @@
 package de.uni_due.ltl.util.iaa;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import webanno.custom.Debate_Stance_Set1;
-import webanno.custom.ExplicitStance;
+import org.apache.uima.jcas.JCas;
+
+import webanno.custom.Debate_Stance;
+import webanno.custom.Explicit_Stance_Set1;
+import webanno.custom.Explicit_Stance_Set2;
 
 /**
  * container class that stores all decisions of one annotator with respect to one sentence
@@ -11,31 +15,51 @@ import webanno.custom.ExplicitStance;
  *
  */
 public class AnnotatorDecision {
-	private Debate_Stance_Set1 stance;
-	private List<ExplicitStance> explicitStances;
+	private Debate_Stance_Container stance;
+	private List<Explicit_Stance_Container> explicitStances_set1;
+	private List<Explicit_Stance_Container> explicitStances_set2;
 	private String annotator;
 	private int sentenceId;
 	private String document;
+	private String text;
 	
 	
-	public AnnotatorDecision(String annotator, int sentenceCount, String document) {
+	public AnnotatorDecision(String annotator, int sentenceCount, String document, String text) {
 		this.annotator = annotator;
 		this.sentenceId = sentenceCount;
 		this.document = document;
+		this.text=text;
 	}
 	
-	public Debate_Stance_Set1 getStance() {
+	public Debate_Stance_Container getStance() {
 		return stance;
 	}
-	public void setStance(Debate_Stance_Set1 stance) {
-		this.stance = stance;
+	public void setStance(Debate_Stance stance, JCas jcas) {
+		this.stance = new Debate_Stance_Container(stance.getPolarity(),stance.getBegin(),stance.getEnd(),stance.getCoveredText());
 	}
-	public List<ExplicitStance> getExplicitStances() {
-		return explicitStances;
+	
+	public List<Explicit_Stance_Container> getExplicitStances_Set1() {
+		return explicitStances_set1;
 	}
-	public void setExplicitStances(List<ExplicitStance> explicitStances) {
-		this.explicitStances = explicitStances;
+	public List<Explicit_Stance_Container> getExplicitStances_Set2() {
+		return explicitStances_set2;
 	}
+	public void setExplicitStances_Set1(List<Explicit_Stance_Set1> explicitStances) {
+		this.explicitStances_set1= new ArrayList<>();
+		for(Explicit_Stance_Set1 anno: explicitStances){
+			Explicit_Stance_Container container= new Explicit_Stance_Container(anno.getPolarity(), anno.getBegin(), anno.getEnd(), anno.getCoveredText(), anno.getTarget());
+			this.explicitStances_set1.add(container);
+		}
+	}
+	
+	public void setExplicitStances_set2(List<Explicit_Stance_Set2> explicitStances_Set2) {
+		this.explicitStances_set2= new ArrayList<>();
+		for(Explicit_Stance_Set2 anno: explicitStances_Set2){
+			Explicit_Stance_Container container= new Explicit_Stance_Container(anno.getPolarity(), anno.getBegin(), anno.getEnd(), anno.getCoveredText(), anno.getTarget());
+			this.explicitStances_set2.add(container);
+		}
+	}
+	
 	public String getAnnotator() {
 		return annotator;
 	}
@@ -54,5 +78,14 @@ public class AnnotatorDecision {
 	public void setDocument(String document) {
 		this.document = document;
 	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 	
 }
