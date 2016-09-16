@@ -2,7 +2,7 @@
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <types>
         <typeDescription>
-            <name>webanno.custom.Debate_Stance_Set1</name>
+            <name>webanno.custom.Debate_Stance</name>
             <description/>
             <supertypeName>uima.tcas.Annotation</supertypeName>
             <features>
@@ -14,19 +14,19 @@
             </features>
         </typeDescription>
         <typeDescription>
-            <name>webanno.custom.Debate_Stance_Set2</name>
+            <name>webanno.custom.Direct_Insult</name>
             <description/>
             <supertypeName>uima.tcas.Annotation</supertypeName>
             <features>
                 <featureDescription>
-                    <name>Polarity</name>
+                    <name>InsultTarget</name>
                     <description/>
                     <rangeTypeName>uima.cas.String</rangeTypeName>
                 </featureDescription>
             </features>
         </typeDescription>
         <typeDescription>
-            <name>webanno.custom.ExplicitStance</name>
+            <name>webanno.custom.Explicit_Stance_Set1</name>
             <description/>
             <supertypeName>uima.tcas.Annotation</supertypeName>
             <features>
@@ -54,6 +54,18 @@
                 </featureDescription>
                 <featureDescription>
                     <name>Target</name>
+                    <description/>
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+            </features>
+        </typeDescription>
+        <typeDescription>
+            <name>webanno.custom.NonTextual_Content</name>
+            <description/>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+            <features>
+                <featureDescription>
+                    <name>Source</name>
                     <description/>
                     <rangeTypeName>uima.cas.String</rangeTypeName>
                 </featureDescription>
