@@ -14,12 +14,12 @@ import org.apache.uima.jcas.tcas.Annotation;
  * Updated by JCasGen Thu Sep 15 11:43:47 CEST 2016
  * XML source: /Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/desc/type/typesystem.xml
  * @generated */
-public class Explicit_Stance_Set2 extends Annotation {
+public class Debate_Stance extends Annotation {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(Explicit_Stance_Set2.class);
+  public final static int typeIndexID = JCasRegistry.register(Debate_Stance.class);
   /** @generated
    * @ordered 
    */
@@ -33,14 +33,14 @@ public class Explicit_Stance_Set2 extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Explicit_Stance_Set2() {/* intentionally empty block */}
+  protected Debate_Stance() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public Explicit_Stance_Set2(int addr, TOP_Type type) {
+  public Debate_Stance(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -48,7 +48,7 @@ public class Explicit_Stance_Set2 extends Annotation {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public Explicit_Stance_Set2(JCas jcas) {
+  public Debate_Stance(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -58,7 +58,7 @@ public class Explicit_Stance_Set2 extends Annotation {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public Explicit_Stance_Set2(JCas jcas, int begin, int end) {
+  public Debate_Stance(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);
@@ -84,40 +84,18 @@ public class Explicit_Stance_Set2 extends Annotation {
    * @return value of the feature 
    */
   public String getPolarity() {
-    if (Explicit_Stance_Set2_Type.featOkTst && ((Explicit_Stance_Set2_Type)jcasType).casFeat_Polarity == null)
-      jcasType.jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set2");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Explicit_Stance_Set2_Type)jcasType).casFeatCode_Polarity);}
+    if (Debate_Stance_Type.featOkTst && ((Debate_Stance_Type)jcasType).casFeat_Polarity == null)
+      jcasType.jcas.throwFeatMissing("Polarity", "webanno.custom.Debate_Stance");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Debate_Stance_Type)jcasType).casFeatCode_Polarity);}
     
   /** setter for Polarity - sets  
    * @generated
    * @param v value to set into the feature 
    */
   public void setPolarity(String v) {
-    if (Explicit_Stance_Set2_Type.featOkTst && ((Explicit_Stance_Set2_Type)jcasType).casFeat_Polarity == null)
-      jcasType.jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set2");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Explicit_Stance_Set2_Type)jcasType).casFeatCode_Polarity, v);}    
-   
-    
-  //*--------------*
-  //* Feature: Target
-
-  /** getter for Target - gets 
-   * @generated
-   * @return value of the feature 
-   */
-  public String getTarget() {
-    if (Explicit_Stance_Set2_Type.featOkTst && ((Explicit_Stance_Set2_Type)jcasType).casFeat_Target == null)
-      jcasType.jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set2");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Explicit_Stance_Set2_Type)jcasType).casFeatCode_Target);}
-    
-  /** setter for Target - sets  
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setTarget(String v) {
-    if (Explicit_Stance_Set2_Type.featOkTst && ((Explicit_Stance_Set2_Type)jcasType).casFeat_Target == null)
-      jcasType.jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set2");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Explicit_Stance_Set2_Type)jcasType).casFeatCode_Target, v);}    
+    if (Debate_Stance_Type.featOkTst && ((Debate_Stance_Type)jcasType).casFeat_Polarity == null)
+      jcasType.jcas.throwFeatMissing("Polarity", "webanno.custom.Debate_Stance");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Debate_Stance_Type)jcasType).casFeatCode_Polarity, v);}    
   }
 
     

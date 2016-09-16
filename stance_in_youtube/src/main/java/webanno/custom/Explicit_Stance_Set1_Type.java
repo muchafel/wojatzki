@@ -16,7 +16,7 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 /** 
  * Updated by JCasGen Thu Sep 15 11:43:47 CEST 2016
  * @generated */
-public class Explicit_Stance_Set2_Type extends Annotation_Type {
+public class Explicit_Stance_Set1_Type extends Annotation_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -26,25 +26,25 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Explicit_Stance_Set2_Type.this.useExistingInstance) {
+  			 if (Explicit_Stance_Set1_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Explicit_Stance_Set2_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = Explicit_Stance_Set1_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Explicit_Stance_Set2(addr, Explicit_Stance_Set2_Type.this);
-  			   Explicit_Stance_Set2_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new Explicit_Stance_Set1(addr, Explicit_Stance_Set1_Type.this);
+  			   Explicit_Stance_Set1_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Explicit_Stance_Set2(addr, Explicit_Stance_Set2_Type.this);
+        } else return new Explicit_Stance_Set1(addr, Explicit_Stance_Set1_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = Explicit_Stance_Set2.typeIndexID;
+  public final static int typeIndexID = Explicit_Stance_Set1.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("webanno.custom.Explicit_Stance_Set2");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("webanno.custom.Explicit_Stance_Set1");
  
   /** @generated */
   final Feature casFeat_Polarity;
@@ -56,7 +56,7 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
    */ 
   public String getPolarity(int addr) {
         if (featOkTst && casFeat_Polarity == null)
-      jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set2");
+      jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set1");
     return ll_cas.ll_getStringValue(addr, casFeatCode_Polarity);
   }
   /** @generated
@@ -65,7 +65,7 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
    */    
   public void setPolarity(int addr, String v) {
         if (featOkTst && casFeat_Polarity == null)
-      jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set2");
+      jcas.throwFeatMissing("Polarity", "webanno.custom.Explicit_Stance_Set1");
     ll_cas.ll_setStringValue(addr, casFeatCode_Polarity, v);}
     
   
@@ -80,7 +80,7 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
    */ 
   public String getTarget(int addr) {
         if (featOkTst && casFeat_Target == null)
-      jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set2");
+      jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set1");
     return ll_cas.ll_getStringValue(addr, casFeatCode_Target);
   }
   /** @generated
@@ -89,7 +89,7 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
    */    
   public void setTarget(int addr, String v) {
         if (featOkTst && casFeat_Target == null)
-      jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set2");
+      jcas.throwFeatMissing("Target", "webanno.custom.Explicit_Stance_Set1");
     ll_cas.ll_setStringValue(addr, casFeatCode_Target, v);}
     
   
@@ -101,7 +101,7 @@ public class Explicit_Stance_Set2_Type extends Annotation_Type {
 	 * @param jcas JCas
 	 * @param casType Type 
 	 */
-  public Explicit_Stance_Set2_Type(JCas jcas, Type casType) {
+  public Explicit_Stance_Set1_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
