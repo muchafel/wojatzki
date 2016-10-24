@@ -118,7 +118,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	/**
 	 * XXX specify features here
 	 */
-	public TcFeatureSet featureSet = new TcFeatureSet(
+	public static TcFeatureSet featureSet = new TcFeatureSet(
 			// TcFeatureFactory.create(StackedNGramAnnotator_id2outcomeDFE.class,
 			// StackedNGramAnnotator_id2outcomeDFE.PARAM_ID2OUTCOME_CHARNGRAM_FILE_PATH,
 			// "src/main/resources/lists/id2outcome_char_ngrams.txt",
@@ -153,7 +153,7 @@ public class StanceClassification_CrossValidation implements Constants {
 
 		// XXX run CV for each explicit target in Array
 		for (String explicitTarget : explicitTargets) {
-			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir, explicitTarget);
+			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, explicitTarget,featureSet);
 			String experimentName = explicitTarget.replace("-", "");
 			experimentName = explicitTarget.replace(" ", "");
 
@@ -177,7 +177,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	 * @param experimentName
 	 * @throws Exception
 	 */
-	private void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
+	public void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
 				NUM_FOLDS);
 
@@ -213,25 +213,25 @@ public class StanceClassification_CrossValidation implements Constants {
 	 * settings for CV (calls getters for readers, pipeline params (feature
 	 * extractor params), set the ML algorithm)
 	 * 
-	 * @param baseDir
+	 * @param dataLocation
 	 * @param subTarget
+	 * @param featureSet 
 	 * @return
 	 * @throws ResourceInitializationException 
 	 */
 	@SuppressWarnings("unchecked")
-	private ParameterSpace setupCrossValidation(String baseDir, String subTarget) throws ResourceInitializationException {
+	public ParameterSpace setupCrossValidation(String dataLocation, String subTarget, TcFeatureSet featureSet) throws ResourceInitializationException {
 		// configure reader dimension
-		Map<String, Object> dimReaders = getDimReaders(
-				baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, subTarget);
+		Map<String, Object> dimReaders = getDimReaders(dataLocation, subTarget);
 
 		// XXX uncomment/comment other ML Algorithms (SMO, J48 are relevant for
 		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-//				,
-//		 asList(new String[] { ZeroR.class.getName() })
-		 ,
-		 asList(new String[] { J48.class.getName() })
+				,
+		 asList(new String[] { ZeroR.class.getName() })
+//		 ,
+//		 asList(new String[] { J48.class.getName() })
 //		 ,
 //		 asList(new String[] { RandomForest.class.getName() })
 		// ,

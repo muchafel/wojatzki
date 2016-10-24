@@ -27,7 +27,7 @@ public class TrainWord2Vec {
 		
 	    Word2Vec vec = new Word2Vec.Builder()
 	            .minWordFrequency(2)
-	            .iterations(5)
+	            .iterations(1)
 	            .layerSize(dimensions)
 	            .seed(42)
 	            .windowSize(10)

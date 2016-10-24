@@ -54,14 +54,11 @@ public class TaskATweetReader extends TaskATweetReader_base{
 	    	OriginalResource origin= new OriginalResource(jcas);
 	    	origin.setLocation(res.getResource().getFile().getAbsolutePath());
 	    	origin.setFileName(res.getPath());
-//	    	System.out.println(res.getPath());
-//	    	System.out.println(res.getResource().getFile().getAbsolutePath());
 	    	origin.addToIndexes();
 	    }
 	    
 	    TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
 	    outcome.setOutcome(getTextClassificationOutcome(jcas));
-////	    System.out.println(getTextClassificationOutcome(jcas));
 	    outcome.addToIndexes();
 	}
 

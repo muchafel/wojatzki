@@ -22,7 +22,8 @@ public class CommentsToXMI {
 		CommentsToXMI pipelineTaskA= new CommentsToXMI();
 //		String commentFolder= "/youtubeStance/youtube_prestudy";
 //		String commentFolder= "/youtubeStance/youtube_prestudy_short";
-		String commentFolder= "/youtubeStance/youtube_dp_prestudy2/raw";
+//		String commentFolder= "/youtubeStance/youtube_dp_prestudy2/raw";
+		String commentFolder= "/youtubeStance/youtube deathpenalty comments/cleaned_reordered";
 //		String commentFolder= "/youtubeStance/youtube deathpenalty comments/xmis/cleaned";
 //		String commentFolder= "/youtubeStance/youtube deathpenalty comments/cleaned";
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
