@@ -13,6 +13,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import io.StanceReader;
+import io.StanceReader_AddsOriginal;
 
 public class BinToXMI {
 //	private static final String FilteringPostfix = "_wo_irony_understandability";

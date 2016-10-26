@@ -36,11 +36,12 @@ public class StanceClassification_CV_Params_WordEmbeddings {
 	/**
 	 * XXX specify target here (TARGET_LABLE or Array)
 	 */
-	private static ArrayList<String> targets = new ArrayList<String>(Arrays.asList("ATHEISM","secularism",
+	private static ArrayList<String> targets = new ArrayList<String>(Arrays.asList("Original_Stance","secularism",
 			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
 	
-	private static final String FilteringPostfix = "_wo_irony_understandability";
+//	private static final String FilteringPostfix = "_wo_irony_understandability";
+	private static final String FilteringPostfix = "";
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -89,41 +90,41 @@ public class StanceClassification_CV_Params_WordEmbeddings {
 								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 						);
 		   }
-//		if(variant.equals(EmbeddingVariant.KMEANS_1000)){
-//			 featureSet = new TcFeatureSet(
-//						TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000),
-//						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-//						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//						);
-//			   
-//		   }
-//		   if(variant.equals(EmbeddingVariant.KMEANS_10000)){
-//			   featureSet = new TcFeatureSet(
-//						TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000),
-//						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-//						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//						);
-//		   }
-//		   if(variant.equals(EmbeddingVariant.BROWNCLUSTERS)){
-//			   featureSet = new TcFeatureSet(
-//						TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"")
-//						,
-//						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-//						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//						);
-//		   }
+		if(variant.equals(EmbeddingVariant.KMEANS_1000)){
+			 featureSet = new TcFeatureSet(
+						TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000),
+						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
+						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+						);
+			   
+		   }
+		   if(variant.equals(EmbeddingVariant.KMEANS_10000)){
+			   featureSet = new TcFeatureSet(
+						TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000),
+						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
+						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+						);
+		   }
+		   if(variant.equals(EmbeddingVariant.BROWNCLUSTERS)){
+			   featureSet = new TcFeatureSet(
+						TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"")
+						,
+						TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
+						TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+								N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+								NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+						);
+		   }
 		 if(featureSet == null){
 			 throw new IllegalArgumentException("no feature set mapped to your configuration "+variant+" ("+target+", "+dimension+", "+year+")");
 		 }
@@ -134,6 +135,8 @@ public class StanceClassification_CV_Params_WordEmbeddings {
 		switch (target) {
         case "ATHEISM":
             return "atheism_word2Vec_"+dimension+".txt";
+        case "Original_Stance":
+        	 return "atheism_word2Vec_"+dimension+".txt";
         case "Same-sex marriage":
         	return "same_sex_marriage_word2Vec_"+dimension+".txt";
         case "religious_freedom":

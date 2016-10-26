@@ -14,6 +14,7 @@ import org.junit.Test;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import featureExtractors.BiblequotesFE;
 import io.StanceReader;
+import io.StanceReader_AddsOriginal;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;

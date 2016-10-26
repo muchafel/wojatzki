@@ -35,6 +35,7 @@ import featureExtractors.ClassifiedSubTarget_id2outcomeDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;
+import io.StanceReader_AddsOriginal;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.rules.ZeroR;
 
@@ -202,7 +203,7 @@ public class StanceClassification_CrossValidation_freezed implements Constants {
 		String inputTrainFolder = dir;
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 
-		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(StanceReader.class, StanceReader.PARAM_SOURCE_LOCATION, inputTrainFolder, StanceReader.PARAM_LANGUAGE,
+		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(StanceReader.class, StanceReader.PARAM_SOURCE_LOCATION, inputTrainFolder, StanceReader_AddsOriginal.PARAM_LANGUAGE,
 				LANGUAGE_CODE, StanceReader.PARAM_PATTERNS, "*.bin", StanceReader.PARAM_TARGET_LABEL,subTarget));
 
 		return dimReaders;

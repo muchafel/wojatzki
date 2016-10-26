@@ -42,6 +42,7 @@ import featureExtractors.OracleSubTargetDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;
+import io.StanceReader_AddsOriginal;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SMO;

@@ -47,6 +47,7 @@ import featureExtractors.WordEmbeddingClusterMembershipDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;
+import io.StanceReader_AddsOriginal;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.PolyKernel;
 import weka.classifiers.functions.supportVector.RBFKernel;
@@ -85,8 +86,8 @@ public class StanceClassification_CrossValidation implements Constants {
 			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
 
-	public static final String TARGET_LABLE = "ATHEISM"; // ,67
-	// public static final String TARGET_LABLE = "Original_Stance"; //need to
+//	public static final String TARGET_LABLE = "ATHEISM"; // ,67
+	 public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
@@ -100,7 +101,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	// public static final String TARGET_LABLE = "USA"; //XX
 	// public static final String TARGET_LABLE = "secularism";
 	// public static final String TARGET_LABLE = "Same-sex marriage";
-	private static final int NUM_FOLDS = 100;
+	private static final int NUM_FOLDS = 10;
 
 	// F1 /semeval measure
 	// ngram (char + word): .636 / .615
@@ -129,8 +130,8 @@ public class StanceClassification_CrossValidation implements Constants {
 //			,
 			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
 			,
-			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
-			,
+//			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
+//			,
 ////			TcFeatureFactory.create(NearestGloVeCluster.class, NearestGloVeCluster.PARAM_PRETRAINEDFILE,"src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt"),
 			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
