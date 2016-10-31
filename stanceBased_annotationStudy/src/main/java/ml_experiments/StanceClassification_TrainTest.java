@@ -33,7 +33,7 @@ import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentSaveModel;
 import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.report.BatchTrainTestReport;
-import org.dkpro.tc.weka.WekaClassificationAdapter;
+import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 
 import annotators.stackedAnnotators.StackedNGramAnnotator_id2outcomeDFE;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;

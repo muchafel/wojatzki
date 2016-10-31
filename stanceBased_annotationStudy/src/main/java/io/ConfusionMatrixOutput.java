@@ -10,7 +10,8 @@ import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.evaluation.Id2Outcome;
 import org.dkpro.tc.evaluation.evaluator.EvaluatorBase;
 import org.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
-import org.dkpro.tc.weka.task.WekaTestTask;
+import org.dkpro.tc.ml.weka.task.WekaTestTask;
+
 import weka.core.SerializationHelper;
 
 public class ConfusionMatrixOutput extends ReportBase implements Constants{

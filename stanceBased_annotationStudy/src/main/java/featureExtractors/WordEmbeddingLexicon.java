@@ -18,10 +18,10 @@ public class WordEmbeddingLexicon {
 		this.lexicon= lexicon;
 	}
 	
-	public WordEmbeddingLexicon(String path){
+	public WordEmbeddingLexicon(String path) throws Exception{
 		this.lexicon= readLexicon(path);
 	}
-	private Map<String, List<Float>> readLexicon(String path) {
+	private Map<String, List<Float>> readLexicon(String path) throws Exception {
 		Map<String, List<Float>> lexicon=new HashMap<String, List<Float>>();
 		try (FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr)) {
 			String line = "";
@@ -39,7 +39,7 @@ public class WordEmbeddingLexicon {
 				lexicon.put(key, value);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		}
 		
 		return lexicon;

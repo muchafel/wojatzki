@@ -58,6 +58,8 @@ public class StanceClassification_CV_Params_WordEmbeddings {
 //				, 
 //				"150"
 				));
+		
+		
 		for(String year: years){
 			for(String dimension: embeddingsDimensions){
 				for (EmbeddingVariant variant: EmbeddingVariant.values()) {

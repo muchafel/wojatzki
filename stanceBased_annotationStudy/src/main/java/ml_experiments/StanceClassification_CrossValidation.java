@@ -28,8 +28,7 @@ import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentSaveModel;
-import org.dkpro.tc.weka.MekaClassificationAdapter;
-import org.dkpro.tc.weka.WekaClassificationAdapter;
+import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.springframework.util.Log4jConfigurer;
 
 import annotators.stackedAnnotators.StackedNGramAnnotator_id2outcomeDFE;
@@ -44,6 +43,7 @@ import featureExtractors.ClassifiedSubTarget_id2outcomeDFE;
 import featureExtractors.NearestGloVeCluster;
 import featureExtractors.OracleSubTargetDFE;
 import featureExtractors.WordEmbeddingClusterMembershipDFE;
+import featureExtractors.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.StanceReader;
@@ -87,11 +87,11 @@ public class StanceClassification_CrossValidation implements Constants {
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
 
 //	public static final String TARGET_LABLE = "ATHEISM"; // ,67
-	 public static final String TARGET_LABLE = "Original_Stance"; //need to
+//	 public static final String TARGET_LABLE = "Original_Stance"; //need to
 	// get that info from original xmls
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
-//	 public static final String TARGET_LABLE = "Christianity"; //.8
+	 public static final String TARGET_LABLE = "Christianity"; //.8
 	// public static final String TARGET_LABLE = "Freethinking"; // XX
 //	 public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
@@ -127,12 +127,11 @@ public class StanceClassification_CrossValidation implements Constants {
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
 //			TcFeatureFactory.create(OracleSubTargetDFE.class)
 //			TcFeatureFactory.create(ClassifiedSubTargetDFE.class)
+			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"/Users/michael/Desktop/atheism20152016.txt_word2Vec_150.txt"),
+//			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
 //			,
-			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
-			,
 //			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
 //			,
-////			TcFeatureFactory.create(NearestGloVeCluster.class, NearestGloVeCluster.PARAM_PRETRAINEDFILE,"src/main/resources/wordEmbeddings/glove.twitter.27B/glove.twitter.27B.25d.txt"),
 			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
@@ -149,22 +148,22 @@ public class StanceClassification_CrossValidation implements Constants {
 		StanceClassification_CrossValidation experiment = new StanceClassification_CrossValidation();
 
 		// XXX CV for getting the id2outcome file for the DFE
-//		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir, TARGET_LABLE);
-//		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
+		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", TARGET_LABLE,featureSet);
+		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
 
 		// XXX run CV for each explicit target in Array
-		for (String explicitTarget : explicitTargets) {
-			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, explicitTarget,featureSet);
-			String experimentName = explicitTarget.replace("-", "");
-			experimentName = explicitTarget.replace(" ", "");
-
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-//			if(saveModel){
-//				experiment.saveModel(pSpace_explicit, experimentName);
-//			}else{
-//				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-//			}
-		}
+//		for (String explicitTarget : explicitTargets) {
+//			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, explicitTarget,featureSet);
+//			String experimentName = explicitTarget.replace("-", "");
+//			experimentName = explicitTarget.replace(" ", "");
+//
+//			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
+////			if(saveModel){
+////				experiment.saveModel(pSpace_explicit, experimentName);
+////			}else{
+////				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
+////			}
+//		}
 	}
 
 	
@@ -229,8 +228,8 @@ public class StanceClassification_CrossValidation implements Constants {
 		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-				,
-		 asList(new String[] { ZeroR.class.getName() })
+////				,
+//		 asList(new String[] { ZeroR.class.getName() })
 //		 ,
 //		 asList(new String[] { J48.class.getName() })
 //		 ,
@@ -305,10 +304,6 @@ public class StanceClassification_CrossValidation implements Constants {
 	 */
 	private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
 		return createEngineDescription(createEngineDescription(ArktweetTokenizer.class)
-//				,
-//				createEngineDescription(Stacked_SubTargetClassificationId2Outcome.class)
-		// ,
-		// createEngineDescription(Stacked_NgramClassification.class)
 		);
 	}
 }

@@ -38,8 +38,11 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 			return false;
 		}
 		System.out.println("use embedding "+embeddingsLocation);
-		lexicon = new WordEmbeddingLexicon(embeddingsLocation);
-
+			try {
+				lexicon = new WordEmbeddingLexicon(embeddingsLocation);
+			} catch (Exception e) {
+				throw new ResourceInitializationException(e);
+			}
 		return true;
 	}
 
@@ -56,7 +59,7 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 		WordEmbeddingHelper helper=new WordEmbeddingHelper(this.lexicon);
 		Set<String> embeddingCandidates= new HashSet<String>();
 		
-		//TODO better filtering
+		//TODO filtering for content words?
 		for(Token t: JCasUtil.select(jcas, Token.class)){
 			String lowerCase = t.getCoveredText().toLowerCase();
 			embeddingCandidates.add(lowerCase);
