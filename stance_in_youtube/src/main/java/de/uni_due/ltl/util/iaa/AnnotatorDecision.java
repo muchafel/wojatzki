@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 
 import webanno.custom.Debate_Stance;
+import webanno.custom.Direct_Insult;
 import webanno.custom.Explicit_Stance_Set1;
 import webanno.custom.Explicit_Stance_Set2;
+import webanno.custom.NonTextual_Content;
 
 /**
  * container class that stores all decisions of one annotator with respect to one sentence
@@ -16,6 +18,8 @@ import webanno.custom.Explicit_Stance_Set2;
  */
 public class AnnotatorDecision {
 	private Debate_Stance_Container stance;
+	private List<InsultContainer> insults;
+	private List<ReferenceContainer> references;
 	private List<Explicit_Stance_Container> explicitStances_set1;
 	private List<Explicit_Stance_Container> explicitStances_set2;
 	private String annotator;
@@ -87,5 +91,28 @@ public class AnnotatorDecision {
 		this.text = text;
 	}
 
+	public List<InsultContainer> getInsults() {
+		return insults;
+	}
+
+	public void setInsults(List<Direct_Insult> insults) {
+		this.insults= new ArrayList<>();
+		for(Direct_Insult anno: insults){
+			InsultContainer container= new InsultContainer(anno.getBegin(), anno.getEnd(), anno.getCoveredText(), anno.getInsultTarget());
+			this.insults.add(container);
+		}
+	}
+
+	public List<ReferenceContainer> getReferences() {
+		return references;
+	}
+
+	public void setReferences(List<NonTextual_Content> references) throws Exception {
+		this.references = new ArrayList<>();
+		for(NonTextual_Content anno: references){
+			ReferenceContainer container= new ReferenceContainer(anno.getBegin(), anno.getEnd(), anno.getCoveredText(), anno.getSource());
+			this.references.add(container);
+		}
+	}
 	
 }

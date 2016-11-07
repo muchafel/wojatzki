@@ -31,45 +31,60 @@ import it.unimi.dsi.fastutil.io.InspectableFileCachedInputStream;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import webanno.custom.Debate_Stance;
+import webanno.custom.Direct_Insult;
 import webanno.custom.Explicit_Stance_Set1;
 import webanno.custom.Explicit_Stance_Set2;
+import webanno.custom.NonTextual_Content;
 
 public class InterAnnotatorAgreement {
 
 	static boolean doUnzipping=false;
-	static String annotationFolder="/youtubeStance/annotation/Stance_Youtube_Study_2016-10-18_1559/";
-	static ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("NiklasMeyer","BenjaminGansert", "MarvinHoltermann"));
+	static String annotationFolder="/youtubeStance/annotation/final_v1/";
+	static ArrayList<String> annotators = new ArrayList<String>(Arrays.asList("NiklasMeyer"
+			,"BenjaminGansert"
+			,"MarvinHoltermann"
+			));
 	static ArrayList<String> targets_Set1 = new ArrayList<String>(Arrays.asList(
 			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	
-//			"Death Penalty (Debate)",
-//			"Death Penalty for especially heinous crimes (murder, mass murder, rape, child molestation etc.)",	
+			"Death Penalty (Debate)",
+			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)",	
 			"Death Penalty should be done by gunshot",	
 			"Death Penalty should be done by hypoxia",	
-//			"Death Penalty should be done by the electric chair",	
+			"Death Penalty should be done by the electric chair",	
 			"Death Penalty should be enforced more quickly e.g. by minimizing the number of appeals",	
-//			"If Death Penalty is allowed, abortion should be legal, too.",	
+			"If Death Penalty is allowed, abortion should be legal, too.",	
 			"If Death Penalty is allowed, euthanasia should be allowed",	
-//			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	
+			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	
 //			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",	
 			"In certain cases, capital punishment shouldn’t have to be humane but more harsh",
 			"Life-long prison should be replaced by Death Penalty",	
 			"The level of certainty that is necessary for Death Penalty is unachievable"
-//			,
-//			"There is currently no human form of Death Penalty",	
+			,
+			"There is currently no human form of Death Penalty"
+//			,	
 //			"Witnessing Death Penalty can have a negative impact on humans psyche (e.g. for the executioner)"
 			));
 	
 	static ArrayList<String> targets_Set2 = new ArrayList<String>(Arrays.asList(
 //			"Death Penalty (Debate)",
-//			"Execution helps alleviate the overcrowding of prisons.",	
+			"Execution helps alleviate the overcrowding of prisons.",	
 			"Execution prevents the accused from committing further crimes.",	
-//			"It helps the victims’ families achieve closure.",	
+			"It helps the victims’ families achieve closure.",	
 			"State-sanctioned killing is wrong (state has not the right).",	
 			"The death penalty can produce irreversible miscarriages of justice.",	
 			"The death penalty deters crime.",	
 			"The death penalty is a financial burden on the state.",	
 			"The death penalty should apply as punishment for first-degree murder; an eye for an eye.",	
 			"Wrongful convictions are irreversible."
+			));
+	
+	static ArrayList<String> insultTags = new ArrayList<String>(Arrays.asList("Group"
+			,"Person"
+			,"User"
+			));
+	
+	static ArrayList<String> nonTextualReference = new ArrayList<String>(Arrays.asList("Video"
+			,"Foreigen Source"
 			));
 	
 	public static void main(String[] args) throws Exception {
@@ -80,20 +95,58 @@ public class InterAnnotatorAgreement {
 		
 		System.out.println("create webanno datastructure");
 		Map<String,Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions = annotatorToSentences(baseDir+annotationFolder+"annotation_unzipped");
-		System.out.println("data:");
+//		System.out.println("data:");
 //		System.out.println(annotatorToSentenceToDecisions);
 //		inspect(annotatorToSentenceToDecisions);
 
+		System.out.println("calculate IAA");
+		iaa(annotatorToSentenceToDecisions);
+		
+	}
+	
+	
+	
+	
+
+
+
+	private static void iaa(Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions) throws Exception {
 		Map<String,Double> fleissKappas1= new HashMap<>();
-		fleissKappas1=interAnnotatorAgreementDebateStance(annotatorToSentenceToDecisions,annotators,fleissKappas1);
+		Map<String,Double> fleissKappas2= new HashMap<>();
+		Map<String,Double> fleissKappasInsult= new HashMap<>();
+		Map<String,Double> fleissNonTextReference= new HashMap<>();
+		
+		IAAHelper iaaHelper= new IAAHelper();
+		
+		/**
+		 * this block calculates the kappas (on tag level + whole decision)
+		 */
+		
+		fleissKappas1=iaaHelper.interAnnotatorAgreementDebateStance(annotatorToSentenceToDecisions,annotators,fleissKappas1);
 //
 		for(String target: targets_Set1){
-			fleissKappas1=interAnnotatorAgreementTarget_Set1(annotatorToSentenceToDecisions,annotators,target,fleissKappas1);
+			fleissKappas1=iaaHelper.interAnnotatorAgreementTarget_Set1(annotatorToSentenceToDecisions,annotators,target,fleissKappas1);
 		}
-		Map<String,Double> fleissKappas2= new HashMap<>();
+		
 		for(String target: targets_Set2){
-			fleissKappas2=interAnnotatorAgreementTarget_Set2(annotatorToSentenceToDecisions,annotators,target,fleissKappas2);
+			fleissKappas2=iaaHelper.interAnnotatorAgreementTarget_Set2(annotatorToSentenceToDecisions,annotators,target,fleissKappas2);
 		}
+		
+		for(String insultTag: insultTags){
+			fleissKappasInsult=iaaHelper.interAnnotatorAgreementInsult(annotatorToSentenceToDecisions,annotators,insultTag,fleissKappasInsult);
+		}
+		
+		for(String reference: nonTextualReference){
+			fleissNonTextReference=iaaHelper.interAnnotatorAgreementReference(annotatorToSentenceToDecisions,annotators,reference,fleissNonTextReference);
+		}
+		
+		/**
+		 * TODO: whole decision
+		 */
+		
+		/**
+		 * this block prints the results to console
+		 */
 		
 		for(String target: fleissKappas1.keySet()){
 			System.out.println(target+"\t"+fleissKappas1.get(target));
@@ -103,11 +156,23 @@ public class InterAnnotatorAgreement {
 		for(String target: fleissKappas2.keySet()){
 			System.out.println(target+"\t"+fleissKappas2.get(target));
 		}
+		System.out.println("----------");
 		
+		for(String tag: fleissKappasInsult.keySet()){
+			System.out.println(tag+"\t"+fleissKappasInsult.get(tag));
+		}
+		System.out.println("----------");
+		for(String tag: fleissNonTextReference.keySet()){
+			System.out.println(tag+"\t"+fleissNonTextReference.get(tag));
+		}
 	}
-	
-	
-	
+
+
+
+
+
+
+
 	private static void inspect(Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions) {
 		for(String docId: annotatorToSentenceToDecisions.keySet()){
 			System.out.println(docId);
@@ -126,178 +191,8 @@ public class InterAnnotatorAgreement {
 	}
 
 
-
-	private static Map<String, Double> interAnnotatorAgreementTarget_Set1(
-			Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions,
-			ArrayList<String> annotators2, String target,Map<String, Double> fleissKappas) throws Exception {
-		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
-		if (annotators.size() > 3) {
-			throw new Exception("unhandled number of annotators");
-		}
-		
-		//for each document
-		for(String documentId: annotatorToSentenceToDecisions.keySet()){
-			//foreachSentence
-			for(int sentenceId:annotatorToSentenceToDecisions.get(documentId).keySet()){
-				if(annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size()!=annotators.size()){
-					System.err.println("skip sentence because not enough annos");
-				}else{
-//					System.out.println(sentenceId+ " "+ annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size());
-					if(annotators.size()==2){
-						study.addItem(getAnnotatorExplicitStance_1(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_1(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target));
-					}
-					else if(annotators.size()==3){
-//						System.out.println(sentenceId+" "+getAnnotatorExplicitStance_1(annotators.get(0),
-//								annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target)
-//								+ " "
-//								+ getAnnotatorExplicitStance_1(annotators.get(1),
-//										annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target)
-//								+ " " + getAnnotatorExplicitStance_1(annotators.get(1),
-//										annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target));
-						study.addItem(getAnnotatorExplicitStance_1(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_1(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_1(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target));
-					}
-				}
-			}
-		}
-		PercentageAgreement pa = new PercentageAgreement(study);
-		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
-
-//		System.out.println("**TARGET**"+ target);
-//		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
-//		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
-		fleissKappas.put(target, fleissKappa.calculateAgreement());
-		return fleissKappas;
-	}
-	
-	private static Map<String,Double> interAnnotatorAgreementTarget_Set2(
-			Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions,
-			ArrayList<String> annotators2, String target, Map<String,Double> fleissKappas) throws Exception {
-		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
-		if (annotators.size() > 3) {
-			throw new Exception("unhandled number of annotators");
-		}
-		
-		//for each document
-		for(String documentId: annotatorToSentenceToDecisions.keySet()){
-			//foreachSentence
-			for(int sentenceId:annotatorToSentenceToDecisions.get(documentId).keySet()){
-				if(annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size()!=annotators.size()){
-					System.err.println("skip sentence because not enough annos");
-				}else{
-//					System.out.println(sentenceId+ " "+ annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size());
-					if(annotators.size()==2){
-						study.addItem(getAnnotatorExplicitStance_2(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_2(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target));
-					}
-					else if(annotators.size()==3){
-//						System.out.println(sentenceId+" "+getAnnotatorExplicitStance_2(annotators.get(0),
-//								annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target)
-//								+ " "
-//								+ getAnnotatorExplicitStance_2(annotators.get(1),
-//										annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target)
-//								+ " " + getAnnotatorExplicitStance_2(annotators.get(1),
-//										annotatorToSentenceToDecisions.get(documentId).get(sentenceId), target));
-						study.addItem(getAnnotatorExplicitStance_2(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_2(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target),
-								getAnnotatorExplicitStance_2(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId),target));
-					}
-				}
-			}
-		}
-		PercentageAgreement pa = new PercentageAgreement(study);
-		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
-
-//		System.out.println("**TARGET**"+ target);
-//		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
-//		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
-		fleissKappas.put(target, fleissKappa.calculateAgreement());
-		return fleissKappas;
-	}
-
-
-
-
-	private static String getAnnotatorExplicitStance_1(String annotatorName, List<AnnotatorDecision> decisisons, String target) {
-		for(AnnotatorDecision decision: decisisons){
-//			System.out.println(decision.getAnnotator());
-			if(decision.getAnnotator().equals(annotatorName)){
-				if(decision.getExplicitStances_Set1() == null || decision.getExplicitStances_Set1().isEmpty()){
-					return "NONE";
-				}
-				for(Explicit_Stance_Container stance:decision.getExplicitStances_Set1()){
-					if(stance.getTarget().equals(target)){
-						return stance.getPolarity();
-					}
-				}
-			}
-		}
-		return "NONE";
-	}
-
-	
-	private static String getAnnotatorExplicitStance_2(String annotatorName, List<AnnotatorDecision> decisisons, String target) {
-		for(AnnotatorDecision decision: decisisons){
-//			System.out.println(decision.getAnnotator());
-			if(decision.getAnnotator().equals(annotatorName)){
-				if(decision.getExplicitStances_Set2() == null || decision.getExplicitStances_Set2().isEmpty()){
-					return "NONE";
-				}
-				for(Explicit_Stance_Container stance:decision.getExplicitStances_Set2()){
-					if(stance.getTarget().equals(target)){
-						return stance.getPolarity();
-					}
-				}
-			}
-		}
-		return "NONE";
-	}
 	
 
-
-	private static Map<String, Double> interAnnotatorAgreementDebateStance(
-			Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions, ArrayList<String> annotators, Map<String, Double> fleissKappas) throws Exception {
-		
-		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
-		if (annotators.size() > 3) {
-			throw new Exception("unhandled number of annotators");
-		}
-		
-		//for each document
-		for(String documentId: annotatorToSentenceToDecisions.keySet()){
-			//foreachSentence
-			for(int sentenceId:annotatorToSentenceToDecisions.get(documentId).keySet()){
-				
-				if(annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size()!=annotators.size()){
-					System.err.println("skip sentence because not enough annos"+annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size()+" != "+annotators.size());
-				}else{
-//					System.out.println(sentenceId+ " "+ annotatorToSentenceToDecisions.get(documentId).get(sentenceId).size());
-					if(annotators.size()==2){
-						study.addItem(getAnnotatorDebateStance(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
-								getAnnotatorDebateStance(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)));
-					}
-					else if(annotators.size()==3){
-//						System.out.println(documentId+" sentence id: "+sentenceId+" "+ getSentenceId(annotatorToSentenceToDecisions.get(documentId).get(sentenceId))+" "+getAnnotatorDebateStance(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId))+" "+getAnnotatorDebateStance(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId))+" "+getAnnotatorDebateStance(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)));
-						study.addItem(getAnnotatorDebateStance(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
-								getAnnotatorDebateStance(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
-								getAnnotatorDebateStance(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)));
-					}
-				}
-			}
-		}
-		PercentageAgreement pa = new PercentageAgreement(study);
-		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
-		System.out.println("DEBATE STANCE");
-		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
-		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
-		fleissKappas.put("Debate_Stance", fleissKappa.calculateAgreement());
-		return fleissKappas;
-	}
-
-
-	
 
 
 	private static String getSentenceId(List<AnnotatorDecision> list) {
@@ -309,20 +204,6 @@ public class InterAnnotatorAgreement {
 	}
 
 
-
-	private static String getAnnotatorDebateStance(String annotatorName, List<AnnotatorDecision> decisisons) {
-		for(AnnotatorDecision decision: decisisons){
-			if(decision.getAnnotator().equals(annotatorName)){
-				if(decision.getStance() == null){
-					System.err.println("WTF");
-					return "NONE";
-				}
-				return decision.getStance().getPolarity();
-			}
-		}
-		System.err.println("no matching annotator"+ annotatorName);
-		return "NONE";
-	}
 
 
 	/**
@@ -384,6 +265,16 @@ public class InterAnnotatorAgreement {
 				if(!explicitStances_Set2.isEmpty()){
 					decisison.setExplicitStances_set2(explicitStances_Set2);
 				}
+				List<Direct_Insult> insultSet= JCasUtil.selectCovered(Direct_Insult.class, sentence);
+				if(!insultSet.isEmpty()){
+					decisison.setInsults(insultSet);
+				}
+				
+				List<NonTextual_Content> referenceSet= JCasUtil.selectCovered(NonTextual_Content.class, sentence);
+				if(!referenceSet.isEmpty()){
+					decisison.setReferences(referenceSet);
+				}
+				
 				result= addToResult(documentMetaData.getDocumentTitle(),sentenceCount,decisison,result);
 				sentenceCount++;
 			}
