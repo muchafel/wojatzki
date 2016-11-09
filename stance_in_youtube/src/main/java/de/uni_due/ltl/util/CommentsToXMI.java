@@ -14,7 +14,7 @@ import ch.qos.logback.classic.db.DBAppender;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
-import io.YoutubeCommentReader;
+import io.YoutubeCommentReader_RAWTEXT;
 
 public class CommentsToXMI {
 
@@ -35,9 +35,9 @@ public class CommentsToXMI {
 		SimplePipeline.runPipeline(
 				//replace emojis with alias using https://github.com/vdurmont/emoji-java
 				CollectionReaderFactory.createReader(
-						YoutubeCommentReader.class,
-						YoutubeCommentReader.PARAM_SOURCE_LOCATION, folder, YoutubeCommentReader.PARAM_PATTERNS,
-						"*.txt", YoutubeCommentReader.PARAM_LANGUAGE, "en", YoutubeCommentReader.PARAM_REPLACE_EMOJIS_WITH_ALIAS, true),
+						YoutubeCommentReader_RAWTEXT.class,
+						YoutubeCommentReader_RAWTEXT.PARAM_SOURCE_LOCATION, folder, YoutubeCommentReader_RAWTEXT.PARAM_PATTERNS,
+						"*.txt", YoutubeCommentReader_RAWTEXT.PARAM_LANGUAGE, "en", YoutubeCommentReader_RAWTEXT.PARAM_REPLACE_EMOJIS_WITH_ALIAS, true),
 				AnalysisEngineFactory.createEngineDescription(createEngineDescription(Custom_ArkTweetTokenizer.class)),
 //				AnalysisEngineFactory.createEngineDescription(createEngineDescription(ArktweetTokenizer.class)),
 				AnalysisEngineFactory.createEngineDescription(createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION,folder+"/xmis/", XmiWriter.PARAM_OVERWRITE, true))
