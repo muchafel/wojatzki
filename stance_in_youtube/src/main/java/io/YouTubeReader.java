@@ -1,6 +1,7 @@
 package io;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -9,7 +10,11 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationSequence;
+import org.dkpro.tc.api.type.TextClassificationTarget;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 
 public class YouTubeReader extends BinaryCasReader{
@@ -21,6 +26,7 @@ public class YouTubeReader extends BinaryCasReader{
 	    @ConfigurationParameter(name = PARAM_TARGET_LABEL, mandatory = true)
 		protected String targetSet;
 
+	    private int tcId = 0;
 	    
 	    @Override
 		public void getNext(CAS cas) throws IOException, CollectionException {
@@ -32,35 +38,58 @@ public class YouTubeReader extends BinaryCasReader{
 			} catch (CASException e) {
 				throw new CollectionException(e);
 			}
-			TextClassificationOutcome outcome = null;
-			if(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class) != null){
-				outcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class);
-			}else{
-				 outcome = new TextClassificationOutcome(jcas);
-			}
+			TextClassificationSequence sequence = new TextClassificationSequence(jcas,0, jcas.getDocumentText().length());
+            sequence.addToIndexes();
+			 for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
+		            
+		          TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(),
+		        		  sentence.getEnd());
+		                unit.setId(tcId++);
+		                unit.setSuffix(sentence.getCoveredText());
+		                unit.addToIndexes();
+
+		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,
+		                		sentence.getBegin(), sentence.getEnd());
+		                try {
+							outcome.setOutcome(getTextClassificationOutcome(jcas, unit));
+						} catch (Exception e) {
+							throw new IOException("could not set outcome");
+						}
+		                outcome.addToIndexes();
+
+		        }
 			
-		    try {
-				outcome.setOutcome(getTextClassificationOutcome(jcas));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		    outcome.addToIndexes();
+//			if(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class) != null){
+//				outcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class);
+//			}else{
+//				 outcome = new TextClassificationOutcome(jcas);
+//			}
+//			
+//		    try {
+//				outcome.setOutcome(getTextClassificationOutcome(jcas));
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		    outcome.addToIndexes();
 		}
 
 
-		private String getTextClassificationOutcome(JCas jcas) throws Exception {
+		private String getTextClassificationOutcome(JCas jcas, TextClassificationTarget unit) throws Exception {
 			if(targetLabel.equals("DEATH PENALTY")){
-				return JCasUtil.selectSingle(jcas, curated.Debate_Stance.class).getPolarity();
+				return JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity();
 			}
-			else {
-				if(targetSet.equals("1")){
-					return getTextClassificationOutcome_Set1(jcas, targetLabel);
-				}else if(targetSet.equals("2")){
-					return getTextClassificationOutcome_Set2(jcas, targetLabel);
-				}else{
-					throw new Exception("Labele set for explicit stances "+targetSet+ " not known!");
-				}
-			}
+			throw new Exception("Labele set for explicit stances "+targetSet+ " not known!");
+//			
+			//TODO: implement subdebate stuff
+//			else {
+//				if(targetSet.equals("1")){
+//					return getTextClassificationOutcome_Set1(jcas, targetLabel);
+//				}else if(targetSet.equals("2")){
+//					return getTextClassificationOutcome_Set2(jcas, targetLabel);
+//				}else{
+//					throw new Exception("Labele set for explicit stances "+targetSet+ " not known!");
+//				}
+//			}
 		}
 
 

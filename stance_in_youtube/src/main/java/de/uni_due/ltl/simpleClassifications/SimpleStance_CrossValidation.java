@@ -22,9 +22,16 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.features.length.AvgNrOfCharsPerSentence;
+import org.dkpro.tc.features.length.AvgNrOfCharsPerToken;
+import org.dkpro.tc.features.length.NrOfSentences;
+import org.dkpro.tc.features.length.NrOfTokens;
+import org.dkpro.tc.features.length.NrOfTokensPerSentence;
 import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
 import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
+import org.dkpro.tc.features.style.ContextualityMeasureFeatureExtractor;
+import org.dkpro.tc.features.style.TokenRatioFeatureExtractor;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentSaveModel;
@@ -52,10 +59,9 @@ public class SimpleStance_CrossValidation implements Constants{
 		 * XXX CONSTANTS
 		 */
 		public static final String LANGUAGE_CODE = "en";
-		private static final String FilteringPostfix = "_worc/main/resources/models";
 		public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
 		public static int WORD_N_GRAM_MIN = 1;
-		public static int WORD_N_GRAM_MAX = 3;
+		public static int WORD_N_GRAM_MAX = 1;
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
 		public static int N_GRAM_MAXCANDIDATES = 1000;
@@ -66,10 +72,18 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static TcFeatureSet featureSet = new TcFeatureSet(
 				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
+//				,
+				//lenght features
+//				TcFeatureFactory.create(NrOfTokens.class),
+//				TcFeatureFactory.create(NrOfTokensPerSentence.class),
+//				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
+//				TcFeatureFactory.create(AvgNrOfCharsPerSentence.class),
+//				TcFeatureFactory.create(NrOfSentences.class)
+//				,
+//				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 				);
 
 		public static void main(String[] args) throws Exception {
@@ -78,7 +92,7 @@ public class SimpleStance_CrossValidation implements Constants{
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
 
 //			 XXX CV for getting the id2outcome file for the DFE
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", TARGET_LABLE,TARGET_Set,featureSet);
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
 			experiment.runCrossValidation(pSpace, "debateStance");
 
 			// XXX run CV for each explicit target in Array
@@ -161,10 +175,9 @@ public class SimpleStance_CrossValidation implements Constants{
 		}
 
 		private Map<String, Object> getDimReaders(String dir, String subTarget, String targetSet) throws ResourceInitializationException {
-			System.out.println(dir);
 			String inputTrainFolder = dir;
 			Map<String, Object> dimReaders = new HashMap<String, Object>();
-
+			System.out.println("read from "+inputTrainFolder);
 			dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
 					LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,subTarget, YouTubeReader.PARAM_TARGET_SET,targetSet));
 
@@ -191,12 +204,12 @@ public class SimpleStance_CrossValidation implements Constants{
 
 				return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 						Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL),
-						Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets, dimFeatureFilters,
+						Dimension.create(DIM_FEATURE_MODE, FM_UNIT), dimFeatureSets, dimFeatureFilters,
 						dimClassificationArgs);
 			} else {
 				return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 						Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL),
-						Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets, dimClassificationArgs);
+						Dimension.create(DIM_FEATURE_MODE, FM_UNIT), dimFeatureSets, dimClassificationArgs);
 			}
 		}
 
