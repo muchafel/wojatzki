@@ -330,6 +330,51 @@ public class IAAHelper {
 		if (annotatorExplicitStance_23.equals("FAVOR"))count++;
 		return count;
 	}
-	
+
+
+	public Map<String, Double> iaaDebateStanceInferredFromContext(
+			Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions,
+			ArrayList<String> annotators, Map<String, Double> fleissKappas) {
+		CodingAnnotationStudy study = new CodingAnnotationStudy(annotators.size());
+		int count = 0;
+		for(String documentId: annotatorToSentenceToDecisions.keySet()){
+			//foreachSentence
+			for(int sentenceId:annotatorToSentenceToDecisions.get(documentId).keySet()){
+				
+				count+=countFavor(getExplicitNoneDebateStance(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
+						getExplicitNoneDebateStance(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
+						getExplicitNoneDebateStance(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)));
+									study.addItem(getExplicitNoneDebateStance(annotators.get(0),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
+								getExplicitNoneDebateStance(annotators.get(1),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)),
+								getExplicitNoneDebateStance(annotators.get(2),annotatorToSentenceToDecisions.get(documentId).get(sentenceId)));
+				}
+			}
+		PercentageAgreement pa = new PercentageAgreement(study);
+		FleissKappaAgreement fleissKappa = new FleissKappaAgreement(study);
+		System.out.println("DEBATE STANCE (Inferred) count:"+count);
+		System.out.println("PERCENTAGE AGREEMENT " + pa.calculateAgreement());
+		System.out.println("FLEISSKAPPA " + fleissKappa.calculateAgreement());
+		fleissKappas.put("Debate_Stance(Inferred)", fleissKappa.calculateAgreement());
+		return fleissKappas;
+	}
+	private String getExplicitNoneDebateStance(String annotatorName, List<AnnotatorDecision> decisisons) {
+		for(AnnotatorDecision decision: decisisons){
+			if(decision.getAnnotator().equals(annotatorName)){
+				if(decision.getExplicitStances_Set1() == null || decision.getExplicitStances_Set1().isEmpty()){
+					return "NONE";
+				}
+				for(Explicit_Stance_Container container:decision.getExplicitStances_Set1()){
+					if(container.getTarget().equals("Death Penalty (Debate)")){
+						if(container.getPolarity().equals("NONE")){
+							return "FAVOR";
+						}else{
+							return "NONE";
+						}
+					}
+				}
+			}
+		}
+		return "NONE";
+	}
 	
 }

@@ -74,8 +74,8 @@ public class StanceClassification_CrossValidation implements Constants {
 	public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
-	public static int CHAR_N_GRAM_MIN = 1;
-	public static int CHAR_N_GRAM_MAX = 3;
+	public static int CHAR_N_GRAM_MIN = 2;
+	public static int CHAR_N_GRAM_MAX = 5;
 	
 	public static int N_GRAM_MAXCANDIDATES = 1000;
 
@@ -84,15 +84,14 @@ public class StanceClassification_CrossValidation implements Constants {
 	 */
 	private static ArrayList<String> explicitTargets = new ArrayList<String>(Arrays.asList("secularism",
 			"Same-sex marriage", "religious_freedom", "Conservative_Movement", "Freethinking", "Islam",
-			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity"));
+			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity","Original_Stance"));
 
 //	public static final String TARGET_LABLE = "ATHEISM"; // ,67
-//	 public static final String TARGET_LABLE = "Original_Stance"; //need to
-	// get that info from original xmls
+	 public static final String TARGET_LABLE = "Original_Stance"; 
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
-	 public static final String TARGET_LABLE = "Christianity"; //.8
-	// public static final String TARGET_LABLE = "Freethinking"; // XX
+//	 public static final String TARGET_LABLE = "Christianity"; //.8
+//	 public static final String TARGET_LABLE = "Freethinking"; // XX
 //	 public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
 	// public static final String TARGET_LABLE = "No_evidence_for_religion"; //
@@ -127,7 +126,7 @@ public class StanceClassification_CrossValidation implements Constants {
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
 //			TcFeatureFactory.create(OracleSubTargetDFE.class)
 //			TcFeatureFactory.create(ClassifiedSubTargetDFE.class)
-			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"/Users/michael/Desktop/atheism20152016.txt_word2Vec_150.txt"),
+//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"/Users/michael/Desktop/atheism20152016.txt_word2Vec_150.txt"),
 //			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
 //			,
 //			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
@@ -147,23 +146,23 @@ public class StanceClassification_CrossValidation implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		StanceClassification_CrossValidation experiment = new StanceClassification_CrossValidation();
 
-		// XXX CV for getting the id2outcome file for the DFE
-		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", TARGET_LABLE,featureSet);
-		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
+//		 XXX CV for getting the id2outcome file for the DFE
+//		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", TARGET_LABLE,featureSet);
+//		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
 
 		// XXX run CV for each explicit target in Array
-//		for (String explicitTarget : explicitTargets) {
-//			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all" + FilteringPostfix, explicitTarget,featureSet);
-//			String experimentName = explicitTarget.replace("-", "");
-//			experimentName = explicitTarget.replace(" ", "");
-//
-//			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-////			if(saveModel){
-////				experiment.saveModel(pSpace_explicit, experimentName);
-////			}else{
-////				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-////			}
-//		}
+		for (String explicitTarget : explicitTargets) {
+			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", explicitTarget,featureSet);
+			String experimentName = explicitTarget.replace("-", "");
+			experimentName = explicitTarget.replace(" ", "");
+
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
+//			if(saveModel){
+//				experiment.saveModel(pSpace_explicit, experimentName);
+//			}else{
+//				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
+//			}
+		}
 	}
 
 	
@@ -228,7 +227,7 @@ public class StanceClassification_CrossValidation implements Constants {
 		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-////				,
+//				,
 //		 asList(new String[] { ZeroR.class.getName() })
 //		 ,
 //		 asList(new String[] { J48.class.getName() })
@@ -247,7 +246,7 @@ public class StanceClassification_CrossValidation implements Constants {
 	}
 
 	/**
-	 * configures the reader (STanceReader is actually a BinCas reader that
+	 * configures the reader (StanceReader is actually a BinCas reader that
 	 * assigns TextClassificationOutcome and is sensitive to different target
 	 * labels)
 	 * 

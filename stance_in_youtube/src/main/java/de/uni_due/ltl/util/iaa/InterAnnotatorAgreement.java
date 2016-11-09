@@ -1,5 +1,7 @@
 package de.uni_due.ltl.util.iaa;
 
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -12,11 +14,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.AggregateBuilder;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.JCasIterable;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.statistics.agreement.coding.CodingAnnotationStudy;
 import org.dkpro.statistics.agreement.coding.FleissKappaAgreement;
 import org.dkpro.statistics.agreement.coding.PercentageAgreement;
@@ -26,7 +31,9 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
+import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
+import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import it.unimi.dsi.fastutil.io.InspectableFileCachedInputStream;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -102,11 +109,90 @@ public class InterAnnotatorAgreement {
 		System.out.println("calculate IAA");
 		iaa(annotatorToSentenceToDecisions);
 		
+//		System.out.println("build corpus");
+//		buildCorpus(annotatorToSentenceToDecisions,baseDir+"/youtubeStance/youtube deathpenalty comments/cleaned_reordered/xmis",baseDir);
+		
 	}
 	
 	
 	
 	
+
+
+
+	private static void buildCorpus(Map<String, Map<Integer, List<AnnotatorDecision>>> annotatorToSentenceToDecisions,
+			String path, String baseDir) throws Exception {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
+				XmiReader.PARAM_SOURCE_LOCATION, path, XmiReader.PARAM_PATTERNS, "**/*.xmi", XmiReader.PARAM_LANGUAGE,
+				"en");
+		AnalysisEngine writerEngine= getWriterEngine(baseDir+"/youtubeStance/corpus");
+		for (JCas jcas : new JCasIterable(reader)) {
+			DocumentMetaData documentMetaData= JCasUtil.selectSingle(jcas, DocumentMetaData.class);
+			System.out.println(documentMetaData.getDocumentTitle()+ " "+documentMetaData.getDocumentId());
+			documentMetaData.setDocumentId(documentMetaData.getDocumentTitle()+ "_"+documentMetaData.getDocumentId());
+			int sentenceCount=0;
+			for(Sentence sentence:JCasUtil.select(jcas, Sentence.class)){
+				List<AnnotatorDecision> decisions= annotatorToSentenceToDecisions.get(documentMetaData.getDocumentTitle()).get(sentenceCount);
+				consolidate(jcas,sentence,decisions);
+				sentenceCount++;
+			}
+			writerEngine.process(jcas);
+		}
+		
+	}
+
+	private static void consolidate(JCas jcas, Sentence sentence, List<AnnotatorDecision> decisions) throws Exception {
+		for (AnnotatorDecision decisison : decisions) {
+			checkMapping(decisison, sentence.getCoveredText()); 
+		}
+		ConsolidationHelper consolidationHelper= new ConsolidationHelper( jcas, sentence);
+		consolidationHelper.consolidateStance(decisions);
+		consolidationHelper.consolidateExplicitTargetsSet1(decisions,targets_Set1);
+		consolidationHelper.consolidateExplicitTargetsSet2(decisions,targets_Set2);
+		consolidationHelper.consolidateInsults(decisions,insultTags);
+		consolidationHelper.consolidateReferences(decisions,nonTextualReference);
+//		List<Explicit_Stance_Container> explicitStances_set1=decisison.getExplicitStances_Set1();
+//		List<Explicit_Stance_Container> explicitStances_set2=decisison.getExplicitStances_Set2();
+	}
+
+
+
+
+
+
+
+	private static AnalysisEngine getWriterEngine(String writeTo) {
+		AggregateBuilder builder = new AggregateBuilder();
+		AnalysisEngine engine = null;
+		try {
+			builder.add(createEngineDescription(
+					createEngineDescription(BinaryCasWriter.class,BinaryCasWriter.PARAM_TARGET_LOCATION, writeTo+"/bin",BinaryCasWriter.PARAM_USE_DOCUMENT_ID,true),
+					createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION, writeTo+"/xmi",XmiWriter.PARAM_OVERWRITE,true, XmiWriter.PARAM_USE_DOCUMENT_ID,true)
+						)
+					);
+			engine = builder.createAggregate();
+		} catch (ResourceInitializationException e) {
+			e.printStackTrace();
+		}
+		return engine;
+	}
+
+
+
+
+
+	private static boolean checkMapping(AnnotatorDecision decisison, String coveredText) throws Exception {
+		if(decisison.getText().equals(coveredText)){
+			return true;
+		}else{
+			throw new Exception(decisison.getDocument()+" "+decisison.getSentenceId()+ " "+decisison.getAnnotator()+ " does not match the original jcas :"+ decisison.getText()+ " "+coveredText );
+		}
+		
+	}
+
+
+
+
 
 
 
@@ -139,6 +225,8 @@ public class InterAnnotatorAgreement {
 		for(String reference: nonTextualReference){
 			fleissNonTextReference=iaaHelper.interAnnotatorAgreementReference(annotatorToSentenceToDecisions,annotators,reference,fleissNonTextReference);
 		}
+		
+		fleissKappas1=iaaHelper.iaaDebateStanceInferredFromContext(annotatorToSentenceToDecisions,annotators,fleissKappas1);
 		
 		/**
 		 * TODO: whole decision

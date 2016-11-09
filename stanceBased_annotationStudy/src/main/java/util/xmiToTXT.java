@@ -12,13 +12,11 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import consolidatedTypes.Irony;
-import consolidatedTypes.Understandability;
-import curatedTypes.CuratedIrony;
 import curatedTypes.CuratedMainTarget;
 import curatedTypes.CuratedSubTarget;
 import curatedTypes.CuratedUnderstandability;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
+import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import io.StanceReader;
 import io.StanceReader_AddsOriginal;
 import types.StanceAnnotation;
@@ -28,11 +26,10 @@ public class xmiToTXT {
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-//		String loc=baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all"+"_wo_irony_understandability";
-		String loc="/Users/michael/DKPRO_HOME/semevalTask6/annotationStudy/originalDebateStanceLabels/bin";
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(StanceReader.class,StanceReader.PARAM_SOURCE_LOCATION, loc, StanceReader.PARAM_LANGUAGE,"en", StanceReader.PARAM_PATTERNS, "*.bin", StanceReader.PARAM_TARGET_LABEL,
-				"ATHEISM");
-		File f = new File("corpus_comparison.txt"); 
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
+				XmiReader.PARAM_SOURCE_LOCATION, baseDir+"/youtubeStance/corpus/xmi", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
+				"en");
+		File f = new File("youtubeCorpus.txt"); 
 		
 		
 		for (JCas jcas : new JCasIterable(reader)) {

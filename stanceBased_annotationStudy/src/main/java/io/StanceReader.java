@@ -34,7 +34,13 @@ public class StanceReader extends BinaryCasReader{
 		} catch (CASException e) {
 			throw new CollectionException(e);
 		}
-		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
+		TextClassificationOutcome outcome = null;
+		if(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class) != null){
+			outcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class);
+		}else{
+			 outcome = new TextClassificationOutcome(jcas);
+		}
+		
 	    try {
 			outcome.setOutcome(getTextClassificationOutcome(jcas));
 		} catch (Exception e) {
