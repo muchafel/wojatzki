@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.component.NoOpAnnotator;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.lab.Lab;
@@ -19,9 +20,11 @@ import org.dkpro.lab.task.Dimension;
 import org.dkpro.lab.task.ParameterSpace;
 import org.dkpro.lab.task.BatchTask.ExecutionPolicy;
 import org.dkpro.tc.api.exception.TextClassificationException;
+import org.dkpro.tc.api.features.TcFeature;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.core.util.ExperimentUtil;
 import org.dkpro.tc.features.length.AvgNrOfCharsPerSentence;
 import org.dkpro.tc.features.length.AvgNrOfCharsPerToken;
 import org.dkpro.tc.features.length.NrOfSentences;
@@ -61,39 +64,57 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static final String LANGUAGE_CODE = "en";
 		public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
 		public static int WORD_N_GRAM_MIN = 1;
-		public static int WORD_N_GRAM_MAX = 1;
+		public static int WORD_N_GRAM_MAX = 2;
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
-		public static int N_GRAM_MAXCANDIDATES = 1000;
-		private static final int NUM_FOLDS = 10;
+		public static int N_GRAM_MAXCANDIDATES = 500;
+		private static final int NUM_FOLDS = 6;
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
+		
+		private boolean ablation=false;
 
 		public static TcFeatureSet featureSet = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
+				TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
+				
+//				,
+//				TcFeatureFactory.create(UsersFE.class,UsersFE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
+//				,TcFeatureFactory.create(CommentTypeFE.class)
+//				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 //				,
 				//lenght features
-//				TcFeatureFactory.create(NrOfTokens.class),
+//				,TcFeatureFactory.create(NrOfTokens.class)
+//				,
 //				TcFeatureFactory.create(NrOfTokensPerSentence.class),
 //				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
 //				TcFeatureFactory.create(AvgNrOfCharsPerSentence.class),
 //				TcFeatureFactory.create(NrOfSentences.class)
-//				,
-//				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 				);
 
 		public static void main(String[] args) throws Exception {
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
-			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-
-//			 XXX CV for getting the id2outcome file for the DFE
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "debateStance");
+			
+			for(int j=2; j<=5;j++){
+				for(int i=500; i<=3000; i+=500){
+					TcFeatureSet featureSet1 = new TcFeatureSet(TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+							i, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+							NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, j));
+							
+					SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
+					ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
+					experiment.runCrossValidation(pSpace, "debateStance_k-"+String.valueOf(i)+"_max-"+String.valueOf(j));
+				}
+			}
+			
+			
 
 			// XXX run CV for each explicit target in Array
 //			for (String explicitTarget : explicitTargets) {
@@ -166,7 +187,12 @@ public class SimpleStance_CrossValidation implements Constants{
 			// asList(new String[] { Logistic.class.getName() })
 			);
 
-			Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
+			Dimension<TcFeatureSet> dimFeatureSets=null;
+			if(ablation){
+				dimFeatureSets= ExperimentUtil.getAblationTestFeatures(featureSet.toArray(new TcFeature[0]));
+			}else{
+				dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
+			}
 
 			// bundle parameterspace
 			ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimFeatureSets, dimClassificationArgs);
@@ -214,7 +240,7 @@ public class SimpleStance_CrossValidation implements Constants{
 		}
 
 		private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
-			return createEngineDescription(createEngineDescription(ArktweetTokenizer.class)
+			return createEngineDescription(createEngineDescription(FunctionalPartsAnnotator.class)
 			);
 		}
 

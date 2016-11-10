@@ -38,14 +38,13 @@ public class YouTubeReader extends BinaryCasReader{
 			} catch (CASException e) {
 				throw new CollectionException(e);
 			}
-			TextClassificationSequence sequence = new TextClassificationSequence(jcas,0, jcas.getDocumentText().length());
-            sequence.addToIndexes();
+//			TextClassificationSequence sequence = new TextClassificationSequence(jcas,0, jcas.getDocumentText().length());
+//            sequence.addToIndexes();
 			 for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 		            
 		          TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(),
 		        		  sentence.getEnd());
 		                unit.setId(tcId++);
-		                unit.setSuffix(sentence.getCoveredText());
 		                unit.addToIndexes();
 
 		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,
