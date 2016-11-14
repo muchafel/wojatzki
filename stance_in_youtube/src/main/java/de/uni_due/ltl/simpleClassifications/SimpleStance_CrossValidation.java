@@ -64,10 +64,10 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static final String LANGUAGE_CODE = "en";
 		public static boolean useUniformClassDistributionFilering = false; // for  filtering (be careful when using this)
 		public static int WORD_N_GRAM_MIN = 1;
-		public static int WORD_N_GRAM_MAX = 2;
+		public static int WORD_N_GRAM_MAX = 3;
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
-		public static int N_GRAM_MAXCANDIDATES = 500;
+		public static int N_GRAM_MAXCANDIDATES = 7500;
 		private static final int NUM_FOLDS = 6;
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
@@ -83,7 +83,8 @@ public class SimpleStance_CrossValidation implements Constants{
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
 				
 //				,
-//				TcFeatureFactory.create(UsersFE.class,UsersFE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
+//				,TcFeatureFactory.create(Remebered_UsersFE.class,Remebered_UsersFE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
+				,TcFeatureFactory.create(ContainsReferee.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
@@ -101,18 +102,21 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static void main(String[] args) throws Exception {
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
-			
-			for(int j=2; j<=5;j++){
-				for(int i=500; i<=3000; i+=500){
-					TcFeatureSet featureSet1 = new TcFeatureSet(TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-							i, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-							NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, j));
-							
-					SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-					ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
-					experiment.runCrossValidation(pSpace, "debateStance_k-"+String.valueOf(i)+"_max-"+String.valueOf(j));
-				}
-			}
+			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
+			experiment.runCrossValidation(pSpace, "debateStance_conatins_referee");
+		
+//			for(int j=2; j<=10;j++){
+//				for(int i=3500; i<=10000; i+=500){
+//					TcFeatureSet featureSet1 = new TcFeatureSet(TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//							i, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+//							NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, j));
+//							
+//					SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
+//					ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
+//					experiment.runCrossValidation(pSpace, "debateStance_k-"+String.valueOf(i)+"_max-"+String.valueOf(j));
+//				}
+//			}
 			
 			
 

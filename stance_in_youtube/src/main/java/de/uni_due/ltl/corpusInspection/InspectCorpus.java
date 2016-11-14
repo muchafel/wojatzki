@@ -33,9 +33,50 @@ public class InspectCorpus {
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
+		/**
+		 * users & refereees
+		 */
+		FrequencyDistribution<String> fd_author_FAVOR= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_referee_FAVOR= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_author_AGAINST= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_referee_AGAINST= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_author_NONE= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_referee_NONE= new FrequencyDistribution<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			engine.process(jcas);
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				if(outcome.getOutcome().equals("FAVOR")){
+					fd_author_FAVOR.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor());
+					fd_referee_FAVOR.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
+					}
+				if(outcome.getOutcome().equals("AGAINST")){
+					fd_author_AGAINST.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor());
+					fd_referee_AGAINST.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
+					}
+				if(outcome.getOutcome().equals("NONE")){
+					fd_author_NONE.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor());
+					fd_referee_NONE.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
+					}
+				}
+			}
+		System.out.println("--- FAVOR ---");
+		System.out.println(fd_author_FAVOR.getN()-fd_author_FAVOR.getCount("Unknown"));
+		System.out.println(fd_referee_FAVOR.getN()-fd_referee_FAVOR.getCount("None"));
+		System.out.println(((double)fd_referee_FAVOR.getN()-fd_referee_FAVOR.getCount("None"))/821);
+		System.out.println("--- AGAINST ---");
+		System.out.println(fd_author_AGAINST.getN()-fd_author_AGAINST.getCount("Unknown"));
+		System.out.println(fd_referee_AGAINST.getN()-fd_referee_AGAINST.getCount("None"));
+		System.out.println(((double)fd_referee_AGAINST.getN()-fd_referee_AGAINST.getCount("None"))/821);
+		System.out.println("--- NONE ---");
+		System.out.println(fd_author_NONE.getN()-fd_author_NONE.getCount("Unknown"));
+		System.out.println(fd_referee_NONE.getN()-fd_referee_NONE.getCount("None"));
+		System.out.println(((double)fd_referee_NONE.getN()-fd_referee_NONE.getCount("None"))/821);
+
 		
 		
-		
+		/**
+		 * users & refereees
+		 */
 		FrequencyDistribution<String> fd_author= new FrequencyDistribution<>();
 		FrequencyDistribution<String> fd_referee= new FrequencyDistribution<>();
 		for (JCas jcas : new JCasIterable(reader)) {
@@ -45,6 +86,8 @@ public class InspectCorpus {
 				fd_referee.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
 			}
 		}
+		System.out.println("# of authors "+(fd_author.getN()-fd_author.getCount("None")));
+		System.out.println("# of referees "+(fd_referee.getN()-fd_referee.getCount("None")));
 //		printfd(fd_author);
 //		printfd(fd_referee);
 		
@@ -82,6 +125,7 @@ public class InspectCorpus {
 //				System.out.println(StringUtils.join(tokens, " - "));
 //			}
 //		}
+//	}
 	}
 
 	private static void printfd(FrequencyDistribution<String> fd) {

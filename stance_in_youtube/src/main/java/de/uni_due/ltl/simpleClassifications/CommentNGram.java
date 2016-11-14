@@ -12,6 +12,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.Fields;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.BytesRef;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -26,6 +34,9 @@ import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.base.LuceneFeatureExtractorBase;
 import org.dkpro.tc.features.ngram.meta.LuceneNGramMetaCollector;
 import org.dkpro.tc.features.ngram.util.NGramUtils;
+import org.dkpro.tc.features.ngram.util.TermFreqTuple;
+
+import com.google.common.collect.MinMaxPriorityQueue;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
@@ -40,19 +51,25 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 		Set<Feature> features = new HashSet<Feature>();
 		FrequencyDistribution<String> documentNgrams = null;
 
+		System.out.println(target.getCoveredText());
 		documentNgrams = getCommentNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches, ngramMinN,
 				ngramMaxN, stopwords);
+		
 
 		// documentNgrams = NGramUtils.getAnnotationNgrams(jcas, target,
 		// ngramLowerCase,filterPartialStopwordMatches, ngramMinN, ngramMaxN,
 		// stopwords);
 
-		for (String topNgram : topKSet.getKeys()) {
-			if (documentNgrams.getKeys().contains(topNgram)) {
-				features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 1));
-			} else {
-				features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 0, true));
+		try {
+			for (String topNgram : getTopNgrams().getKeys()) {
+				if (documentNgrams.getKeys().contains(topNgram)) {
+					features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 1));
+				} else {
+					features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 0, true));
+				}
 			}
+		} catch (ResourceInitializationException e) {
+			e.printStackTrace();
 		}
 		return features;
 	}
@@ -64,7 +81,7 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 		// If the focusAnnotation contains sentence annotations, extract the
 		// ngrams sentence-wise
 		// if not, extract them from all tokens in the focusAnnotation
-		if (JCasUtil.selectCovered(jcas, Sentence.class, focusAnnotation).size() > 0) {
+		if (JCasUtil.selectCovered(jcas, CommentText.class, focusAnnotation).size() > 0) {
 			for (CommentText s : selectCovered(jcas, CommentText.class, focusAnnotation)) {
 				for (List<String> ngram : new NGramStringListIterable(toText(selectCovered(Token.class, s)), minN,
 						maxN)) {
@@ -158,5 +175,14 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 			return filteredList.size() != 0;
 		}
 	}
+	
+	
+	protected FrequencyDistribution<String> getTopNgrams() throws ResourceInitializationException {
 
+		FrequencyDistribution<String> topNGrams = new FrequencyDistribution<String>();
+
+		throw new ResourceInitializationException("implement this method uing a metaclolector (stance lexicon like)", requiredTypes);
+
+//		return topNGrams;
+	}
 }
