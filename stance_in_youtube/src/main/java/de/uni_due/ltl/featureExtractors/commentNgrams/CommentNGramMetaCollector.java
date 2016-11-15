@@ -1,4 +1,4 @@
-package de.uni_due.ltl.featureExtractors.CommentNgrams;
+package de.uni_due.ltl.featureExtractors.commentNgrams;
 
 import static org.apache.uima.fit.util.JCasUtil.selectCovered;
 import static org.dkpro.tc.core.Constants.NGRAM_GLUE;

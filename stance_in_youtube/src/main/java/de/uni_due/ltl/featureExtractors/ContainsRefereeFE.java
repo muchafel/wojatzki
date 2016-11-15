@@ -1,4 +1,4 @@
-package de.uni_due.ltl.simpleClassifications;
+package de.uni_due.ltl.featureExtractors;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import preprocessing.Users;
 
-public class ContainsReferee extends FeatureExtractorResource_ImplBase
+public class ContainsRefereeFE extends FeatureExtractorResource_ImplBase
 implements FeatureExtractor{
 
 	@Override

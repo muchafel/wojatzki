@@ -1,4 +1,4 @@
-package de.uni_due.ltl.simpleClassifications;
+package de.uni_due.ltl.featureExtractors;
 
 import java.io.File;
 import java.io.IOException;

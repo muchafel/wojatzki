@@ -44,7 +44,7 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import de.uni_due.ltl.featureExtractors.CommentNgrams.CommentNGram;
+import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.YouTubeReader;
@@ -68,7 +68,7 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static int WORD_N_GRAM_MAX = 3;
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
-		public static int N_GRAM_MAXCANDIDATES = 7500;
+		public static int N_GRAM_MAXCANDIDATES = 2000;
 		private static final int NUM_FOLDS = 6;
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
