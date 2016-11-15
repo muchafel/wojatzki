@@ -44,6 +44,7 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.uni_due.ltl.featureExtractors.CommentNgrams.CommentNGram;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.YouTubeReader;
@@ -84,7 +85,7 @@ public class SimpleStance_CrossValidation implements Constants{
 				
 //				,
 //				,TcFeatureFactory.create(Remebered_UsersFE.class,Remebered_UsersFE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
-				,TcFeatureFactory.create(ContainsReferee.class)
+//				,TcFeatureFactory.create(ContainsReferee.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
@@ -114,7 +115,7 @@ public class SimpleStance_CrossValidation implements Constants{
 //							
 //					SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
 //					ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
-//					experiment.runCrossValidation(pSpace, "debateStance_k-"+String.valueOf(i)+"_max-"+String.valueOf(j));
+//					experiment.runCrossValidation(pSpace, "debateStance_topK-"+String.valueOf(i)+"_maxNgrams-"+String.valueOf(j));
 //				}
 //			}
 			
