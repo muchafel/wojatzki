@@ -32,6 +32,7 @@ import org.dkpro.tc.features.length.NrOfTokens;
 import org.dkpro.tc.features.length.NrOfTokensPerSentence;
 import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
 import org.dkpro.tc.features.ngram.LuceneNGram;
+import org.dkpro.tc.features.ngram.LuceneSkipNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.features.style.ContextualityMeasureFeatureExtractor;
 import org.dkpro.tc.features.style.TokenRatioFeatureExtractor;
@@ -44,6 +45,9 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.uni_due.ltl.featureExtractors.ContainsRefereeFE;
+import de.uni_due.ltl.featureExtractors.RecurrentAuthor;
+import de.uni_due.ltl.featureExtractors.UserName_FE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
@@ -68,7 +72,7 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static int WORD_N_GRAM_MAX = 3;
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
-		public static int N_GRAM_MAXCANDIDATES = 2000;
+		public static int N_GRAM_MAXCANDIDATES = 500;
 		private static final int NUM_FOLDS = 6;
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
@@ -76,16 +80,22 @@ public class SimpleStance_CrossValidation implements Constants{
 		private boolean ablation=false;
 
 		public static TcFeatureSet featureSet = new TcFeatureSet(
-//				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-//						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
-				TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX)
 				
+			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+					CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1)
+			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+					CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2)
+			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+					CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3)
+//			,TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+//					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+//					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+
 //				,
-//				,TcFeatureFactory.create(Remebered_UsersFE.class,Remebered_UsersFE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
-//				,TcFeatureFactory.create(ContainsReferee.class)
+//				,TcFeatureFactory.create(UserName_FE.class,UserName_FE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
+//				,TcFeatureFactory.create(RecurrentAuthor.class)
+//				,TcFeatureFactory.create(Stance_RecurrentAuthor.class, Stance_RecurrentAuthor.PARAM_USE_ORACLE, false,Stance_RecurrentAuthor.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+//				,TcFeatureFactory.create(ContainsRefereeFE.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
@@ -103,23 +113,10 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static void main(String[] args) throws Exception {
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
-			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "debateStance_conatins_referee");
+//			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
+//			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
+//			experiment.runCrossValidation(pSpace, "debateNgram_new");
 		
-//			for(int j=2; j<=10;j++){
-//				for(int i=3500; i<=10000; i+=500){
-//					TcFeatureSet featureSet1 = new TcFeatureSet(TcFeatureFactory.create(CommentNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//							i, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-//							NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, j));
-//							
-//					SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-//					ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
-//					experiment.runCrossValidation(pSpace, "debateStance_topK-"+String.valueOf(i)+"_maxNgrams-"+String.valueOf(j));
-//				}
-//			}
-			
-			
 
 			// XXX run CV for each explicit target in Array
 //			for (String explicitTarget : explicitTargets) {
@@ -134,6 +131,27 @@ public class SimpleStance_CrossValidation implements Constants{
 //					experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
 //				}
 //			}
+			
+			/**
+			 * parameter search ngram  
+			 */
+//			for(int j=2; j<=10;j++){
+			for(int i=500; i<=10000; i+=500){
+				TcFeatureSet featureSet1 = new TcFeatureSet(
+						TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+								CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1)
+						,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+								CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2)
+						,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+								CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3)
+						);
+						
+				SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
+				ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet1);
+				experiment.runCrossValidation(pSpace, "debateStance_topK-"+String.valueOf(i)+"_maxNgrams-123");
+			}
+//		}
+			
 		}
 
 		
@@ -182,6 +200,23 @@ public class SimpleStance_CrossValidation implements Constants{
 			// the paper; ZeroR is majority class classifier)
 			Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 					asList(new String[] { SMO.class.getName() })
+//					,
+//					 asList(new String[] { SMO.class.getName(), "-C", "10.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "100.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "1000.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "10000.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "1.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "1.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 20" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "1.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 200" }),
+//					 asList(new String[] { SMO.class.getName(), "-C", "1.0", "-K",
+//		                        PolyKernel.class.getName() + " " + "-C -1 -E 2000" })
 //					,
 //			 asList(new String[] { ZeroR.class.getName() })
 //			 ,

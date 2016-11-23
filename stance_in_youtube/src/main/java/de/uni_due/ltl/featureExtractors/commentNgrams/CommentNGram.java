@@ -4,6 +4,7 @@ import static org.apache.uima.fit.util.JCasUtil.selectCovered;
 import static org.apache.uima.fit.util.JCasUtil.toText;
 import static org.dkpro.tc.core.Constants.NGRAM_GLUE;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,6 +21,8 @@ import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.internal.ExtendedLogger;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -28,32 +31,76 @@ import org.apache.uima.util.Level;
 import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
+import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import org.dkpro.tc.api.features.meta.MetaCollectorConfiguration;
+import org.dkpro.tc.api.features.meta.MetaDependent;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 import org.dkpro.tc.features.ngram.LuceneNGram;
-import org.dkpro.tc.features.ngram.base.LuceneFeatureExtractorBase;
 import org.dkpro.tc.features.ngram.meta.LuceneNGramMetaCollector;
-import org.dkpro.tc.features.ngram.util.NGramUtils;
 import org.dkpro.tc.features.ngram.util.TermFreqTuple;
 
 import com.google.common.collect.MinMaxPriorityQueue;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
+import de.tudarmstadt.ukp.dkpro.core.api.parameter.ComponentParameters;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.core.frequency.tfidf.model.DfModel;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
 import preprocessing.CommentText;
 
-public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureExtractor {
+public class CommentNGram extends FeatureExtractorResource_ImplBase implements FeatureExtractor,MetaDependent {
 
-	@Override
+	public static final String PARAM_SOURCE_LOCATION = ComponentParameters.PARAM_SOURCE_LOCATION;
+	@ConfigurationParameter(name = PARAM_SOURCE_LOCATION, mandatory = true)
+	protected File luceneDir;
+
+	public static final String PARAM_NGRAM_MIN_N = "commentNgramMinN";
+	@ConfigurationParameter(name = PARAM_NGRAM_MIN_N, mandatory = true, defaultValue = "1")
+	protected int ngramMinN;
+
+	public static final String PARAM_NGRAM_MAX_N = "commentNgramMaxN";
+	@ConfigurationParameter(name = PARAM_NGRAM_MAX_N, mandatory = true, defaultValue = "3")
+	protected int ngramMaxN;
+
+	public static final String PARAM_NGRAM_USE_TOP_K = "ngramUseTopK";
+	@ConfigurationParameter(name = PARAM_NGRAM_USE_TOP_K, mandatory = true, defaultValue = "500")
+	protected int ngramUseTopK;
+
+	public static final String PARAM_TF_IDF_CALCULATION = "tfIdfCalculation";
+	@ConfigurationParameter(name = PARAM_TF_IDF_CALCULATION, mandatory = true, defaultValue = "false")
+	protected boolean tfIdfCalculation;
+
+	public static final String PARAM_NGRAM_STOPWORDS_FILE = "ngramStopwordsFile";
+	@ConfigurationParameter(name = PARAM_NGRAM_STOPWORDS_FILE, mandatory = false)
+	protected String ngramStopwordsFile;
+
+	public static final String PARAM_FILTER_PARTIAL_STOPWORD_MATCHES = "filterPartialStopwordMatches";
+	@ConfigurationParameter(name = PARAM_FILTER_PARTIAL_STOPWORD_MATCHES, mandatory = true, defaultValue = "false")
+	protected boolean filterPartialStopwordMatches;
+
+	public static final String PARAM_NGRAM_FREQ_THRESHOLD = "ngramFreqThreshold";
+	@ConfigurationParameter(name = PARAM_NGRAM_FREQ_THRESHOLD, mandatory = true, defaultValue = "0.0")
+	protected float ngramFreqThreshold;
+
+	public static final String PARAM_NGRAM_LOWER_CASE = "commentNgramLowerCase";
+	@ConfigurationParameter(name = PARAM_NGRAM_LOWER_CASE, mandatory = true, defaultValue = "true")
+	protected boolean ngramLowerCase;
+
+	public static final String LUCENE_NGRAM_FIELD = "ngram";
+
+	private Set<String> stopwords = new HashSet<>();
+	protected FrequencyDistribution<String> topKSet;
+	protected DfModel dfStore;
+	protected String prefix;
+	private ExtendedLogger logger;
+
 	public Set<Feature> extract(JCas jcas, TextClassificationTarget target) throws TextClassificationException {
 		Set<Feature> features = new HashSet<Feature>();
 		FrequencyDistribution<String> documentNgrams = null;
 
 		documentNgrams = getCommentNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches, ngramMinN,
 				ngramMaxN, stopwords);
-		
+
 		try {
 			for (String topNgram : getTopNgrams().getKeys()) {
 				if (documentNgrams.getKeys().contains(topNgram)) {
@@ -109,7 +156,6 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 		return annoNgrams;
 	}
 
-	@Override
 	public List<MetaCollectorConfiguration> getMetaCollectorClasses(Map<String, Object> parameterSettings)
 			throws ResourceInitializationException {
 		return Arrays.asList(new MetaCollectorConfiguration(CommentNGramMetaCollector.class, parameterSettings)
@@ -117,7 +163,6 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 						LuceneNGramMetaCollector.LUCENE_DIR));
 	}
 
-	@Override
 	protected void logSelectionProcess(long N) {
 		getLogger().log(Level.INFO,
 				"+++ SELECTING THE " + N + " MOST FREQUENT WORD [" + range() + "]-GRAMS (" + caseSensitivity() + ")");
@@ -131,17 +176,14 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 		return ngramLowerCase ? "case-insensitive" : "case-sensitive";
 	}
 
-	@Override
 	protected String getFieldName() {
 		return LUCENE_NGRAM_FIELD + featureExtractorName;
 	}
 
-	@Override
 	protected String getFeaturePrefix() {
-		return "ngram";
+		return "comment_ngram";
 	}
 
-	@Override
 	protected int getTopN() {
 		return ngramUseTopK;
 	}
@@ -169,14 +211,59 @@ public class CommentNGram extends LuceneFeatureExtractorBase implements FeatureE
 			return filteredList.size() != 0;
 		}
 	}
+
+	protected FrequencyDistribution<String> getTopNgrams() throws ResourceInitializationException {
+
+		FrequencyDistribution<String> topNGrams = new FrequencyDistribution<String>();
+
+		MinMaxPriorityQueue<TermFreqTuple> topN = MinMaxPriorityQueue.maximumSize(getTopN()).create();
+
+		long ngramVocabularySize = 0;
+		try (IndexReader reader =DirectoryReader.open(FSDirectory.open(luceneDir));) {
+			Fields fields = MultiFields.getFields(reader);
+			if (fields != null) {
+				Terms terms = fields.terms(getFieldName());
+				if (terms != null) {
+					TermsEnum termsEnum = terms.iterator(null);
+					BytesRef text = null;
+					while ((text = termsEnum.next()) != null) {
+						String term = text.utf8ToString();
+						long freq = termsEnum.totalTermFreq();
+						if (passesScreening(term)) {
+							topN.add(new TermFreqTuple(term, freq));
+							ngramVocabularySize += freq;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+
+		int size = topN.size();
+		for (int i = 0; i < size; i++) {
+			TermFreqTuple tuple = topN.poll();
+			long absCount = tuple.getFreq();
+			double relFrequency = ((double) absCount) / ngramVocabularySize;
+
+			if (relFrequency >= ngramFreqThreshold) {
+				topNGrams.addSample(tuple.getTerm(), tuple.getFreq());
+			}
+		}
+
+		logSelectionProcess(topNGrams.getB());
+
+		return topNGrams;
+	}
+
+	public ExtendedLogger getLogger() {
+		if (logger == null) {
+			logger = new ExtendedLogger(getUimaContext());
+		}
+		return logger;
+	}
 	
-	
-//	protected FrequencyDistribution<String> getTopNgrams() throws ResourceInitializationException {
-//
-//		FrequencyDistribution<String> topNGrams = new FrequencyDistribution<String>();
-//
-//		throw new ResourceInitializationException("implement this method uing a metaclolector (stance lexicon like)", requiredTypes);
-//
-////		return topNGrams;
-//	}
+	protected boolean passesScreening(String term){
+        return true;
+    }
 }

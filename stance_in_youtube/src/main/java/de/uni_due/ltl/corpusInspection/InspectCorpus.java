@@ -3,7 +3,9 @@ package de.uni_due.ltl.corpusInspection;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -18,6 +20,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.uni_due.ltl.simpleClassifications.FunctionalPartsAnnotator;
@@ -33,6 +36,93 @@ public class InspectCorpus {
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
+		
+		inspectOutcomePerDoc(reader,engine);
+//		inspectAuthorAndRefereesPerPolarity();
+//		inspectAuthorAndReferees(reader,engine);
+//		inspectUsersAndCommentType(reader,engine);
+//		inspectText(reader,engine);
+//		inspectOutcome(reader,engine);
+	}
+
+	private static void inspectOutcomePerDoc(CollectionReaderDescription reader, AnalysisEngine engine) {
+		Map<String,FrequencyDistribution<String>> docId2outcome= new HashMap<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			DocumentMetaData metaData= DocumentMetaData.get(jcas);
+			String id= metaData.getDocumentId();
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				if(docId2outcome.containsKey(id)){
+					docId2outcome.get(id).inc(outcome.getOutcome());
+				}else{
+					FrequencyDistribution<String> fd= new FrequencyDistribution<>();
+					fd.inc(outcome.getOutcome());
+					docId2outcome.put(id, fd);
+				}
+			}
+		}
+		for(String id:docId2outcome.keySet()){
+			System.out.println(id);
+			printfd(docId2outcome.get(id));
+		}
+		
+	}
+
+	private static void inspectOutcome(CollectionReaderDescription reader, AnalysisEngine engine) {
+		for (JCas jcas : new JCasIterable(reader)) {
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				List<String> tokens=getList(JCasUtil.selectCovered(jcas,Token.class,outcome));
+				System.out.println(StringUtils.join(tokens, " - "));
+			}
+		}
+		
+	}
+
+	private static void inspectText(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
+		for (JCas jcas : new JCasIterable(reader)) {
+			engine.process(jcas);
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				System.out.println(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next().getCoveredText());
+			}
+		}
+		
+	}
+
+	private static void inspectUsersAndCommentType(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
+		for (JCas jcas : new JCasIterable(reader)) {
+			engine.process(jcas);
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				System.out.println(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor()+" "+JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
+				System.out.println(JCasUtil.selectCovered(CommentType.class,outcome).iterator().next().getCommentNotReply());
+			}
+		}
+		
+	}
+
+	private static void inspectAuthorAndReferees(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
+		/**
+		 * users & refereees
+		 */
+		FrequencyDistribution<String> fd_author= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fd_referee= new FrequencyDistribution<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			engine.process(jcas);
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				fd_author.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor());
+				fd_referee.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
+			}
+		}
+		System.out.println("# of authors "+(fd_author.getN()-fd_author.getCount("None")));
+		System.out.println("# of referees "+(fd_referee.getN()-fd_referee.getCount("None")));
+//		printfd(fd_author);
+//		printfd(fd_referee);
+		
+	}
+
+	private static void inspectAuthorAndRefereesPerPolarity(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
 		/**
 		 * users & refereees
 		 */
@@ -71,61 +161,7 @@ public class InspectCorpus {
 		System.out.println(fd_author_NONE.getN()-fd_author_NONE.getCount("Unknown"));
 		System.out.println(fd_referee_NONE.getN()-fd_referee_NONE.getCount("None"));
 		System.out.println(((double)fd_referee_NONE.getN()-fd_referee_NONE.getCount("None"))/821);
-
 		
-		
-		/**
-		 * users & refereees
-		 */
-		FrequencyDistribution<String> fd_author= new FrequencyDistribution<>();
-		FrequencyDistribution<String> fd_referee= new FrequencyDistribution<>();
-		for (JCas jcas : new JCasIterable(reader)) {
-			engine.process(jcas);
-			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
-				fd_author.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor());
-				fd_referee.inc(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
-			}
-		}
-		System.out.println("# of authors "+(fd_author.getN()-fd_author.getCount("None")));
-		System.out.println("# of referees "+(fd_referee.getN()-fd_referee.getCount("None")));
-//		printfd(fd_author);
-//		printfd(fd_referee);
-		
-		
-		/**
-		 * inspect users & comment type
-		 */
-//		for (JCas jcas : new JCasIterable(reader)) {
-//			engine.process(jcas);
-//			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
-//				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
-//				System.out.println(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor()+" "+JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
-//				System.out.println(JCasUtil.selectCovered(CommentType.class,outcome).iterator().next().getCommentNotReply());
-//			}
-//		}
-		
-		/**
-		 * inspect comment text
-		 */
-//		for (JCas jcas : new JCasIterable(reader)) {
-//			engine.process(jcas);
-//			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
-//				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
-//				System.out.println(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next().getCoveredText());
-//			}
-//		}
-		
-		/**
-		 * inspect outcome
-		 */
-//		for (JCas jcas : new JCasIterable(reader)) {
-//			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
-//				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
-//				List<String> tokens=getList(JCasUtil.selectCovered(jcas,Token.class,outcome));
-//				System.out.println(StringUtils.join(tokens, " - "));
-//			}
-//		}
-//	}
 	}
 
 	private static void printfd(FrequencyDistribution<String> fd) {
