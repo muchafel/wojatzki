@@ -23,6 +23,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
+import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.uni_due.ltl.simpleClassifications.FunctionalPartsAnnotator;
 import io.YouTubeReader;
 import preprocessing.CommentText;
@@ -37,12 +39,46 @@ public class InspectCorpus {
 		AnalysisEngine engine= getPreprocessingEngine();
 		
 		
-		inspectOutcomePerDoc(reader,engine);
+//		inspectExplicitTarget(engine);
+//		inspectOutcomePerDoc(reader,engine);
 //		inspectAuthorAndRefereesPerPolarity();
 //		inspectAuthorAndReferees(reader,engine);
 //		inspectUsersAndCommentType(reader,engine);
 //		inspectText(reader,engine);
 //		inspectOutcome(reader,engine);
+		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
+		inspectSentimemts(reader,engineSentiment);
+	}
+
+	private static void inspectSentimemts(CollectionReaderDescription reader, AnalysisEngine engineSentiment) throws AnalysisEngineProcessException {
+		for (JCas jcas : new JCasIterable(reader)) {
+			engineSentiment.process(jcas);
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+//				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				System.out.println(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next().getCoveredText());
+				for(StanfordSentimentAnnotation sentiment:JCasUtil.selectCovered(StanfordSentimentAnnotation.class,outcome)){
+					System.out.println("++ "+sentiment.getVeryPositive()+"\t"+sentiment.getPositive()+"\t"+sentiment.getNeutral()+"\t"+sentiment.getNegative()+"\t"+sentiment.getVeryNegative()+" --");
+				}
+			}
+		}
+	}
+
+	private static void inspectExplicitTarget(AnalysisEngine engine) throws ResourceInitializationException {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
+				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"Death Penalty (Debate)", YouTubeReader.PARAM_TARGET_SET,"1");
+		int i=0;
+		for (JCas jcas : new JCasIterable(reader)) {
+			DocumentMetaData metaData = DocumentMetaData.get(jcas);
+			String id = metaData.getDocumentId();
+			
+			for (TextClassificationOutcome outcome : JCasUtil.select(jcas, TextClassificationOutcome.class)) {
+				if(!outcome.getOutcome().equals("NONE")){
+					System.out.println(outcome.getOutcome());
+					i++;
+				}
+			}
+		}
+		System.out.println(i);
 	}
 
 	private static void inspectOutcomePerDoc(CollectionReaderDescription reader, AnalysisEngine engine) {
@@ -184,7 +220,24 @@ public class InspectCorpus {
 		AnalysisEngine engine = null;
 		try {
 			builder.add(createEngineDescription(
-					createEngineDescription(FunctionalPartsAnnotator.class)));
+					createEngineDescription(FunctionalPartsAnnotator.class)
+					));
+			engine = builder.createAggregate();
+		} catch (ResourceInitializationException e) {
+			e.printStackTrace();
+		}
+		return engine;
+	}
+
+	
+	private static AnalysisEngine getSentimentPreprocessingEngine() {
+		AggregateBuilder builder = new AggregateBuilder();
+		AnalysisEngine engine = null;
+		try {
+			builder.add(createEngineDescription(
+					createEngineDescription(FunctionalPartsAnnotator.class),
+					createEngineDescription(SentimentCommentAnnotator.class)
+					));
 			engine = builder.createAggregate();
 		} catch (ResourceInitializationException e) {
 			e.printStackTrace();

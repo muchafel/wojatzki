@@ -135,7 +135,7 @@ public class CommentNGramMetaCollector extends MetaCollector {
 	}
 
 	protected String getFieldName() {
-		return LuceneNGram.LUCENE_NGRAM_FIELD + "_CommentNgrams";
+		return LuceneNGram.LUCENE_NGRAM_FIELD + featureExtractorName;
 	}
 
 	public FrequencyDistribution<String> getDocumentNgrams(JCas jcas, TextClassificationTarget target,

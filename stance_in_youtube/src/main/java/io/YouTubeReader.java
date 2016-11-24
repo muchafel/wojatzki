@@ -1,6 +1,7 @@
 package io;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
@@ -23,7 +24,7 @@ public class YouTubeReader extends BinaryCasReader{
 		protected String targetLabel;
 	 
 	    public static final String PARAM_TARGET_SET = "TargetSet";
-	    @ConfigurationParameter(name = PARAM_TARGET_LABEL, mandatory = true)
+	    @ConfigurationParameter(name = PARAM_TARGET_SET, mandatory = true)
 		protected String targetSet;
 
 	    private int tcId = 0;
@@ -38,6 +39,16 @@ public class YouTubeReader extends BinaryCasReader{
 			} catch (CASException e) {
 				throw new CollectionException(e);
 			}
+			//male sure there is no outcome artifact
+			Collection<TextClassificationOutcome> outcomes= JCasUtil.select(jcas,TextClassificationOutcome.class);
+			if(!outcomes.isEmpty()){
+				for(TextClassificationOutcome outcome:outcomes){
+					System.out.println("oucome detected");
+					outcome.removeFromIndexes();
+				}
+			}
+			
+					
 //			TextClassificationSequence sequence = new TextClassificationSequence(jcas,0, jcas.getDocumentText().length());
 //            sequence.addToIndexes();
 			 for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
@@ -47,12 +58,11 @@ public class YouTubeReader extends BinaryCasReader{
 		                unit.setId(tcId++);
 		                unit.addToIndexes();
 
-		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,
-		                		sentence.getBegin(), sentence.getEnd());
+		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,sentence.getBegin(), sentence.getEnd());
 		                try {
 							outcome.setOutcome(getTextClassificationOutcome(jcas, unit));
 						} catch (Exception e) {
-							throw new IOException("could not set outcome");
+							throw new IOException(e);
 						}
 		                outcome.addToIndexes();
 
@@ -77,28 +87,26 @@ public class YouTubeReader extends BinaryCasReader{
 			if(targetLabel.equals("DEATH PENALTY")){
 				return JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity();
 			}
-			throw new Exception("Labele set for explicit stances "+targetSet+ " not known!");
-//			
-			//TODO: implement subdebate stuff
-//			else {
-//				if(targetSet.equals("1")){
-//					return getTextClassificationOutcome_Set1(jcas, targetLabel);
-//				}else if(targetSet.equals("2")){
-//					return getTextClassificationOutcome_Set2(jcas, targetLabel);
-//				}else{
-//					throw new Exception("Labele set for explicit stances "+targetSet+ " not known!");
-//				}
-//			}
+			else {
+				if(targetSet.equals("1")){
+					return getTextClassificationOutcome_Set1(jcas,unit, targetLabel);
+				}else if(targetSet.equals("2")){
+					return getTextClassificationOutcome_Set2(jcas,unit, targetLabel);
+				}else{
+					throw new Exception("Lable set for explicit stances "+targetSet+ " not known!");
+				}
+			}
 		}
 
 
-		private String getTextClassificationOutcome_Set2(JCas jcas, String targetLabel2) throws Exception {
-			for(curated.Explicit_Stance_Set2 subTarget: JCasUtil.select(jcas, curated.Explicit_Stance_Set2.class)){
+		private String getTextClassificationOutcome_Set2(JCas jcas, TextClassificationTarget unit, String targetLabel2) throws Exception {
+			for(curated.Explicit_Stance_Set2 subTarget: JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set2.class,unit)){
 				if(targetLabel2.equals(subTarget.getTarget())){
 					String polarity=subTarget.getPolarity();
 					if(!polarity.equals("FAVOR") && !polarity.equals("AGAINST")){
 						return "NONE";
 					}
+					System.out.println(polarity);
 					return polarity;
 				}
 			}
@@ -106,9 +114,9 @@ public class YouTubeReader extends BinaryCasReader{
 		}
 
 
-		private String getTextClassificationOutcome_Set1(JCas jcas, String targetLabel2) throws Exception {
-			for(curated.Explicit_Stance_Set1 subTarget: JCasUtil.select(jcas, curated.Explicit_Stance_Set1.class)){
-				if(targetLabel2.equals(subTarget.getTarget())){
+		private String getTextClassificationOutcome_Set1(JCas jcas, TextClassificationTarget unit, String targetLabel) throws Exception {
+			for(curated.Explicit_Stance_Set1 subTarget: JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set1.class,unit)){
+				if(targetLabel.equals(subTarget.getTarget())){
 					String polarity=subTarget.getPolarity();
 					if(!polarity.equals("FAVOR") && !polarity.equals("AGAINST")){
 						return "NONE";

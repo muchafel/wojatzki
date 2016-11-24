@@ -53,6 +53,10 @@ public class CommentNGram extends FeatureExtractorResource_ImplBase implements F
 	public static final String PARAM_SOURCE_LOCATION = ComponentParameters.PARAM_SOURCE_LOCATION;
 	@ConfigurationParameter(name = PARAM_SOURCE_LOCATION, mandatory = true)
 	protected File luceneDir;
+	
+	public static final String PARAM_UNIQUE_NAME = "commentNgramUniqueName";
+	@ConfigurationParameter(name = PARAM_UNIQUE_NAME, mandatory = true)
+	protected String uniqueName;
 
 	public static final String PARAM_NGRAM_MIN_N = "commentNgramMinN";
 	@ConfigurationParameter(name = PARAM_NGRAM_MIN_N, mandatory = true, defaultValue = "1")
@@ -104,9 +108,9 @@ public class CommentNGram extends FeatureExtractorResource_ImplBase implements F
 		try {
 			for (String topNgram : getTopNgrams().getKeys()) {
 				if (documentNgrams.getKeys().contains(topNgram)) {
-					features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 1));
+					features.add(new Feature(getFeaturePrefix()+"_"+uniqueName + "_" + topNgram, 1));
 				} else {
-					features.add(new Feature(getFeaturePrefix() + "_" + topNgram, 0, true));
+					features.add(new Feature(getFeaturePrefix() +"_"+uniqueName + "_" + topNgram, 0, true));
 				}
 			}
 		} catch (ResourceInitializationException e) {
@@ -217,7 +221,8 @@ public class CommentNGram extends FeatureExtractorResource_ImplBase implements F
 		FrequencyDistribution<String> topNGrams = new FrequencyDistribution<String>();
 
 		MinMaxPriorityQueue<TermFreqTuple> topN = MinMaxPriorityQueue.maximumSize(getTopN()).create();
-
+		
+		
 		long ngramVocabularySize = 0;
 		try (IndexReader reader =DirectoryReader.open(FSDirectory.open(luceneDir));) {
 			Fields fields = MultiFields.getFields(reader);
@@ -239,7 +244,7 @@ public class CommentNGram extends FeatureExtractorResource_ImplBase implements F
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
-
+		getLogger().log(Level.INFO," select "+getTopN()+ " "+ topN.size());
 		int size = topN.size();
 		for (int i = 0; i < size; i++) {
 			TermFreqTuple tuple = topN.poll();
