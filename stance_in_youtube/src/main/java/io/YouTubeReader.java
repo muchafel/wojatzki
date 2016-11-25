@@ -39,11 +39,19 @@ public class YouTubeReader extends BinaryCasReader{
 			} catch (CASException e) {
 				throw new CollectionException(e);
 			}
-			//male sure there is no outcome artifact
+			
+			//make sure there is no outcome artifact
 			Collection<TextClassificationOutcome> outcomes= JCasUtil.select(jcas,TextClassificationOutcome.class);
 			if(!outcomes.isEmpty()){
 				for(TextClassificationOutcome outcome:outcomes){
-					System.out.println("oucome detected");
+//					System.out.println("oucome detected");
+					outcome.removeFromIndexes();
+				}
+			}
+			Collection<TextClassificationTarget> targets= JCasUtil.select(jcas,TextClassificationTarget.class);
+			if(!targets.isEmpty()){
+				for(TextClassificationTarget outcome:targets){
+//					System.out.println("target detected");
 					outcome.removeFromIndexes();
 				}
 			}

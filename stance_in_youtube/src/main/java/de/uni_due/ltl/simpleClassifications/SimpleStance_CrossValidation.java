@@ -45,11 +45,13 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.uni_due.ltl.featureExtractors.CommentTypeFE;
 import de.uni_due.ltl.featureExtractors.ContainsRefereeFE;
 import de.uni_due.ltl.featureExtractors.RecurrentAuthor;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.UserName_FE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
+import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.YouTubeReader;
@@ -98,10 +100,13 @@ public class SimpleStance_CrossValidation implements Constants{
 //				,
 //				,TcFeatureFactory.create(UserName_FE.class,UserName_FE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
 //				,TcFeatureFactory.create(RecurrentAuthor.class)
-//				,TcFeatureFactory.create(Stance_RecurrentAuthor.class, Stance_RecurrentAuthor.PARAM_USE_ORACLE, true,Stance_RecurrentAuthor.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+//				,
+//				TcFeatureFactory.create(Stance_RecurrentAuthor.class, Stance_RecurrentAuthor.PARAM_USE_ORACLE, false,Stance_RecurrentAuthor.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
 //				,TcFeatureFactory.create(ContainsRefereeFE.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
-				,TcFeatureFactory.create(SocherSentimentFE.class)
+//				,TcFeatureFactory.create(SocherSentimentFE.class)
+				,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
 //						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
@@ -119,8 +124,8 @@ public class SimpleStance_CrossValidation implements Constants{
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "debateNgram_sentiment");
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
+			experiment.runCrossValidation(pSpace, "sentiment_predictedRecurr");
 		
 
 			// XXX run CV for each explicit target in Array
@@ -303,7 +308,8 @@ public class SimpleStance_CrossValidation implements Constants{
 		}
 
 		private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
-			return createEngineDescription(createEngineDescription(FunctionalPartsAnnotator.class)
+			return createEngineDescription(createEngineDescription(NoOpAnnotator.class)
+//			return createEngineDescription(createEngineDescription(FunctionalPartsAnnotator.class)
 			);
 		}
 

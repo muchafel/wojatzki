@@ -2,11 +2,15 @@ package de.uni_due.ltl.corpusInspection;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -26,6 +30,7 @@ import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.uni_due.ltl.simpleClassifications.FunctionalPartsAnnotator;
+import de.uni_due.ltl.simpleClassifications.SentimentCommentAnnotator;
 import io.YouTubeReader;
 import preprocessing.CommentText;
 import preprocessing.CommentType;
@@ -33,12 +38,13 @@ import preprocessing.Users;
 
 public class InspectCorpus {
 
-	public static void main(String[] args) throws ResourceInitializationException, AnalysisEngineProcessException {
+	public static void main(String[] args) throws ResourceInitializationException, AnalysisEngineProcessException, IOException {
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
 		
+		printVocab(reader,engine);
 //		inspectExplicitTarget(engine);
 //		inspectOutcomePerDoc(reader,engine);
 //		inspectAuthorAndRefereesPerPolarity();
@@ -46,8 +52,28 @@ public class InspectCorpus {
 //		inspectUsersAndCommentType(reader,engine);
 //		inspectText(reader,engine);
 //		inspectOutcome(reader,engine);
-		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
-		inspectSentimemts(reader,engineSentiment);
+//		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
+//		inspectSentimemts(reader,engineSentiment);
+	}
+
+	private static void printVocab(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException, IOException {
+		FrequencyDistribution<String> words= new FrequencyDistribution<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			engine.process(jcas);
+			Collection<CommentText> comments=JCasUtil.select(jcas,CommentText.class);
+			for (CommentText comment : comments) {
+				for(Token t: JCasUtil.selectCovered(Token.class, comment)){
+					words.inc(t.getCoveredText().toLowerCase());
+				}
+			}
+		}
+		int i=0;
+		for(String word: words.getMostFrequentSamples(words.getKeys().size())){
+//			System.out.println(word +"\t"+words.getCount(word));
+			i++;
+			FileUtils.write(new File("src/main/resources/list/vocab"), word+System.lineSeparator(), true);
+		}
+		System.out.println(i);
 	}
 
 	private static void inspectSentimemts(CollectionReaderDescription reader, AnalysisEngine engineSentiment) throws AnalysisEngineProcessException {

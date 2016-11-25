@@ -62,7 +62,11 @@ implements FeatureExtractor{
 		Users users=JCasUtil.selectCovered(jcas, Users.class,unit).iterator().next();
 		String author = users.getAuthor();
 //		System.out.println("examine "+unit.getCoveredText());
-		featList.add(new Feature("STANCE_BEFORE", outcomeOfReocurredUser(author, jcas, unit.getAddress())));
+		try {
+			featList.add(new Feature("STANCE_BEFORE", outcomeOfReocurredUser(author, jcas, unit.getAddress())));
+		} catch (Exception e) {
+			throw new TextClassificationException(e);
+		}
 		return featList;
 	}
 
@@ -74,8 +78,9 @@ implements FeatureExtractor{
 	 * @param jcas
 	 * @param unitAdress
 	 * @return
+	 * @throws Exception 
 	 */
-	private int outcomeOfReocurredUser(String author, JCas jcas, int unitAdress) {
+	private int outcomeOfReocurredUser(String author, JCas jcas, int unitAdress) throws Exception {
 		
 //		//TODO this only checks the first stance of an author in an document; we should do a mojority ?
 //		for(TextClassificationTarget unit: JCasUtil.select(jcas, TextClassificationTarget.class)){
@@ -99,7 +104,7 @@ implements FeatureExtractor{
 			}
 
 			if (JCasUtil.selectCovered(Users.class, unit).iterator().next().getAuthor().equals(author)) {
-				//sum up previously occuring stances
+				//get last previously occured stance
 				result=getClassificationOutcome(unit, jcas);
 			}
 		}
@@ -107,11 +112,16 @@ implements FeatureExtractor{
 		return result;
 	}
 
-	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) {
+	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) throws Exception {
 		if(useOracle){
 			return resolvePolarity(JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity());
 		}else{
 			String id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId()+"_"+unit.getId();
+			if(!debate_id2Outcome.containsKey(id2OutcomeKey)){
+				System.err.println(id2OutcomeKey+" not in id2OutcomeMap");
+				return 0;
+//				throw new Exception(id2OutcomeKey+" not in id2OutcomeMap");
+			}
 			return debate_id2Outcome.get(id2OutcomeKey);
 		}
 	}

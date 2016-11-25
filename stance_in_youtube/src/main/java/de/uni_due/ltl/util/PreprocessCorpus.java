@@ -15,8 +15,8 @@ import org.dkpro.tc.api.type.TextClassificationOutcome;
 
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
-import de.uni_due.ltl.corpusInspection.SentimentCommentAnnotator;
 import de.uni_due.ltl.simpleClassifications.FunctionalPartsAnnotator;
+import de.uni_due.ltl.simpleClassifications.SentimentCommentAnnotator;
 import io.YouTubeReader;
 import preprocessing.CommentText;
 
