@@ -16,6 +16,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import preprocessing.CommentText;
+
 import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
@@ -59,13 +61,14 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 		WordEmbeddingHelper helper=new WordEmbeddingHelper(this.lexicon);
 		Set<String> embeddingCandidates= new HashSet<String>();
 		
-		//TODO filtering for content words?
-		for(Token t: JCasUtil.select(jcas, Token.class)){
+		CommentText comment=JCasUtil.selectCovered(CommentText.class, target).iterator().next();
+		//only select the tokens in the current comment
+		for(Token t: JCasUtil.selectCovered(jcas, Token.class,comment)){
 			String lowerCase = t.getCoveredText().toLowerCase();
 			embeddingCandidates.add(lowerCase);
 		}
 		List<Float> averagedSentenceVector= helper.getAveragedSentenceVector(embeddingCandidates);
-		System.out.println(jcas.getDocumentText()+" "+averagedSentenceVector);
+//		System.out.println(jcas.getDocumentText()+" "+averagedSentenceVector);
 		Set<Feature> featList = createFeatures(averagedSentenceVector);
 		return featList;
 	}
