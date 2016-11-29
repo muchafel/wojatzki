@@ -1,39 +1,21 @@
 __author__ = 'michael'
 
-
 __author__ = 'michael'
 
+
 import numpy as np
-import dataLoader
-
-from keras.models import Sequential, Model
-from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D,LSTM
-
-from keras.layers import Activation, Dense, Dropout, Embedding, Flatten, Input, Merge, Convolution1D, MaxPooling1D
-
-# Parameters
-# ==================================================
-#
-# Model Variations. See Kim Yoon's Convolutional Neural Networks for
-# Sentence Classification, Section 3 for detail.
-
-
-# Model Hyperparameters
-sequence_length = 137
-embedding_dim = 300
-filter_sizes = (3, 4)
-num_filters = 150
-dropout_prob = (0.25, 0.5)
-hidden_dims = 150
-
-# Training parameters
-batch_size = 32
-num_epochs = 68
-val_split = 0.1
-
-# Word2Vec parameters, see train_word2vec
-min_word_count = 1  # Minimum word count
-context = 10        # Context window size
+import os
+import cPickle as pkl
+import gzip
+import itertools
+from collections import Counter
+from nltk import FreqDist
+import numpy as np
+from keras.preprocessing import sequence
+from keras.models import Sequential
+from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D
+from keras.layers import LSTM
+from keras.utils import np_utils
 
 
 embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
@@ -44,96 +26,154 @@ test_folder=leave_out_File+'/test'
 
 files = [train_folder+'/against.txt',train_folder+'/favor.txt',train_folder+'/none.txt', test_folder+'/against.txt',test_folder+'/favor.txt',test_folder+'/none.txt']
 
-# Data Preparatopn
-# ==================================================
-#
-# Load data
-print("Loading data...")
-x, y, vocabulary, vocabulary_inv = dataLoader.load_data(train_folder+'/favor.txt', train_folder+'/against.txt', train_folder+'/none.txt')
-x_test, y_test, vocabulary_test, vocabulary_inv_test = dataLoader.load_data(test_folder+'/favor.txt', test_folder+'/against.txt', test_folder+'/none.txt')
+# Mapping of the labels to integers
+labelsMapping = {'none': 0, 'favor': 1, 'against': 2}
+
+words = {}
+maxSentenceLen = [0,0,0,0,0,0]
+labelsDistribution = FreqDist()
+
+distanceMapping = {'PADDING': 0, 'LowerMin': 1, 'GreaterMax': 2}
+minDistance = -30
+maxDistance = 30
+for dis in xrange(minDistance,maxDistance+1):
+    distanceMapping[dis] = len(distanceMapping)
+
+#print distanceMapping
+
+for fileIdx in xrange(len(files)):
+    file = files[fileIdx]
+    for line in open(file):
+        print line
+        #splits = line.strip().split('\t')
+
+        #label = splits[0]
+
+        #sentence = splits[3]
+        tokens = line.split(" ")
+        maxSentenceLen[fileIdx] = max(maxSentenceLen[fileIdx], len(tokens))
+        for token in tokens:
+            words[token.lower()] = True
 
 
-def loadPretrainedEmbedding(path, EMBEDDING_DIM, word_index):
-    embeddings_index = {}
-    f = list(open(path).readlines())
-    for line in f:
-        if line.strip().count(' ') < EMBEDDING_DIM:
-            #print("Embedding WARNING (skipping entry): Entry in embedding vector had length ["+str(line.strip().count(' '))+"] but expected ["+str(EMBEDDING_DIM)+"]\n["+line+"]")
-            continue
-        line = line.strip()
-        values = line.split()
-        word = values[0]
-        vector = values[1:]
-        if len(vector) > EMBEDDING_DIM:
-            continue
-        try:
-            coefs = np.asarray(vector, dtype='float32')
-        except:
-            continue
-        embeddings_index[word] = coefs
-    embedding_matrix = np.zeros((len(word_index) + 1, EMBEDDING_DIM))
+print "Max Sentence Lengths: ",maxSentenceLen
 
-    words_without_emb=0.0
-    for word, i in word_index.items():
-        embedding_vector = embeddings_index.get(word)
-        if embedding_vector is None:
-            embedding_vector = embeddings_index.get(word.lower())
-        if embedding_vector is None:
-            embedding_vector = np.random.rand(1, EMBEDDING_DIM)
-            words_without_emb+=1
-        embedding_matrix[i] = embedding_vector
+# :: Read in word embeddings ::
 
-    print("Loaded embedding [%s] with shape: %s embedding covers %.1f percent of words" % (path, str(embedding_matrix.shape), words_without_emb/len(word_index)*100))
-    return embedding_matrix
+word2Idx = {}
+embeddings = []
 
-embedding_weights = loadPretrainedEmbedding(embeddingsPath,300,vocabulary)
+for line in open(embeddingsPath):
+    split = line.strip().split(" ")
+    word = split[0]
 
-x = embedding_weights[x]
+    if len(word2Idx) == 0: #Add padding+unknown
+        word2Idx["PADDING"] = len(word2Idx)
+        vector = np.zeros(len(split)-1) #Zero vector vor 'PADDING' word
+        embeddings.append(vector)
 
+        word2Idx["UNKNOWN"] = len(word2Idx)
+        vector = np.random.uniform(-0.25, 0.25, len(split)-1)
+        embeddings.append(vector)
 
-print len(x)
-print len(x_test)
+    if split[0].lower() in words:
+        vector = np.array([float(num) for num in split[1:]])
+        embeddings.append(vector)
+        word2Idx[split[0]] = len(word2Idx)
 
-# Shuffle data
-shuffle_indices = np.random.permutation(np.arange(len(x)))
-x_shuffled = x[shuffle_indices]
-y_shuffled = y[shuffle_indices]
+embeddings = np.array(embeddings)
 
-shuffle_test_indices = np.random.permutation(np.arange(115))
-x_test_shuffled = x_test[shuffle_test_indices]
-y_test_shuffled = y_test[shuffle_test_indices]
-
-
-print(y_shuffled)
-
-print("Vocabulary Size: {:d}".format(len(vocabulary)))
-
-# Building model
-# ==================================================
-
-
-# main sequential model
-model = Sequential()
-model.add(LSTM(50,batch_input_shape=(137, 300),return_sequences=True,stateful=True))
-model.add(LSTM(50,
-               return_sequences=False,
-               stateful=True))
-model.add(Dense(3))
-#model.add(Dense(3, activation='sigmoid'))
-
-# Training model
-# ==================================================
-
-print x_shuffled
-print y_shuffled
-
-model.summary()
-model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+print "Embeddings shape: ", embeddings.shape
+print "Len words: ", len(words)
 
 
 
-#model.fit(x_shuffled, y_shuffled, batch_size=batch_size,nb_epoch=num_epochs, validation_split=val_split, verbose=2)
+def getWordIdx(token, word2Idx):
+    """Returns from the word2Idex table the word index for a given token"""
+    if token in word2Idx:
+        return word2Idx[token]
+    elif token.lower() in word2Idx:
+        return word2Idx[token.lower()]
 
-model.fit(x_shuffled, y_shuffled ,nb_epoch=num_epochs)
-score, acc = model.evaluate(x_test_shuffled, y_test_shuffled)
-print('Accuracy calculated by Keras:', acc*100)
+    return word2Idx["UNKNOWN"]
+
+
+def createMatrices(files, word2Idx, maxSentenceLen=100):
+    """Creates matrices for the events and sentence for the given file"""
+    labels = []
+    positionMatrix1 = []
+    positionMatrix2 = []
+    tokenMatrix = []
+    noOfFiles =0
+    for file in files:
+        noOfFiles+=1
+        noOfLines=0
+        for line in open(file):
+            base=os.path.basename(file)
+            label= os.path.splitext(base)[0]
+            labelsDistribution[label] += 1
+            noOfLines+=1
+
+            tokens = line.split(" ")
+
+            tokenIds = np.zeros(maxSentenceLen)
+
+            for idx in xrange(0, min(maxSentenceLen, len(tokens))):
+                tokenIds[idx] = getWordIdx(tokens[idx], word2Idx)
+
+            tokenMatrix.append(tokenIds)
+
+            labels.append(labelsMapping[label])
+        #print 'lines', noOfLines,file
+    #print 'files', noOfFiles
+
+    #cast to categorial
+    labels = np_utils.to_categorical(labels,3)
+    return labels, np.array(tokenMatrix, dtype='int32')
+
+# :: Create token matrix ::
+train_set = createMatrices(files[0:3], word2Idx, max(maxSentenceLen))
+test_set = createMatrices(files[3:6], word2Idx, max(maxSentenceLen))
+
+for label, freq in labelsDistribution.most_common(100):
+    print "%s : %f%%" % (label, 100*freq / float(labelsDistribution.N()))
+    print freq
+
+########## NETWORK######
+
+longest_sequence = max(len(s) for s in (train_set+test_set))
+
+
+print 'max length', max(maxSentenceLen)
+
+
+# Create the train and predict_labels function
+#input shape
+n_in = max(maxSentenceLen)
+# som eparam
+n_hidden = 100
+# number of labels
+n_out = 3
+
+
+words = Sequential()
+#shape 1 = colums; shape 0 = number of train tokens , n_in =  in the windows
+words.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=n_in,  weights=[embeddings], trainable=False))
+# Flatten = concacenates the inputes to a single vectors (numer of embedding dims * number of tokens)
+#words.add(Flatten())
+
+words.add(Bidirectional(LSTM(300, return_sequences=True)))
+words.add(TimeDistributed(Dense(n_out, activation='softmax')))
+words.add(Flatten())
+words.add(Dense(n_out, activation='softmax'))
+
+words.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+words.summary()
+
+for epoch in xrange(20):
+    print "\n------------- Epoch %d ------------" % (epoch+1)
+
+   # train_label = np.array([np_utils.to_categorical(seq, n_in) for seq in train_set[0]])
+    words.fit(train_set[1], train_set[0], nb_epoch=1, batch_size=64, verbose=True, shuffle=True)
+    score, acc = words.evaluate(test_set[1], test_set[0])
+    print('Accuracy calculated by Keras:', acc*100)

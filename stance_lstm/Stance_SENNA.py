@@ -166,7 +166,7 @@ words.add(Dense(output_dim=n_out, activation='softmax'))
 words.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 words.summary()
 
-for epoch in xrange(20):
+for epoch in xrange(100):
     print "\n------------- Epoch %d ------------" % (epoch+1)
     #print [train_set[1]]
     #print train_set[0]
