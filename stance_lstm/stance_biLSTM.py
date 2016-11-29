@@ -17,6 +17,11 @@ from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirect
 from keras.layers import LSTM
 from keras.utils import np_utils
 
+#TODO: inspect output/sanity checking via validation module
+#TODO: shuffle input
+#TODO: hyperparamter tuning
+#TODO: CRoss-Validation over Folds
+#TODO: compute F1
 
 embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
 
