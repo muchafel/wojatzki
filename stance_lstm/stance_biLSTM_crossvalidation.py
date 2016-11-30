@@ -15,19 +15,17 @@ from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirect
 from keras.layers import LSTM
 from keras.utils import np_utils
 
-#TODO: check input (all instances)+ check padding (reverse?)
 #TODO: inspect output/sanity checking via validation module
 #TODO: hyperparamter tuning (so far started with 300,200 LSTM units)
 #TODO: CRoss-Validation over Folds
 #TODO: compute F1
 
-optimizers=['sgd','nadam','adam','adadelta','adagrad','rmsprop']
+embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
 
-for optimizer in optimizers:
+leave_out_Files=['data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', '/Users/michael/git/ucsm_git/stance_lstm/data/comments_watch%3Fv=gV6OoypZMco_reordered.txt_comments_watch%3Fv=gV6OoypZMco_reordered.txt', '/Users/michael/git/ucsm_git/stance_lstm/data/comments_watch%3Fv=ka1B59ir1mI_reordered.txt_comments_watch%3Fv=ka1B59ir1mI_reordered.txt']
 
-    embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
-
-    leave_out_File = 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt'
+for file in leave_out_Files:
+    leave_out_File = file
     train_folder=leave_out_File+'/train'
     test_folder=leave_out_File+'/test'
 
@@ -35,7 +33,6 @@ for optimizer in optimizers:
 
     # Mapping of the labels to integers
     labelsMapping = {'none': 0, 'favor': 1, 'against': 2}
-
 
     words = {}
     maxSentenceLen = [0,0,0,0,0,0]
@@ -173,14 +170,13 @@ for optimizer in optimizers:
     #words.add(Flatten())
 
 
+    #words.add(Bidirectional(LSTM(lstm_units, return_sequences=True)))
     words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=0.2)))
     words.add(TimeDistributed(Dense(n_out, activation='softmax')))
     words.add(Flatten())
     words.add(Dense(n_out, activation='softmax'))
 
-
-    words.compile(loss='categorical_crossentropy',optimizer=optimizer,metrics=['accuracy'])
-    #words.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+    words.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
     words.summary()
 
     for epoch in xrange(numberEpochs):
@@ -214,7 +210,7 @@ for optimizer in optimizers:
         gold=labelFromOneHotVec(test_set[0][i])
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("/Users/michael/git/ucsm_git/stance_lstm/result/optimizer"+optimizer+"_lstmUnits_"+str(lstm_units)+"result_wo_dropout_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/lstmUnits_"+str(lstm_units)+"result_w_dropout_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
             file.write(str(gold)+"\t"+str(predicted)+"\n")
         if predicted==gold: correct+=1
         else: incorrect+=1
