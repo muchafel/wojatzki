@@ -87,10 +87,10 @@ public class StanceClassification_CrossValidation implements Constants {
 			"No_evidence_for_religion", "USA", "Supernatural_Power_Being", "Life_after_death", "Christianity","Original_Stance"));
 
 //	public static final String TARGET_LABLE = "ATHEISM"; // ,67
-	 public static final String TARGET_LABLE = "Original_Stance"; 
+//	 public static final String TARGET_LABLE = "Original_Stance"; 
 //	 public static final String TARGET_LABLE = "Supernatural_Power_Being";
 	// //.76
-//	 public static final String TARGET_LABLE = "Christianity"; //.8
+	 public static final String TARGET_LABLE = "Christianity"; //.8
 //	 public static final String TARGET_LABLE = "Freethinking"; // XX
 //	 public static final String TARGET_LABLE = "Islam"; // .95
 	// public static final String TARGET_LABLE = "Life_after_death"; // ,97
@@ -147,8 +147,8 @@ public class StanceClassification_CrossValidation implements Constants {
 		StanceClassification_CrossValidation experiment = new StanceClassification_CrossValidation();
 
 //		 XXX CV for getting the id2outcome file for the DFE
-//		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", TARGET_LABLE,featureSet);
-//		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
+		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", TARGET_LABLE,featureSet);
+		experiment.runCrossValidation(pSpace, "stanceExperiment_"+TARGET_LABLE);
 
 		// XXX run CV for each explicit target in Array
 		for (String explicitTarget : explicitTargets) {

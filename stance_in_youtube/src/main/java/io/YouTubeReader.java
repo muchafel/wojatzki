@@ -50,9 +50,9 @@ public class YouTubeReader extends BinaryCasReader{
 			}
 			Collection<TextClassificationTarget> targets= JCasUtil.select(jcas,TextClassificationTarget.class);
 			if(!targets.isEmpty()){
-				for(TextClassificationTarget outcome:targets){
+				for(TextClassificationTarget target:targets){
 //					System.out.println("target detected");
-					outcome.removeFromIndexes();
+					target.removeFromIndexes();
 				}
 			}
 			
@@ -107,7 +107,7 @@ public class YouTubeReader extends BinaryCasReader{
 		}
 
 
-		private String getTextClassificationOutcome_Set2(JCas jcas, TextClassificationTarget unit, String targetLabel2) throws Exception {
+		protected String getTextClassificationOutcome_Set2(JCas jcas, TextClassificationTarget unit, String targetLabel2) throws Exception {
 			for(curated.Explicit_Stance_Set2 subTarget: JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set2.class,unit)){
 				if(targetLabel2.equals(subTarget.getTarget())){
 					String polarity=subTarget.getPolarity();
@@ -122,7 +122,7 @@ public class YouTubeReader extends BinaryCasReader{
 		}
 
 
-		private String getTextClassificationOutcome_Set1(JCas jcas, TextClassificationTarget unit, String targetLabel) throws Exception {
+		protected String getTextClassificationOutcome_Set1(JCas jcas, TextClassificationTarget unit, String targetLabel) throws Exception {
 			for(curated.Explicit_Stance_Set1 subTarget: JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set1.class,unit)){
 				if(targetLabel.equals(subTarget.getTarget())){
 					String polarity=subTarget.getPolarity();
