@@ -22,7 +22,7 @@ from keras.utils import np_utils
 
 embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
 
-leave_out_Files=['data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', 'data/comments_watch%3Fv=QkW-0ewjiJw_reordered.txt_comments_watch%3Fv=QkW-0ewjiJw_reordered.txt', '/Users/michael/git/ucsm_git/stance_lstm/data/comments_watch%3Fv=gV6OoypZMco_reordered.txt_comments_watch%3Fv=gV6OoypZMco_reordered.txt', '/Users/michael/git/ucsm_git/stance_lstm/data/comments_watch%3Fv=ka1B59ir1mI_reordered.txt_comments_watch%3Fv=ka1B59ir1mI_reordered.txt']
+leave_out_Files=['data/QkW-0ewjiJw','data/TgQRgT15f9U','/Users/michael/git/ucsm_git/stance_lstm/data/UtaVKVIoWyk','/Users/michael/git/ucsm_git/stance_lstm/data/_5aodBfdFTA','/Users/michael/git/ucsm_git/stance_lstm/data/gV6OoypZMco','/Users/michael/git/ucsm_git/stance_lstm/data/ka1B59ir1mI']
 
 for file in leave_out_Files:
     leave_out_File = file
@@ -49,7 +49,7 @@ for file in leave_out_Files:
     for fileIdx in xrange(len(files)):
         file = files[fileIdx]
         for line in open(file):
-            print line
+            #print line
             #splits = line.strip().split('\t')
 
             #label = splits[0]
@@ -160,8 +160,11 @@ for file in leave_out_Files:
     n_hidden = 100
     # number of labels
     n_out = 3
-    lstm_units=200
-    numberEpochs=20
+    lstm_units=64
+    numberEpochs=5
+    activation='tanh'
+    optimizer='adam'
+    dropout=0.2
 
     words = Sequential()
     #shape 1 = colums; shape 0 = number of train tokens , n_in =  in the windows
@@ -171,12 +174,12 @@ for file in leave_out_Files:
 
 
     #words.add(Bidirectional(LSTM(lstm_units, return_sequences=True)))
-    words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=0.2)))
-    words.add(TimeDistributed(Dense(n_out, activation='softmax')))
+    words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=dropout)))
+    words.add(TimeDistributed(Dense(n_out, activation=activation)))
     words.add(Flatten())
     words.add(Dense(n_out, activation='softmax'))
 
-    words.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+    words.compile(loss='categorical_crossentropy',optimizer=optimizer,metrics=['accuracy'])
     words.summary()
 
     for epoch in xrange(numberEpochs):
@@ -210,7 +213,7 @@ for file in leave_out_Files:
         gold=labelFromOneHotVec(test_set[0][i])
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/lstmUnits_"+str(lstm_units)+"result_w_dropout_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
             file.write(str(gold)+"\t"+str(predicted)+"\n")
         if predicted==gold: correct+=1
         else: incorrect+=1

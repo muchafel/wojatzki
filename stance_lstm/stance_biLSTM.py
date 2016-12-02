@@ -141,9 +141,7 @@ train_set = createMatrices(files[0:3], word2Idx, max(maxSentenceLen))
 test_set = createMatrices(files[3:6], word2Idx, max(maxSentenceLen))
 
 
-for label, freq in labelsDistribution.most_common(100):
-    print "%s : %f%%" % (label, 100*freq / float(labelsDistribution.N()))
-    print freq
+
 
 ########## NETWORK######
 
@@ -161,7 +159,7 @@ n_hidden = 100
 # number of labels
 n_out = 3
 lstm_units=138
-numberEpochs=100
+numberEpochs=10
 
 words = Sequential()
 #shape 1 = colums; shape 0 = number of train tokens , n_in =  in the windows
@@ -171,7 +169,7 @@ words.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0
 
 
 words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=0.2)))
-words.add(TimeDistributed(Dense(n_out, activation='softmax')))
+words.add(TimeDistributed(Dense(n_out, activation='tanh')))
 words.add(Flatten())
 words.add(Dense(n_out, activation='softmax'))
 
@@ -211,7 +209,7 @@ for i in range(0, len(predictions)):
     gold=labelFromOneHotVec(test_set[0][i])
     #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-    with open("/Users/michael/git/ucsm_git/stance_lstm/result/lstmUnits_"+str(lstm_units)+"result_w_dropout_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+    with open("/Users/michael/git/ucsm_git/stance_lstm/result/activation_tanh_optimizer_adadelta_lstmUnits_"+str(lstm_units)+"result_w_dropout_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
         file.write(str(gold)+"\t"+str(predicted)+"\n")
     if predicted==gold: correct+=1
     else: incorrect+=1
