@@ -15,7 +15,7 @@ public class TargetSets {
 			"If Death Penalty is allowed, abortion should be legal, too.",	
 //			"If Death Penalty is allowed, euthanasia should be allowed",	
 //			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	
-			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",	
+//			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",	
 			"In certain cases, capital punishment shouldn’t have to be humane but more harsh",
 			"Life-long prison should be replaced by Death Penalty",	
 			"The level of certainty that is necessary for Death Penalty is unachievable"

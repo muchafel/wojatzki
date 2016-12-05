@@ -49,7 +49,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 	 * XXX CONSTANTS
 	 */
 	public static final String LANGUAGE_CODE = "en";
-	public static boolean useUniformClassDistributionFilering = true; // for
+	public static boolean useUniformClassDistributionFilering = false; // for
 																		// filtering
 																		// (be
 																		// careful
@@ -85,7 +85,8 @@ public class ExplicitStance_CrossValidation implements Constants {
 					// CHAR_N_GRAM_MIN,
 					// NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N,
 					// CHAR_N_GRAM_MAX)
-	, TcFeatureFactory.create(SocherSentimentFE.class), TcFeatureFactory.create(WordEmbeddingDFE.class,
+//	, TcFeatureFactory.create(SocherSentimentFE.class)
+	, TcFeatureFactory.create(WordEmbeddingDFE.class,
 			WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
 	// ,
@@ -130,7 +131,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println(experimentName);
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "2", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_subSampled_binary" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_binary_ngrams_embeddings" + experimentName);
 		}
 
 		// targets_Set1
@@ -142,7 +143,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println();
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_subSampled_binary" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_binary_ngrams_embeddings" + experimentName);
 		}
 
 		/**

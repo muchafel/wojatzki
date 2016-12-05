@@ -33,7 +33,7 @@ import preprocessing.Users;
 public class Stance_RecurrentAuthor extends FeatureExtractorResource_ImplBase
 implements FeatureExtractor{
 
-	public static final String PARAM_USE_ORACLE = "useOracleReoccurrent";
+	public static final String PARAM_USE_ORACLE = "useOracleReccurrentAuthor";
 	@ConfigurationParameter(name = PARAM_USE_ORACLE, mandatory = true, defaultValue="false")
 	private boolean useOracle;
 	
