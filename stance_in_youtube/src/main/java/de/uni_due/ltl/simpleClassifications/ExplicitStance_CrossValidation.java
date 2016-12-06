@@ -37,6 +37,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
 import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
+import de.uni_due.ltl.util.UniformClass_NONE_DistributionFilter;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.YouTubeReader;
@@ -49,7 +50,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 	 * XXX CONSTANTS
 	 */
 	public static final String LANGUAGE_CODE = "en";
-	public static boolean useUniformClassDistributionFilering = false; // for
+	public static boolean useUniformClassDistributionFilering = true; // for
 																		// filtering
 																		// (be
 																		// careful
@@ -85,7 +86,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 					// CHAR_N_GRAM_MIN,
 					// NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N,
 					// CHAR_N_GRAM_MAX)
-//	, TcFeatureFactory.create(SocherSentimentFE.class)
+	, TcFeatureFactory.create(SocherSentimentFE.class)
 	, TcFeatureFactory.create(WordEmbeddingDFE.class,
 			WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
@@ -131,7 +132,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println(experimentName);
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "2", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_binary_ngrams_embeddings" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment_subsampledNONE_" + experimentName);
 		}
 
 		// targets_Set1
@@ -143,7 +144,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println();
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_binary_ngrams_embeddings" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment_subsampledNONE_" + experimentName);
 		}
 
 		/**
@@ -255,7 +256,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(YouTubeSubDebateReader.class,
 				YouTubeSubDebateReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeSubDebateReader.PARAM_LANGUAGE,
 				LANGUAGE_CODE, YouTubeSubDebateReader.PARAM_PATTERNS, "*.bin",
-				YouTubeSubDebateReader.PARAM_TARGET_LABEL, target, YouTubeSubDebateReader.PARAM_TARGET_SET, targetSet));
+				YouTubeSubDebateReader.PARAM_TARGET_LABEL, target, YouTubeSubDebateReader.PARAM_TARGET_SET, targetSet,YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY,false));
 
 		return dimReaders;
 	}
@@ -275,8 +276,11 @@ public class ExplicitStance_CrossValidation implements Constants {
 			Dimension<List<String>> dimClassificationArgs) {
 
 		if (useUniformClassDistributionFilering) {
+			//TODO: check new Filter
 			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
-					Arrays.asList(new String[] { UniformClassDistributionFilter.class.getName() }));
+					Arrays.asList(new String[] { UniformClass_NONE_DistributionFilter.class.getName() }));
+//			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
+//					Arrays.asList(new String[] { UniformClassDistributionFilter.class.getName() }));
 
 			return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_UNIT),

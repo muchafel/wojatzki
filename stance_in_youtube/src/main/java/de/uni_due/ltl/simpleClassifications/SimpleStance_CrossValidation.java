@@ -48,6 +48,7 @@ import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.uni_due.ltl.featureExtractors.CommentTypeFE;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
+import de.uni_due.ltl.featureExtractors.subdebates.ClassifiedSubdebateDFE;
 import de.uni_due.ltl.featureExtractors.userModel.ContainsRefereeFE;
 import de.uni_due.ltl.featureExtractors.userModel.RecurrentAuthor;
 import de.uni_due.ltl.featureExtractors.userModel.Stance_Previous_Comment;
@@ -83,6 +84,8 @@ public class SimpleStance_CrossValidation implements Constants{
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
 		
+		private static boolean useOracle=false;
+		
 		private boolean ablation=false;
 
 		public static TcFeatureSet featureSet = new TcFeatureSet(
@@ -99,18 +102,21 @@ public class SimpleStance_CrossValidation implements Constants{
 //			,TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
 //					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-
-//				,
+				,TcFeatureFactory.create(ClassifiedSubdebateDFE.class, ClassifiedSubdebateDFE.PARAM_USE_ORACLE, useOracle,
+						ClassifiedSubdebateDFE.PARAM_USE_SET1, true, ClassifiedSubdebateDFE.PARAM_USE_SET2, true,
+						ClassifiedSubdebateDFE.PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH,
+						"src/main/resources/id2outcome/subdebates/binary_subsampled_ngrams_embeddings")
+			//				,
 //				,TcFeatureFactory.create(UserName_FE.class,UserName_FE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
 //				,TcFeatureFactory.create(RecurrentAuthor.class)
 //				,
-				,TcFeatureFactory.create(Stance_RecurrentAuthor.class, Stance_RecurrentAuthor.PARAM_USE_ORACLE, false,Stance_RecurrentAuthor.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
-				,TcFeatureFactory.create(Stance_ReferredComment.class, Stance_ReferredComment.PARAM_USE_ORACLE, false,Stance_ReferredComment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+				,TcFeatureFactory.create(Stance_RecurrentAuthor.class, Stance_RecurrentAuthor.PARAM_USE_ORACLE, useOracle,Stance_RecurrentAuthor.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+//				,TcFeatureFactory.create(Stance_ReferredComment.class, Stance_ReferredComment.PARAM_USE_ORACLE, false,Stance_ReferredComment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
 //				,TcFeatureFactory.create(ContainsRefereeFE.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
-				,TcFeatureFactory.create(Stance_Previous_Comment.class, Stance_Previous_Comment.PARAM_USE_ORACLE, false,Stance_Previous_Comment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+				,TcFeatureFactory.create(Stance_Previous_Comment.class, Stance_Previous_Comment.PARAM_USE_ORACLE, useOracle,Stance_Previous_Comment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
 				,TcFeatureFactory.create(SocherSentimentFE.class)
-//				,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+				,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
@@ -130,22 +136,8 @@ public class SimpleStance_CrossValidation implements Constants{
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
 			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "sentiment_recurrentAuthorStance_stancePrevious_stanceReferred");
+			experiment.runCrossValidation(pSpace, "all_ORACLE");
 		
-
-			// XXX run CV for each explicit target in Array
-//			for (String explicitTarget : explicitTargets) {
-//				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/semevalTask6/annotationStudy/originalDebateStanceLabels/bin", explicitTarget,featureSet);
-//				String experimentName = explicitTarget.replace("-", "");
-//				experimentName = explicitTarget.replace(" ", "");
-//
-//				experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-//				if(saveModel){
-//					experiment.saveModel(pSpace_explicit, experimentName);
-//				}else{
-//					experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_" + experimentName);
-//				}
-//			}
 			
 			/**
 			 * parameter search ngram  

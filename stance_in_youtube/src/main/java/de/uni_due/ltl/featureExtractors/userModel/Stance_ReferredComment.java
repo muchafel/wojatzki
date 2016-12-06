@@ -20,6 +20,7 @@ import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 import org.dkpro.tc.api.type.JCasId;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
+import de.uni_due.ltl.util.Id2OutcomeUtil;
 import preprocessing.CommentType;
 
 public class Stance_ReferredComment extends FeatureExtractorResource_ImplBase implements FeatureExtractor {
@@ -40,7 +41,7 @@ public class Stance_ReferredComment extends FeatureExtractorResource_ImplBase im
 		if (!super.initialize(aSpecifier, aAdditionalParams)) {
 			return false;
 		}
-		debate_id2Outcome = getId2OutcomeMap(
+		debate_id2Outcome = Id2OutcomeUtil.getId2OutcomeMap(
 				id2outcomeTargetFolderPath + "/debateStance" + "/id2homogenizedOutcome.txt");
 		// subtarget2id2Outcome_word_ngram= new HashMap<String,Map<String,
 		// Integer>>();
@@ -95,39 +96,10 @@ public class Stance_ReferredComment extends FeatureExtractorResource_ImplBase im
 		}
 	}
 
-	/**
-	 * reads a map that stores the id2outcomes
-	 * 
-	 * @param path
-	 * @return
-	 */
-	private Map<String, Integer> getId2OutcomeMap(String path) {
-		Map<String, Integer> id2Outcome = new HashMap<String, Integer>();
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				if (!line.startsWith("#")) {
-					String prediction = line.split(";")[0];
-					String id = prediction.split("=")[0];
-					int outCome = 0;
-					// handle predictions whre the split is only FAVOR NONE
-					if (prediction.split("=")[1].length() == 3) {
-						outCome = getOutcomeFromPrediction2classes(prediction.split("=")[1]);
-					} else {
-						outCome = getOutcomeFromPrediction3classes(prediction.split("=")[1]);
-					}
-					id2Outcome.put(id, outCome);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return id2Outcome;
-	}
-
+	
 	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) throws Exception {
 		if (useOracle) {
-			return resolvePolarity(
+			return Id2OutcomeUtil.resolvePolarityThreeway(
 					JCasUtil.selectCovered(jcas, curated.Debate_Stance.class, unit).get(0).getPolarity());
 		} else {
 			String id2OutcomeKey = JCasUtil.selectSingle(jcas, JCasId.class).getId() + "_" + unit.getId();
@@ -138,34 +110,5 @@ public class Stance_ReferredComment extends FeatureExtractorResource_ImplBase im
 			}
 			return debate_id2Outcome.get(id2OutcomeKey);
 		}
-	}
-
-	private int getOutcomeFromPrediction2classes(String outcome) {
-		// System.out.println(outcome);
-		if (outcome.equals("1,0"))
-			return 1;
-		else if (outcome.equals("0,1"))
-			return -1;
-		else
-			return 0;
-	}
-
-	private int getOutcomeFromPrediction3classes(String outcome) {
-		// System.out.println(outcome);
-		if (outcome.equals("1,0,0"))
-			return 1;
-		else if (outcome.equals("0,1,0"))
-			return -1;
-		else
-			return 0;
-	}
-
-	private int resolvePolarity(String polarity) {
-		if (polarity.equals("FAVOR")) {
-			return 1;
-		} else if (polarity.equals("AGAINST")) {
-			return -1;
-		} else
-			return 0;
 	}
 }
