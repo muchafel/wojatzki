@@ -36,6 +36,8 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
+import de.uni_due.ltl.featureExtractors.externalResources.ExternalVocabularyDFE;
+import de.uni_due.ltl.featureExtractors.subdebates.ClassifiedSubdebateDFE;
 import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
 import de.uni_due.ltl.util.UniformClass_NONE_DistributionFilter;
 import io.ConfusionMatrixOutput;
@@ -50,7 +52,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 	 * XXX CONSTANTS
 	 */
 	public static final String LANGUAGE_CODE = "en";
-	public static boolean useUniformClassDistributionFilering = true; // for
+	public static boolean useUniformClassDistributionFilering = false; // for
 																		// filtering
 																		// (be
 																		// careful
@@ -61,7 +63,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 2;
 	public static int CHAR_N_GRAM_MAX = 5;
-	public static int N_GRAM_MAXCANDIDATES = 6500;
+	public static int N_GRAM_MAXCANDIDATES = 1000;
 	private static final int NUM_FOLDS = 6;
 	private static final String TARGET_LABLE = "DEATH PENALTY";
 	private static final String TARGET_Set = "1";
@@ -75,7 +77,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
 					CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
 					CommentNGram.PARAM_UNIQUE_NAME, "B"),
-			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 500,
+			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
 					CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
 					CommentNGram.PARAM_UNIQUE_NAME, "C")
 					//
@@ -89,6 +91,8 @@ public class ExplicitStance_CrossValidation implements Constants {
 	, TcFeatureFactory.create(SocherSentimentFE.class)
 	, TcFeatureFactory.create(WordEmbeddingDFE.class,
 			WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+	,TcFeatureFactory.create(ExternalVocabularyDFE.class,ExternalVocabularyDFE.PARAM_MAX_VOCAB,1000, ExternalVocabularyDFE.PARAM_USE_SET1, true, ExternalVocabularyDFE.PARAM_USE_SET2, true,
+			ExternalVocabularyDFE.PARAM_EXTERNAL_SOURCES_FOLDER_PATH,"src/main/resources/externalResources/",ExternalVocabularyDFE.ONLY_CONTENTWORDS,true)
 
 	// ,
 	// ,TcFeatureFactory.create(UserName_FE.class,UserName_FE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
@@ -132,7 +136,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println(experimentName);
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "2", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment_subsampledNONE_" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment" + experimentName);
 		}
 
 		// targets_Set1
@@ -144,7 +148,7 @@ public class ExplicitStance_CrossValidation implements Constants {
 			System.out.println();
 			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
 					baseDir +"/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1", featureSet);
-			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment_subsampledNONE_" + experimentName);
+			experiment.runCrossValidation(pSpace_explicit, "stanceExperiment_ngrams_embeddings_sentiment" + experimentName);
 		}
 
 		/**

@@ -11,28 +11,28 @@ import java.util.Set;
 
 public class WordEmbeddingLexicon {
 
-	private Map<String, List<Float>> lexicon;
+	private Map<String, List<Double>> lexicon;
 	
 	
-	public WordEmbeddingLexicon(Map<String, List<Float>> lexicon){
+	public WordEmbeddingLexicon(Map<String, List<Double>> lexicon){
 		this.lexicon= lexicon;
 	}
 	
 	public WordEmbeddingLexicon(String path) throws Exception{
 		this.lexicon= readLexicon(path);
 	}
-	private Map<String, List<Float>> readLexicon(String path) throws Exception {
-		Map<String, List<Float>> lexicon=new HashMap<String, List<Float>>();
+	private Map<String, List<Double>> readLexicon(String path) throws Exception {
+		Map<String, List<Double>> lexicon=new HashMap<String, List<Double>>();
 		try (FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr)) {
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				int i=0;
 				String key="";
-				List<Float> value= new ArrayList<Float>();
+				List<Double> value= new ArrayList<Double>();
 				for(String subString : line.split(" ")){
 					if(i==0)key=subString;
 					else{
-						value.add(Float.parseFloat(subString));
+						value.add(Double.parseDouble(subString));
 					}
 					i++;
 				}
@@ -44,10 +44,10 @@ public class WordEmbeddingLexicon {
 		
 		return lexicon;
 	}
-	public void addEntry(String key,List<Float> value ){
+	public void addEntry(String key,List<Double> value ){
 		this.lexicon.put(key, value);
 	}
-	public List<Float> getEmbedding(String key) {
+	public List<Double> getEmbedding(String key) {
 		if(lexicon.containsKey(key)){
 			return this.lexicon.get(key);
 		}
@@ -57,10 +57,10 @@ public class WordEmbeddingLexicon {
 	}
 	
 	
-	private List<Float> emptyVector() {
-		List<Float> emptyVector=new ArrayList<Float>();
+	private List<Double> emptyVector() {
+		List<Double> emptyVector=new ArrayList<Double>();
 		for(int i=0; i< getDimensionality(); i++){
-			emptyVector.add(0.0f);
+			emptyVector.add(0.0);
 		}
 		return emptyVector;
 	}

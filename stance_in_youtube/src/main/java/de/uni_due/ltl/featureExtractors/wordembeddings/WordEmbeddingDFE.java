@@ -48,7 +48,7 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 		return true;
 	}
 
-	private Set<Feature> createFeatures(List<Float> averagedVector) {
+	private Set<Feature> createFeatures(List<Double> averagedVector) {
 		Set<Feature> featList = new HashSet<Feature>();
 		for(int i=0; i< averagedVector.size(); i++){
 			featList.add(new Feature("embeddingDimension_"+i, averagedVector.get(i)));
@@ -59,7 +59,7 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 	@Override
 	public Set<Feature> extract(JCas jcas, TextClassificationTarget target) throws TextClassificationException {
 		WordEmbeddingHelper helper=new WordEmbeddingHelper(this.lexicon);
-		Set<String> embeddingCandidates= new HashSet<String>();
+		List<String> embeddingCandidates= new ArrayList<String>();
 		
 		CommentText comment=JCasUtil.selectCovered(CommentText.class, target).iterator().next();
 		//only select the tokens in the current comment
@@ -67,7 +67,7 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 			String lowerCase = t.getCoveredText().toLowerCase();
 			embeddingCandidates.add(lowerCase);
 		}
-		List<Float> averagedSentenceVector= helper.getAveragedSentenceVector(embeddingCandidates);
+		List<Double> averagedSentenceVector= helper.getAveragedSentenceVector(embeddingCandidates);
 //		System.out.println(jcas.getDocumentText()+" "+averagedSentenceVector);
 		Set<Feature> featList = createFeatures(averagedSentenceVector);
 		return featList;

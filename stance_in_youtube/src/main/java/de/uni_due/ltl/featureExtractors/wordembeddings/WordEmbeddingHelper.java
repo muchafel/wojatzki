@@ -16,8 +16,8 @@ public class WordEmbeddingHelper {
 		this.lexicon = lexicon;
 	}
 
-	public List<Float> getAveragedSentenceVector(Set<String> embeddingCandidates) {
-		List<Float> averagedSentenceVector = initAveragedVector();
+	public List<Double> getAveragedSentenceVector(List<String> embeddingCandidates) {
+		List<Double> averagedSentenceVector = initAveragedVector();
 		int numberOfEmbeddings = 0;
 		for (String lowerCase : embeddingCandidates) {
 			// add wordembeddings
@@ -27,26 +27,26 @@ public class WordEmbeddingHelper {
 		return average(averagedSentenceVector, numberOfEmbeddings);
 	}
 
-	public List<Float> average(List<Float> averagedVector, int numberOfEmbeddings) {
-		List<Float> newVec = new ArrayList<Float>();
+	public List<Double> average(List<Double> averagedVector, int numberOfEmbeddings) {
+		List<Double> newVec = new ArrayList<Double>();
 		for (int i = 0; i < averagedVector.size(); i++) {
 			newVec.add(averagedVector.get(i) / numberOfEmbeddings);
 		}
 		return newVec;
 	}
 
-	private List<Float> addVector(List<Float> averagedVector, List<Float> embedding) {
-		List<Float> newVec = new ArrayList<Float>();
+	public List<Double> addVector(List<Double> averagedVector, List<Double> embedding) {
+		List<Double> newVec = new ArrayList<Double>();
 		for (int i = 0; i < embedding.size(); i++) {
 			newVec.add(averagedVector.get(i) + embedding.get(i));
 		}
 		return newVec;
 	}
 
-	private List<Float> initAveragedVector() {
-		List<Float> averagedVector = new ArrayList<Float>();
+	public List<Double> initAveragedVector() {
+		List<Double> averagedVector = new ArrayList<Double>();
 		for (int i = 0; i < lexicon.getDimensionality(); i++) {
-			averagedVector.add(0.0f);
+			averagedVector.add(0.0);
 		}
 		return averagedVector;
 	}
