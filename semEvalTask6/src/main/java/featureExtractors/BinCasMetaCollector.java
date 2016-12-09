@@ -20,6 +20,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.parameter.ComponentParameters;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import org.dkpro.tc.api.features.meta.MetaCollector;
@@ -31,6 +32,7 @@ import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 
 public class BinCasMetaCollector extends MetaCollector {
 
+	public static final String PARAM_BINCAS_DIR = "binCasDir";
 	@ConfigurationParameter(name = SummedStanceDFE.PARAM_BINCAS_DIR, mandatory = true)
     protected String wordStanceDir;
 	protected AnalysisEngine writer;

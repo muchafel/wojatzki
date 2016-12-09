@@ -126,12 +126,12 @@ public class StanceClassification_CrossValidation implements Constants {
 			// "src/main/resources/lists/id2outcome_word_ngrams.txt"),
 //			TcFeatureFactory.create(OracleSubTargetDFE.class)
 //			TcFeatureFactory.create(ClassifiedSubTargetDFE.class)
-//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"/Users/michael/Desktop/atheism20152016.txt_word2Vec_150.txt"),
-//			TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
+			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"/Users/michael/Desktop/atheism20152016.txt_word2Vec_150.txt")
+			,TcFeatureFactory.create(WordEmbeddingClusterMembershipDFE.class, WordEmbeddingClusterMembershipDFE.WORD_TO_CLUSTER_FILE,"src/main/resources/wordsToClusters_atheism_d_75_c_1000_w2v.txt", WordEmbeddingClusterMembershipDFE.NUMBER_OF_CLUSTERS,1000)
 //			,
 //			TcFeatureFactory.create(BrownClusterMembershipDFE.class, BrownClusterMembershipDFE.PARAM_BROWN_CLUSTERS_LOCATION,"src/main/resources/brown_clusters/enTweetBrownC1000F40.txt")
 //			,
-			TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+			,TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 			TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,

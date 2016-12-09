@@ -124,8 +124,9 @@ implements FeatureExtractor{
 		}else{
 			String id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId()+"_"+unit.getId();
 			if(!debate_id2Outcome.containsKey(id2OutcomeKey)){
-				System.err.println(id2OutcomeKey+" not in id2OutcomeMap");
-				return 0;
+				throw new Exception(id2OutcomeKey+" not in id2OutcomeMap");
+//				System.err.println(id2OutcomeKey+" not in id2OutcomeMap");
+//				return 0;
 //				throw new Exception(id2OutcomeKey+" not in id2OutcomeMap");
 			}
 			return debate_id2Outcome.get(id2OutcomeKey);

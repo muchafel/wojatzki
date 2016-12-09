@@ -217,16 +217,16 @@ public abstract class SummedStance_base extends BinCasMetaDependent {
 	 * @param against
 	 * @return
 	 */
-	protected static Map<String, Float> createLexiconMap(FrequencyDistribution<String> favour,
+	protected static Map<String, Float> createLexiconMap(FrequencyDistribution<String> favor,
 			FrequencyDistribution<String> against) {
 		Map<String, Float> lexcicon = new TreeMap<String, Float>();
 		Set<String> candidates = new HashSet<String>();
 		// add all cands. dublicates will be removed because map stores just
 		// unique entries
-		candidates.addAll(favour.getKeys());
+		candidates.addAll(favor.getKeys());
 		candidates.addAll(against.getKeys());
 
-		CollocationMeasureHelper helper = new CollocationMeasureHelper(favour, against);
+		CollocationMeasureHelper helper = new CollocationMeasureHelper(favor, against);
 
 		for (String word : candidates) {
 			lexcicon.put(word, helper.getDiffOfGMeans(word));

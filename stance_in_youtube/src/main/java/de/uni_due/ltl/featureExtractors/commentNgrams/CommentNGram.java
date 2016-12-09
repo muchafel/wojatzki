@@ -162,6 +162,7 @@ public class CommentNGram extends FeatureExtractorResource_ImplBase implements F
 
 	public List<MetaCollectorConfiguration> getMetaCollectorClasses(Map<String, Object> parameterSettings)
 			throws ResourceInitializationException {
+		System.out.println(CommentNGramMetaCollector.PARAM_TARGET_LOCATION+" "+ LuceneNGram.PARAM_SOURCE_LOCATION+" "+ LuceneNGramMetaCollector.LUCENE_DIR);
 		return Arrays.asList(new MetaCollectorConfiguration(CommentNGramMetaCollector.class, parameterSettings)
 				.addStorageMapping(CommentNGramMetaCollector.PARAM_TARGET_LOCATION, LuceneNGram.PARAM_SOURCE_LOCATION,
 						LuceneNGramMetaCollector.LUCENE_DIR));
