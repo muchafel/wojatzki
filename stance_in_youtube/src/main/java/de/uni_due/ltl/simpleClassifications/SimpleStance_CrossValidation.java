@@ -62,6 +62,7 @@ import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
 import io.ConfusionMatrixOutput;
 import io.CrossValidationReport;
 import io.YouTubeReader;
+import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.PolyKernel;
 import weka.classifiers.functions.supportVector.RBFKernel;
@@ -83,7 +84,6 @@ public class SimpleStance_CrossValidation implements Constants{
 		public static int CHAR_N_GRAM_MIN = 2;
 		public static int CHAR_N_GRAM_MAX = 5;
 		public static int N_GRAM_MAXCANDIDATES = 6500;
-//		public static int N_GRAM_MAXCANDIDATES = 1000;
 		private static final int NUM_FOLDS = 6;
 		private static final String TARGET_LABLE = "DEATH PENALTY";
 		private static final String TARGET_Set = "1";
@@ -94,23 +94,23 @@ public class SimpleStance_CrossValidation implements Constants{
 
 		public static TcFeatureSet featureSet = new TcFeatureSet(
 //				
-				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
-				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
-				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 500,
-						CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C")
+//				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
+//				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
+//				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 500,
+//						CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C")
 //				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES
 //						CommentNGram.PARAM_NGRAM_MIN_N, 4, CommentNGram.PARAM_NGRAM_MAX_N, 4 , CommentNGram.PARAM_UNIQUE_NAME, "D")
 //				
 //			,TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
 //					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//				TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
+				TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
 				,TcFeatureFactory.create(ClassifiedSubdebateDFE.class, ClassifiedSubdebateDFE.PARAM_USE_ORACLE, false,ClassifiedSubdebateDFE.PARAM_ORACLE_DROPOUT, 50,
 						ClassifiedSubdebateDFE.PARAM_USE_SET1, true, ClassifiedSubdebateDFE.PARAM_USE_SET2, true,
 						ClassifiedSubdebateDFE.PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH,
-						"src/main/resources/id2outcome/subdebates/3way_dice_trigrams")
+						"src/main/resources/id2outcome/subdebates/targetTuned")
 //				,TcFeatureFactory.create(ExternalVocabularyDFE.class,ExternalVocabularyDFE.PARAM_MAX_VOCAB,1000, ExternalVocabularyDFE.PARAM_USE_SET1, true, ExternalVocabularyDFE.PARAM_USE_SET2, true,
 //						ExternalVocabularyDFE.PARAM_EXTERNAL_SOURCES_FOLDER_PATH,"src/main/resources/externalResources/",ExternalVocabularyDFE.ONLY_CONTENTWORDS,true)
 //				,TcFeatureFactory.create(ExternalEmbeddingSimilarityDFE.class,ExternalEmbeddingSimilarityDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt", ExternalEmbeddingSimilarityDFE.PARAM_USE_SET1, true, ExternalEmbeddingSimilarityDFE.PARAM_USE_SET2, true,
@@ -124,7 +124,7 @@ public class SimpleStance_CrossValidation implements Constants{
 //				,TcFeatureFactory.create(ContainsRefereeFE.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
 //				,TcFeatureFactory.create(Stance_Previous_Comment.class, Stance_Previous_Comment.PARAM_USE_ORACLE, useOracle,Stance_Previous_Comment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
-//				,TcFeatureFactory.create(SocherSentimentFE.class)
+				,TcFeatureFactory.create(SocherSentimentFE.class)
 //				,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
@@ -145,7 +145,7 @@ public class SimpleStance_CrossValidation implements Constants{
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
 			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "master_ngrams");
+			experiment.runCrossValidation(pSpace, "tunedPredictions_stacked_sentiment_log");
 		
 			
 			/**
@@ -255,6 +255,8 @@ public class SimpleStance_CrossValidation implements Constants{
 //			 asList(new String[] { ZeroR.class.getName() })
 //			 ,
 //			 asList(new String[] { J48.class.getName() })
+//			 ,
+//			 asList(new String[] { Logistic.class.getName() })
 //			 ,
 //			 asList(new String[] { RandomForest.class.getName() })
 			// ,

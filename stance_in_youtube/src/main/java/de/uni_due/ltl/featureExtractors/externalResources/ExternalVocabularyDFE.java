@@ -103,7 +103,6 @@ public class ExternalVocabularyDFE extends FeatureExtractorResource_ImplBase imp
 			String contentInLine=fileContents[0];
 			if(target.equals(targetInLine)){
 				if(subdebate2ExternalVocab.containsKey(target)){
-					//TODO content words? tokenization? ngrams?
 					subdebate2ExternalVocab.get(target).incAll(Arrays.asList(contentInLine.split(" ")));
 				}else{
 					FrequencyDistribution<String> vocab4Target= new FrequencyDistribution<>();

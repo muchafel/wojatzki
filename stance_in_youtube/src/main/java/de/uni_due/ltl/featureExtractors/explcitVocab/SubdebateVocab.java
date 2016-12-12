@@ -49,6 +49,7 @@ public class SubdebateVocab extends BinCasMetaDependent {
 	@ConfigurationParameter(name = PARAM_VOCAB_TARGET, mandatory = true)
 	private String target;
 	
+	
 //	public static final String PARAM_COLLOCATION_CUT_OFF = "collocationCutOff";
 //	@ConfigurationParameter(name = PARAM_COLLOCATION_CUT_OFF, mandatory = true)
 	private double cutoff = 0.005;
