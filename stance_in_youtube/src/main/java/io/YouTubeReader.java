@@ -14,6 +14,7 @@ import org.dkpro.tc.api.type.TextClassificationOutcome;
 import org.dkpro.tc.api.type.TextClassificationSequence;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
@@ -56,38 +57,32 @@ public class YouTubeReader extends BinaryCasReader{
 				}
 			}
 			
-					
-//			TextClassificationSequence sequence = new TextClassificationSequence(jcas,0, jcas.getDocumentText().length());
-//            sequence.addToIndexes();
+			int i=0;		
 			 for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 		            
 		          TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(),
 		        		  sentence.getEnd());
 		                unit.setId(tcId++);
-		                unit.addToIndexes();
-
 		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,sentence.getBegin(), sentence.getEnd());
 		                try {
 							outcome.setOutcome(getTextClassificationOutcome(jcas, unit));
 						} catch (Exception e) {
 							throw new IOException(e);
 						}
-		                outcome.addToIndexes();
-
+//		                unit.setSuffix(JCasUtil.select(jcas, DocumentMetaData.class).iterator().next().getDocumentId()+"_"+String.valueOf(i));
+		                i++;
+		                addUnitAndOutComeToIndex(unit,outcome);
 		        }
-			
-//			if(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class) != null){
-//				outcome = JCasUtil.selectSingle(jcas, TextClassificationOutcome.class);
-//			}else{
-//				 outcome = new TextClassificationOutcome(jcas);
-//			}
-//			
-//		    try {
-//				outcome.setOutcome(getTextClassificationOutcome(jcas));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		    outcome.addToIndexes();
+		}
+
+		/**
+		 * this method is capsuled so that the inheriting readers can apply filtering here
+		 * @param unit
+		 * @param outcome
+		 */
+		protected void addUnitAndOutComeToIndex(TextClassificationTarget unit, TextClassificationOutcome outcome) {
+            unit.addToIndexes();
+            outcome.addToIndexes();
 		}
 
 

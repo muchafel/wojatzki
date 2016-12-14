@@ -83,9 +83,12 @@ public class Id2OutcomeUtil {
 			return 1;
 		} else if (polarity.equals("AGAINST")) {
 			return -1;
-		} else if (polarity.equals("NONE")){
+		} else if (polarity.equals("PRESENT")) {
+			return 1;
+		}
+		else if (polarity.equals("NONE")){
 			return 0;
 		}
-		throw new Exception(polarity+ " not a valid polarity; allowed: FAVOR,AGAINST and NONE");	
+		throw new Exception(polarity+ " not a valid polarity; allowed: PRESENT,FAVOR,AGAINST and NONE");	
 	}
 }

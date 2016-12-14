@@ -12,6 +12,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
+import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
@@ -29,6 +30,20 @@ public class PreprocessCorpus {
 		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
 //		inspectSentimemts(reader,engineSentiment);
 
+	}
+
+	private static AnalysisEngine getWriterEngine() {
+		AggregateBuilder builder = new AggregateBuilder();
+		AnalysisEngine engine = null;
+		try {
+			builder.add(createEngineDescription(
+					createEngineDescription(BinaryCasWriter.class,BinaryCasWriter.PARAM_OVERWRITE, true, BinaryCasWriter.PARAM_TARGET_LOCATION,"/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin_wo_NONE")
+					));
+			engine = builder.createAggregate();
+		} catch (ResourceInitializationException e) {
+			e.printStackTrace();
+		}
+		return engine;
 	}
 
 	private static AnalysisEngine getSentimentPreprocessingEngine() {

@@ -166,13 +166,13 @@ public class SubdebateVocabNgrams extends BinCasMetaDependent {
 		FrequencyDistribution<String> fd_tri=getNgrams(text, 3);
 
 				
-//		for (String word : highlyAssociatedUniGrams) {
-//			if (fd_uni.contains(word)) {
-//				featList.add(new Feature(target + "_Ngram_" + word, 1));
-//			} else {
-//				featList.add(new Feature(target + "_Ngram_" + word, 0));
-//			}
-//		}
+		for (String word : highlyAssociatedUniGrams) {
+			if (fd_uni.contains(word)) {
+				featList.add(new Feature(target + "_Ngram_" + word, 1));
+			} else {
+				featList.add(new Feature(target + "_Ngram_" + word, 0));
+			}
+		}
 		for (String word : highlyAssociatedBiGrams) {
 			if (fd_bi.contains(word)) {
 				featList.add(new Feature(target + "_Ngram_" + word, 1));

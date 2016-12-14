@@ -65,8 +65,6 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 		if (!super.initialize(aSpecifier, aAdditionalParams)) {
 			return false;
 		}
-		
-		
 		if(useSet1){
 			explcitTarget_SET1_2id2Outcome = new HashMap<String, Map<String, Integer>>();
 			for (String target : explicitTargets_SET1) {
@@ -84,7 +82,6 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 						Id2OutcomeUtil.getId2OutcomeMap(id2outcomeSubTargetFolderPath + "/set2/" + target + ".txt"));
 			}
 		}
-		
 		return true;
 	}
 
@@ -134,9 +131,6 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 			String id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId()+"_"+unit.getId();
 			if(!debate_id2Outcome.containsKey(id2OutcomeKey)){
 				throw new Exception(id2OutcomeKey+" not in id2OutcomeMap");
-//				System.err.println(id2OutcomeKey+" not in id2OutcomeMap");
-//				return 0;
-//				throw new Exception(id2OutcomeKey+" not in id2OutcomeMap");
 			}
 			return debate_id2Outcome.get(id2OutcomeKey);
 		}
@@ -193,7 +187,6 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 			}
 		}
 		return 0;
-//		throw new Exception("target lable: "+targetLabel+" not annotated");
 	}
 
 	/**
@@ -207,15 +200,12 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 	private int getOraclePolaritySet2(TextClassificationTarget unit, JCas jcas, String targetLabel) throws Exception {
 		for(curated.Explicit_Stance_Set2 subTarget: JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set2.class,unit)){
 			if(targetLabel.equals(subTarget.getTarget())){
+//				System.out.println(subTarget.getTarget()+" "+subTarget.getPolarity());
 				String polarity=subTarget.getPolarity();
-				if(polarity.equals("FAVOR")||polarity.equals("AGAINST")){
-					return 1;
-				}
-				return 0;
+				return Id2OutcomeUtil.resolvePolarityThreeway(polarity);
 			}
 		}
 		return 0;
-//		throw new Exception("target "+targetLabel+"Lable not annotated");
 	}
 
 }

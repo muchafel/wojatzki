@@ -73,6 +73,4 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 		return featList;
 	}
 
-	
-
 }
