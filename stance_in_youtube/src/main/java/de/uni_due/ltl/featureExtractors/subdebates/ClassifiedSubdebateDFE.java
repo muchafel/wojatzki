@@ -31,31 +31,35 @@ import de.uni_due.ltl.util.TargetSets;
 
 public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor {
 
-	private ArrayList<String> explicitTargets_SET1 = TargetSets.targets_Set1;
-	private ArrayList<String> explicitTargets_SET2 = TargetSets.targets_Set2;
+	protected ArrayList<String> explicitTargets_SET1 = TargetSets.targets_Set1;
+	protected ArrayList<String> explicitTargets_SET2 = TargetSets.targets_Set2;
 
-	private Map<String, Map<String, Integer>> explcitTarget_SET1_2id2Outcome;
-	private Map<String, Map<String, Integer>> explcitTarget_SET2_2id2Outcome;
+	protected Map<String, Map<String, Integer>> explcitTarget_SET1_2id2Outcome;
+	protected Map<String, Map<String, Integer>> explcitTarget_SET2_2id2Outcome;
 
 	public static final String PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH = "id2outcomeExplicitTargetsFolderPath";
 	@ConfigurationParameter(name = PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH, mandatory = true)
-	private String id2outcomeSubTargetFolderPath;
+	protected String id2outcomeSubTargetFolderPath;
 	
 	public static final String PARAM_USE_SET1 = "useTargetSet1ForClassification";
 	@ConfigurationParameter(name = PARAM_USE_SET1, mandatory = true)
-	private boolean useSet1;
+	protected boolean useSet1;
 	
 	public static final String PARAM_USE_SET2 = "useTargetSet1ForClassification";
 	@ConfigurationParameter(name = PARAM_USE_SET2, mandatory = true)
-	private boolean useSet2;
+	protected boolean useSet2;
 	
 	public static final String PARAM_USE_ORACLE = "useOracleClassificationOfSubdebates";
 	@ConfigurationParameter(name = PARAM_USE_ORACLE, mandatory = true)
-	private boolean oracle;
+	protected boolean oracle;
 	
 	public static final String PARAM_ORACLE_DROPOUT = "oracleDropout";
 	@ConfigurationParameter(name = PARAM_ORACLE_DROPOUT, mandatory = true)
-	private int oracleDropout;
+	protected int oracleDropout;
+	
+	public static final String PARAM_IDENTIFIER="ClassifiedSubdebateDFE_identifier";
+	@ConfigurationParameter(name = PARAM_IDENTIFIER, mandatory = true)
+	protected String identifier;
 	
 	Random random= new Random();
 
@@ -94,7 +98,7 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 				try {
 					int resultForTarget = getClassificationOutcome(unit, jcas, target,
 							explcitTarget_SET1_2id2Outcome.get(target),true);
-					featList.add(new Feature("ClassifiedSubTarget_"+target, resultForTarget));
+					featList.add(new Feature(identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
 				} catch (Exception e) {
 					throw new TextClassificationException(e);
 				}
@@ -105,7 +109,7 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 				try {
 					int resultForTarget = getClassificationOutcome(unit, jcas, target,
 							explcitTarget_SET2_2id2Outcome.get(target),false);
-					featList.add(new Feature("ClassifiedSubTarget_"+target, resultForTarget));
+					featList.add(new Feature(identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
 				} catch (Exception e) {
 					throw new TextClassificationException(e);
 				}

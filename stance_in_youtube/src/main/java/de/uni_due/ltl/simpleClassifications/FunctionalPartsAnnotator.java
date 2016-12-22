@@ -1,5 +1,7 @@
 package de.uni_due.ltl.simpleClassifications;
 
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import preprocessing.CommentText;
 import preprocessing.CommentType;
@@ -22,7 +25,8 @@ public class FunctionalPartsAnnotator extends JCasAnnotator_ImplBase{
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		for(TextClassificationTarget unit: JCasUtil.select(jcas, TextClassificationTarget.class)){
+		for(Sentence unit: JCasUtil.select(jcas, Sentence.class)){
+//		for(TextClassificationTarget unit: JCasUtil.select(jcas, TextClassificationTarget.class)){
 			List<Token> tokens=JCasUtil.selectCovered(jcas, Token.class,unit);
 			
 			//set comment type (comment vs. reply)

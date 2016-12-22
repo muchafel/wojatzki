@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Nov 10 11:34:17 CET 2016
+ * Updated by JCasGen Wed Dec 21 10:36:37 CET 2016
  * XML source: /Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/desc/type/typesystem_preprocessing.xml
  * @generated */
 public class CommentType extends Annotation {

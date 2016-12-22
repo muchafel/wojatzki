@@ -27,6 +27,7 @@ import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ExperimentUtil;
+import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentSaveModel;
@@ -36,9 +37,13 @@ import org.springframework.util.Log4jConfigurer;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
+import de.uni_due.ltl.featureExtractors.explcitVocab.ExplicitVocabNGram;
+import de.uni_due.ltl.featureExtractors.explcitVocab.LDA_TopicWordsFE;
 import de.uni_due.ltl.featureExtractors.explcitVocab.SubdebateVocab;
 import de.uni_due.ltl.featureExtractors.explcitVocab.SubdebateVocabNgrams;
+import de.uni_due.ltl.featureExtractors.explcitVocab.TopKLDAEmbeddingDistancePerTargetFE;
 import de.uni_due.ltl.featureExtractors.explcitVocab.TopKLDAWordsPerTargetFE;
+import de.uni_due.ltl.featureExtractors.externalResources.ExternalEmbeddingSimilarityDFE;
 import de.uni_due.ltl.featureExtractors.externalResources.ExternalVocabularyDFE;
 import de.uni_due.ltl.featureExtractors.subdebates.ClassifiedSubdebateDFE;
 import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
@@ -49,6 +54,7 @@ import io.YouTubeReader;
 import io.YouTubeSubDebateReader;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
+import weka.classifiers.trees.RandomForest;
 
 public class ExplicitStances_CrossValidation implements Constants {
 
@@ -56,13 +62,9 @@ public class ExplicitStances_CrossValidation implements Constants {
 	 * XXX CONSTANTS
 	 */
 	public static final String LANGUAGE_CODE = "en";
-	public static boolean useUniformClassDistributionFilering = false; // for
-																		// filtering
-																		// (be
-																		// careful
-																		// when
-																		// using
-																		// this)
+	public static boolean excludeNonesFromTrainingAndTesting = false;
+	public static boolean mergeToBinary = false;
+	public static boolean useUniformClassDistributionFilering = true; 
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 2;
@@ -125,76 +127,43 @@ public class ExplicitStances_CrossValidation implements Constants {
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		// ExplicitStance_CrossValidation experiment = new
-		// ExplicitStance_CrossValidation();
-		// ParameterSpace pSpace = experiment.setupCrossValidation(baseDir +
-		// "/youtubeStance/corpus_minorityVote/bin/",
-		// TARGET_LABLE,TARGET_Set,featureSet);
-		// experiment.runCrossValidation(pSpace,
-		// "debateNgram_oracle_RecurrentAuthor");
-		
-//		String explicitTarget="Life-long prison should be replaced by Death Penalty";
-//		featureSet = new TcFeatureSet(
-//				TcFeatureFactory.create(SocherSentimentFE.class)
-////				,TcFeatureFactory.create(SubdebateVocabNgrams.class, SubdebateVocabNgrams.PARAM_VOCAB_TARGET,
-////						explicitTarget)
-//				,TcFeatureFactory.create(SubdebateVocab.class, SubdebateVocab.PARAM_VOCAB_TARGET, explicitTarget)			);
-//		ExplicitStance_CrossValidation experiment = new ExplicitStance_CrossValidation();
-//		String experimentName = getValidName(explicitTarget.replace("-", ""));
-//
-//		System.out.println(experimentName);
-//		System.out.println();
-//		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
-//				baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1", featureSet);
-//		experiment.runCrossValidation(pSpace_explicit, "unsampledVocab_05_sentiment" + experimentName);
 		// targets_Set1
 //		for(int i=10; i<=100; i+=10){
-		int i=50;
+		int i=100;
 			for (String explicitTarget : targets_Set1) {
 				featureSet = new TcFeatureSet(
-						// TcFeatureFactory.create(WordEmbeddingDFE.class,
-						// WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-						// "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
-						TcFeatureFactory.create(LDA_Inferred_DFE.class,LDA_Inferred_DFE.PARAM_USE_SET1,true, LDA_Inferred_DFE.PARAM_USE_SET2,true)
-//						TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,
-//								TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET, explicitTarget,
-//								TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS, i)
-						);
+//						TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MIN_N,1,LuceneNGram.PARAM_NGRAM_MAX_N,4,LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000)
+//						TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"1"),
+						TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100),
+						TcFeatureFactory.create(TopKLDAEmbeddingDistancePerTargetFE.class, TopKLDAEmbeddingDistancePerTargetFE.PARAM_WORD_EMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings_data_reddit_idebate.84B.300d.txt",TopKLDAEmbeddingDistancePerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAEmbeddingDistancePerTargetFE.PARAM_TOP_K_WORDS,100)
+											);
 				ExplicitStances_CrossValidation experiment = new ExplicitStances_CrossValidation();
 				String experimentName = getValidName(explicitTarget.replace("-", ""));
 
 				System.out.println(experimentName);
 				System.out.println();
-				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
-						baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1",
-						featureSet);
-				experiment.runCrossValidation(pSpace_explicit, "highRec_inferrence_"+String.valueOf(i)+"_"  + experimentName);
+				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", explicitTarget, "1",featureSet);
+				experiment.runCrossValidation(pSpace_explicit, "topLDA_dis_max"+String.valueOf(i)+"_"  + experimentName);
 			}
 
 			// // targets_Set2
 			for (String explicitTarget : targets_Set2) {
 				featureSet = new TcFeatureSet(
-						//// TcFeatureFactory.create(WordEmbeddingDFE.class,
-						//// WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-						//// "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
-						//// ,TcFeatureFactory.create(SubdebateVocabNgrams.class,
-						//// SubdebateVocabNgrams.PARAM_VOCAB_TARGET,
-						//// explicitTarget)
-						TcFeatureFactory.create(LDA_Inferred_DFE.class,LDA_Inferred_DFE.PARAM_USE_SET1,true, LDA_Inferred_DFE.PARAM_USE_SET2,true)
-//						TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,
-//								TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET, explicitTarget,
-//								TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS, i)
+//						TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MIN_N,1,LuceneNGram.PARAM_NGRAM_MAX_N,4,LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000)
+//						TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"2"),
+						TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100),
+						TcFeatureFactory.create(TopKLDAEmbeddingDistancePerTargetFE.class, TopKLDAEmbeddingDistancePerTargetFE.PARAM_WORD_EMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings_data_reddit_idebate.84B.300d.txt",TopKLDAEmbeddingDistancePerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAEmbeddingDistancePerTargetFE.PARAM_TOP_K_WORDS,100)
 						);
 				ExplicitStances_CrossValidation experiment = new ExplicitStances_CrossValidation();
 				String experimentName = getValidName(explicitTarget.replace("-", ""));
 
 				System.out.println(experimentName);
 				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
-						baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "2",
+						baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", explicitTarget, "2",
 						featureSet);
-				experiment.runCrossValidation(pSpace_explicit, "highRec_inferrence_"+String.valueOf(i)+"_" + experimentName);
+				experiment.runCrossValidation(pSpace_explicit, "topLDA_dis_max"+String.valueOf(i)+"_" + experimentName);
 			}
-
+//		}
 		}
 
 		/**
@@ -284,6 +253,7 @@ public class ExplicitStances_CrossValidation implements Constants {
 		Map<String, Object> dimReaders = getDimReaders(dataLocation, target, targetSet);
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() }));
+//				asList(new String[] { RandomForest.class.getName() }));
 //				asList(new String[] { Logistic.class.getName() }));
 
 		Dimension<TcFeatureSet> dimFeatureSets = null;
@@ -308,8 +278,8 @@ public class ExplicitStances_CrossValidation implements Constants {
 				YouTubeSubDebateReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeSubDebateReader.PARAM_LANGUAGE,
 				LANGUAGE_CODE, YouTubeSubDebateReader.PARAM_PATTERNS, "*.bin",
 				YouTubeSubDebateReader.PARAM_TARGET_LABEL, target, YouTubeSubDebateReader.PARAM_TARGET_SET, targetSet,
-				YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, false,
-				YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE, true));
+				YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, mergeToBinary,
+				YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE, excludeNonesFromTrainingAndTesting));
 
 		return dimReaders;
 	}
@@ -329,8 +299,10 @@ public class ExplicitStances_CrossValidation implements Constants {
 			Dimension<List<String>> dimClassificationArgs) {
 		 if (useUniformClassDistributionFilering) {
 			//TODO: check new Filter
+//			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
+//					Arrays.asList(new String[] { UniformClass_NONE_DistributionFilter.class.getName() }));
 			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
-					Arrays.asList(new String[] { UniformClass_NONE_DistributionFilter.class.getName() }));
+					Arrays.asList(new String[] { OverSampleFilter.class.getName() }));
 //			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
 //					Arrays.asList(new String[] { UniformClassDistributionFilter.class.getName() }));
 

@@ -40,7 +40,7 @@ public class YouTubeReader extends BinaryCasReader{
 			} catch (CASException e) {
 				throw new CollectionException(e);
 			}
-			
+			jcas.setDocumentLanguage("en");
 			//make sure there is no outcome artifact
 			Collection<TextClassificationOutcome> outcomes= JCasUtil.select(jcas,TextClassificationOutcome.class);
 			if(!outcomes.isEmpty()){
@@ -58,21 +58,21 @@ public class YouTubeReader extends BinaryCasReader{
 			}
 			
 			int i=0;		
-			 for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-		            
-		          TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(),
-		        		  sentence.getEnd());
-		                unit.setId(tcId++);
-		                TextClassificationOutcome outcome = new TextClassificationOutcome(jcas,sentence.getBegin(), sentence.getEnd());
-		                try {
-							outcome.setOutcome(getTextClassificationOutcome(jcas, unit));
-						} catch (Exception e) {
-							throw new IOException(e);
-						}
-//		                unit.setSuffix(JCasUtil.select(jcas, DocumentMetaData.class).iterator().next().getDocumentId()+"_"+String.valueOf(i));
-		                i++;
-		                addUnitAndOutComeToIndex(unit,outcome);
-		        }
+			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
+				// System.out.println(sentence.getCoveredText());
+				TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(), sentence.getEnd());
+				unit.setId(tcId++);
+				TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(),sentence.getEnd());
+				try {
+					outcome.setOutcome(getTextClassificationOutcome(jcas, unit));
+				} catch (Exception e) {
+					throw new IOException(e);
+				}
+				// unit.setSuffix(JCasUtil.select(jcas,
+				// DocumentMetaData.class).iterator().next().getDocumentId()+"_"+String.valueOf(i));
+				i++;
+				addUnitAndOutComeToIndex(unit, outcome);
+			}
 		}
 
 		/**

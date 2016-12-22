@@ -1,6 +1,8 @@
 package de.uni_due.ltl.corpusInspection;
 
 import static de.uni_due.ltl.util.TargetSets.targets_Set1;
+import static de.uni_due.ltl.util.TargetSets.targets_Set2;
+
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.util.JCasUtil.selectCovered;
 import static org.apache.uima.fit.util.JCasUtil.toText;
@@ -29,10 +31,14 @@ import org.apache.uima.fit.pipeline.JCasIterable;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.dkpro.tc.api.type.JCasId;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 import org.dkpro.tc.features.ngram.util.NGramUtils;
 
+import curated.Explicit_Stance_Set1;
+import curated.Explicit_Stance_Set2;
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -50,13 +56,88 @@ public class InspectExplicitVocab {
 		AnalysisEngine engine= getPreprocessingEngine();
 
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
+		inspectVocab(engine,baseDir);
+//		inspectDistribution(baseDir,engine);
+	}
+
+	
+
+	private static void inspectVocab(AnalysisEngine engine, String baseDir) throws ResourceInitializationException {
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
+				YouTubeSubDebateReader.class, YouTubeSubDebateReader.PARAM_SOURCE_LOCATION,
+				baseDir + "/youtubeStance/corpus_curated_woInference/bin_preprocessed/",
+				YouTubeSubDebateReader.PARAM_LANGUAGE, "en", YouTubeSubDebateReader.PARAM_PATTERNS, "*.bin",
+				YouTubeSubDebateReader.PARAM_TARGET_LABEL, "DEATH PENALTY", YouTubeSubDebateReader.PARAM_TARGET_SET,
+				"1", YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, false, YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE,false);
+		for (String explicitTarget : targets_Set1) {
+			
+			FrequencyDistribution<String> tokens= new FrequencyDistribution<>();
+			
+			for (JCas jcas : new JCasIterable(reader)) {
+				for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
+					for(curated.Explicit_Stance_Set1 explicitTarget1: JCasUtil.selectCovered(curated.Explicit_Stance_Set1.class, sentence)){
+						if(explicitTarget1.getTarget().equals(explicitTarget) && !explicitTarget1.getPolarity().equals("NONE")){
+							System.out.println(explicitTarget1.getCoveredText());
+							List<String> words= getWords(explicitTarget1);
+							tokens.incAll(words);
+						}
+					}
+				}
+			}
+			System.out.println(explicitTarget+" "+tokens.getMostFrequentSamples(40));
+			System.out.println();
+		}
+		for (String explicitTarget : targets_Set2) {
+			
+			FrequencyDistribution<String> tokens= new FrequencyDistribution<>();
+			
+			for (JCas jcas : new JCasIterable(reader)) {
+				for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
+					for(curated.Explicit_Stance_Set2 explicitTarget2: JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class, sentence)){
+						if(explicitTarget2.getTarget().equals(explicitTarget) && !explicitTarget2.getPolarity().equals("NONE")){
+							System.out.println(explicitTarget2.getCoveredText());
+							List<String> words= getWords(explicitTarget2);
+							tokens.incAll(words);
+						}
+					}
+				}
+			}
+			System.out.println(explicitTarget+" "+tokens.getMostFrequentSamples(40));
+			System.out.println();
+		}
+		
+	}
+
+
+
+	private static List<String> getWords(Explicit_Stance_Set2 explicitTarget2) {
+		List<String> words= new ArrayList<>();
+		for(Token t: JCasUtil.selectCovered(Token.class,explicitTarget2)){
+			words.add(t.getCoveredText().toLowerCase());
+		}
+		return words;
+	}
+
+
+
+	private static List<String> getWords(Explicit_Stance_Set1 explicitTarget1) {
+		List<String> words= new ArrayList<>();
+		for(Token t: JCasUtil.selectCovered(Token.class,explicitTarget1)){
+			words.add(t.getCoveredText().toLowerCase());
+		}
+		return words;
+	}
+
+
+
+	private static void inspectDistribution(String baseDir, AnalysisEngine engine) throws ResourceInitializationException, AnalysisEngineProcessException {
 		for (String explicitTarget : targets_Set1) {
 			CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
 					YouTubeSubDebateReader.class, YouTubeSubDebateReader.PARAM_SOURCE_LOCATION,
-					baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/",
+					baseDir + "/youtubeStance/corpus_curated_woInference/bin_preprocessed/",
 					YouTubeSubDebateReader.PARAM_LANGUAGE, "en", YouTubeSubDebateReader.PARAM_PATTERNS, "*.bin",
 					YouTubeSubDebateReader.PARAM_TARGET_LABEL, explicitTarget, YouTubeSubDebateReader.PARAM_TARGET_SET,
-					"1", YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, false);
+					"1", YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, false, YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE,false);
 
 			FrequencyDistribution<String> fd_favor= new FrequencyDistribution<>();
 			FrequencyDistribution<String> fd_against= new FrequencyDistribution<>();
@@ -71,28 +152,35 @@ public class InspectExplicitVocab {
 
 
 			for (JCas jcas : new JCasIterable(reader)) {
+				jcas.setDocumentLanguage("en");
+				FrequencyDistribution<String> polarity= new FrequencyDistribution<>();
 				engine.process(jcas);
 				for (TextClassificationOutcome outcome : JCasUtil.select(jcas, TextClassificationOutcome.class)) {
 					if (outcome.getOutcome().equals("FAVOR")) {
-						fd_present=incTokens(fd_present,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
-						fd_favor=incTokens(fd_favor,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
-						fd_present_bigrams=incNgrams(fd_present_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
-						fd_present_trigrams=incNgrams(fd_present_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
+						polarity.inc("PRESENT");
+//						fd_present=incTokens(fd_present,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
+//						fd_favor=incTokens(fd_favor,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
+//						fd_present_bigrams=incNgrams(fd_present_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
+//						fd_present_trigrams=incNgrams(fd_present_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
 					}
 					if (outcome.getOutcome().equals("AGAINST")) {
-						fd_present=incTokens(fd_present,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
-						fd_against=incTokens(fd_against,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
-						fd_present_bigrams=incNgrams(fd_present_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
-						fd_present_trigrams=incNgrams(fd_present_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
+						polarity.inc("PRESENT");
+//						fd_present=incTokens(fd_present,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
+//						fd_against=incTokens(fd_against,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
+//						fd_present_bigrams=incNgrams(fd_present_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
+//						fd_present_trigrams=incNgrams(fd_present_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
 					}
 					if (outcome.getOutcome().equals("NONE")) {
-						fd_none=incTokens(fd_none,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
-						fd_none_bigrams=incNgrams(fd_none_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
-						fd_none_trigrams=incNgrams(fd_none_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
+						polarity.inc("NONE");
+//						fd_none=incTokens(fd_none,JCasUtil.selectCovered(CommentText.class,outcome).iterator().next());
+//						fd_none_bigrams=incNgrams(fd_none_bigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),2));
+//						fd_none_trigrams=incNgrams(fd_none_trigrams, getNgrams(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next(),3));
 					}
 				}
+				System.out.println(JCasUtil.select(jcas,DocumentMetaData.class).iterator().next().getDocumentId());
+				System.out.println(explicitTarget+" PRESENT:"+polarity.getCount("PRESENT")+" NONE:"+polarity.getCount("NONE"));
 			}
-			System.out.println(explicitTarget+" "+fd_against.getMostFrequentSamples(50)+" "+fd_favor.getMostFrequentSamples(50));
+//			System.out.println(explicitTarget+" "+fd_against.getMostFrequentSamples(50)+" "+fd_favor.getMostFrequentSamples(50));
 //			Set<String> presentWords=fd_present.getKeys();
 //			Set<String> presentWords=getVocabWithMin2Occurrences(fd_present);
 //			presentWords.removeAll(fd_none.getKeys());
@@ -125,9 +213,10 @@ public class InspectExplicitVocab {
 			System.out.println(StringUtils.join(presentWords,"\",\""));
 			System.out.println();
 		}
+		
 	}
 
-	
+
 
 	private static FrequencyDistribution<String> incNgrams(FrequencyDistribution<String> fd,
 			FrequencyDistribution<String> currentNgrams) {

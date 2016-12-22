@@ -73,12 +73,13 @@ public class CreateTxtCorpus {
 	public static void main(String[] args) throws ResourceInitializationException, IOException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-//		String loc=baseDir + "/semevalTask6/annotationStudy/curatedTweets/Atheism/all"+"_wo_irony_understandability";
-		String loc="/Users/michael/DKPRO_HOME/semevalTask6/annotationStudy/originalDebateStanceLabels/bin";
+//		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
+//				XmiReader.PARAM_SOURCE_LOCATION, baseDir+"/youtubeStance/corpus_minorityVote/xmi", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
+//				"en");
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
-				XmiReader.PARAM_SOURCE_LOCATION, baseDir+"/youtubeStance/corpus_minorityVote/xmi", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
+				XmiReader.PARAM_SOURCE_LOCATION, "/Users/michael/Dropbox/explicit targets PHASE II/curated_deathPenalty_data/annotation_unzipped/bin/xmis", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
 				"en");
-		File f = new File("corpus_comparison.txt"); 
+		File f = new File("corpus_curated.txt"); 
 		String header="";
 		for(String target1:targets_Set1){
 			header+="\t"+target1;
@@ -95,6 +96,7 @@ public class CreateTxtCorpus {
 		header+="\n";
 		FileUtils.writeStringToFile(f, header,"UTF-8", true);
 		for (JCas jcas : new JCasIterable(reader)) {
+			System.out.println(JCasUtil.select(jcas,Sentence.class).size());
 			for(Sentence sentence:JCasUtil.select(jcas,Sentence.class)){
 				String toPrint=JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 				String text=sentence.getCoveredText().replace(System.lineSeparator(), "");
@@ -102,7 +104,7 @@ public class CreateTxtCorpus {
 				text=text.replace("+", "'+");
 				toPrint+="\t"+text;
 				curated.Debate_Stance mainT=JCasUtil.selectCovered(jcas,curated.Debate_Stance.class,sentence).iterator().next();
-				toPrint+="\t"+"DEBATE_STANCE:"+mainT.getPolarity().toLowerCase();
+				toPrint+="\t"+"DEBATE_STANCE:"+mainT.getPolarity();
 				
 				for(String target1:targets_Set1){
 					toPrint+="\t"+getPolarity_Set1(target1,JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set1.class,sentence));

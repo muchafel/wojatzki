@@ -29,10 +29,10 @@ public class TargetSets {
 //			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	//*
 			"Death Penalty (Debate)",
 			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)",	
-			"Death Penalty should be done by gunshot",	
+//			"Death Penalty should be done by gunshot",	
 //			"Death Penalty should be done by hypoxia",	//*
 //			"Death Penalty should be done by the electric chair",	//*
-			"Death Penalty should be enforced more quickly e.g. by minimizing the number of appeals",	
+			"Death Penalty should be enforced more quickly e.g. by minimizing the number of appeals",
 			"If Death Penalty is allowed, abortion should be legal, too.",	
 //			"If Death Penalty is allowed, euthanasia should be allowed",	//*
 //			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	//*
@@ -53,9 +53,10 @@ public class TargetSets {
 			"State-sanctioned killing is wrong (state has not the right).",	
 			"The death penalty can produce irreversible miscarriages of justice.",	
 			"The death penalty deters crime.",	
-			"The death penalty is a financial burden on the state.",	
-			"The death penalty should apply as punishment for first-degree murder; an eye for an eye.",
-			"Wrongful convictions are irreversible."
+			"The death penalty is a financial burden on the state.",
+			"The death penalty should apply as punishment for first-degree murder; an eye for an eye."
+//			,
+//			"Wrongful convictions are irreversible."
 			));
 	
 	public static ArrayList<String> insultTags = new ArrayList<String>(Arrays.asList("Group"

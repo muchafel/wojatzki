@@ -44,7 +44,7 @@ public class Id2OutcomeUtil {
 		return id2Outcome;
 	}
 
-	private static int getIndexOfOne(String resultVector) throws Exception {
+	public static int getIndexOfOne(String resultVector) throws Exception {
 		int i=0;
 		for(String dim:resultVector.split(",")){
 			if(dim.equals("1")){

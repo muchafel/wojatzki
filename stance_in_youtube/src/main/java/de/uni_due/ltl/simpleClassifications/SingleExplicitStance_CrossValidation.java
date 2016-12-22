@@ -43,6 +43,8 @@ import de.uni_due.ltl.featureExtractors.explcitVocab.TopKLDAWordsPerTargetFE;
 import de.uni_due.ltl.featureExtractors.externalResources.ExternalEmbeddingSimilarityDFE;
 import de.uni_due.ltl.featureExtractors.externalResources.ExternalVocabularyDFE;
 import de.uni_due.ltl.featureExtractors.subdebates.ClassifiedSubdebateDFE;
+import de.uni_due.ltl.featureExtractors.userModel.Stance_RecurrentAuthor;
+import de.uni_due.ltl.featureExtractors.userModel.Stance_ReferredComment;
 import de.uni_due.ltl.featureExtractors.wordembeddings.WordEmbeddingDFE;
 import de.uni_due.ltl.util.UniformClass_NONE_DistributionFilter;
 import io.ConfusionMatrixOutput;
@@ -90,21 +92,20 @@ public class SingleExplicitStance_CrossValidation implements Constants {
 //				TcFeatureFactory.create(SubdebateVocab.class, SubdebateVocab.PARAM_VOCAB_TARGET, explicitTarget)
 //				);
 		TcFeatureSet featureSet = new TcFeatureSet(
-				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
-						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A"),
-						TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
-								CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
-								CommentNGram.PARAM_UNIQUE_NAME, "B"),
-						TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
-								CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
-								CommentNGram.PARAM_UNIQUE_NAME, "C")
+				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
+				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
+				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 500,
+						CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C"),
+				TcFeatureFactory.create(SocherSentimentFE.class)
 				);
 		SingleExplicitStance_CrossValidation experiment = new SingleExplicitStance_CrossValidation();
 		String experimentName = getValidName(explicitTarget.replace("-", ""));
 		System.out.println(experimentName);
 		System.out.println();
-		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_minorityVote/bin_preprocessed/", explicitTarget, "1", featureSet);
-		experiment.runCrossValidation(pSpace_explicit, "regular_ngrams_woDebateNone_" + experimentName);
+		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", explicitTarget, "1", featureSet);
+		experiment.runCrossValidation(pSpace_explicit, "binary_ngrams_sentiment_" + experimentName);
 		}
 
 	private static String getValidName(String experimentName) {
@@ -186,8 +187,8 @@ public class SingleExplicitStance_CrossValidation implements Constants {
 				YouTubeSubDebateReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeSubDebateReader.PARAM_LANGUAGE,
 				LANGUAGE_CODE, YouTubeSubDebateReader.PARAM_PATTERNS, "*.bin",
 				YouTubeSubDebateReader.PARAM_TARGET_LABEL, target, YouTubeSubDebateReader.PARAM_TARGET_SET, targetSet,
-				YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, false,
-				YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE,true));
+				YouTubeSubDebateReader.PARAM_MERGE_TO_BINARY, true,
+				YouTubeSubDebateReader.PARAM_EXCLUDE_NONE_DEBATE_STANCE,false));
 
 		return dimReaders;
 	}

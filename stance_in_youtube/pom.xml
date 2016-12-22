@@ -127,6 +127,11 @@
 			<artifactId>nd4j-native</artifactId>
 			<version>0.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.unidue.ltl</groupId>
+			<artifactId>de.unidue.ltl.evaluation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

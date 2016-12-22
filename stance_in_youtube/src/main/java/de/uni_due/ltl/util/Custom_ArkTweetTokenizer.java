@@ -40,7 +40,7 @@ public class Custom_ArkTweetTokenizer extends CasAnnotator_ImplBase{
 		int i=0;
 		for(String sentence: text.split(System.lineSeparator())){
 			i++;
-			System.out.println("< "+sentence+ " >"+ sentenceStart+ " "+ sentence.length());
+//			System.out.println("< "+sentence+ " >"+ sentenceStart+ " "+ sentence.length());
 			if(i<text.split(System.lineSeparator()).length){
 				AnnotationFS sentenceAnno = cas.createAnnotation(sentenceType, sentenceStart, sentenceStart+sentence.length()+ System.lineSeparator().length());
 				cas.addFsToIndexes(sentenceAnno);
@@ -50,14 +50,14 @@ public class Custom_ArkTweetTokenizer extends CasAnnotator_ImplBase{
 			}
 			sentenceStart+=sentence.length()+ System.lineSeparator().length();
 		}
-		System.out.println("---- start sentence splitting");
-		try {
-			for(Sentence sentence: JCasUtil.select(cas.getJCas(), Sentence.class)){
-				System.out.println(sentence.getCoveredText());
-			}
-		} catch (CASException e) {
-			e.printStackTrace();
-		}
+//		System.out.println("---- start sentence splitting");
+//		try {
+//			for(Sentence sentence: JCasUtil.select(cas.getJCas(), Sentence.class)){
+//				System.out.println(sentence.getCoveredText());
+//			}
+//		} catch (CASException e) {
+//			throw new AnalysisEngineProcessException(e);
+//		}
 		
         List<String> tokenize = Twokenize.tokenize(text);
         int offset = 0;

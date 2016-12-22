@@ -24,11 +24,11 @@ import preprocessing.CommentText;
 public class PreprocessCorpus {
 
 	public static void main(String[] args) throws ResourceInitializationException, AnalysisEngineProcessException {
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_majorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 
 		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
-//		inspectSentimemts(reader,engineSentiment);
+		inspectSentimemts(reader,engineSentiment);
 
 	}
 
@@ -53,7 +53,7 @@ public class PreprocessCorpus {
 			builder.add(createEngineDescription(
 					createEngineDescription(FunctionalPartsAnnotator.class),
 					createEngineDescription(SentimentCommentAnnotator.class)
-					,createEngineDescription(BinaryCasWriter.class,BinaryCasWriter.PARAM_OVERWRITE, true, BinaryCasWriter.PARAM_TARGET_LOCATION,"/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin_preprocessed")
+					,createEngineDescription(BinaryCasWriter.class,BinaryCasWriter.PARAM_OVERWRITE, true, BinaryCasWriter.PARAM_TARGET_LOCATION,"/Users/michael/DKPRO_HOME/youtubeStance/corpus_majorityVote/bin_preprocessed")
 					));
 			engine = builder.createAggregate();
 		} catch (ResourceInitializationException e) {

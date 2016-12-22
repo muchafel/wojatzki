@@ -21,6 +21,7 @@ import org.apache.uima.fit.pipeline.JCasIterable;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.dkpro.tc.api.type.JCasId;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
@@ -31,6 +32,8 @@ import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.uni_due.ltl.simpleClassifications.FunctionalPartsAnnotator;
 import de.uni_due.ltl.simpleClassifications.SentimentCommentAnnotator;
+import de.uni_due.ltl.util.Id2OutcomeUtil;
+import de.uni_due.ltl.util.TargetSets;
 import io.YouTubeReader;
 import preprocessing.CommentText;
 import preprocessing.CommentType;
@@ -38,14 +41,20 @@ import preprocessing.Users;
 
 public class InspectCorpus {
 
-	public static void main(String[] args) throws ResourceInitializationException, AnalysisEngineProcessException, IOException {
+	public static void main(String[] args) throws Exception {
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
 		
-		printVocab(reader,engine);
-//		inspectExplicitTarget(engine);
+		for(String target : TargetSets.targets_Set1){
+			inspectExplicitTarget(engine,target,"1");
+		}
+		
+		for(String target : TargetSets.targets_Set2){
+			inspectExplicitTarget(engine,target,"2");
+		}
+//		printVocab(reader,engine);
 //		inspectOutcomePerDoc(reader,engine);
 //		inspectAuthorAndRefereesPerPolarity();
 //		inspectAuthorAndReferees(reader,engine);
@@ -89,22 +98,32 @@ public class InspectCorpus {
 		}
 	}
 
-	private static void inspectExplicitTarget(AnalysisEngine engine) throws ResourceInitializationException {
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
-				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"Death Penalty (Debate)", YouTubeReader.PARAM_TARGET_SET,"1");
+	private static void inspectExplicitTarget(AnalysisEngine engine, String target, String set) throws Exception {
+		System.out.println(target);
+		
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated_woInference/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
+				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,target, YouTubeReader.PARAM_TARGET_SET,set);
+		
 		int i=0;
+		int j=0;
+		int count =0;
 		for (JCas jcas : new JCasIterable(reader)) {
 			DocumentMetaData metaData = DocumentMetaData.get(jcas);
 			String id = metaData.getDocumentId();
 			
 			for (TextClassificationOutcome outcome : JCasUtil.select(jcas, TextClassificationOutcome.class)) {
+//				int id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId();
 				if(!outcome.getOutcome().equals("NONE")){
-					System.out.println(outcome.getOutcome());
-					i++;
+					count++;
+					int polarityInt=Id2OutcomeUtil.resolvePolarityThreeway(outcome.getOutcome());
+					System.out.println(i+"_"+j+":"+polarityInt);
+					FileUtils.write(new File("src/main/resources/explicitStancesLocators/"+set+"/"+target+".txt"), String.valueOf(i)+"_"+String.valueOf(j)+":"+polarityInt+"\n", true);
 				}
+				j++;
 			}
+			i++;
 		}
-		System.out.println(i);
+		System.out.println(count);
 	}
 
 	private static void inspectOutcomePerDoc(CollectionReaderDescription reader, AnalysisEngine engine) {

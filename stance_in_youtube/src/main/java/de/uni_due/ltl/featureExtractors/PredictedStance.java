@@ -21,9 +21,13 @@ import de.uni_due.ltl.util.Id2OutcomeUtil;
 public class PredictedStance extends FeatureExtractorResource_ImplBase
 implements FeatureExtractor{
 
-	public static final String PARAM_ID2OUTCOME_FOLDER_PATH = "id2outcomeTargetFolderPath";
-	@ConfigurationParameter(name = PARAM_ID2OUTCOME_FOLDER_PATH, mandatory = true)
-	private String id2outcomeTargetFolderPath;
+	public static final String PARAM_ID2OUTCOME_FILE_PATH = "id2outcomeTargetFilePath";
+	@ConfigurationParameter(name = PARAM_ID2OUTCOME_FILE_PATH, mandatory = true)
+	private String id2outcomeTargetFilePath;
+	
+	public static final String PARAM_ID2OUTCOME_IDENTIFIER = "id2outcomIdentifier";
+	@ConfigurationParameter(name = PARAM_ID2OUTCOME_IDENTIFIER, mandatory = true)
+	private String identifier;
 	
 	private Map<String, Integer> debate_id2Outcome;
 	
@@ -33,7 +37,7 @@ implements FeatureExtractor{
 		if (!super.initialize(aSpecifier, aAdditionalParams)) {
 			return false;
 		}
-		debate_id2Outcome= Id2OutcomeUtil.getId2OutcomeMap(id2outcomeTargetFolderPath+"/debateStance"+"/id2homogenizedOutcome.txt");
+		debate_id2Outcome= Id2OutcomeUtil.getId2OutcomeMap(id2outcomeTargetFilePath);
 		return true;
 	}
 
@@ -46,7 +50,7 @@ implements FeatureExtractor{
 		} catch (Exception e) {
 			throw new TextClassificationException(e);
 		}
-		featList.add(new Feature("STACKED_OUTCOME", classifcationOutcome));
+		featList.add(new Feature("STACKED_OUTCOME_"+identifier, classifcationOutcome));
 		return featList;
 	}
 
