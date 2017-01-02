@@ -50,12 +50,9 @@ for file in leave_out_Files:
         file = files[fileIdx]
         for line in open(file):
             #print line
-            #splits = line.strip().split('\t')
 
-            #label = splits[0]
-
-            #sentence = splits[3]
-            tokens = line.split(" ")
+            tokens=line.split("\t")[1].split(" ")
+           # tokens = line.split(" ")
             maxSentenceLen[fileIdx] = max(maxSentenceLen[fileIdx], len(tokens))
             for token in tokens:
                 words[token.lower()] = True
@@ -119,7 +116,8 @@ for file in leave_out_Files:
                 labelsDistribution[label] += 1
                 noOfLines+=1
 
-                tokens = line.split(" ")
+                tokens=line.split("\t")[1].split(" ")
+                # tokens = line.split(" ")
 
                 tokenIds = np.zeros(maxSentenceLen)
 
@@ -160,7 +158,7 @@ for file in leave_out_Files:
     n_hidden = 100
     # number of labels
     n_out = 3
-    lstm_units=64
+    lstm_units=100
     numberEpochs=5
     activation='tanh'
     optimizer='adam'
@@ -208,13 +206,35 @@ for file in leave_out_Files:
         for i in range(0,len(vector)):
             if vector[i]==1: return i
 
+
+    def getTCVector(index):
+        if index==0 :
+            return "0,0,1"
+        elif index==1 :
+            return "0,1,0"
+        else:
+            return "1,0,0"
+
+    def getId(folder,j):
+       # print folder
+        z=0
+        for file in folder:
+            for line in open(file):
+                id =line.split("\t")[0]
+                if(j==z): return id
+                z+=1
+
     for i in range(0, len(predictions)):
         predicted = predictions[i]
         gold=labelFromOneHotVec(test_set[0][i])
+        id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
-            file.write(str(gold)+"\t"+str(predicted)+"\n")
+       # with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+        #    file.write(str(gold)+"\t"+str(predicted)+"\n")
+
+        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
+            file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
         if predicted==gold: correct+=1
         else: incorrect+=1
 

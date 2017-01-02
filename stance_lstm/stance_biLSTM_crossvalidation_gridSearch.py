@@ -26,7 +26,9 @@ leave_out_Files=['data/QkW-0ewjiJw','data/TgQRgT15f9U','/Users/michael/git/ucsm_
 
 
 optimizers=['adam','adadelta']
-regularizations=[0.2,0.3,0.0]
+#regularizations=[0.2,0.3,0.0]
+#regularizations=[0.3,0.0]
+regularizations=[0.5]
 #default: 200
 #lstmUnitsConfigs=[100,123,200,300,400,500]
 lstmUnitsConfigs=[64,138,123,100,125,200,68]
