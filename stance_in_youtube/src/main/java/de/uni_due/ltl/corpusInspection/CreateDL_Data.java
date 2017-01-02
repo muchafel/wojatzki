@@ -39,7 +39,7 @@ import preprocessing.Users;
 public class CreateDL_Data {
 
 	public static void main(String[] args) throws ResourceInitializationException, AnalysisEngineProcessException, IOException {
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
@@ -54,6 +54,7 @@ public class CreateDL_Data {
 			String id = metaData.getDocumentId();
 			File folder= new File("src/main/resources/dl_data/"+id);
 			int i=0;
+			int sentences=0;
 			for (JCas jcas_inner : new JCasIterable(reader)) {
 				engine.process(jcas_inner);
 				DocumentMetaData metaData_inner = DocumentMetaData.get(jcas_inner);
@@ -64,21 +65,19 @@ public class CreateDL_Data {
 				}else{
 					trainOrTest="train";
 				}
-				
 				for (TextClassificationOutcome outcome : JCasUtil.select(jcas_inner, TextClassificationOutcome.class)) {
 					if(outcome.getOutcome().equals("NONE")){
-						i++;
-						FileUtils.write(new File(folder+"/"+trainOrTest+"/none.txt"), getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
+						FileUtils.write(new File(folder+"/"+trainOrTest+"/none.txt"),String.valueOf(i)+"_"+ String.valueOf(sentences)+"\t" +getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
 					}
 					if(outcome.getOutcome().equals("FAVOR")){
-						i++;
-						FileUtils.write(new File(folder+"/"+trainOrTest+"/favor.txt"), getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
+						FileUtils.write(new File(folder+"/"+trainOrTest+"/favor.txt"),String.valueOf(i)+"_"+ String.valueOf(sentences)+"\t"+ getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
 					}
 					if(outcome.getOutcome().equals("AGAINST")){
-						i++;
-						FileUtils.write(new File(folder+"/"+trainOrTest+"/against.txt"), getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
+						FileUtils.write(new File(folder+"/"+trainOrTest+"/against.txt"), String.valueOf(i)+"_"+ String.valueOf(sentences)+"\t"+getWhitespaceSpearatedTokens(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next())+"\n",true);
 					}
+					sentences++;
 				}
+				i++;
 			}
 			System.out.println(i);
 		}

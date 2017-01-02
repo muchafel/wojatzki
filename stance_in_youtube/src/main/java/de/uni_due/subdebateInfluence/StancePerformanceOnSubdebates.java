@@ -20,7 +20,8 @@ import de.unidue.ltl.evaluation.measure.util.CategorialMeasuresUtil;
 public class StancePerformanceOnSubdebates {
 //Für ein Signifikanzniveau von alpha = 5% ergibt sich ein kritischer Wert von 3,84
 	public static void main(String[] args) throws Exception {
-		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment_embeddings.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
+		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/lstm_100.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
@@ -34,14 +35,14 @@ public class StancePerformanceOnSubdebates {
 			explicitInstances.addAll(getSubdebateInstances(target,"1"));
 			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"1"));
 			printResult(evaluation_filtered);
-			chiSquare(evaluation,evaluation_filtered);
+//			chiSquare(evaluation,evaluation_filtered);
 		}
 		for(String target: TargetSets.targets_Set2){
 			System.out.println(target);
 			explicitInstances.addAll(getSubdebateInstances(target,"2"));
 			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
 			printResult(evaluation_filtered);
-			chiSquare(evaluation,evaluation_filtered);
+//			chiSquare(evaluation,evaluation_filtered);
 		}
 		System.out.println("-----------ALL EXCLUDED-------");
 		Evaluation<String> evaluation_exluded = Filtereable_TcId2OutcomeReader.read_butExclude(targetFile, explicitInstances);

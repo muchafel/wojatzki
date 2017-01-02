@@ -162,8 +162,8 @@ public class SimpleStance_CrossValidation implements Constants{
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated_woInference/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "ngrams_sentiment_embeddings");
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
+			experiment.runCrossValidation(pSpace, "ngrams_embeddings_sentiment");
 		
 			
 			/**

@@ -42,7 +42,7 @@ import preprocessing.Users;
 public class InspectCorpus {
 
 	public static void main(String[] args) throws Exception {
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_minorityVote/bin", YouTubeReader.PARAM_LANGUAGE,
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
@@ -101,7 +101,7 @@ public class InspectCorpus {
 	private static void inspectExplicitTarget(AnalysisEngine engine, String target, String set) throws Exception {
 		System.out.println(target);
 		
-		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated_woInference/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
+		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,target, YouTubeReader.PARAM_TARGET_SET,set);
 		
 		int i=0;

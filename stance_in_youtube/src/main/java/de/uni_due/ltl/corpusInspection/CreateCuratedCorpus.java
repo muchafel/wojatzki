@@ -36,12 +36,12 @@ import net.lingala.zip4j.exception.ZipException;
 
 public class CreateCuratedCorpus {
 	public static void main(String[] args) throws UIMAException {
-//		extract(new File("/Users/michael/Dropbox/explicit targets PHASE II/curated_deathPenalty_data/curation"));
+//		extract(new File("/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/curation"));
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
 				XmiReader.PARAM_SOURCE_LOCATION,
-				"/Users/michael/Dropbox/explicit targets PHASE II/curated_deathPenalty_data/annotation_unzipped/xmis",
+				"/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/xmis",
 				XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE, "en");
-		AnalysisEngine writerEngine= getWriterEngine("/Users/michael/Dropbox/explicit targets PHASE II/curated_deathPenalty_data/annotation_unzipped/bin_sentenceSplitted");
+		AnalysisEngine writerEngine= getWriterEngine("/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/");
 		for (JCas jcas : new JCasIterable(reader)) {
 			DocumentMetaData metaData= JCasUtil.select(jcas, DocumentMetaData.class).iterator().next();
 //			System.out.println(JCasUtil.select(jcas, DocumentMetaData.class).size());
@@ -106,8 +106,8 @@ public class CreateCuratedCorpus {
 //					createEngineDescription(Custom_ArkTweetTokenizer.class),
 					createEngineDescription(FunctionalPartsAnnotator.class),
 					createEngineDescription(SentimentCommentAnnotator.class),
-					createEngineDescription(RemoveSentenceAnnotations.class),
-					createEngineDescription(OpenNlpSegmenter.class,OpenNlpSegmenter.PARAM_WRITE_TOKEN,false,OpenNlpSegmenter.PARAM_WRITE_SENTENCE,true),
+//					createEngineDescription(RemoveSentenceAnnotations.class),
+//					createEngineDescription(OpenNlpSegmenter.class,OpenNlpSegmenter.PARAM_WRITE_TOKEN,false,OpenNlpSegmenter.PARAM_WRITE_SENTENCE,true),
 					createEngineDescription(CuratedStancesAnnotator.class),
 					createEngineDescription(BinaryCasWriter.class,BinaryCasWriter.PARAM_TARGET_LOCATION, writeTo+"/bin/")
 					,createEngineDescription(XmiWriter.class,XmiWriter.PARAM_TARGET_LOCATION,writeTo+"/xmis/", XmiWriter.PARAM_OVERWRITE, true)

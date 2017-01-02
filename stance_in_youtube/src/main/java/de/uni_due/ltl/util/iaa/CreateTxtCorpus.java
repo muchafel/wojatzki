@@ -23,42 +23,11 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
+import de.uni_due.ltl.util.TargetSets;
 
 public class CreateTxtCorpus {
 
-	static ArrayList<String> targets_Set1 = new ArrayList<String>(Arrays.asList(
-			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	
-			"Death Penalty (Debate)",
-			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)",	
-			"Death Penalty should be done by gunshot",	
-			"Death Penalty should be done by hypoxia",	
-			"Death Penalty should be done by the electric chair",	
-			"Death Penalty should be enforced more quickly e.g. by minimizing the number of appeals",	
-			"If Death Penalty is allowed, abortion should be legal, too.",	
-			"If Death Penalty is allowed, euthanasia should be allowed",	
-			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	
-//			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",	
-			"In certain cases, capital punishment shouldn’t have to be humane but more harsh",
-			"Life-long prison should be replaced by Death Penalty",	
-			"The level of certainty that is necessary for Death Penalty is unachievable"
-			,
-			"There is currently no human form of Death Penalty"
-//			,	
-//			"Witnessing Death Penalty can have a negative impact on humans psyche (e.g. for the executioner)"
-			));
 	
-	static ArrayList<String> targets_Set2 = new ArrayList<String>(Arrays.asList(
-//			"Death Penalty (Debate)",
-			"Execution helps alleviate the overcrowding of prisons.",	
-			"Execution prevents the accused from committing further crimes.",	
-			"It helps the victims’ families achieve closure.",	
-			"State-sanctioned killing is wrong (state has not the right).",	
-			"The death penalty can produce irreversible miscarriages of justice.",	
-			"The death penalty deters crime.",	
-			"The death penalty is a financial burden on the state.",	
-			"The death penalty should apply as punishment for first-degree murder; an eye for an eye.",	
-			"Wrongful convictions are irreversible."
-			));
 	
 	static ArrayList<String> insultTags = new ArrayList<String>(Arrays.asList("Group"
 			,"Person"
@@ -77,14 +46,14 @@ public class CreateTxtCorpus {
 //				XmiReader.PARAM_SOURCE_LOCATION, baseDir+"/youtubeStance/corpus_minorityVote/xmi", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
 //				"en");
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(XmiReader.class,
-				XmiReader.PARAM_SOURCE_LOCATION, "/Users/michael/Dropbox/explicit targets PHASE II/curated_deathPenalty_data/annotation_unzipped/bin/xmis", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
+				XmiReader.PARAM_SOURCE_LOCATION, "/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/xmis", XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE,
 				"en");
 		File f = new File("corpus_curated.txt"); 
 		String header="";
-		for(String target1:targets_Set1){
+		for(String target1:TargetSets.targets_Set1){
 			header+="\t"+target1;
 		}
-		for(String target2:targets_Set2){
+		for(String target2:TargetSets.targets_Set2){
 			header+="\t"+target2;
 		}
 		for(String insultTag:insultTags){
@@ -103,13 +72,14 @@ public class CreateTxtCorpus {
 				text=text.replace("\t", " ");
 				text=text.replace("+", "'+");
 				toPrint+="\t"+text;
+//				System.out.println(text);
 				curated.Debate_Stance mainT=JCasUtil.selectCovered(jcas,curated.Debate_Stance.class,sentence).iterator().next();
 				toPrint+="\t"+"DEBATE_STANCE:"+mainT.getPolarity();
 				
-				for(String target1:targets_Set1){
+				for(String target1:TargetSets.targets_Set1){
 					toPrint+="\t"+getPolarity_Set1(target1,JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set1.class,sentence));
 				}
-				for(String target2:targets_Set2){
+				for(String target2:TargetSets.targets_Set2){
 					toPrint+="\t"+getPolarity_Set2(target2,JCasUtil.selectCovered(jcas, curated.Explicit_Stance_Set2.class,sentence));
 				}
 				for(String insultTag:insultTags){

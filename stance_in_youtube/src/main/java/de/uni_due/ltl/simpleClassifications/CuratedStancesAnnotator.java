@@ -17,20 +17,20 @@ public class CuratedStancesAnnotator extends JCasAnnotator_ImplBase{
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for(Sentence sentence: JCasUtil.select(jcas, Sentence.class)){
-//			if(JCasUtil.selectCovered(webanno.custom.Debate_Stance.class, sentence).size()>1){
-//				throw new AnalysisEngineProcessException("more than one debate stance in : "+sentence.getCoveredText(), null);
-//			}
-//			System.out.println(sentence.getCoveredText()); 
-////			System.out.println(JCasUtil.selectCovered(DocumentMetaData.class, sentence).iterator().next().getDocumentTitle());
-//			webanno.custom.Debate_Stance debateStance= JCasUtil.selectCovered(webanno.custom.Debate_Stance.class, sentence).iterator().next();
-//			curated.Debate_Stance curatedDebateStance= new curated.Debate_Stance(jcas, debateStance.getBegin(), debateStance.getEnd());
-//			if(explicitDebateStance(sentence).equals("NONE")){
-//				curatedDebateStance.setPolarity("NONE");
-//			}else{
-//				curatedDebateStance.setPolarity(debateStance.getPolarity());
-//			}
-//			
-//			curatedDebateStance.addToIndexes();
+			if(JCasUtil.selectCovered(webanno.custom.Debate_Stance.class, sentence).size()>1){
+				throw new AnalysisEngineProcessException("more than one debate stance in : "+sentence.getCoveredText(), null);
+			}
+			System.out.println(sentence.getCoveredText()); 
+//			System.out.println(JCasUtil.selectCovered(DocumentMetaData.class, sentence).iterator().next().getDocumentTitle());
+			webanno.custom.Debate_Stance debateStance= JCasUtil.selectCovered(webanno.custom.Debate_Stance.class, sentence).iterator().next();
+			curated.Debate_Stance curatedDebateStance= new curated.Debate_Stance(jcas, debateStance.getBegin(), debateStance.getEnd());
+			if(explicitDebateStance(sentence).equals("NONE")){
+				curatedDebateStance.setPolarity("NONE");
+			}else{
+				curatedDebateStance.setPolarity(debateStance.getPolarity());
+			}
+			
+			curatedDebateStance.addToIndexes();
 			
 			for(String explicitTarget: TargetSets.targets_Set1){
 				webanno.custom.Explicit_Stance_Set1 explicitTargetObject= getPolarityForTarget1(explicitTarget,sentence);
