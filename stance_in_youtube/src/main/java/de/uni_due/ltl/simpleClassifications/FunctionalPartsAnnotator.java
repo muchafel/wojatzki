@@ -35,6 +35,8 @@ public class FunctionalPartsAnnotator extends JCasAnnotator_ImplBase{
 			typeAnno.setCommentNotReply(isComment);
 			typeAnno.addToIndexes();
 			
+			System.out.println(unit.getCoveredText());
+			System.out.println(tokens.size());
 			//set author and referee
 			String author=getAuthor(tokens);
 			// the one who is referred
@@ -55,6 +57,9 @@ public class FunctionalPartsAnnotator extends JCasAnnotator_ImplBase{
 //		System.out.println(referee);
 //		System.out.println(getList(tokens));
 		if(referee.equals("None")){
+			if(tokens.size()<=2){
+				return tokens.get(1).getEnd();
+			}
 			return tokens.get(2).getBegin();
 		}
 		if(tokens.size()>3){
@@ -78,6 +83,9 @@ public class FunctionalPartsAnnotator extends JCasAnnotator_ImplBase{
 	}
 
 	private String getReferee(List<Token> tokens) {
+		if(tokens.size()<=2){
+			return "None";
+		}
 		String authorCand=tokens.get(2).getCoveredText();
 		if(authorCand.startsWith("+User_")){
 			return authorCand.replace("+", "");

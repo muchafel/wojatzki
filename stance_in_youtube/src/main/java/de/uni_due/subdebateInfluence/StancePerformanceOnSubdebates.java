@@ -20,8 +20,10 @@ import de.unidue.ltl.evaluation.measure.util.CategorialMeasuresUtil;
 public class StancePerformanceOnSubdebates {
 //Für ein Signifikanzniveau von alpha = 5% ergibt sich ein kritischer Wert von 3,84
 	public static void main(String[] args) throws Exception {
-//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
-		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/lstm_100.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings_sentiment.txt");
+		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/majorityBaseline.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
@@ -35,14 +37,14 @@ public class StancePerformanceOnSubdebates {
 			explicitInstances.addAll(getSubdebateInstances(target,"1"));
 			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"1"));
 			printResult(evaluation_filtered);
-//			chiSquare(evaluation,evaluation_filtered);
+			chiSquare(evaluation,evaluation_filtered);
 		}
 		for(String target: TargetSets.targets_Set2){
 			System.out.println(target);
 			explicitInstances.addAll(getSubdebateInstances(target,"2"));
 			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
 			printResult(evaluation_filtered);
-//			chiSquare(evaluation,evaluation_filtered);
+			chiSquare(evaluation,evaluation_filtered);
 		}
 		System.out.println("-----------ALL EXCLUDED-------");
 		Evaluation<String> evaluation_exluded = Filtereable_TcId2OutcomeReader.read_butExclude(targetFile, explicitInstances);
@@ -62,6 +64,34 @@ public class StancePerformanceOnSubdebates {
 		long[] observed2 ={getPositivesSEMEVAL(eval2),getNegatives(eval2)};
 		System.out.println("	CHI SQUARE "+chiSquare.chiSquareTestDataSetsComparison(observed1, observed2));
 		
+	}
+
+	private static long getFalseNegatives(Evaluation<String> evaluation) {
+		ConfusionMatrix<String> confusionMatrix= evaluation.getConfusionMatrix();
+		long positives=confusionMatrix.getFalseNegative("FAVOR");
+		positives+=confusionMatrix.getFalseNegative("AGAINST");
+		return positives;
+	}
+
+	private static long getFalsePositives(Evaluation<String> evaluation) {
+		ConfusionMatrix<String> confusionMatrix= evaluation.getConfusionMatrix();
+		long positives=confusionMatrix.getFalsePositives("FAVOR");
+		positives+=confusionMatrix.getFalsePositives("AGAINST");
+		return positives;
+	}
+
+	private static long getTrueNegatives(Evaluation<String> evaluation) {
+		ConfusionMatrix<String> confusionMatrix= evaluation.getConfusionMatrix();
+		long positives=confusionMatrix.getTruePositives("FAVOR");
+		positives+=confusionMatrix.getTruePositives("AGAINST");
+		return positives;
+	}
+
+	private static long getTruePositivesSEMEVAL(Evaluation<String> evaluation) {
+		ConfusionMatrix<String> confusionMatrix= evaluation.getConfusionMatrix();
+		long positives=confusionMatrix.getTrueNegatives("FAVOR");
+		positives+=confusionMatrix.getTrueNegatives("AGAINST");
+		return positives;
 	}
 
 	private static long getNegatives(Evaluation<String> evaluation) {
