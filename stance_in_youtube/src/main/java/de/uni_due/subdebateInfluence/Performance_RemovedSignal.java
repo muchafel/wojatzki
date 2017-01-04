@@ -12,7 +12,7 @@ import de.unidue.ltl.evaluation.measure.util.CategorialMeasuresUtil;
 
 public class Performance_RemovedSignal {
 	public static void main(String[] args) throws ResourceInitializationException {
-		File folder = new File("src/main/resources/id2outcome/wo_explicitTarget");
+		File folder = new File("src/main/resources/id2outcome/wo_explicitTarget_svm");
 		for (File file : folder.listFiles()) {
 			Evaluation<String> evaluation = Filtereable_TcId2OutcomeReader.read(file);
 			System.out.println(file.getName()+"***");
@@ -43,6 +43,7 @@ public class Performance_RemovedSignal {
 		}
 		System.out.println("\t" + "SEMEVAL " + semeval / 2);
 		System.out.println("\t" + "MICRO SEMEVAL " + getMicroSemEval(evaluation));
+		System.out.println("+\t"+ "DROP "+ (getMicroSemEval(evaluation)));
 	}
 
 	private static double getMicroSemEval(Evaluation<String> evaluation) {

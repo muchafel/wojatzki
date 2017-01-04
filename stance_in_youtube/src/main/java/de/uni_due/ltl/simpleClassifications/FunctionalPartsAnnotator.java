@@ -35,8 +35,8 @@ public class FunctionalPartsAnnotator extends JCasAnnotator_ImplBase{
 			typeAnno.setCommentNotReply(isComment);
 			typeAnno.addToIndexes();
 			
-			System.out.println(unit.getCoveredText());
-			System.out.println(tokens.size());
+//			System.out.println(unit.getCoveredText());
+//			System.out.println(tokens.size());
 			//set author and referee
 			String author=getAuthor(tokens);
 			// the one who is referred

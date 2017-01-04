@@ -51,7 +51,7 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
     @ConfigurationParameter(name = PARAM_BINCAS_LOCATION, mandatory = true)
 	protected String binCasLocation;
 	
-    private JCas currentOriginalJcas; 
+//    private JCas currentOriginalJcas; 
     private Iterator<JCas> jcasIter;
     private AnalysisEngine engine;
     private int tcId = 0;
@@ -66,27 +66,30 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		jcasIter= new JCasIterable(reader).iterator();
 		instance2Outcome= new HashMap<>();
 		for (JCas jcas : new JCasIterable(reader)) {
-			DocumentMetaData origMetaData= JCasUtil.select(jcas, DocumentMetaData.class).iterator().next();
+			DocumentMetaData origMetaData= JCasUtil.selectSingle(jcas, DocumentMetaData.class);
 			int i =0;
 			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 				String outcome=JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,sentence).get(0).getPolarity();
 				instance2Outcome.put(origMetaData.getDocumentTitle()+"_"+String.valueOf(i), outcome);
 				i++;
 			}
+//			System.out.println(origMetaData.getDocumentTitle()+" "+JCasUtil.select(jcas, Sentence.class).size());
 		}
 	}
 
 	@Override
 	public boolean hasNext() throws IOException, CollectionException {
 		if(jcasIter.hasNext()){
-			currentOriginalJcas=jcasIter.next();
+//			System.out.println("next currentJcas "+DocumentMetaData.get(currentOriginalJcas).getDocumentId());
 			return true;
 		}
 		return false;
 	}
 	@Override
 	public void getNext(JCas aJCas) throws IOException, CollectionException {
-		DocumentMetaData origMetaData= JCasUtil.select(currentOriginalJcas, DocumentMetaData.class).iterator().next();
+		JCas currentOriginalJcas=jcasIter.next();
+		DocumentMetaData origMetaData= DocumentMetaData.get(currentOriginalJcas);
+//		System.out.println("in getNext: "+origMetaData.getDocumentId()+" "+ JCasUtil.select(currentOriginalJcas, Sentence.class).size());
 		DocumentMetaData newMetaData = copyMetaData(aJCas,origMetaData);
 		aJCas.setDocumentLanguage("en");
 		String textWithoutExplicitSignal=null;
@@ -101,23 +104,18 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		} catch (AnalysisEngineProcessException e) {
 			throw new IOException(e);
 		}
-		System.out.println(JCasUtil.select(aJCas, Sentence.class).size());
 		int i=0;
 		for (Sentence sentence : JCasUtil.select(aJCas, Sentence.class)) {
-			// System.out.println(sentence.getCoveredText());
 			TextClassificationTarget unit = new TextClassificationTarget(aJCas, sentence.getBegin(), sentence.getEnd());
 			unit.setId(tcId++);
 			TextClassificationOutcome outcome = new TextClassificationOutcome(aJCas, sentence.getBegin(),sentence.getEnd());
 			try {
 				outcome.setOutcome(getTextClassificationOutcome(newMetaData.getDocumentTitle()+"_"+String.valueOf(i)));
-				System.out.println(newMetaData.getDocumentTitle()+"_"+String.valueOf(i)+" -> :"+outcome.getOutcome());
 				i++;
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
 			addUnitAndOutComeToIndex(unit, outcome);
-			
-			tcId++;
 		}
 	}
 
@@ -126,8 +124,8 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		AnalysisEngine engine = null;
 		try {
 			builder.add(createEngineDescription(
-					createEngineDescription(Custom_ArkTweetTokenizer.class),
-					createEngineDescription(FunctionalPartsAnnotator.class)
+					createEngineDescription(Custom_ArkTweetTokenizer.class)
+					,createEngineDescription(FunctionalPartsAnnotator.class)
 //					,createEngineDescription(SentimentCommentAnnotator.class)
 					));
 			engine = builder.createAggregate();
@@ -143,15 +141,16 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		List<Annotation> annosToRemove= getAnnosToRemove(currentOriginalJcas);
 		int lowerbound = 0;
 		int upperbound=0;
-		for(Annotation anno : annosToRemove){
-//			System.out.println(lowerbound+" "+upperbound);
-//			System.out.println("ANNO1 "+anno.getBegin()+" "+anno.getEnd());
-			upperbound =anno.getBegin();
-			newText+=oldText.substring(lowerbound, upperbound)+" ";
-			lowerbound= anno.getEnd();
-		}
 		if(annosToRemove.isEmpty()){
 			newText=oldText;
+		}else{
+			for(Annotation anno : annosToRemove){
+				upperbound =anno.getBegin();
+				newText+=oldText.substring(lowerbound, upperbound)+" ";
+				lowerbound= anno.getEnd();
+				upperbound= anno.getEnd();
+			}
+			newText+=oldText.substring(upperbound, oldText.length());
 		}
 		return newText;
 	}
@@ -178,7 +177,7 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		return toRmv;
 	}
 
-	private List<Annotation> getAnnosToRemoveSet1(JCas currentOriginalJcas2) {
+	private List<Annotation> getAnnosToRemoveSet1(JCas currentOriginalJcas) {
 		List<Annotation> toRmv= new ArrayList<>();
 		for(curated.Explicit_Stance_Set1 subTarget: JCasUtil.select(currentOriginalJcas, curated.Explicit_Stance_Set1.class)){
 			if(toRemoveTarget.equals(subTarget.getTarget()) && !subTarget.getPolarity().equals("NONE")){

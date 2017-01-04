@@ -41,7 +41,7 @@ public class CreateCuratedCorpus {
 				XmiReader.PARAM_SOURCE_LOCATION,
 				"/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/xmis",
 				XmiReader.PARAM_PATTERNS, "*.xmi", XmiReader.PARAM_LANGUAGE, "en");
-		AnalysisEngine writerEngine= getWriterEngine("/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/");
+		AnalysisEngine writerEngine= getWriterEngine("/Users/michael/Dropbox/explicit targets PHASE II/curated2_deathPenalty_data/annotation_unzipped/finalCorpus/");
 		for (JCas jcas : new JCasIterable(reader)) {
 			DocumentMetaData metaData= JCasUtil.select(jcas, DocumentMetaData.class).iterator().next();
 //			System.out.println(JCasUtil.select(jcas, DocumentMetaData.class).size());
