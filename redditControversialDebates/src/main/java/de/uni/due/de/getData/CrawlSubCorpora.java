@@ -74,6 +74,10 @@ public class CrawlSubCorpora {
 			"/r/changemyview/comments/3wpctt/cmvi_believe_the_death_penalty_should_be_legal/?ref=search_posts",
 			"/r/changemyview/comments/3g9x7b/cmv_jail_sentences_and_the_death_penalty_should/?ref=search_posts"));
 
+	/**
+	 * /r/changemyview/comments/2bk0qs/cmv_i_believe_that_in_certain_cases_capital/?ref=search_posts
+/r/changemyview/comments/31ocvw/cmv_the_death_penalty_isnt_a_harsh_enough_penalty/?ref=search_posts
+	 */
 	static List<String> moreHarshOrInhumaneDPDesired = new ArrayList<String>(Arrays.asList(
 			"/r/changemyview/comments/2bk0qs/cmv_i_believe_that_in_certain_cases_capital/?ref=search_posts",
 			"/r/changemyview/comments/31ocvw/cmv_the_death_penalty_isnt_a_harsh_enough_penalty/?ref=search_posts"));
@@ -114,6 +118,7 @@ public class CrawlSubCorpora {
 		listOfTargets.put("reduceNumberOrPermitAppeals", reduceNumberOrPermitAppeals);
 		listOfTargets.put("replaceLifeLongWithDP", replaceLifeLongWithDP);
 		listOfTargets.put("requiredLevelOfCertainityIsUnachievable", requiredLevelOfCertainityIsUnachievable);
+		listOfTargets.put("moreHarshOrInhumaneDPDesired",moreHarshOrInhumaneDPDesired);
 		
 		// Initialize REST Client
 		RestClient restClient = new HttpRestClient();
@@ -142,11 +147,13 @@ public class CrawlSubCorpora {
 			for(String link: listOfTargets.get(target)){
 				String id= getIdFromLink(link);
 				System.out.println(id);
-				for(Submission submission: results){
-					if(submission.getIdentifier().equals(id)){
-						printSubmissionCorpus(submission,target,id,coms);
-					}
-				}
+				printSubmissionCorpus(null, target, id, coms);
+				
+//				for(Submission submission: results){
+////					if(submission.getIdentifier().equals(id)){
+//						printSubmissionCorpus(submission,target,id,coms);
+////					}
+//				}
 			}
 		}
 	}
@@ -158,15 +165,15 @@ public class CrawlSubCorpora {
 	private static void printSubmissionCorpus(Submission submission, String target, String id, Comments coms) {
 		List<Comment> commentsSubmission = coms.ofSubmission(id, null, 0, 8, 300, CommentSort.TOP);
 		RedditSubmission rSubmission = new RedditSubmission();
-		rSubmission.setSelfText(submission.getSelftext());
-		rSubmission.setId(id);
-		rSubmission.setPermaLink(submission.getPermalink());
-		System.out.println(rSubmission.getPermaLink());
-		rSubmission.setCommentCount(submission.getCommentCount());
+//		rSubmission.setSelfText(submission.getSelftext());
+//		rSubmission.setId(id);
+//		rSubmission.setPermaLink(submission.getPermalink());
+//		System.out.println(rSubmission.getPermaLink());
+//		rSubmission.setCommentCount(submission.getCommentCount());
 
 		List<RedditComment> comments = new ArrayList<>();
 		for (Comment comment : commentsSubmission) {
-			System.out.println(comment.getAuthor() + " : " + comment.getBody());
+//			System.out.println(comment.getAuthor() + " : " + comment.getBody());
 			RedditComment commi = getRecursiveReplies(comment);
 			//
 			// for(Comment reply: comment.getReplies()){
