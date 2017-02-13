@@ -14,6 +14,10 @@ public class WordEmbeddingLexicon {
 	private Map<String, List<Double>> lexicon;
 	
 	
+	public Map<String, List<Double>> getLexicon() {
+		return lexicon;
+	}
+
 	public WordEmbeddingLexicon(Map<String, List<Double>> lexicon){
 		this.lexicon= lexicon;
 	}

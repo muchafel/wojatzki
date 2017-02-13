@@ -102,11 +102,11 @@ public class SubdebateSignalFiltered_Stance_CrossValidation implements Constants
 		public static TcFeatureSet featureSet = new TcFeatureSet(
 //				
 				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
-				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
-				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-						CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C")
+						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 3, CommentNGram.PARAM_UNIQUE_NAME, "A")
+//				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
+//				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//						CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C")
 				,TcFeatureFactory.create(SocherSentimentFE.class)
 				);
 
@@ -114,19 +114,20 @@ public class SubdebateSignalFiltered_Stance_CrossValidation implements Constants
 			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SubdebateSignalFiltered_Stance_CrossValidation experiment = new SubdebateSignalFiltered_Stance_CrossValidation();
+			
 			for (String explicitTarget : TargetSets.targets_Set1) {
 				ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", TARGET_LABLE,"1",featureSet,explicitTarget);
 				String experimentName = getValidName(explicitTarget.replace("-", ""));
 				System.out.println(experimentName);
 				System.out.println();
-				experiment.runCrossValidation(pSpace, "exclude2_"+experimentName);
+				experiment.runCrossValidation(pSpace, "excludeX_"+experimentName);
 			}
 			for (String explicitTarget : TargetSets.targets_Set2) {
 				ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", TARGET_LABLE,"2",featureSet,explicitTarget);
 				String experimentName = getValidName(explicitTarget.replace("-", ""));
 				System.out.println(experimentName);
 				System.out.println();
-				experiment.runCrossValidation(pSpace, "exclude2_"+experimentName);
+				experiment.runCrossValidation(pSpace, "excludeX_"+experimentName);
 			}
 		}
 

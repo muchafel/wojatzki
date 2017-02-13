@@ -26,9 +26,10 @@ public class TargetSets {
 //			));
 	
 	public static ArrayList<String> targets_Set1 = new ArrayList<String>(Arrays.asList(
-			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	//*
 			"Death Penalty (Debate)",
-			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)",	
+			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	//*
+			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)"
+			,	
 			"Death Penalty should be done by gunshot",	
 			"Death Penalty should be done by hypoxia",	//*
 			"Death Penalty should be done by the electric chair",	//*

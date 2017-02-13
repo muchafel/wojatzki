@@ -99,8 +99,8 @@ public class SimpleStance_CrossValidation implements Constants{
 
 		public static TcFeatureSet featureSet = new TcFeatureSet(
 //				
-//				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-//						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
+				TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+						CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 3, CommentNGram.PARAM_UNIQUE_NAME, "A")
 //				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
 //						CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
 //				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
@@ -109,9 +109,6 @@ public class SimpleStance_CrossValidation implements Constants{
 //				,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES
 //						CommentNGram.PARAM_NGRAM_MIN_N, 4, CommentNGram.PARAM_NGRAM_MAX_N, 4 , CommentNGram.PARAM_UNIQUE_NAME, "D")
 //				
-//			,TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//					N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//					NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
 //				TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/id2homogenizedOutcome.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"ngram_embeddings")
 //				TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/subdebates/curated/debate_stance/id2homogenizedOutcome.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"explicit_stance_prediction")
 //				,TcFeatureFactory.create(ClassifiedSubdebateDFE.class, ClassifiedSubdebateDFE.PARAM_USE_ORACLE, false,ClassifiedSubdebateDFE.PARAM_ORACLE_DROPOUT, 0,
@@ -142,8 +139,8 @@ public class SimpleStance_CrossValidation implements Constants{
 //				,TcFeatureFactory.create(ContainsRefereeFE.class)
 //				,TcFeatureFactory.create(CommentTypeFE.class)
 //				,TcFeatureFactory.create(Stance_Previous_Comment.class, Stance_Previous_Comment.PARAM_USE_ORACLE, useOracle,Stance_Previous_Comment.PARAM_ID2OUTCOME_FOLDER_PATH,"src/main/resources/id2outcome/")
-//				,TcFeatureFactory.create(SocherSentimentFE.class)
-				TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+				,TcFeatureFactory.create(SocherSentimentFE.class)
+//				,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
 //				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 //						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
@@ -163,7 +160,7 @@ public class SimpleStance_CrossValidation implements Constants{
 			System.out.println("DKPRO_HOME: " + baseDir);
 			SimpleStance_CrossValidation experiment = new SimpleStance_CrossValidation();
 			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
-			experiment.runCrossValidation(pSpace, "majorityBaseline");
+			experiment.runCrossValidation(pSpace, "ngrams_sentiment_2");
 		
 			
 			/**
@@ -251,7 +248,7 @@ public class SimpleStance_CrossValidation implements Constants{
 			// XXX uncomment/comment other ML Algorithms (SMO, J48 are relevant for
 			// the paper; ZeroR is majority class classifier)
 			Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-//					asList(new String[] { SMO.class.getName() })
+					asList(new String[] { SMO.class.getName() })
 //					,
 //					 asList(new String[] { SMO.class.getName(), "-C", "10.0", "-K",
 //		                        PolyKernel.class.getName() + " " + "-C -1 -E 2" }),
@@ -270,7 +267,7 @@ public class SimpleStance_CrossValidation implements Constants{
 //					 asList(new String[] { SMO.class.getName(), "-C", "1.0", "-K",
 //		                        PolyKernel.class.getName() + " " + "-C -1 -E 2000" })
 //					,
-			 asList(new String[] { ZeroR.class.getName() })
+//			 asList(new String[] { ZeroR.class.getName() })
 //			 ,
 //			 asList(new String[] { J48.class.getName() })
 //			 ,

@@ -24,9 +24,9 @@ public class StancePerformanceOnSubdebates {
 		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/majorityBaseline.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random.txt");
-//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings_sentiment.txt");
 //		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings.txt");
-//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
+//		File targetFile= new File("src/main/resources/id2outcome/debateStance/curated/test.txt");
 		Evaluation<String> evaluation = Filtereable_TcId2OutcomeReader.read(targetFile);
 		printResult(evaluation);
 		
@@ -39,13 +39,13 @@ public class StancePerformanceOnSubdebates {
 			printResult(evaluation_filtered);
 			chiSquare(evaluation,evaluation_filtered);
 		}
-		for(String target: TargetSets.targets_Set2){
-			System.out.println(target);
-			explicitInstances.addAll(getSubdebateInstances(target,"2"));
-			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
-			printResult(evaluation_filtered);
-			chiSquare(evaluation,evaluation_filtered);
-		}
+//		for(String target: TargetSets.targets_Set2){
+//			System.out.println(target);
+//			explicitInstances.addAll(getSubdebateInstances(target,"2"));
+//			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
+//			printResult(evaluation_filtered);
+//			chiSquare(evaluation,evaluation_filtered);
+//		}
 		System.out.println("-----------ALL EXCLUDED-------");
 		Evaluation<String> evaluation_exluded = Filtereable_TcId2OutcomeReader.read_butExclude(targetFile, explicitInstances);
 		printResult(evaluation_exluded);

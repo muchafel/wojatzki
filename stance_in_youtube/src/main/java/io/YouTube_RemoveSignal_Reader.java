@@ -126,7 +126,7 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 			builder.add(createEngineDescription(
 					createEngineDescription(Custom_ArkTweetTokenizer.class)
 					,createEngineDescription(FunctionalPartsAnnotator.class)
-//					,createEngineDescription(SentimentCommentAnnotator.class)
+					,createEngineDescription(SentimentCommentAnnotator.class)
 					));
 			engine = builder.createAggregate();
 		} catch (ResourceInitializationException e) {
@@ -146,7 +146,8 @@ public class YouTube_RemoveSignal_Reader extends JCasResourceCollectionReader_Im
 		}else{
 			for(Annotation anno : annosToRemove){
 				upperbound =anno.getBegin();
-				newText+=oldText.substring(lowerbound, upperbound)+" ";
+				newText+=oldText.substring(lowerbound, upperbound)+" X ";
+//				newText+=oldText.substring(lowerbound, upperbound);
 				lowerbound= anno.getEnd();
 				upperbound= anno.getEnd();
 			}

@@ -46,20 +46,20 @@ public class InspectCorpus {
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
 		
-		
-		for(String target : TargetSets.targets_Set1){
-			inspectExplicitTarget(engine,target,"1");
-		}
-		
-		for(String target : TargetSets.targets_Set2){
-			inspectExplicitTarget(engine,target,"2");
-		}
+//		
+//		for(String target : TargetSets.targets_Set1){
+//			inspectExplicitTarget(engine,target,"1");
+//		}
+//		
+//		for(String target : TargetSets.targets_Set2){
+//			inspectExplicitTarget(engine,target,"2");
+//		}
 //		printVocab(reader,engine);
 //		inspectOutcomePerDoc(reader,engine);
-//		inspectAuthorAndRefereesPerPolarity();
+//		inspectAuthorAndRefereesPerPolarity(reader,engine);
 //		inspectAuthorAndReferees(reader,engine);
 //		inspectUsersAndCommentType(reader,engine);
-//		inspectText(reader,engine);
+		inspectText(reader,engine);
 //		inspectOutcome(reader,engine);
 //		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
 //		inspectSentimemts(reader,engineSentiment);
@@ -161,25 +161,37 @@ public class InspectCorpus {
 	}
 
 	private static void inspectText(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
+		int numOfToken=0;
 		for (JCas jcas : new JCasIterable(reader)) {
 			engine.process(jcas);
+			numOfToken+=JCasUtil.select(jcas, Token.class).size();
 			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
-				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
-				System.out.println(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next().getCoveredText());
+//				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+//				System.out.println(JCasUtil.selectCovered(CommentText.class,outcome).iterator().next().getCoveredText());
 			}
 		}
+		System.out.println(numOfToken);
 		
 	}
 
 	private static void inspectUsersAndCommentType(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException {
+		int comment=0;
+		int reply=0;
 		for (JCas jcas : new JCasIterable(reader)) {
 			engine.process(jcas);
 			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
 				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
 				System.out.println(JCasUtil.selectCovered(Users.class,outcome).iterator().next().getAuthor()+" "+JCasUtil.selectCovered(Users.class,outcome).iterator().next().getReferee());
 				System.out.println(JCasUtil.selectCovered(CommentType.class,outcome).iterator().next().getCommentNotReply());
+				if(JCasUtil.selectCovered(CommentType.class,outcome).iterator().next().getCommentNotReply()){
+					comment++;
+				}else{
+					reply++;
+				}
 			}
 		}
+		System.out.println(comment);
+		System.out.println(reply);
 		
 	}
 
