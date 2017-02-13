@@ -1,52 +1,50 @@
+
 __author__ = 'michael'
 
-
-import numpy as np
-import os
-import cPickle as pkl
-import gzip
-import itertools
-from collections import Counter
 from nltk import FreqDist
-import numpy as np
-from keras.preprocessing import sequence
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D
+from keras.layers import Dense, Embedding, TimeDistributed, Bidirectional, Flatten
 from keras.layers import LSTM
 from keras.utils import np_utils
+import numpy as np
+import os
 
-np.random.seed(1337)  # for reproducibility
-
-#TODO: inspect output/sanity checking via validation module
-#TODO: hyperparamter tuning (so far started with 300,200 LSTM units)
-#TODO: CRoss-Validation over Folds
-#TODO: compute F1
+np.random.seed(1337)  # reproducibility
 
 embeddingsPath = '/Users/michael/git/ucsm_git/stance_in_youtube/src/main/resources/list/prunedEmbeddings.84B.300d.txt'
 
 leave_out_Files=['data/QkW-0ewjiJw','data/TgQRgT15f9U','/Users/michael/git/ucsm_git/stance_lstm/data/UtaVKVIoWyk','/Users/michael/git/ucsm_git/stance_lstm/data/_5aodBfdFTA','/Users/michael/git/ucsm_git/stance_lstm/data/gV6OoypZMco','/Users/michael/git/ucsm_git/stance_lstm/data/ka1B59ir1mI']
 
+#for each leave out file (video) run a separated experiment (this implements the LOO-CV)
 for file in leave_out_Files:
+
+    #Hyperparams (other paramter are configured according to input length etc)
+    n_hidden = 100
+    n_out = 3
+    lstm_units=100
+    numberEpochs=5
+    activation='tanh'
+    optimizer='adam'
+    dropout=0.2
+
+    #prepare data structure
     leave_out_File = file
     train_folder=leave_out_File+'/train'
     test_folder=leave_out_File+'/test'
 
     files = [train_folder+'/against.txt',train_folder+'/favor.txt',train_folder+'/none.txt', test_folder+'/against.txt',test_folder+'/favor.txt',test_folder+'/none.txt']
 
-    # Mapping of the labels to integers
+    # Mapping of labels to ints
     labelsMapping = {'none': 0, 'favor': 1, 'against': 2}
 
     words = {}
     maxSentenceLen = [0,0,0,0,0,0]
     labelsDistribution = FreqDist()
-
     distanceMapping = {'PADDING': 0, 'LowerMin': 1, 'GreaterMax': 2}
     minDistance = -30
     maxDistance = 30
     for dis in xrange(minDistance,maxDistance+1):
         distanceMapping[dis] = len(distanceMapping)
-
-    #print distanceMapping
 
     for fileIdx in xrange(len(files)):
         file = files[fileIdx]
@@ -62,8 +60,7 @@ for file in leave_out_Files:
 
     print "Max Sentence Lengths: ",maxSentenceLen
 
-    # :: Read in word embeddings ::
-
+    # Read  wordembeddings
     word2Idx = {}
     embeddings = []
 
@@ -71,9 +68,9 @@ for file in leave_out_Files:
         split = line.strip().split(" ")
         word = split[0]
 
-        if len(word2Idx) == 0: #Add padding+unknown
+        if len(word2Idx) == 0:
             word2Idx["PADDING"] = len(word2Idx)
-            vector = np.zeros(len(split)-1) #Zero vector vor 'PADDING' word
+            vector = np.zeros(len(split)-1)
             embeddings.append(vector)
 
             word2Idx["UNKNOWN"] = len(word2Idx)
@@ -90,10 +87,7 @@ for file in leave_out_Files:
     print "Embeddings shape: ", embeddings.shape
     print "Len words: ", len(words)
 
-
-
     def getWordIdx(token, word2Idx):
-        """Returns from the word2Idex table the word index for a given token"""
         if token in word2Idx:
             return word2Idx[token]
         elif token.lower() in word2Idx:
@@ -103,10 +97,7 @@ for file in leave_out_Files:
 
 
     def createMatrices(files, word2Idx, maxSentenceLen=100):
-        """Creates matrices for the events and sentence for the given file"""
         labels = []
-        positionMatrix1 = []
-        positionMatrix2 = []
         tokenMatrix = []
         noOfFiles =0
         for file in files:
@@ -129,14 +120,10 @@ for file in leave_out_Files:
                 tokenMatrix.append(tokenIds)
 
                 labels.append(labelsMapping[label])
-            #print 'lines', noOfLines,file
-        #print 'files', noOfFiles
-
-        #cast to categorial
         labels = np_utils.to_categorical(labels,3)
         return labels, np.array(tokenMatrix, dtype='int32')
 
-    # :: Create token matrix ::
+
     train_set = createMatrices(files[0:3], word2Idx, max(maxSentenceLen))
     test_set = createMatrices(files[3:6], word2Idx, max(maxSentenceLen))
 
@@ -145,60 +132,34 @@ for file in leave_out_Files:
         print "%s : %f%%" % (label, 100*freq / float(labelsDistribution.N()))
         print freq
 
-    ########## NETWORK######
-
     longest_sequence = max(len(s) for s in (train_set+test_set))
 
 
     print 'max length', max(maxSentenceLen)
 
-
-    # Create the train and predict_labels function
-    #input shape
     n_in = max(maxSentenceLen)
-    # som eparam
-    n_hidden = 100
-    # number of labels
-    n_out = 3
-    lstm_units=100
-    numberEpochs=5
-    activation='tanh'
-    optimizer='adam'
-    dropout=0.2
 
     words = Sequential()
-    #shape 1 = colums; shape 0 = number of train tokens , n_in =  in the windows
     words.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=n_in,  weights=[embeddings], trainable=False))
-    # Flatten = concacenates the inputes to a single vectors (numer of embedding dims * number of tokens)
-    #words.add(Flatten())
-
-
-    #words.add(Bidirectional(LSTM(lstm_units, return_sequences=True)))
     words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=dropout)))
     words.add(TimeDistributed(Dense(n_out, activation=activation)))
     words.add(Flatten())
     words.add(Dense(n_out, activation='softmax'))
-
     words.compile(loss='categorical_crossentropy',optimizer=optimizer,metrics=['accuracy'])
+    # print network
     words.summary()
 
     for epoch in xrange(numberEpochs):
         print "\n------------- Epoch %d ------------" % (epoch+1)
-
-       # train_label = np.array([np_utils.to_categorical(seq, n_in) for seq in train_set[0]])
         words.fit(train_set[1], train_set[0], nb_epoch=1, batch_size=64, verbose=True, shuffle=True)
         score, acc = words.evaluate(test_set[1], test_set[0])
         print('Accuracy calculated by Keras:', acc*100)
 
-    #########################
-    ##### Manual Accuracy ###
-    #########################
 
     correct = 0.0
     incorrect = 0.0
 
     predictions = words.predict_classes(test_set[1])
-
     #print(predictions)
 
     correct = 0.0
