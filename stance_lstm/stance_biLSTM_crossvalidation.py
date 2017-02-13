@@ -15,6 +15,8 @@ from keras.layers import Dense, Activation, Embedding, TimeDistributed, Bidirect
 from keras.layers import LSTM
 from keras.utils import np_utils
 
+np.random.seed(1337)  # for reproducibility
+
 #TODO: inspect output/sanity checking via validation module
 #TODO: hyperparamter tuning (so far started with 300,200 LSTM units)
 #TODO: CRoss-Validation over Folds
@@ -230,8 +232,8 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-       # with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
-        #    file.write(str(gold)+"\t"+str(predicted)+"\n")
+        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+            file.write(str(gold)+"\t"+str(predicted)+"\n")
 
         with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
             file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
