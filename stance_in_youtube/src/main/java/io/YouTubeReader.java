@@ -86,7 +86,7 @@ public class YouTubeReader extends BinaryCasReader{
 		}
 
 
-		private String getTextClassificationOutcome(JCas jcas, TextClassificationTarget unit) throws Exception {
+		protected String getTextClassificationOutcome(JCas jcas, TextClassificationTarget unit) throws Exception {
 			if(targetLabel.equals("DEATH PENALTY")){
 				return JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity();
 			}

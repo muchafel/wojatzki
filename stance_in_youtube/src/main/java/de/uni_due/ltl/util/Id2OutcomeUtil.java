@@ -34,7 +34,7 @@ public class Id2OutcomeUtil {
 					String id = prediction.split("=")[0];
 					int indexOfOne=getIndexOfOne(prediction.split("=")[1]);
 					String label =labels.get(indexOfOne);
-					int outCome = resolvePolarityThreeway(label);
+					int outCome = resolvePolarity(label);
 					id2Outcome.put(id, outCome);
 				}
 			}
@@ -78,7 +78,7 @@ public class Id2OutcomeUtil {
         return labels;
     }
 	
-    public static int resolvePolarityThreeway(String polarity) throws Exception {
+    public static int resolvePolarity(String polarity) throws Exception {
 		if (polarity.equals("FAVOR")) {
 			return 1;
 		} else if (polarity.equals("AGAINST")) {

@@ -62,8 +62,8 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 	 */
 	public static final String LANGUAGE_CODE = "en";
 	public static boolean excludeNonesFromTrainingAndTesting = false;
-	public static boolean mergeToBinary = false;
-	public static boolean useUniformClassDistributionFilering = true; 
+	public static boolean mergeToBinary = true;
+	public static boolean useUniformClassDistributionFilering = false;
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 2;
@@ -77,28 +77,35 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
 
-//	TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-//			CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A"),
-//			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-//					CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
-//					CommentNGram.PARAM_UNIQUE_NAME, "B"),
-//			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
-//					CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
-//					CommentNGram.PARAM_UNIQUE_NAME, "C")
-					//
-					// ,TcFeatureFactory.create(LuceneCharacterNGram.class,
-					// NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-					// N_GRAM_MAXCANDIDATES,
-					// NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N,
-					// CHAR_N_GRAM_MIN,
-					// NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N,
-					// CHAR_N_GRAM_MAX)
-//			TcFeatureFactory.create(SubdebateVocab_CHEATED.class,SubdebateVocab_CHEATED.PARAM_VOCAB_TARGET,"i")
-//	 TcFeatureFactory.create(SocherSentimentFE.class)
-////	, TcFeatureFactory.create(WordEmbeddingDFE.class,
-////			WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
-//	,TcFeatureFactory.create(ExternalVocabularyDFE.class,ExternalVocabularyDFE.PARAM_MAX_VOCAB,1000, ExternalVocabularyDFE.PARAM_USE_SET1, true, ExternalVocabularyDFE.PARAM_USE_SET2, true,
-//			ExternalVocabularyDFE.PARAM_EXTERNAL_SOURCES_FOLDER_PATH,"src/main/resources/externalResources/",ExternalVocabularyDFE.ONLY_CONTENTWORDS,true)
+	// TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1,
+	// CommentNGram.PARAM_UNIQUE_NAME, "A"),
+	// TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
+	// CommentNGram.PARAM_UNIQUE_NAME, "B"),
+	// TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
+	// CommentNGram.PARAM_UNIQUE_NAME, "C")
+	//
+	// ,TcFeatureFactory.create(LuceneCharacterNGram.class,
+	// NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+	// N_GRAM_MAXCANDIDATES,
+	// NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N,
+	// CHAR_N_GRAM_MIN,
+	// NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N,
+	// CHAR_N_GRAM_MAX)
+	// TcFeatureFactory.create(SubdebateVocab_CHEATED.class,SubdebateVocab_CHEATED.PARAM_VOCAB_TARGET,"i")
+	// ,TcFeatureFactory.create(SocherSentimentFE.class)
+	//// , TcFeatureFactory.create(WordEmbeddingDFE.class,
+	//// WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+	// "src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+	// ,TcFeatureFactory.create(ExternalVocabularyDFE.class,ExternalVocabularyDFE.PARAM_MAX_VOCAB,1000,
+	// ExternalVocabularyDFE.PARAM_USE_SET1, true,
+	// ExternalVocabularyDFE.PARAM_USE_SET2, true,
+	// ExternalVocabularyDFE.PARAM_EXTERNAL_SOURCES_FOLDER_PATH,"src/main/resources/externalResources/",ExternalVocabularyDFE.ONLY_CONTENTWORDS,true)
 
 	// ,
 	// ,TcFeatureFactory.create(UserName_FE.class,UserName_FE.PARAM_USER_LIST,"src/main/resources/list/clearNameMapping.txt")
@@ -127,80 +134,103 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 		// targets_Set1
-//		for(int i=10; i<=100; i+=10){
-		int i=100;
-			for (String explicitTarget : targets_Set1) {
-//				String explicitTarget= "Death Penalty (Debate)";
-				featureSet = new TcFeatureSet(
-						TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MIN_N,1,LuceneNGram.PARAM_NGRAM_MAX_N,4,LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000)
-						,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+		// for(int i=10; i<=100; i+=10){
+		int i = 100;
+		for (String explicitTarget : targets_Set1) {
+			// String explicitTarget= "Death Penalty (Debate)";
+			featureSet = new TcFeatureSet(
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K,
+							N_GRAM_MAXCANDIDATES, CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1,
+							CommentNGram.PARAM_UNIQUE_NAME, "A"),
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K,
+							N_GRAM_MAXCANDIDATES, CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
+							CommentNGram.PARAM_UNIQUE_NAME, "B"),
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
+							CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
+							CommentNGram.PARAM_UNIQUE_NAME, "C"),
+					TcFeatureFactory.create(SocherSentimentFE.class),
+					TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+							"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 
-//						TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"1")
-//						,TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget, TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100)
-						);
-				ExplicitSentenceStances_CrossValidation experiment = new ExplicitSentenceStances_CrossValidation();
-				String experimentName = getValidName(explicitTarget.replace("-", ""));
+			// TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"1")
+			// ,TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,
+			// TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100)
+			);
+			ExplicitSentenceStances_CrossValidation experiment = new ExplicitSentenceStances_CrossValidation();
+			String experimentName = getValidName(explicitTarget.replace("-", ""));
 
-				System.out.println(experimentName);
-				System.out.println();
-				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
-						baseDir + "/youtubeStance/corpus_curated_sentenceSplitted/bin_preprocessed/", explicitTarget, "1",
-						featureSet);
-				experiment.runCrossValidation(pSpace_explicit, "sentence_Wide_emb_ngram_oversampled"+String.valueOf(i)+"_"  + experimentName);
-			}
-
-			// // targets_Set2
-			for (String explicitTarget : targets_Set2) {
-				featureSet = new TcFeatureSet(
-						TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MIN_N,1,LuceneNGram.PARAM_NGRAM_MAX_N,4,LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000)
-						,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
-//
-//						TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"2")
-//						,TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100)
-						);
-				ExplicitSentenceStances_CrossValidation experiment = new ExplicitSentenceStances_CrossValidation();
-				String experimentName = getValidName(explicitTarget.replace("-", ""));
-
-				System.out.println(experimentName);
-				ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
-						baseDir + "/youtubeStance/corpus_curated_sentenceSplitted/bin_preprocessed/", explicitTarget, "2",
-						featureSet);
-				experiment.runCrossValidation(pSpace_explicit, "sentence_Wide_emb_ngram_oversampled"+String.valueOf(i)+"_" + experimentName);
-			}
-//		}
+			System.out.println(experimentName);
+			System.out.println();
+			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
+					baseDir + "/youtubeStance/corpus_curated_sentenceSplitted/bin_preprocessed/", explicitTarget, "1",
+					featureSet);
+			experiment.runCrossValidation(pSpace_explicit,
+					"ngram_" + String.valueOf(i) + "_" + experimentName);
 		}
 
-		/**
-		 * parameter search ngram
-		 */
-		// for(int j=2; j<=10;j++){
-		// for(int i=500; i<=10000; i+=500){
-		// TcFeatureSet featureSet1 = new TcFeatureSet(
-		// TcFeatureFactory.create(CommentNGram.class,
-		// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
-		// CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1,
-		// CommentNGram.PARAM_UNIQUE_NAME, "A")
-		// ,TcFeatureFactory.create(CommentNGram.class,
-		// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
-		// CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
-		// CommentNGram.PARAM_UNIQUE_NAME, "B")
-		// ,TcFeatureFactory.create(CommentNGram.class,
-		// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
-		// CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3
-		// , CommentNGram.PARAM_UNIQUE_NAME, "C")
-		// );
-		//
-		// SimpleStance_CrossValidation experiment = new
-		// SimpleStance_CrossValidation();
-		// ParameterSpace pSpace = experiment.setupCrossValidation(baseDir +
-		// "/youtubeStance/corpus_minorityVote/bin/",
-		// TARGET_LABLE,TARGET_Set,featureSet1);
-		// experiment.runCrossValidation(pSpace,
-		// "debateStance_topK-"+String.valueOf(i)+"_maxNgrams-123");
-		// }
-		// }
+		// // targets_Set2
+		for (String explicitTarget : targets_Set2) {
+			featureSet = new TcFeatureSet(
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K,
+							N_GRAM_MAXCANDIDATES, CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1,
+							CommentNGram.PARAM_UNIQUE_NAME, "A"),
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K,
+							N_GRAM_MAXCANDIDATES, CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
+							CommentNGram.PARAM_UNIQUE_NAME, "B"),
+					TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 1000,
+							CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3,
+							CommentNGram.PARAM_UNIQUE_NAME, "C"),
+					TcFeatureFactory.create(SocherSentimentFE.class),
+					TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+							"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+			//
+			// TcFeatureFactory.create(ExplicitVocabNGram.class,ExplicitVocabNGram.PARAM_VOCAB_TARGET,explicitTarget,ExplicitVocabNGram.PARAM_Set_NUMBER,"2")
+			// ,TcFeatureFactory.create(TopKLDAWordsPerTargetFE.class,TopKLDAWordsPerTargetFE.PARAM_VOCAB_TARGET,explicitTarget,TopKLDAWordsPerTargetFE.PARAM_TOP_K_WORDS,100)
+			);
+			ExplicitSentenceStances_CrossValidation experiment = new ExplicitSentenceStances_CrossValidation();
+			String experimentName = getValidName(explicitTarget.replace("-", ""));
 
-//	}
+			System.out.println(experimentName);
+			ParameterSpace pSpace_explicit = experiment.setupCrossValidation(
+					baseDir + "/youtubeStance/corpus_curated_sentenceSplitted/bin_preprocessed/", explicitTarget, "2",
+					featureSet);
+			experiment.runCrossValidation(pSpace_explicit,
+					"ngram_" + String.valueOf(i) + "_" + experimentName);
+		}
+		// }
+	}
+
+	/**
+	 * parameter search ngram
+	 */
+	// for(int j=2; j<=10;j++){
+	// for(int i=500; i<=10000; i+=500){
+	// TcFeatureSet featureSet1 = new TcFeatureSet(
+	// TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1,
+	// CommentNGram.PARAM_UNIQUE_NAME, "A")
+	// ,TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2,
+	// CommentNGram.PARAM_UNIQUE_NAME, "B")
+	// ,TcFeatureFactory.create(CommentNGram.class,
+	// CommentNGram.PARAM_NGRAM_USE_TOP_K, i,
+	// CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3
+	// , CommentNGram.PARAM_UNIQUE_NAME, "C")
+	// );
+	//
+	// SimpleStance_CrossValidation experiment = new
+	// SimpleStance_CrossValidation();
+	// ParameterSpace pSpace = experiment.setupCrossValidation(baseDir +
+	// "/youtubeStance/corpus_minorityVote/bin/",
+	// TARGET_LABLE,TARGET_Set,featureSet1);
+	// experiment.runCrossValidation(pSpace,
+	// "debateStance_topK-"+String.valueOf(i)+"_maxNgrams-123");
+	// }
+	// }
+
+	// }
 
 	private static String getValidName(String experimentName) {
 		experimentName = experimentName.replace(" ", "");
@@ -257,7 +287,7 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 		Map<String, Object> dimReaders = getDimReaders(dataLocation, target, targetSet);
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() }));
-//				asList(new String[] { Logistic.class.getName() }));
+		// asList(new String[] { Logistic.class.getName() }));
 
 		Dimension<TcFeatureSet> dimFeatureSets = null;
 		if (ablation) {
@@ -300,12 +330,14 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 	@SuppressWarnings("unchecked")
 	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders, Dimension<TcFeatureSet> dimFeatureSets,
 			Dimension<List<String>> dimClassificationArgs) {
-		 if (useUniformClassDistributionFilering) {
-			//TODO: check new Filter
-			 Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
-						Arrays.asList(new String[] { OverSampleFilter.class.getName() }));
-//			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
-//					Arrays.asList(new String[] { UniformClassDistributionFilter.class.getName() }));
+		if (useUniformClassDistributionFilering) {
+			// TODO: check new Filter
+			Dimension<List<String>> dimFeatureFilters = Dimension.create(DIM_FEATURE_FILTERS,
+					Arrays.asList(new String[] { OverSampleFilter.class.getName() }));
+			// Dimension<List<String>> dimFeatureFilters =
+			// Dimension.create(DIM_FEATURE_FILTERS,
+			// Arrays.asList(new String[] {
+			// UniformClassDistributionFilter.class.getName() }));
 
 			return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 					Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_UNIT),
@@ -320,7 +352,8 @@ public class ExplicitSentenceStances_CrossValidation implements Constants {
 	private AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
 		return createEngineDescription(createEngineDescription(NoOpAnnotator.class));
 
-//		return createEngineDescription(createEngineDescription(FunctionalPartsAnnotator.class));
+		// return
+		// createEngineDescription(createEngineDescription(FunctionalPartsAnnotator.class));
 	}
 
 }
