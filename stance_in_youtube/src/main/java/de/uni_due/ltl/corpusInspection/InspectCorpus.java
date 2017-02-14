@@ -115,7 +115,7 @@ public class InspectCorpus {
 //				int id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId();
 				if(!outcome.getOutcome().equals("NONE")){
 					count++;
-					int polarityInt=Id2OutcomeUtil.resolvePolarityThreeway(outcome.getOutcome());
+					int polarityInt=Id2OutcomeUtil.resolvePolarity(outcome.getOutcome());
 					System.out.println(i+"_"+j+":"+polarityInt);
 					FileUtils.write(new File("src/main/resources/explicitStancesLocators/"+set+"/"+target+".txt"), String.valueOf(i)+"_"+String.valueOf(j)+":"+polarityInt+"\n", true);
 				}

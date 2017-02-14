@@ -120,7 +120,7 @@ implements FeatureExtractor{
 
 	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) throws Exception {
 		if(useOracle){
-			return Id2OutcomeUtil.resolvePolarityThreeway(JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity());
+			return Id2OutcomeUtil.resolvePolarity(JCasUtil.selectCovered(jcas, curated.Debate_Stance.class,unit).get(0).getPolarity());
 		}else{
 			String id2OutcomeKey=JCasUtil.selectSingle(jcas, JCasId.class).getId()+"_"+unit.getId();
 			if(!debate_id2Outcome.containsKey(id2OutcomeKey)){

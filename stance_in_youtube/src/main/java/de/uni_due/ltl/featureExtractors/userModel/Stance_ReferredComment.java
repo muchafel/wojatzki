@@ -99,7 +99,7 @@ public class Stance_ReferredComment extends FeatureExtractorResource_ImplBase im
 	
 	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) throws Exception {
 		if (useOracle) {
-			return Id2OutcomeUtil.resolvePolarityThreeway(
+			return Id2OutcomeUtil.resolvePolarity(
 					JCasUtil.selectCovered(jcas, curated.Debate_Stance.class, unit).get(0).getPolarity());
 		} else {
 			String id2OutcomeKey = JCasUtil.selectSingle(jcas, JCasId.class).getId() + "_" + unit.getId();

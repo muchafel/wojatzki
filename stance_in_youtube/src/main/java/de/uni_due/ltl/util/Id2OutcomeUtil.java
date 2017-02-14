@@ -43,6 +43,36 @@ public class Id2OutcomeUtil {
 		}
 		return id2Outcome;
 	}
+	
+	/**
+	 * reads a map that stores the id2outcomes
+	 * 
+	 * @param path
+	 * @return
+	 * @throws ResourceInitializationException 
+	 */
+	public static Map<String, String> getId2OutcomeMap_String(String path) throws ResourceInitializationException {
+		Map<String, String> id2Outcome = new HashMap<String, String>();
+		List<String> labels=null;
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if(line.startsWith("#labels")){
+					labels=getLabels(line);
+				}
+				if (!line.startsWith("#")) {
+					String prediction = line.split(";")[0];
+					String id = prediction.split("=")[0];
+					int indexOfOne=getIndexOfOne(prediction.split("=")[1]);
+					String label =labels.get(indexOfOne);
+					id2Outcome.put(id, label);
+				}
+			}
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+		return id2Outcome;
+	}
 
 	public static int getIndexOfOne(String resultVector) throws Exception {
 		int i=0;
@@ -90,5 +120,60 @@ public class Id2OutcomeUtil {
 			return 0;
 		}
 		throw new Exception(polarity+ " not a valid polarity; allowed: PRESENT,FAVOR,AGAINST and NONE");	
+	}
+
+    public static Map<String, Boolean> getId2Correct(String path) throws ResourceInitializationException {
+		Map<String, Boolean> id2Outcome = new HashMap<String, Boolean>();
+		List<String> labels=null;
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if(line.startsWith("#labels")){
+					labels=getLabels(line);
+				}
+				if (!line.startsWith("#")) {
+					String gold = line.split(";")[1];
+					String prediction = line.split(";")[0];
+					String id = prediction.split("=")[0];
+					//TODO: hack!
+					id=id.split("_")[1];
+					int indexOfOnePrediction=getIndexOfOne(prediction.split("=")[1]);
+					int indexOfOneGold=getIndexOfOne(gold);
+					if(indexOfOnePrediction==indexOfOneGold){
+						id2Outcome.put(id, true);
+					}else{
+						id2Outcome.put(id, false);
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+		return id2Outcome;
+	}
+
+	public static Map<String, Integer> getId2GoldMap(String path) throws ResourceInitializationException {
+		Map<String, Integer> id2Outcome = new HashMap<String, Integer>();
+		List<String> labels=null;
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if(line.startsWith("#labels")){
+					labels=getLabels(line);
+				}
+				if (!line.startsWith("#")) {
+					String gold = line.split(";")[1];
+					String prediction = line.split(";")[0];
+					String id = prediction.split("=")[0];
+					int indexOfOne=getIndexOfOne(gold);
+					String label =labels.get(indexOfOne);
+					int outCome = resolvePolarity(label);
+					id2Outcome.put(id, outCome);
+				}
+			}
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+		return id2Outcome;
 	}
 }

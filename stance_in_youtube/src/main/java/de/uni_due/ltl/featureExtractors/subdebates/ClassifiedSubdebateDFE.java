@@ -187,7 +187,7 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 			if(targetLabel.equals(subTarget.getTarget())){
 //				System.out.println(subTarget.getTarget()+" "+subTarget.getPolarity());
 				String polarity=subTarget.getPolarity();
-				return Id2OutcomeUtil.resolvePolarityThreeway(polarity);
+				return Id2OutcomeUtil.resolvePolarity(polarity);
 			}
 		}
 		return 0;
@@ -206,7 +206,7 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 			if(targetLabel.equals(subTarget.getTarget())){
 //				System.out.println(subTarget.getTarget()+" "+subTarget.getPolarity());
 				String polarity=subTarget.getPolarity();
-				return Id2OutcomeUtil.resolvePolarityThreeway(polarity);
+				return Id2OutcomeUtil.resolvePolarity(polarity);
 			}
 		}
 		return 0;

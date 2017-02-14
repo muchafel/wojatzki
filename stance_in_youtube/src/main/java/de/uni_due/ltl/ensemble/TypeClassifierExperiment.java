@@ -66,12 +66,13 @@ public class TypeClassifierExperiment implements Constants{
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
 			TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-					CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
-			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-					CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
-			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
-					CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C")
+					CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 3, CommentNGram.PARAM_UNIQUE_NAME, "A")
 			,TcFeatureFactory.create(SocherSentimentFE.class)
+			,TcFeatureFactory.create(NrOfTokensPerSentence.class)
+			,TcFeatureFactory.create(NrOfTokens.class)
+			,TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class)
+			,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+			,TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
 			);
 
 	public static void main(String[] args) throws Exception {
@@ -153,8 +154,15 @@ public class TypeClassifierExperiment implements Constants{
 		String inputTrainFolder = dir;
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		System.out.println("read from "+inputTrainFolder);
-		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(YouTubeClassificationTypeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
-				LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,subTarget, YouTubeReader.PARAM_TARGET_SET,targetSet));
+		dimReaders.put(DIM_READER_TRAIN,
+				CollectionReaderFactory.createReaderDescription(YouTubeClassificationTypeReader.class,
+						YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
+						LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,
+						subTarget, YouTubeReader.PARAM_TARGET_SET, targetSet,
+						YouTubeClassificationTypeReader.PARAM_SVM_ID2OUTCOME_FILE_PATH,
+						"src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt",
+						YouTubeClassificationTypeReader.PARAM_LSTM_ID2OUTCOME_FILE_PATH,
+						"src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random2.txt"));
 
 		return dimReaders;
 	}

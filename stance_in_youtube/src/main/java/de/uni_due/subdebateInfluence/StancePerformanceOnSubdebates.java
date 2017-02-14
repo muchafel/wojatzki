@@ -39,13 +39,13 @@ public class StancePerformanceOnSubdebates {
 			printResult(evaluation_filtered);
 			chiSquare(evaluation,evaluation_filtered);
 		}
-//		for(String target: TargetSets.targets_Set2){
-//			System.out.println(target);
-//			explicitInstances.addAll(getSubdebateInstances(target,"2"));
-//			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
-//			printResult(evaluation_filtered);
-//			chiSquare(evaluation,evaluation_filtered);
-//		}
+		for(String target: TargetSets.targets_Set2){
+			System.out.println(target);
+			explicitInstances.addAll(getSubdebateInstances(target,"2"));
+			Evaluation<String> evaluation_filtered = Filtereable_TcId2OutcomeReader.read_only(targetFile, getSubdebateInstances(target,"2"));
+			printResult(evaluation_filtered);
+			chiSquare(evaluation,evaluation_filtered);
+		}
 		System.out.println("-----------ALL EXCLUDED-------");
 		Evaluation<String> evaluation_exluded = Filtereable_TcId2OutcomeReader.read_butExclude(targetFile, explicitInstances);
 		printResult(evaluation_exluded);

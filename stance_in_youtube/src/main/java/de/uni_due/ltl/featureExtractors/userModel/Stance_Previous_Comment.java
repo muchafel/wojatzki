@@ -68,7 +68,7 @@ public class Stance_Previous_Comment extends FeatureExtractorResource_ImplBase i
 		}else{
 			//in case there is no previous element
 			try {
-				featList.add(new Feature("PREVIOUS_STANCE", Id2OutcomeUtil.resolvePolarityThreeway("NONE")));
+				featList.add(new Feature("PREVIOUS_STANCE", Id2OutcomeUtil.resolvePolarity("NONE")));
 			} catch (Exception e) {
 				throw new TextClassificationException(e);
 			}
@@ -97,7 +97,7 @@ public class Stance_Previous_Comment extends FeatureExtractorResource_ImplBase i
 
 	private int getClassificationOutcome(TextClassificationTarget unit, JCas jcas) throws Exception {
 		if (useOracle) {
-			return Id2OutcomeUtil.resolvePolarityThreeway(
+			return Id2OutcomeUtil.resolvePolarity(
 					JCasUtil.selectCovered(jcas, curated.Debate_Stance.class, unit).get(0).getPolarity());
 		} else {
 			String id2OutcomeKey = JCasUtil.selectSingle(jcas, JCasId.class).getId() + "_" + unit.getId();
