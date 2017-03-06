@@ -1,4 +1,4 @@
-package de.uni.due.ltl.interactiveStance.server;
+package de.uni.due.ltl.interactiveStance.backend;
 
 import org.apache.commons.beanutils.BeanUtils;
 

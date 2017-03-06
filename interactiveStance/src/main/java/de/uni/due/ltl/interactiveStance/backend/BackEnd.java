@@ -1,8 +1,10 @@
-package de.uni.due.ltl.interactiveStance.server;
+package de.uni.due.ltl.interactiveStance.backend;
 
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.vaadin.v7.event.ItemClickEvent;
+
+import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -22,10 +24,11 @@ public class BackEnd {
 			"Harry Potter is the best movie" };
 
 	private static BackEnd instance;
+	private static StanceDB db;
 
 	public static BackEnd loadData() {
 		/**
-		 * DN logic here
+		 * DB logic here
 		 */
 		if (instance == null) {
 
@@ -35,10 +38,18 @@ public class BackEnd {
 			for (int i = 0; i < 100; i++) {
 				ExplicitStanceModel model = new ExplicitStanceModel(idCounter++, targets[r.nextInt(targets.length)],
 						r.nextInt(50), r.nextInt(40), null);
-				// System.out.println("Add "+model.getTargetName()+ "
-				// "+model.getId()+" "+model.getInstancesInFavor());
 				contactService.save(model);
 			}
+			/**
+			 * TODO credentials
+			 * TODO exception handling
+			 */
+			try {
+				db= new StanceDB("", "");
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
 			instance = contactService;
 		}
 

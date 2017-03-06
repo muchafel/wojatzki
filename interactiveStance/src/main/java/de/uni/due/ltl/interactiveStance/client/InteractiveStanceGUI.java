@@ -24,9 +24,9 @@ import com.vaadin.v7.data.util.BeanItemContainer;
 import com.vaadin.v7.ui.Grid;
 import com.vaadin.v7.ui.ProgressIndicator;
 
-import de.uni.due.ltl.interactiveStance.server.BackEnd;
-import de.uni.due.ltl.interactiveStance.server.EvaluationResult;
-import de.uni.due.ltl.interactiveStance.server.ExplicitStanceModel;
+import de.uni.due.ltl.interactiveStance.backend.ExplicitStanceModel;
+import de.uni.due.ltl.interactiveStance.backend.BackEnd;
+import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 
 @Title("Interactive Stance Detection")
 @Theme("valo")
