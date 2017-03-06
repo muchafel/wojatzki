@@ -1,4 +1,4 @@
-package de.uni.due.ltl.interactiveStance;
+package de.uni.due.ltl.interactiveStance.client;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -24,9 +24,9 @@ import com.vaadin.v7.data.util.BeanItemContainer;
 import com.vaadin.v7.ui.Grid;
 import com.vaadin.v7.ui.ProgressIndicator;
 
-import de.uni.due.ltl.interactiveStance.backend.ExplicitStanceModel;
-import de.uni.due.ltl.interactiveStance.backend.BackEnd;
-import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
+import de.uni.due.ltl.interactiveStance.server.BackEnd;
+import de.uni.due.ltl.interactiveStance.server.EvaluationResult;
+import de.uni.due.ltl.interactiveStance.server.ExplicitStanceModel;
 
 @Title("Interactive Stance Detection")
 @Theme("valo")
@@ -58,8 +58,8 @@ public class InteractiveStanceGUI extends UI {
 		listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
 		listOfAvailableTargets.addSelectionListener(e -> {
-			service.selectTarget((ExplicitStanceModel) listOfAvailableTargets.getSelectedRow());
 			listOfAvailableTargets.getContainerDataSource().removeItem(listOfAvailableTargets.getSelectedRow());
+			service.selectTarget((ExplicitStanceModel) listOfAvailableTargets.getSelectedRow());
 			refresh_SelectedGrid();
 		});
 
@@ -71,8 +71,8 @@ public class InteractiveStanceGUI extends UI {
 		listOfSelectedTargets.removeColumn("model");
 		listOfSelectedTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 		listOfSelectedTargets.addSelectionListener(e -> {
-			service.deselectTarget((ExplicitStanceModel) listOfSelectedTargets.getSelectedRow());
 			listOfSelectedTargets.getContainerDataSource().removeItem(listOfSelectedTargets.getSelectedRow());
+			service.deselectTarget((ExplicitStanceModel) listOfSelectedTargets.getSelectedRow());
 			refresh_AvailableGrid();
 		});
 

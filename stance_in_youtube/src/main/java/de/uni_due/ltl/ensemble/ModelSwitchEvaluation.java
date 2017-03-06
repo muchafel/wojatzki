@@ -32,8 +32,22 @@ public class ModelSwitchEvaluation {
 				evaluation.register(String.valueOf(id2Gold.get(key)), String.valueOf(svm_prediction.get(key)));
 			}
 		}
-		System.out.println("//// Mixed Model /////");
+		System.out.println("//// Mixed Model comments/////");
 		printResult(evaluation);
+		System.out.println("//// Mixed Model targets /////");
+		Evaluation<String> evaluationTargets= new Evaluation<>();
+		Map<String,String> typePredictionTargets= Id2OutcomeUtil.getId2OutcomeMap_String("src/main/resources/id2outcome/typePrediction/basedOnTargets.txt");
+		for(String key: typePredictionTargets.keySet()){
+			String type=typePredictionTargets.get(key);
+			if(type.equals("SVM")){
+				evaluationTargets.register(String.valueOf(id2Gold.get(key)), String.valueOf(svm_prediction.get(key)));
+			}else if(type.equals("LSTM")){
+				evaluationTargets.register(String.valueOf(id2Gold.get(key)), String.valueOf(lstm_prediction.get(key)));
+			}else{
+				evaluationTargets.register(String.valueOf(id2Gold.get(key)), String.valueOf(svm_prediction.get(key)));
+			}
+		}
+		printResult(evaluationTargets);
 		System.out.println("//// LSTM /////");
 		File targetFile_lstm= new File("src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random2.txt");
 		Evaluation<String> evaluation_lstm = Filtereable_TcId2OutcomeReader.read(targetFile_lstm);
@@ -42,6 +56,8 @@ public class ModelSwitchEvaluation {
 		File targetFile_svm= new File("src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt");
 		Evaluation<String> evaluation_svm = Filtereable_TcId2OutcomeReader.read(targetFile_svm);
 		printResult(evaluation_svm);
+		
+		
 		
 	}
 	private static void printResult(Evaluation<String> evaluation) {

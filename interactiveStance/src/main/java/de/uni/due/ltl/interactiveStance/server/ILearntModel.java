@@ -1,4 +1,4 @@
-package de.uni.due.ltl.interactiveStance.backend;
+package de.uni.due.ltl.interactiveStance.server;
 
 public interface ILearntModel {
 /**
