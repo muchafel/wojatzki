@@ -14,7 +14,12 @@ public class StanceCrawlingMain {
 		StanceCrawlingMain crawlerFleet= new StanceCrawlingMain();
 		crawlerFleet.setDb(new StanceDB("", ""));
 		crawlerFleet.crawlers= new ArrayList<>();
-		crawlerFleet.getCrawlers().add(new DummyCrawler("dummyUrl"));
+//		crawlerFleet.getCrawlers().add(new DummyCrawler("dummyUrl"));
+		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/"));
+		
+		for(StanceCrawlerInstance crawler: crawlerFleet.getCrawlers()){
+			crawler.harvestDataPoints();
+		}
 	}
 
 	private List<StanceCrawlerInstance> getCrawlers() {
