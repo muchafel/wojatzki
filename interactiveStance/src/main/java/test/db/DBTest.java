@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.DataSet;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
@@ -27,6 +28,28 @@ public class DBTest {
 		DataSet dataSet = new DataSet("pokekazan.de/kevkev_data", "kevkev_data", "pokekazan.de",
 				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")), 100, 200);
 		db.addDataSet(dataSet);
+		DataSet dataSetRetrieved = db.getDataByNameAndOrigin("kevkev_data", "pokekazan.de");
+		assertEquals(dataSetRetrieved.getName(),dataSet.getName());
+		assertEquals(dataSetRetrieved.getUrl(),dataSet.getUrl());
+		assertEquals(dataSetRetrieved.getWebsite(),dataSet.getWebsite());
+		assertEquals(dataSetRetrieved.getNumberOfAgainstInstances(),dataSet.getNumberOfAgainstInstances());
+		assertEquals(dataSetRetrieved.getKeyWords(),dataSet.getKeyWords());
+		assertEquals(dataSetRetrieved.getNumberOfFavorInstances(),dataSet.getNumberOfFavorInstances());
+		db.deleteDataSet(dataSetRetrieved);
+	}
+	
+	@Test
+	public void insertDeleteDataPointTest() throws Exception {
+		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
+		DataSet dataSet = new DataSet("pokekazan.de/kevkev_data", "kevkev_data", "pokekazan.de",
+				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")), 100, 200);
+		db.addDataSet(dataSet);
+		
+		DataPoint datapoint= new DataPoint(dataSet, "This is a long stance-taking ngram collection in favor of some target", "FAVOR");
+		db.addDataPoint(datapoint);
+		
+		DataPoint dataPointRetrieved= db.getDataByNameAndOrigin
+		
 		DataSet dataSetRetrieved = db.getDataByNameAndOrigin("kevkev_data", "pokekazan.de");
 		db.deleteDataSet(dataSetRetrieved);
 	}

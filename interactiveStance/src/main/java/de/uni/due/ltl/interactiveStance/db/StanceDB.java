@@ -103,4 +103,12 @@ public class StanceDB {
 		dataSetRetrieved.delete(connection);
 	}
 
+	public void addDataPoint(DataPoint dataPoint) throws SQLException {
+		Connection connection = connection = DriverManager
+				.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		dataPoint.serialize(connection);
+		connection.close();
+		
+	}
+
 }
