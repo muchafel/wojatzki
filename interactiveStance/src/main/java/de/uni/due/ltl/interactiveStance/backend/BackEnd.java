@@ -45,7 +45,7 @@ public class BackEnd {
 			 * TODO exception handling
 			 */
 			try {
-				db= new StanceDB("", "");
+				db= new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining");
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}

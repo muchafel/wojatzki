@@ -61,8 +61,9 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 		WebElement nextButton =getNextButton(driver);
 		while(nextButton != null){
 			System.out.println("Found Targets "+getLinksFromPage(driver).size());
-			debateLinks.addAll(getLinksFromPage(driver));
-			FileUtils.writeLines(new File("favorAgainstLinks.txt"), debateLinks, true);
+			List<String> pagedLinks=getLinksFromPage(driver);
+			debateLinks.addAll(pagedLinks);
+			FileUtils.writeLines(new File("favorAgainstLinks.txt"), pagedLinks, true);
 			nextButton.click();
 			Thread.sleep(2000);
 			

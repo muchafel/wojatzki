@@ -1,17 +1,27 @@
 package de.uni.due.ltl.interactiveStance.db;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StanceDB {
 	
 	private String user;
 	private String pw;
+	private String dbPath;
+	
+	public void addDataSet(DataSet dataSet) throws SQLException{
+		Connection connection = connection = DriverManager
+				.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		dataSet.serialize(connection);
+		connection.close();
+	}
 	
 	public List<String> getModelNames() throws SQLException{
 		List<String> result= new ArrayList<>();
@@ -50,11 +60,47 @@ public class StanceDB {
 		}
 		
 	}
-
-	public StanceDB(String user, String pw) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-//	            Class.forName("com.mysql.jdbc.Driver").newInstance();
+	
+	public String printConnection() throws SQLException{
+		Connection connection = connection = DriverManager
+				.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		
+		DatabaseMetaData metaData = connection.getMetaData();
+		StringBuilder sb= new StringBuilder();
+		sb.append(metaData.getURL()+System.lineSeparator());
+		sb.append(metaData.getUserName()+System.lineSeparator());
+		connection.close();
+		return sb.toString();
+		
+	}
+	
+	
+	public StanceDB(String user, String pw, String dbPath) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 	            this.user= user;
 	            this.pw=pw;
+	            this.dbPath=dbPath;
+	}
+
+	public DataSet getDataByNameAndOrigin(String name, String website) throws SQLException {
+		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM Data_Set WHERE Name='"+name+"' AND Website='"+website+"'");
+		while (resultSet.next()) {
+			List<String> keywords=new ArrayList<String>(Arrays.asList(resultSet.getString("KeyWords").split(" ")));
+			DataSet result= new DataSet(resultSet.getString("Url"), resultSet.getString("Name"), resultSet.getString("Website"), keywords, resultSet.getInt("#FAVOR"), resultSet.getInt("#AGAINST"));
+			result.setID(resultSet.getInt("ID"));
+			statement.close();
+			connection.close();
+			return result;
+		}
+		statement.close();
+		connection.close();
+		return null;
+	}
+
+	public void deleteDataSet(DataSet dataSetRetrieved) throws Exception {
+		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		dataSetRetrieved.delete(connection);
 	}
 
 }

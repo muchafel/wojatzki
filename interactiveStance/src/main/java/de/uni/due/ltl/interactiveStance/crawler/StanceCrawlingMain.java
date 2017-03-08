@@ -12,7 +12,7 @@ public class StanceCrawlingMain {
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		StanceCrawlingMain crawlerFleet= new StanceCrawlingMain();
-		crawlerFleet.setDb(new StanceDB("", ""));
+		crawlerFleet.setDb(new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining"));
 		crawlerFleet.crawlers= new ArrayList<>();
 //		crawlerFleet.getCrawlers().add(new DummyCrawler("dummyUrl"));
 		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/"));
