@@ -111,4 +111,25 @@ public class StanceDB {
 		
 	}
 
+	public DataPoint getDataPointById(int id) throws SQLException {
+		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM Data_Point WHERE ID="+id);
+		while (resultSet.next()) {
+			DataPoint result= new DataPoint(resultSet.getInt("Data_Set_ID"), resultSet.getString("Text"), resultSet.getString("Label"));
+			result.setId(resultSet.getInt("ID"));
+			statement.close();
+			connection.close();
+			return result;
+		}
+		statement.close();
+		connection.close();
+		return null;
+	}
+
+	public void deleteDataPoint(DataPoint dataPointRetrieved) throws Exception {
+		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		dataPointRetrieved.delete(connection);
+	}
+
 }

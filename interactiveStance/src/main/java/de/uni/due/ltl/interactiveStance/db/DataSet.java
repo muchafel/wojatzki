@@ -81,9 +81,16 @@ public class DataSet {
 
 	public void serialize(Connection connection) throws SQLException {
 		Statement st = connection.createStatement();
-		st.executeUpdate("INSERT INTO `interactiveArgumentMining`.`Data_Set` (`ID`, `Url`, `Name`, `Website`, `KeyWords`, `#FAVOR`, `#AGAINST`) " + "VALUES (Null,'" + this.url
+		String query="INSERT INTO `interactiveArgumentMining`.`Data_Set` (`ID`, `Url`, `Name`, `Website`, `KeyWords`, `#FAVOR`, `#AGAINST`) " + "VALUES (Null,'" + this.url
 				+ "', '" + this.name + "', '" + this.website + "', '" + StringUtils.join(keyWords, " ") + "', "
-				+ this.numberOfFavorInstances + ",+" + this.numberOfAgainstInstances + ")");
+				+ this.numberOfFavorInstances + ",+" + this.numberOfAgainstInstances + ")";
+		st.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+		
+		ResultSet rs = st.getGeneratedKeys();
+        if (rs.next()){
+            this.ID=rs.getInt(1);
+        }
+        rs.close();
 		st.close();
 	}
 

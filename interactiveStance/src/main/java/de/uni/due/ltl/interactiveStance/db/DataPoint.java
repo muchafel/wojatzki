@@ -1,6 +1,7 @@
 package de.uni.due.ltl.interactiveStance.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -17,6 +18,13 @@ public class DataPoint {
 		this.text = text;
 		this.label = label;
 	}
+	
+	public DataPoint(int dataSet_ID, String text, String label) {
+		this.dataSet_id = dataSet_ID;
+		this.text = text;
+		this.label = label;
+	}
+	
 	public int getId() throws Exception {
 		if(this.id==0){
 			throw new Exception("DataPoint has no ID, possibly you did not retrieve if from the database?");
@@ -46,8 +54,20 @@ public class DataPoint {
 	}
 	public void serialize(Connection connection) throws SQLException {
 		Statement st = connection.createStatement();
-		st.executeUpdate("INSERT INTO `interactiveArgumentMining`.`Data_Point` (`ID`, `Data_Set_ID`, `Text`, `Label`) " + "VALUES (Null,'" + this.dataSet_id
-				+ "', '" + this.text + "', '" + this.label + ")");
+		String query="INSERT INTO `interactiveArgumentMining`.`Data_Point` (`ID`, `Data_Set_ID`, `Text`, `Label`) " + "VALUES (Null, " + this.dataSet_id
+				+ ", '" + this.text + "', '" + this.label + "')";
+		st.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+		ResultSet rs = st.getGeneratedKeys();
+        if (rs.next()){
+            this.id=rs.getInt(1);
+        }
+        rs.close();
+		st.close();
+	}
+
+	public void delete(Connection connection) throws Exception {
+		Statement st = connection.createStatement();
+		st.executeUpdate("DELETE FROM `interactiveArgumentMining`.`Data_Point` WHERE ID = "+this.getId());
 		st.close();
 	}
 }
