@@ -2,11 +2,11 @@ package de.uni.due.ltl.interactiveStance.crawler;
 
 import java.util.List;
 
-import de.uni.due.ltl.interactiveStance.common.Data_Point;
+import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 public interface StanceCrawlerInstance {
 
 	public void setURL(String url);
 	public String getURL();
-	public List<Data_Point> harvestDataPoints(); 
+	public void harvestDataPoints(StanceDB db); 
 }

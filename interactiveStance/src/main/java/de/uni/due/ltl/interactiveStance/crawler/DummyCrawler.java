@@ -2,7 +2,7 @@ package de.uni.due.ltl.interactiveStance.crawler;
 
 import java.util.List;
 
-import de.uni.due.ltl.interactiveStance.common.Data_Point;
+import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 public class DummyCrawler implements StanceCrawlerInstance {
 private String url;
@@ -21,9 +21,8 @@ private String url;
 	}
 
 	@Override
-	public List<Data_Point> harvestDataPoints() {
+	public void harvestDataPoints(StanceDB db) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

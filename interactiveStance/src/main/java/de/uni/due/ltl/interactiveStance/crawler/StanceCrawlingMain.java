@@ -1,5 +1,6 @@
 package de.uni.due.ltl.interactiveStance.crawler;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,11 @@ public class StanceCrawlingMain {
 		crawlerFleet.setDb(new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining"));
 		crawlerFleet.crawlers= new ArrayList<>();
 //		crawlerFleet.getCrawlers().add(new DummyCrawler("dummyUrl"));
-		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/"));
+//		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/",null));
+		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/",new File("/Users/michael/git/ucsm_git/interactiveStance/favorAgainstLinks.txt")));
 		
 		for(StanceCrawlerInstance crawler: crawlerFleet.getCrawlers()){
-			crawler.harvestDataPoints();
+			crawler.harvestDataPoints(crawlerFleet.getDB());
 		}
 	}
 
@@ -28,6 +30,10 @@ public class StanceCrawlingMain {
 
 	private void setDb(StanceDB stanceDB) {
 		this.db=stanceDB;
+	}
+
+	public StanceDB getDB() {
+		return db;
 	}
 
 }

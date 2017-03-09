@@ -130,6 +130,14 @@ public class StanceDB {
 	public void deleteDataPoint(DataPoint dataPointRetrieved) throws Exception {
 		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
 		dataPointRetrieved.delete(connection);
+		connection.close();
+	}
+
+	public void updateDatSetNumberOfInstances(DataSet dataSet) throws SQLException {
+		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
+		dataSet.updateNumberOfInstances(connection);
+		connection.close();
+		
 	}
 
 }

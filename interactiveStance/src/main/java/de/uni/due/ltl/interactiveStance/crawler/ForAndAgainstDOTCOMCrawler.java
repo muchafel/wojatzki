@@ -2,7 +2,9 @@ package de.uni.due.ltl.interactiveStance.crawler;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -16,16 +18,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import de.uni.due.ltl.interactiveStance.common.Data_Point;
+import de.uni.due.ltl.interactiveStance.db.DataPoint;
+import de.uni.due.ltl.interactiveStance.db.DataSet;
+import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 
 	private String url;
 	private int paginationCounter=0;
+	private File linkFile;
 	
 	
-	public ForAndAgainstDOTCOMCrawler(String url) {
+	public ForAndAgainstDOTCOMCrawler(String url, File linkFile) {
 		this.url = url;
+		this.linkFile=linkFile;
 		System.setProperty("webdriver.chrome.driver", "src/chromedriver");
 	}
 
@@ -41,15 +47,78 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 	}
 
 	@Override
-	public List<Data_Point> harvestDataPoints() {
+	public void harvestDataPoints(StanceDB db) {
+		List<String> debateLinks= null;
 		try {
-			List<String> debateLinks= getDebateLinks();
+			if(linkFile != null){
+				 debateLinks= FileUtils.readLines(linkFile,Charset.defaultCharset());
+			}else{
+				debateLinks= getDebateLinks();
+			}
 		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(debateLinks.size());
+		for(String link : debateLinks){
+			// at first we create a data set without the # of against and favor instances (maybe we should do this in the DB)
+			DataSet dataSet = new DataSet(link, getDataSetName(link), "http://www.forandagainst.com/",
+					new ArrayList<String>(Arrays.asList(getDataSetName(link))), 0, 0);
+			
+			try {
+				db.addDataSet(dataSet);
+				List<DataPoint> dataPoints= crawlAndAddDataPoints(link,dataSet,db);
+			} catch ( Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
+	}
+
+	private List<DataPoint> crawlAndAddDataPoints(String link, DataSet dataSet, StanceDB db) throws Exception {
+		List<DataPoint> result= new ArrayList<DataPoint>();
+		int numberOfFavor=0;
+		int numberOfAgainst=0;
 		
-		return null;
+		Document doc = Jsoup.connect(link).get();
+        Elements favorTable = doc.select("body > table > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr:nth-child(10) > td > table > tbody > tr > td:nth-child(1) > table > tbody > tr");
+        Elements againstTable = doc.select("body > table > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr:nth-child(10) > td > table > tbody > tr > td:nth-child(3) > table > tbody > tr");
+        for(Element explicitStance: favorTable.select("table")){
+        	String text= explicitStance.select("tbody > tr:nth-child(1) > td:nth-child(2)").text();
+        	if(text.isEmpty())continue;
+        	text=makeSQLConform(text);
+        	DataPoint point= new DataPoint(dataSet, text, "FAVOR");
+        	result.add(point);
+        	numberOfFavor++;
+        	System.out.println(text);
+        	db.addDataPoint(point);
+        }
+        for(Element explicitStance: againstTable.select("table")){
+        	String text= explicitStance.select("tbody > tr:nth-child(1) > td:nth-child(2)").text();
+        	if(text.isEmpty())continue;
+        	text=makeSQLConform(text);
+        	DataPoint point= new DataPoint(dataSet, text, "AGAINST");
+        	result.add(point);
+        	numberOfAgainst++;
+        	db.addDataPoint(point);
+        	System.out.println(text);
+        }
+        dataSet.setNumberOfAgainstInstances(numberOfAgainst);
+        dataSet.setNumberOfFavorInstances(numberOfFavor);
+        db.updateDatSetNumberOfInstances(dataSet);
+        
+		return result;
+	}
+
+	private String makeSQLConform(String text) {
+		text=text.replace(System.lineSeparator()," ");
+		text=text.replace("'","\\'");
+		text=text.replace("\"","\\\"");
+		
+		return text;
+	}
+
+	private String getDataSetName(String link) {
+		return link.split("forandagainst.com/")[1];
 	}
 
 	private List<String> getDebateLinks() throws InterruptedException, IOException {
@@ -117,12 +186,5 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 		return false;
 	}
 
-	private boolean isArticle(Element debate) {
-		String[] parts= debate.attr("href").split("/");
-		if(parts.length>1 && parts[1].equals("articles")){
-			return true;
-		}
-		return false;
-	}
 
 }

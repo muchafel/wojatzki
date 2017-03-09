@@ -99,4 +99,11 @@ public class DataSet {
 		st.executeUpdate("DELETE FROM Data_Set WHERE ID = "+this.getID());
 		st.close();
 	}
+
+
+	public void updateNumberOfInstances(Connection connection) throws SQLException {
+		Statement updateCounts = connection.createStatement();
+		updateCounts.executeUpdate("UPDATE Data_Set SET `#FAVOR` = "+this.numberOfFavorInstances+",`#AGAINST` = "+this.numberOfAgainstInstances+" WHERE ID ="+this.ID);
+		updateCounts.close();
+	}
 }
