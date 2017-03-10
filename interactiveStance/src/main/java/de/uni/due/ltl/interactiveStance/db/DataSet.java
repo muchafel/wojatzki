@@ -16,16 +16,12 @@ public class DataSet {
 	private String name;
 	private String website;
 	private List<String> keyWords;
-	private int numberOfFavorInstances;
-	private int numberOfAgainstInstances;
 	
 	public DataSet(String url, String name, String website, List<String> keyWords, int numberOfFavorInstances,int numberOfAgainstInstances) {
 		this.url = url;
 		this.name = name;
 		this.website = website;
 		this.keyWords = keyWords;
-		this.numberOfFavorInstances = numberOfFavorInstances;
-		this.numberOfAgainstInstances = numberOfAgainstInstances;
 	}
 	
 
@@ -66,24 +62,11 @@ public class DataSet {
 	public void setKeyWords(List<String> keyWords) {
 		this.keyWords = keyWords;
 	}
-	public int getNumberOfFavorInstances() {
-		return numberOfFavorInstances;
-	}
-	public void setNumberOfFavorInstances(int numberOfFavorInstances) {
-		this.numberOfFavorInstances = numberOfFavorInstances;
-	}
-	public int getNumberOfAgainstInstances() {
-		return numberOfAgainstInstances;
-	}
-	public void setNumberOfAgainstInstances(int numberOfAgainstInstances) {
-		this.numberOfAgainstInstances = numberOfAgainstInstances;
-	}
 
 	public void serialize(Connection connection) throws SQLException {
 		Statement st = connection.createStatement();
-		String query="INSERT INTO `interactiveArgumentMining`.`Data_Set` (`ID`, `Url`, `Name`, `Website`, `KeyWords`, `#FAVOR`, `#AGAINST`) " + "VALUES (Null,'" + this.url
-				+ "', '" + this.name + "', '" + this.website + "', '" + StringUtils.join(keyWords, " ") + "', "
-				+ this.numberOfFavorInstances + ",+" + this.numberOfAgainstInstances + ")";
+		String query="INSERT INTO `interactiveArgumentMining`.`Data_Set` (`ID`, `Url`, `Name`, `Website`, `KeyWords`) " + "VALUES (Null,'" + this.url
+				+ "', '" + this.name + "', '" + this.website + "', '" + StringUtils.join(keyWords, " ") +  ")";
 		st.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
 		
 		ResultSet rs = st.getGeneratedKeys();
@@ -100,10 +83,4 @@ public class DataSet {
 		st.close();
 	}
 
-
-	public void updateNumberOfInstances(Connection connection) throws SQLException {
-		Statement updateCounts = connection.createStatement();
-		updateCounts.executeUpdate("UPDATE Data_Set SET `#FAVOR` = "+this.numberOfFavorInstances+",`#AGAINST` = "+this.numberOfAgainstInstances+" WHERE ID ="+this.ID);
-		updateCounts.close();
-	}
 }

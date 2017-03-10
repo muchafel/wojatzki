@@ -33,9 +33,7 @@ public class DBTest {
 		System.out.println(dataSetRetrieved.getName());
 		assertEquals(dataSetRetrieved.getUrl(),dataSet.getUrl());
 		assertEquals(dataSetRetrieved.getWebsite(),dataSet.getWebsite());
-		assertEquals(dataSetRetrieved.getNumberOfAgainstInstances(),dataSet.getNumberOfAgainstInstances());
 		assertEquals(dataSetRetrieved.getKeyWords(),dataSet.getKeyWords());
-		assertEquals(dataSetRetrieved.getNumberOfFavorInstances(),dataSet.getNumberOfFavorInstances());
 		db.deleteDataSet(dataSetRetrieved);
 	}
 	

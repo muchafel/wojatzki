@@ -17,7 +17,7 @@ public class StanceCrawlingMain {
 		crawlerFleet.crawlers= new ArrayList<>();
 //		crawlerFleet.getCrawlers().add(new DummyCrawler("dummyUrl"));
 //		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/",null));
-		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/",new File("/Users/michael/git/ucsm_git/interactiveStance/favorAgainstLinks.txt")));
+		crawlerFleet.getCrawlers().add(new ForAndAgainstDOTCOMCrawler("http://www.forandagainst.com/",new File("/Users/michael/git/ucsm_git/interactiveStance/favorAgainstLinks.txt"),true));
 		
 		for(StanceCrawlerInstance crawler: crawlerFleet.getCrawlers()){
 			crawler.harvestDataPoints(crawlerFleet.getDB());

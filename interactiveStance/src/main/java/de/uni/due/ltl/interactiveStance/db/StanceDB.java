@@ -133,11 +133,5 @@ public class StanceDB {
 		connection.close();
 	}
 
-	public void updateDatSetNumberOfInstances(DataSet dataSet) throws SQLException {
-		Connection connection = connection = DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw);
-		dataSet.updateNumberOfInstances(connection);
-		connection.close();
-		
-	}
 
 }

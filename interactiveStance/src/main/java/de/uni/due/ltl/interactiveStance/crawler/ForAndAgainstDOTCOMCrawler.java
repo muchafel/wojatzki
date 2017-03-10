@@ -3,6 +3,7 @@ package de.uni.due.ltl.interactiveStance.crawler;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,12 +28,14 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 	private String url;
 	private int paginationCounter=0;
 	private File linkFile;
+	private boolean addToExisting;
 	
 	
-	public ForAndAgainstDOTCOMCrawler(String url, File linkFile) {
+	public ForAndAgainstDOTCOMCrawler(String url, File linkFile, boolean addToExisting) {
 		this.url = url;
 		this.linkFile=linkFile;
 		System.setProperty("webdriver.chrome.driver", "src/chromedriver");
+		this.addToExisting= addToExisting;
 	}
 
 	@Override
@@ -61,12 +64,25 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 		System.out.println(debateLinks.size());
 		for(String link : debateLinks){
 			// at first we create a data set without the # of against and favor instances (maybe we should do this in the DB)
-			DataSet dataSet = new DataSet(link, getDataSetName(link), "http://www.forandagainst.com/",
-					new ArrayList<String>(Arrays.asList(getDataSetName(link))), 0, 0);
+			DataSet dataSet=null;
+			if(addToExisting){
+				try {
+					dataSet=db.getDataByNameAndOrigin(getDataSetName(link), "http://www.forandagainst.com/");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}else{
+				dataSet = new DataSet(link, getDataSetName(link), "http://www.forandagainst.com/",
+						new ArrayList<String>(Arrays.asList(getDataSetName(link))), 0, 0);
+			}
 			
 			try {
-				db.addDataSet(dataSet);
-				List<DataPoint> dataPoints= crawlAndAddDataPoints(link,dataSet,db);
+				if(addToExisting){
+					List<DataPoint> dataPoints= crawlAndAddDataPoints(link+"/2",dataSet,db);
+				}else{
+					db.addDataSet(dataSet);
+					List<DataPoint> dataPoints= crawlAndAddDataPoints(link,dataSet,db);
+				}
 			} catch ( Exception e) {
 				e.printStackTrace();
 			}
@@ -76,8 +92,6 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 
 	private List<DataPoint> crawlAndAddDataPoints(String link, DataSet dataSet, StanceDB db) throws Exception {
 		List<DataPoint> result= new ArrayList<DataPoint>();
-		int numberOfFavor=0;
-		int numberOfAgainst=0;
 		
 		Document doc = Jsoup.connect(link).get();
         Elements favorTable = doc.select("body > table > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr:nth-child(10) > td > table > tbody > tr > td:nth-child(1) > table > tbody > tr");
@@ -88,7 +102,6 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
         	text=makeSQLConform(text);
         	DataPoint point= new DataPoint(dataSet, text, "FAVOR");
         	result.add(point);
-        	numberOfFavor++;
         	System.out.println(text);
         	db.addDataPoint(point);
         }
@@ -98,13 +111,9 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
         	text=makeSQLConform(text);
         	DataPoint point= new DataPoint(dataSet, text, "AGAINST");
         	result.add(point);
-        	numberOfAgainst++;
         	db.addDataPoint(point);
         	System.out.println(text);
         }
-        dataSet.setNumberOfAgainstInstances(numberOfAgainst);
-        dataSet.setNumberOfFavorInstances(numberOfFavor);
-        db.updateDatSetNumberOfInstances(dataSet);
         
 		return result;
 	}
