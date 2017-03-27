@@ -25,6 +25,7 @@ import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ExperimentUtil;
+import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
 import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
@@ -37,6 +38,7 @@ import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.uni_due.ltl.catalanStanceDetection.io.CatalanStanceReader;
 import de.uni_due.ltl.catalanStanceDetection.io.ConfusionMatrixOutput;
 import de.uni_due.ltl.catalanStanceDetection.io.CrossValidationReport;
+import de.uni_due.ltl.catalanStanceDetection.wordembeddings.WordEmbeddingDFE;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.trees.RandomForest;
@@ -51,8 +53,9 @@ public class NgramCV implements Constants{
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,1000,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_MIN_N,3)
-			
+			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,3,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000),
+			TcFeatureFactory.create(LuceneCharacterNGram.class,LuceneCharacterNGram.PARAM_NGRAM_MAX_N,4,LuceneCharacterNGram.PARAM_NGRAM_MIN_N,2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K,1000),
+			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
 
 	);
 
