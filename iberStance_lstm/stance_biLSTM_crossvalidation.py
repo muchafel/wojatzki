@@ -14,7 +14,7 @@ np.random.seed(1337)  # reproducibility
 language='es'
 embeddingsPath = '/Users/michael/git/ucsm_git/interactiveAM/stanceCatalanIndependence/src/main/resources/'+language+'.polyglot.txt'
 
-leave_out_Files=['data/QkW-0ewjiJw','data/TgQRgT15f9U','/Users/michael/git/ucsm_git/stance_lstm/data/UtaVKVIoWyk','/Users/michael/git/ucsm_git/stance_lstm/data/_5aodBfdFTA','/Users/michael/git/ucsm_git/stance_lstm/data/gV6OoypZMco','/Users/michael/git/ucsm_git/stance_lstm/data/ka1B59ir1mI']
+leave_out_Files=['data/'+language+'/0/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
 
 #for each leave out file (video) run a separated experiment (this implements the LOO-CV)
 for file in leave_out_Files:
@@ -26,17 +26,17 @@ for file in leave_out_Files:
     numberEpochs=5
     activation='tanh'
     optimizer='adam'
-    dropout=0.2
+    dropout=0.3
 
     #prepare data structure
     leave_out_File = file
     train_folder=leave_out_File+'/train'
     test_folder=leave_out_File+'/test'
 
-    files = [train_folder+'/against.txt',train_folder+'/favor.txt',train_folder+'/none.txt', test_folder+'/against.txt',test_folder+'/favor.txt',test_folder+'/none.txt']
+    files = [train_folder+'/against.txt',train_folder+'/favor.txt',train_folder+'/neutral.txt', test_folder+'/against.txt',test_folder+'/favor.txt',test_folder+'/neutral.txt']
 
     # Mapping of labels to ints
-    labelsMapping = {'none': 0, 'favor': 1, 'against': 2}
+    labelsMapping = {'neutral': 0, 'favor': 1, 'against': 2}
 
     words = {}
     maxSentenceLen = [0,0,0,0,0,0]

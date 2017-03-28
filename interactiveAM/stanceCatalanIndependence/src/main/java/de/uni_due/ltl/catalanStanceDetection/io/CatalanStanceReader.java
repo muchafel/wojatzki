@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -58,6 +59,9 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 	    private List<BufferedReader> bfs = new ArrayList<BufferedReader>();
 	    private int currentReader = 0;
 
+	    private List<String> lines= new ArrayList<>();
+	    private Iterator<String> linesIt;
+	    
 	    private int instanceId = 1;
 	    private int unitId = 1;
 
@@ -66,142 +70,98 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 	    private Map<String,String> id2Label;
 	    
 
-	    @Override
-	    public void initialize(UimaContext context)
-	        throws ResourceInitializationException
-	    {
-	        super.initialize(context);
-	        try {
-				this.id2Label=getId2LabelMapping(labelFilePath);
-			} catch (IOException e1) {
-				new ResourceInitializationException(e1);
-			}
-	        try {
-	            for (Resource r : getResources()) {
-	                String name = r.getResource().getFile().getName();
-	                InputStreamReader is = null;
-	                if (name.endsWith(".gz")) {
-	                    is = new InputStreamReader(new GZIPInputStream(r.getInputStream()), encoding);
-	                }
-	                else {
-	                    is = new InputStreamReader(r.getInputStream(), encoding);
-	                }
-	                br = new BufferedReader(is);
-	                bfs.add(br);
-	            }
-	        }
-	        catch (Exception e) {
-	            throw new IllegalStateException(e);
-	        }
-	    }
-
-	    private Map<String, String> getId2LabelMapping(String labelFilePath) throws IOException {
-	    	 Map<String, String> mapping = new HashMap<String, String>();
-			for(String line: FileUtils.readLines(new File(labelFilePath), encoding)){
-				String[] compounds= line.split(":::");
-				mapping.put(compounds[0], compounds[1]);
-			}
-			return mapping;
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		try {
+			this.id2Label = getId2LabelMapping(labelFilePath);
+		} catch (IOException e1) {
+			throw new ResourceInitializationException(e1);
 		}
 
-		public void getNext(JCas jcas)
-	        throws IOException, CollectionException
-	    {
-
-	        DocumentMetaData md = new DocumentMetaData(jcas);
-	        md.setDocumentTitle("");
-	        md.setDocumentId("" + (instanceId++));
-	        md.setLanguage(language);
-	        md.addToIndexes();
-
-	        String documentText = nextLine;
-
-	        documentText = checkUnescapeHtml(documentText);
-	        documentText = checkUnescapeJava(documentText);
-	        String[] compounds= documentText.split(":::");
-	        String docId=compounds[0];
-	        documentText = compounds[1];
-	        
-	        documentText.replace("#27S", "");
-	        jcas.setDocumentText(documentText);
-	        
-	        Sentence sentence = new Sentence(jcas, 0, jcas.getDocumentText().length());
-	        TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(), sentence.getEnd());
-			unit.setId(unitId++);
-	        sentence.addToIndexes();
-	        
-	        TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(),sentence.getEnd());
+		for (Resource r : getResources()) {
 			try {
-				outcome.setOutcome(this.id2Label.get(docId));
-			} catch (Exception e) {
-				throw new IOException(e);
+				for (String line : FileUtils.readLines(r.getResource().getFile())) {
+					lines.add(line);
+				}
+			} catch (IOException e) {
+				throw new ResourceInitializationException(e);
 			}
-			unit.addToIndexes();
-            outcome.addToIndexes();
-			
-	    }
+		}
+		linesIt= lines.iterator();
 
-	    
+	}
 
-		private String checkUnescapeJava(String documentText)
-	    {
-	        String backup=documentText;
-	        if (unescapeJava) {
-	            try{
-	            documentText = StringEscapeUtils.unescapeJava(documentText);
-	            }
-	            catch(NestableRuntimeException e){
-	                documentText = backup;
-	            }
-	        }
-	        return documentText;
-	    }
+	private Map<String, String> getId2LabelMapping(String labelFilePath) throws IOException {
+		Map<String, String> mapping = new HashMap<String, String>();
+		for (String line : FileUtils.readLines(new File(labelFilePath), encoding)) {
+			String[] compounds = line.split(":::");
+			mapping.put(compounds[0], compounds[1]);
+		}
+		return mapping;
+	}
 
-	    private String checkUnescapeHtml(String documentText)
-	    {
-	        if (unescapeHtml) {
-	            documentText = StringEscapeUtils.unescapeHtml(documentText);
-	        }
-	        return documentText;
-	    }
+	public void getNext(JCas jcas) throws IOException, CollectionException {
 
+		DocumentMetaData md = new DocumentMetaData(jcas);
+		md.setDocumentTitle("");
+		md.setDocumentId("" + (instanceId++));
+		md.setLanguage(language);
+		md.addToIndexes();
 
-	    public boolean hasNext()
-	        throws IOException, CollectionException
-	    {
-	        BufferedReader br = getBufferedReader();
+		String documentText = linesIt.next();
 
-	        if ((nextLine = br.readLine()) != null) {
-	            return true;
-	        }
-	        return closeReaderOpenNext();
+		documentText = checkUnescapeHtml(documentText);
+		documentText = checkUnescapeJava(documentText);
+		String[] compounds = documentText.split(":::");
+		String docId = compounds[0];
+		documentText = compounds[1];
 
-	    }
+		// documentText.replace("#27S", "");
+		jcas.setDocumentText(documentText);
 
-	    private boolean closeReaderOpenNext()
-	        throws CollectionException, IOException
-	    {
-	        try {
-	            bfs.get(currentReader).close();
-	        }
-	        catch (IOException e) {
-	            e.printStackTrace();
-	        }
+		Sentence sentence = new Sentence(jcas, 0, jcas.getDocumentText().length());
+		TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(), sentence.getEnd());
+		unit.setId(unitId++);
+		sentence.addToIndexes();
 
-	        if (currentReader + 1 < bfs.size()) {
-	            currentReader++;
-	            return hasNext();
-	        }
-	        return false;
-	    }
+		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(), sentence.getEnd());
+		try {
+			outcome.setOutcome(this.id2Label.get(docId));
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+		unit.addToIndexes();
+		outcome.addToIndexes();
 
-	    private BufferedReader getBufferedReader()
-	    {
-	        return bfs.get(currentReader);
-	    }
+	}
 
-	    public Progress[] getProgress()
-	    {
-	        return null;
-	    }
+	private String checkUnescapeJava(String documentText) {
+		String backup = documentText;
+		if (unescapeJava) {
+			try {
+				documentText = StringEscapeUtils.unescapeJava(documentText);
+			} catch (NestableRuntimeException e) {
+				documentText = backup;
+			}
+		}
+		return documentText;
+	}
+
+	private String checkUnescapeHtml(String documentText) {
+		if (unescapeHtml) {
+			documentText = StringEscapeUtils.unescapeHtml(documentText);
+		}
+		return documentText;
+	}
+
+	public boolean hasNext() throws IOException, CollectionException {
+
+		return linesIt.hasNext();
+
+	}
+
+	public Progress[] getProgress() {
+		return null;
+	}
 }
