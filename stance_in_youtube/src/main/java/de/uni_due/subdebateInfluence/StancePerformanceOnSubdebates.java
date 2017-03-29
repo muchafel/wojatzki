@@ -13,7 +13,6 @@ import de.uni_due.ltl.util.TargetSets;
 import de.unidue.ltl.evaluation.ConfusionMatrix;
 import de.unidue.ltl.evaluation.Evaluation;
 import de.unidue.ltl.evaluation.EvaluationResult;
-import de.unidue.ltl.evaluation.evaluationComparison.McNemarTest;
 import de.unidue.ltl.evaluation.io.TcId2OutcomeReader;
 import de.unidue.ltl.evaluation.measure.util.CategorialMeasuresUtil;
 

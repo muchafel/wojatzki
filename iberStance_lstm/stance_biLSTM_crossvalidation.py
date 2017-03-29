@@ -11,10 +11,10 @@ import os
 
 np.random.seed(1337)  # reproducibility
 
-language='es'
+language='ca'
 embeddingsPath = '/Users/michael/git/ucsm_git/interactiveAM/stanceCatalanIndependence/src/main/resources/'+language+'.polyglot.txt'
 
-leave_out_Files=['data/'+language+'/0/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
+leave_out_Files=['data/'+language+'/10/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
 
 #for each leave out file (video) run a separated experiment (this implements the LOO-CV)
 for file in leave_out_Files:
@@ -23,9 +23,9 @@ for file in leave_out_Files:
     n_hidden = 100
     n_out = 3
     lstm_units=100
-    numberEpochs=5
+    numberEpochs=10
     activation='tanh'
-    optimizer='adam'
+    optimizer='nadam'
     dropout=0.3
 
     #prepare data structure
@@ -194,10 +194,10 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
             file.write(str(gold)+"\t"+str(predicted)+"\n")
 
-        with open("/Users/michael/git/ucsm_git/stance_lstm/result/cv/activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
             file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
         if predicted==gold: correct+=1
         else: incorrect+=1

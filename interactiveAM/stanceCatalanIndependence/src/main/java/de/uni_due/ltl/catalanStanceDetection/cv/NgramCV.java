@@ -47,7 +47,7 @@ public class NgramCV implements Constants{
 	/**
 	 * XXX CONSTANTS
 	 */
-	public static final String LANGUAGE_CODE = "es";
+	public static final String LANGUAGE_CODE = "ca";
 	private static final int NUM_FOLDS = 3;
 
 	private boolean ablation = false;
