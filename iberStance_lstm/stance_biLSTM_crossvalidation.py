@@ -22,11 +22,12 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=100
+    lstm_units=200
     numberEpochs=10
     activation='tanh'
     optimizer='nadam'
     dropout=0.3
+    lossFunction='sparse_categorical_crossentropy'
 
     #prepare data structure
     leave_out_File = file
@@ -146,7 +147,7 @@ for file in leave_out_Files:
     words.add(TimeDistributed(Dense(n_out, activation=activation)))
     words.add(Flatten())
     words.add(Dense(n_out, activation='softmax'))
-    words.compile(loss='categorical_crossentropy',optimizer=optimizer,metrics=['accuracy'])
+    words.compile(loss=lossFunction,optimizer=optimizer,metrics=['accuracy'])
     # print network
     words.summary()
 
@@ -194,13 +195,14 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+".txt", "a+") as file:
-            file.write(str(gold)+"\t"+str(predicted)+"\n")
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+".txt", "a+") as file:
+                                file.write(str(gold)+"\t"+str(predicted)+"\n")
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
-            file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_id2Outcome.txt", "a+") as file2:
+                                file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
+
         if predicted==gold: correct+=1
-        else: incorrect+=1
+        else: incorrect += 1
 
 
     print("Man acc: ", correct / (correct + incorrect) * 100)

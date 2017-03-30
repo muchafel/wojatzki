@@ -38,7 +38,7 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 
 	    public static final String PARAM_LANGUAGE = ComponentParameters.PARAM_LANGUAGE;
 	    @ConfigurationParameter(name = PARAM_LANGUAGE, mandatory = false)
-	    private String language;
+		protected String language;
 
 	    public static final String PARAM_UNESCAPE_HTML = "PARAM_UNESCAPE_HTML";
 	    @ConfigurationParameter(name = PARAM_UNESCAPE_HTML, mandatory = false, defaultValue = "true")
@@ -60,10 +60,10 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 	    private int currentReader = 0;
 
 	    private List<String> lines= new ArrayList<>();
-	    private Iterator<String> linesIt;
+	    protected Iterator<String> linesIt;
 	    
-	    private int instanceId = 1;
-	    private int unitId = 1;
+	    protected int instanceId = 1;
+	    protected int unitId = 1;
 
 	    private String nextLine = null;
 	    
@@ -125,18 +125,25 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 		unit.setId(unitId++);
 		sentence.addToIndexes();
 
-		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(), sentence.getEnd());
-		try {
-			outcome.setOutcome(this.id2Label.get(docId));
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
+		TextClassificationOutcome outcome= getTextClassificationOutcome(jcas, sentence, docId);
+		
 		unit.addToIndexes();
 		outcome.addToIndexes();
 
 	}
 
-	private String checkUnescapeJava(String documentText) {
+	protected TextClassificationOutcome getTextClassificationOutcome(JCas jcas, Sentence sentence, String docId) throws IOException {
+		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(), sentence.getEnd());
+		try {
+			outcome.setOutcome(id2Label.get(docId));
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+		return outcome;
+	}
+
+
+	protected String checkUnescapeJava(String documentText) {
 		String backup = documentText;
 		if (unescapeJava) {
 			try {
@@ -148,7 +155,7 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 		return documentText;
 	}
 
-	private String checkUnescapeHtml(String documentText) {
+	protected String checkUnescapeHtml(String documentText) {
 		if (unescapeHtml) {
 			documentText = StringEscapeUtils.unescapeHtml(documentText);
 		}
