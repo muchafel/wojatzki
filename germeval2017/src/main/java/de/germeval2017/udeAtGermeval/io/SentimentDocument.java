@@ -34,6 +34,8 @@ public class SentimentDocument {
 	public void setText(String text) {
 		this.text = text;
 	}
+	
+	@XmlElement(name = "relevance")
 	public boolean isRelevance() {
 		return relevance;
 	}
@@ -41,6 +43,7 @@ public class SentimentDocument {
 		this.relevance = relevance;
 	}
 	
+	@XmlElement(name = "sentiment")
 	public String getSentiment() {
 		return sentiment;
 	}
