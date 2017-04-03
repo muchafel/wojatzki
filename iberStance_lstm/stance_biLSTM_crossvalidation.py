@@ -3,7 +3,7 @@ __author__ = 'michael'
 
 from nltk import FreqDist
 from keras.models import Sequential
-from keras.layers import Dense, Embedding, TimeDistributed, Bidirectional, Flatten
+from keras.layers import Dense, Embedding, TimeDistributed, Bidirectional, Flatten, Dropout
 from keras.layers import LSTM
 from keras.utils import np_utils
 import numpy as np
@@ -22,12 +22,12 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=200
-    numberEpochs=10
+    lstm_units=100
+    numberEpochs=20
     activation='tanh'
     optimizer='nadam'
-    dropout=0.3
-    lossFunction='sparse_categorical_crossentropy'
+    dropout=0.5
+    lossFunction='categorical_crossentropy'
 
     #prepare data structure
     leave_out_File = file
@@ -143,6 +143,7 @@ for file in leave_out_Files:
 
     words = Sequential()
     words.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=n_in,  weights=[embeddings], trainable=False))
+    words.add(Dropout(dropout))
     words.add(Bidirectional(LSTM(lstm_units, return_sequences=True,dropout_W=dropout)))
     words.add(TimeDistributed(Dense(n_out, activation=activation)))
     words.add(Flatten())
@@ -195,10 +196,10 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+".txt", "a+") as file:
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_.txt", "a+") as file:
                                 file.write(str(gold)+"\t"+str(predicted)+"\n")
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_id2Outcome.txt", "a+") as file2:
+        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_id2Outcome.txt", "a+") as file2:
                                 file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
 
         if predicted==gold: correct+=1

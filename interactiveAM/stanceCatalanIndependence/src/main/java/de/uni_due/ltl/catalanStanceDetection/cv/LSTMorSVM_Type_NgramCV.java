@@ -63,13 +63,11 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 					1, LuceneNGram.PARAM_NGRAM_USE_TOP_K, 1000),
 			TcFeatureFactory.create(LuceneCharacterNGram.class, LuceneCharacterNGram.PARAM_NGRAM_MAX_N, 4,
 					LuceneCharacterNGram.PARAM_NGRAM_MIN_N, 2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K, 1000)
-//			TcFeatureFactory.create(NrOfTokensPerSentence.class), 
-//			TcFeatureFactory.create(TokenRatioFeatureExtractor.class),
-//			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-//					"src/main/resources/" + LANGUAGE_CODE + ".polyglot.txt"),
-//			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
-		
+			,TcFeatureFactory.create(NrOfTokensPerSentence.class), 
+			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
+			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+					"src/main/resources/" + LANGUAGE_CODE + ".polyglot.txt"),
+			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
 
 	);
 
@@ -78,7 +76,7 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		LSTMorSVM_Type_NgramCV experiment = new LSTMorSVM_Type_NgramCV();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_embeddings");
+		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_rich");
 	}
 
 	private static String getValidName(String experimentName) {
