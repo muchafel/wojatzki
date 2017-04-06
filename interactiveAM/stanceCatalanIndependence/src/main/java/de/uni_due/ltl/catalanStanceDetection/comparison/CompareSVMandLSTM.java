@@ -29,8 +29,8 @@ public class CompareSVMandLSTM {
 		Map<String,Boolean> correctSVM= Id2OutcomeUtil.getId2Correct("src/main/resources/id2outcome/es_char_word_id2homogenizedOutcome.txt",true);
 		Map<String,Boolean> correctLSTM= Id2OutcomeUtil.getId2Correct("src/main/resources/id2outcome/es_activation_tanh_opimizeradam_lstmUnits_100result_dropout_0.3_epochs_numberEpochs5_id2Outcome.txt");
 		id2Outcome_SVM= removeUnitArtifact(id2Outcome_SVM);
-//		compare(id2Outcome_LSTM, id2Outcome_SVM);
-		svm_or_lstm_map(correctSVM,correctLSTM);
+		compare(id2Outcome_LSTM, id2Outcome_SVM);
+//		svm_or_lstm_map(correctSVM,correctLSTM);
 	}
 
 	private static Map<String, String> svm_or_lstm_map(Map<String, Boolean> correctSVM, Map<String, Boolean> correctLSTM) {

@@ -4,6 +4,7 @@ __author__ = 'michael'
 from nltk import FreqDist
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, TimeDistributed, Bidirectional, Flatten, Dropout
+from keras import metrics
 from keras.layers import LSTM
 from keras.utils import np_utils
 import numpy as np
@@ -11,7 +12,7 @@ import os
 
 np.random.seed(1337)  # reproducibility
 
-language='ca'
+language='es'
 embeddingsPath = '/Users/michael/git/ucsm_git/interactiveAM/stanceCatalanIndependence/src/main/resources/'+language+'.polyglot.txt'
 
 leave_out_Files=['data/'+language+'/10/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
@@ -22,11 +23,12 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=100
-    numberEpochs=20
+    lstm_units=64
+    numberEpochs=5
+    batchsize=64
     activation='tanh'
     optimizer='nadam'
-    dropout=0.5
+    dropout=0.2
     lossFunction='categorical_crossentropy'
 
     #prepare data structure
@@ -154,7 +156,7 @@ for file in leave_out_Files:
 
     for epoch in xrange(numberEpochs):
         print "\n------------- Epoch %d ------------" % (epoch+1)
-        words.fit(train_set[1], train_set[0], nb_epoch=1, batch_size=64, verbose=True, shuffle=True)
+        words.fit(train_set[1], train_set[0], nb_epoch=1, batch_size=batchsize, verbose=True, shuffle=True)
         score, acc = words.evaluate(test_set[1], test_set[0])
         print('Accuracy calculated by Keras:', acc*100)
 
@@ -196,10 +198,10 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_.txt", "a+") as file:
+        with open("result/cv/"+language+"_batchsize_"+str(batchsize)+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_.txt", "a+") as file:
                                 file.write(str(gold)+"\t"+str(predicted)+"\n")
 
-        with open("result/cv/"+language+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_id2Outcome.txt", "a+") as file2:
+        with open("result/cv/"+language+"_batchsize_"+str(batchsize)+"_activation_"+str(activation)+"_opimizer"+str(optimizer)+"_lstmUnits_"+str(lstm_units)+"result_dropout_"+str(dropout)+"_epochs_numberEpochs"+str(numberEpochs)+'_lossFunction_'+str(lossFunction)+"_plusDropout_id2Outcome.txt", "a+") as file2:
                                 file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
 
         if predicted==gold: correct+=1

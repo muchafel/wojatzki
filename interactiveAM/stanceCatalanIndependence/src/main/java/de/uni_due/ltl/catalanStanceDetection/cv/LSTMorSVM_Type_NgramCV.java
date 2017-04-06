@@ -53,21 +53,24 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	/**
 	 * XXX CONSTANTS
 	 */
-	public static final String LANGUAGE_CODE = "es";
+	public static final String LANGUAGE_CODE = "ca";
 	private static final int NUM_FOLDS = 3;
 
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
 			TcFeatureFactory.create(LuceneNGram.class, LuceneNGram.PARAM_NGRAM_MAX_N, 3, LuceneNGram.PARAM_NGRAM_MIN_N,
-					1, LuceneNGram.PARAM_NGRAM_USE_TOP_K, 1000),
-			TcFeatureFactory.create(LuceneCharacterNGram.class, LuceneCharacterNGram.PARAM_NGRAM_MAX_N, 4,
-					LuceneCharacterNGram.PARAM_NGRAM_MIN_N, 2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K, 1000)
-			,TcFeatureFactory.create(NrOfTokensPerSentence.class), 
+					1, LuceneNGram.PARAM_NGRAM_USE_TOP_K, 4000),
+//			TcFeatureFactory.create(LuceneCharacterNGram.class, LuceneCharacterNGram.PARAM_NGRAM_MAX_N, 4,
+//					LuceneCharacterNGram.PARAM_NGRAM_MIN_N, 2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K, 1000)
+//			,
+			TcFeatureFactory.create(NgramCoverage.class, NgramCoverage.PARAM_NGRAM_MAX_N, 3,
+					NgramCoverage.PARAM_NGRAM_MIN_N, 1, NgramCoverage.PARAM_NGRAM_USE_TOP_K, 1000),
+			TcFeatureFactory.create(NrOfTokensPerSentence.class), 
 			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-					"src/main/resources/" + LANGUAGE_CODE + ".polyglot.txt"),
-			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
+//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+//					"src/main/resources/" + LANGUAGE_CODE + ".polyglot.txt"),
+			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")
 
 	);
 
@@ -76,7 +79,7 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		LSTMorSVM_Type_NgramCV experiment = new LSTMorSVM_Type_NgramCV();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_rich");
+		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_coverage4000");
 	}
 
 	private static String getValidName(String experimentName) {
@@ -162,7 +165,7 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 				dir + "training_truth_" + LANGUAGE_CODE + ".txt",
 				CatalanStanceSVMorSVMTypeReader.PARAM_LSTM_PREDICTION_FILE,
 				"src/main/resources/id2outcome/" + LANGUAGE_CODE
-						+ "_activation_tanh_opimizeradam_lstmUnits_100result_dropout_0.3_epochs_numberEpochs5_id2Outcome.txt", CatalanStanceSVMorSVMTypeReader.PARAM_SVM_PREDICTION_FILE,"src/main/resources/id2outcome/"+LANGUAGE_CODE+"_char_word_id2homogenizedOutcome.txt"));
+						+ "_sparse10_id2Outcome.txt", CatalanStanceSVMorSVMTypeReader.PARAM_SVM_PREDICTION_FILE,"src/main/resources/id2outcome/"+LANGUAGE_CODE+"_char_word_embeddings_id2homogenizedOutcome.txt"));
 
 		return dimReaders;
 	}

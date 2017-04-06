@@ -14,24 +14,44 @@ public class Id2OutcomePerformance {
 
 		File targetFileCA_LSTM= new File("src/main/resources/id2outcome/ca_activation_tanh_opimizeradam_lstmUnits_100result_dropout_0.3_epochs_numberEpochs5_id2Outcome.txt");
 		File targetFileES_LSTM= new File("src/main/resources/id2outcome/es_activation_tanh_opimizeradam_lstmUnits_100result_dropout_0.3_epochs_numberEpochs5_id2Outcome.txt");
+		File targetFileCA_LSTM_sparse= new File("src/main/resources/id2outcome/ca_sparse10_id2Outcome.txt");
+		File targetFileES_LSTM_sparse= new File("src/main/resources/id2outcome/es_sparse10_id2Outcome.txt");
 		File targetFileCA_SVM= new File("src/main/resources/id2outcome/ca_char_word_id2homogenizedOutcome.txt");
+		File targetFileCA_SVM_embeddings= new File("src/main/resources/id2outcome/ca_char_word_embeddings_id2homogenizedOutcome.txt");
 		File targetFileES_SVM= new File("src/main/resources/id2outcome/es_char_word_id2homogenizedOutcome.txt");
+		File targetFileES_SVM_embeddings= new File("src/main/resources/id2outcome/es_char_word_embeddings_id2homogenizedOutcome.txt");
 		
 		System.out.println("---");
 		System.out.println("CA LSTM");
 		evaluate(targetFileCA_LSTM);
 		
 		System.out.println("---");
+		System.out.println("CA LSTM sparse");
+		evaluate(targetFileCA_LSTM_sparse);
+		
+		System.out.println("---");
 		System.out.println("ES LSTM");
 		evaluate(targetFileES_LSTM);
 		
 		System.out.println("---");
-		System.out.println("ES SVM");
+		System.out.println("ES LSTM sparse");
+		evaluate(targetFileES_LSTM_sparse);
+		
+		System.out.println("---");
+		System.out.println("CA SVM");
 		evaluate(targetFileCA_SVM);
+		
+		System.out.println("---");
+		System.out.println("CA SVM Embeddings");
+		evaluate(targetFileCA_SVM_embeddings);
 		
 		System.out.println("---");
 		System.out.println("ES SVM");
 		evaluate(targetFileES_SVM);
+		
+		System.out.println("---");
+		System.out.println("ES SVM Embeddings");
+		evaluate(targetFileES_SVM_embeddings);
 
 	}
 
