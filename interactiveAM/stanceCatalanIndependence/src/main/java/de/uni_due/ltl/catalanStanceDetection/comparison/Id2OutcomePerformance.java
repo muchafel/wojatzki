@@ -21,6 +21,9 @@ public class Id2OutcomePerformance {
 		File targetFileES_SVM= new File("src/main/resources/id2outcome/es_char_word_id2homogenizedOutcome.txt");
 		File targetFileES_SVM_embeddings= new File("src/main/resources/id2outcome/es_char_word_embeddings_id2homogenizedOutcome.txt");
 		
+		File bothTrained_SVM= new File("src/main/resources/id2outcome/both_trained_ngrams_id2homogenizedOutcome.txt");
+		File bothSUMMED_SVM= new File("src/main/resources/id2outcome/both_summed_char_word_embeddings_id2homogenizedOutcome2.txt");
+		
 		System.out.println("---");
 		System.out.println("CA LSTM");
 		evaluate(targetFileCA_LSTM);
@@ -52,6 +55,15 @@ public class Id2OutcomePerformance {
 		System.out.println("---");
 		System.out.println("ES SVM Embeddings");
 		evaluate(targetFileES_SVM_embeddings);
+		
+//		System.out.println("---");
+//		System.out.println("BOTH TRAINED");
+//		evaluate(bothTrained_SVM);
+//		
+//		
+//		System.out.println("---");
+//		System.out.println("BOTH SUMMED");
+//		evaluate(bothSUMMED_SVM);
 
 	}
 

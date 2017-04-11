@@ -56,17 +56,30 @@ public class CatalanStanceSVMorSVMTypeReader extends CatalanStanceReader{
 	
 	
 	private String getTextClassificationOutcome(String docId) {
-		if(correctSVM.get(docId) && correctLSTM.get(docId) ){
-			return "BOTH";
-		}
-		else if(correctSVM.get(docId) && !correctLSTM.get(docId) ){
+//		if(correctSVM.get(docId) && correctLSTM.get(docId) ){
+//			return "BOTH";
+//		}
+//		else if(correctSVM.get(docId) && !correctLSTM.get(docId) ){
+//			return "SVM";
+//		}
+//		else if(!correctSVM.get(docId) && correctLSTM.get(docId) ){
+//			return "LSTM";
+//		}
+//		else{
+//			return "UNK";
+//		}
+		if (correctSVM.get(docId)) {
 			return "SVM";
 		}
-		else if(!correctSVM.get(docId) && correctLSTM.get(docId) ){
-			return "LSTM";
-		}else{
+		else {
 			return "UNK";
 		}
+//		if (correctLSTM.get(docId)) {
+//			return "LSTM";
+//		}
+//		else {
+//			return "UNK";
+//		}
 	}
 	
 }

@@ -47,15 +47,16 @@ public class NgramCV implements Constants{
 	/**
 	 * XXX CONSTANTS
 	 */
-	public static final String LANGUAGE_CODE = "es";
-	private static final int NUM_FOLDS = 10;
+	public static final String LANGUAGE_CODE = "es"
+			+ "";
+	private static final int NUM_FOLDS = 3;
 
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,3,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_USE_TOP_K,1000),
-			TcFeatureFactory.create(LuceneCharacterNGram.class,LuceneCharacterNGram.PARAM_NGRAM_MAX_N,4,LuceneCharacterNGram.PARAM_NGRAM_MIN_N,2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K,1000)
-			,
+			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,3,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_USE_TOP_K,3000),
+//			TcFeatureFactory.create(LuceneCharacterNGram.class,LuceneCharacterNGram.PARAM_NGRAM_MAX_N,4,LuceneCharacterNGram.PARAM_NGRAM_MIN_N,2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K,3000)
+//			,
 			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")
 			//			,
 //			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
@@ -67,7 +68,7 @@ public class NgramCV implements Constants{
 		System.out.println("DKPRO_HOME: " + baseDir);
 		NgramCV experiment = new NgramCV();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE+"_NgramCV_embeddings");
+		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE+"_embeddings_3_3000_chra_3000_wo_char");
 		}
 
 

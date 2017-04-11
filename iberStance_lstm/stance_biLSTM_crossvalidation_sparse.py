@@ -29,7 +29,7 @@ for file in leave_out_Files:
     numberEpochs=10
     activation='tanh'
     optimizer='nadam'
-    dropout=0.2
+    dropout=0.3
     lossFunction='sparse_categorical_crossentropy'
     learningRate=0.005
 
@@ -168,7 +168,7 @@ for file in leave_out_Files:
     incorrect = 0.0
 
     predictions = words.predict_classes(test_set[1])
-    #print(predictions)
+    probabilities = words.predict_proba(test_set[1])
 
     correct = 0.0
     incorrect = 0.0
@@ -201,11 +201,14 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("result/cv_lr/"+language+"_sparse"+str(numberEpochs)+"_.txt", "a+") as file:
-                                file.write(str(gold)+"\t"+str(predicted)+"\n")
+        # with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_.txt", "a+") as file:
+        #                         file.write(str(gold)+"\t"+str(predicted)+"\n")
+        # #
+        # with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
+        #                          file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
 
-        with open("result/cv_lr/"+language+"_sparse"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
-                                file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
+        with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Prob.txt", "a+") as file2:
+                                 file2.write(id+"="+str(probabilities[i])+";"+str(getTCVector(gold))+"\n")
 
         if predicted==gold: correct+=1
         else: incorrect += 1
