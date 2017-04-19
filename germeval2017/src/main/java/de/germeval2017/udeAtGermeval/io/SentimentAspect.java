@@ -7,6 +7,7 @@ public class SentimentAspect {
 	private int begin;
 	private int end;
 	private String aspect;
+	private String ote;
 	private String sentiment;
 	
 	public SentimentAspect(int begin, int end, String aspect, String sentiment) {
@@ -49,5 +50,14 @@ public class SentimentAspect {
 		this.sentiment = sentiment;
 	}
 	public SentimentAspect() {
+	}
+
+	@XmlAttribute(name = "target")
+	public String getOte() {
+		return ote;
+	}
+
+	public void setOte(String ote) {
+		this.ote = ote;
 	}
 }

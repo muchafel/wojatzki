@@ -18,7 +18,7 @@ public class DBTest {
 	public void connectionTest() throws Exception {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
 		System.out.println(db.printConnection());
-		assertEquals(db.printConnection(), "jdbc:mysql://localhost/interactiveArgumentMining?user=root&password="
+		assertEquals(db.printConnection(), "jdbc:mysql://localhost/interactiveArgumentMining?user=root&password=&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
 				+ System.lineSeparator() + "root@localhost" + System.lineSeparator());
 	}
 
@@ -26,7 +26,7 @@ public class DBTest {
 	public void insertDeleteDataSetTest() throws Exception {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
 		DataSet dataSet = new DataSet("pokekazan.de/kevkev_data", "kevkev_data", "pokekazan.de",
-				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")), 100, 200);
+				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")));
 		db.addDataSet(dataSet);
 		DataSet dataSetRetrieved = db.getDataByNameAndOrigin("kevkev_data", "pokekazan.de");
 		assertEquals(dataSetRetrieved.getName(),dataSet.getName());
@@ -36,12 +36,12 @@ public class DBTest {
 		assertEquals(dataSetRetrieved.getKeyWords(),dataSet.getKeyWords());
 		db.deleteDataSet(dataSetRetrieved);
 	}
-	
+//	
 	@Test
 	public void insertDeleteDataPointTest() throws Exception {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
 		DataSet dataSet = new DataSet("pokekazan.de/kevkev_data", "kevkev_data", "pokekazan.de",
-				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")), 100, 200);
+				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")));
 		db.addDataSet(dataSet);
 		
 		DataPoint datapoint= new DataPoint(dataSet, "This is a long stance-taking ngram collection in favor of some target", "FAVOR");
@@ -61,14 +61,14 @@ public class DBTest {
 		DataSet dataSetRetrieved = db.getDataByNameAndOrigin("kevkev_data", "pokekazan.de");
 		db.deleteDataSet(dataSetRetrieved);
 	}
-	
+//	
 	@Test
 	public void complexInsertDeleteTest() throws Exception {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
 		DataSet dataSet = new DataSet("pokekazan.de/kevkev_data", "kevkev_data", "pokekazan.de",
-				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")), 100, 200);
+				new ArrayList<String>(Arrays.asList("Pika", "Pika", "Chu")));
 		DataSet dataSet2 = new DataSet("medocafe.ch/melonpan", "melonpan", "medocafe.ch",
-				new ArrayList<String>(Arrays.asList("ru", "xu", "nu")), 1000, 2000);
+				new ArrayList<String>(Arrays.asList("ru", "xu", "nu")));
 		db.addDataSet(dataSet);
 		db.addDataSet(dataSet2);
 		

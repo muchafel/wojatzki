@@ -14,7 +14,7 @@ import os
 
 np.random.seed(1337)  # reproducibility
 
-language='ca'
+language='es'
 embeddingsPath = '/Users/michael/git/ucsm_git/interactiveAM/stanceCatalanIndependence/src/main/resources/prunedEmbeddings_wiki.'+language+'.vec'
 
 leave_out_Files=['data/'+language+'/10/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
@@ -25,11 +25,11 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=64
+    lstm_units=128
     numberEpochs=10
     activation='tanh'
     optimizer='nadam'
-    dropout=0.3
+    dropout=0.2
     lossFunction='sparse_categorical_crossentropy'
     learningRate=0.005
 
@@ -168,7 +168,7 @@ for file in leave_out_Files:
     incorrect = 0.0
 
     predictions = words.predict_classes(test_set[1])
-    probabilities = words.predict_proba(test_set[1])
+   # probabilities = words.predict_proba(test_set[1])
 
     correct = 0.0
     incorrect = 0.0
@@ -201,14 +201,14 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        # with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_.txt", "a+") as file:
-        #                         file.write(str(gold)+"\t"+str(predicted)+"\n")
+        with open("result/cv_lr/"+language+"_activation_"+activation+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_.txt", "a+") as file:
+                                 file.write(str(gold)+"\t"+str(predicted)+"\n")
         # #
-        # with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
-        #                          file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
+        with open("result/cv_lr/"+language+"_activation_"+activation+"_dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
+                                  file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
 
-        with open("result/cv_lr/"+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Prob.txt", "a+") as file2:
-                                 file2.write(id+"="+str(probabilities[i])+";"+str(getTCVector(gold))+"\n")
+       # with open("result/cv_lr/"+"dropOut_"+str(dropout)+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Prob.txt", "a+") as file2:
+       #                          file2.write(id+"="+str(probabilities[i])+";"+str(getTCVector(gold))+"\n")
 
         if predicted==gold: correct+=1
         else: incorrect += 1

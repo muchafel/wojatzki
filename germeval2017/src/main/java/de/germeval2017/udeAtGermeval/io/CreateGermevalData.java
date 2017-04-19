@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -18,46 +19,69 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 public class CreateGermevalData {
 
 	public static void main(String[] args) throws JAXBException, IOException {
-		File input=  new File("data/train.xml");
+		File input=  new File("data/xml_data_split/dev.xml");
 		SentimentDocumentSet docs= SentimentDataReader.read(input);
-		System.out.println(docs.getDocs().size());
-		int aspects=0;
-		for(SentimentDocument doc: docs.getDocs()){
-			doc=setDocSentiment(doc);
-			doc=setRelevance(doc);
-//			System.out.println(doc.getId());
-//			System.out.println(doc.getText());
-			if(doc.getAspects().getAspects() != null){
-				aspects+=doc.getAspects().getAspects().size();
-//				for(SentimentAspect aspect: doc.getAspects().getAspects()){
-//					System.out.println(aspect.getAspect()+ " : "+aspect.getSentiment());
-//				}
-			}
-		}
-		FrequencyDistribution<String> fd_Sentiment= new FrequencyDistribution<String>();
-		FrequencyDistribution<String> fd_Relevance= new FrequencyDistribution<String>();
-
-		for(SentimentDocument doc: docs.getDocs()){
-			fd_Sentiment.inc(doc.getSentiment());
-			fd_Relevance.inc(String.valueOf(doc.isRelevance()));
-		}
-		System.out.println(fd_Sentiment.getCount("neutral")+" "+fd_Sentiment.getCount("negative")+" "+fd_Sentiment.getCount("positive"));
-		System.out.println(fd_Relevance.getCount("true")+" "+ fd_Relevance.getCount("false"));
-		System.out.println(aspects);
+		
+		File input_irr=  new File("data/irrelevant-documents/DEV.xml");
+		SentimentDocumentSet docs_irr= SentimentDataReader.read(input_irr);
+		
+		setUpDocs(docs,true);
+		setUpDocs(docs_irr,false);
+		
+		docs.getDocs().addAll(docs_irr.getDocs());
+		docs.setDocs(shuffle(docs.getDocs()));
+		
 		
 		writeXML(docs, new File(input.getName()+"_processed.xml"));
 		writeTSV(docs, new File(input.getName()+"_processed.tsv"));
 	}
 
+	private static List<SentimentDocument> shuffle(List<SentimentDocument> docs) {
+		Collections.shuffle(docs);
+		return docs;
+	}
+
+	private static void setUpDocs(SentimentDocumentSet docs, boolean b) {
+		System.out.println(docs.getDocs().size());
+		int aspects=0;
+		List<SentimentDocument> toRemove= new ArrayList<SentimentDocument>();
+		int i=0;
+		for(SentimentDocument doc: docs.getDocs()){
+			doc=setDocSentiment(doc);
+			doc.setRelevance(b);
+			if(doc.getText()==null || doc.getText().equals("null")){
+				toRemove.add(doc);
+			}
+//			System.out.println(doc.getId());
+//			System.out.println(doc.getText());
+			if(doc.getAspects()!= null && doc.getAspects().getAspects() != null){
+				aspects+=doc.getAspects().getAspects().size();
+//				for(SentimentAspect aspect: doc.getAspects().getAspects()){
+//					System.out.println(aspect.getAspect()+ " : "+aspect.getSentiment());
+//				}
+			}
+			i++;
+		}
+		//remove null text
+		for(SentimentDocument doc: toRemove){
+			docs.getDocs().remove(doc);
+		}
+		
+	}
+
 	private static void writeTSV(SentimentDocumentSet docs, File file) throws IOException {
 		int i =0;
+		//write header
+		FileUtils.write(new File(file.getName()), "SOURCE"+"\t"+"TEXT"+"\t"+"RELEVANCE"+"\t"+"SENTIMENT"+"\t"+"CATEGORY:SENTIMENT"+"\t"+System.lineSeparator(), "UTF-8",true);
+
+//		FileUtils.write(new File(file.getName()+"_trial"), "SOURCE"+"\t"+"TEXT"+"\t"+"RELEVANCE"+"\t"+"SENTIMENT"+"\t"+"CATEGORY:SENTIMENT"+"\t"+System.lineSeparator(), "UTF-8",true);
 		for(SentimentDocument doc: docs.getDocs()){
-			if(i<100){
-				i++;
-				FileUtils.write(new File(file.getName()+"_trial"), getDocTSVString(doc)+System.lineSeparator(), "UTF-8",true);
-			}else{
+//			if(i<100){
+//				i++;
+//				FileUtils.write(new File(file.getName()+"_trial"), getDocTSVString(doc)+System.lineSeparator(), "UTF-8",true);
+//			}else{
 				FileUtils.write(file, getDocTSVString(doc)+System.lineSeparator(), "UTF-8",true);
-			}
+//			}
 		}
 	}
 
@@ -92,7 +116,7 @@ public class CreateGermevalData {
 
 	private static SentimentDocument setRelevance(SentimentDocument doc) {
 		if(doc.getSentiment().equals("neutral")){
-			doc.setRelevance(false);
+			doc.setRelevance(true );
 		}else{
 			doc.setRelevance(true);
 		}
@@ -105,7 +129,7 @@ public class CreateGermevalData {
 		int neutral=0;
 		int negative=0;
 		
-		if(doc.getAspects().getAspects() != null){
+		if(doc.getAspects()!=null && doc.getAspects().getAspects() != null){
 			for(SentimentAspect aspect: doc.getAspects().getAspects()){
 				if(aspect.getSentiment().equals("positive")){
 					positive++;

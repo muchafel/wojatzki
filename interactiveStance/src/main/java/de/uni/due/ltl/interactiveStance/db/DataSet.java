@@ -17,7 +17,7 @@ public class DataSet {
 	private String website;
 	private List<String> keyWords;
 	
-	public DataSet(String url, String name, String website, List<String> keyWords, int numberOfFavorInstances,int numberOfAgainstInstances) {
+	public DataSet(String url, String name, String website, List<String> keyWords) {
 		this.url = url;
 		this.name = name;
 		this.website = website;
@@ -66,7 +66,8 @@ public class DataSet {
 	public void serialize(Connection connection) throws SQLException {
 		Statement st = connection.createStatement();
 		String query="INSERT INTO `interactiveArgumentMining`.`Data_Set` (`ID`, `Url`, `Name`, `Website`, `KeyWords`) " + "VALUES (Null,'" + this.url
-				+ "', '" + this.name + "', '" + this.website + "', '" + StringUtils.join(keyWords, " ") +  ")";
+				+ "', '" + this.name + "', '" + this.website + "', '" + StringUtils.join(keyWords, " ") +  "')";
+//		System.out.println(query);
 		st.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
 		
 		ResultSet rs = st.getGeneratedKeys();

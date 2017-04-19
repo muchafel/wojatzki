@@ -73,7 +73,7 @@ public class ForAndAgainstDOTCOMCrawler implements StanceCrawlerInstance {
 				}
 			}else{
 				dataSet = new DataSet(link, getDataSetName(link), "http://www.forandagainst.com/",
-						new ArrayList<String>(Arrays.asList(getDataSetName(link))), 0, 0);
+						new ArrayList<String>(Arrays.asList(getDataSetName(link))));
 			}
 			
 			try {
