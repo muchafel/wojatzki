@@ -27,47 +27,45 @@ import org.apache.lucene.util.Sorter;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntPoint;
 
+import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 public class TargetSearcher {
 	private Directory index;
 	private StandardAnalyzer analyzer;
-	private int hitsPerPage = 100;
+	private int hitsPerPage;
 	
-	public void SetUp(StanceDB db) throws SQLException, IOException{
+	public void SetUp(StanceDB db, int hitLimit) throws SQLException, IOException{
 		
 		analyzer = new StandardAnalyzer();
 		index = new RAMDirectory();
-
+		this.hitsPerPage=hitLimit;
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
         IndexWriter w = new IndexWriter(index, config);
         db.setUpIndex(w);
-//        int i=0;
-//		for(String name: db.getModelNames()){
-//			i++;
-//			addTarget(w, name);
-//		}
-//		System.out.println(i);
 		w.close();
 		
 	}
 	
-	public List<String> search(String query) throws IOException, ParseException{
-		List<String> result= new ArrayList<>();
+	public List<ExplicitTarget> search(String query, boolean doSort) throws IOException, ParseException{
+		List<ExplicitTarget> result= new ArrayList<>();
 		QueryParser parser= new QueryParser("name", analyzer);
 		parser.setAllowLeadingWildcard(true);
 		Query q = parser.parse("*"+query+"*");
 
         IndexReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
+      
+        TopDocs docs= null;
         
-        SortField longSort = new SortedNumericSortField("instanceCount", SortField.Type.INT, true);
-        Sort sort = new Sort(longSort);
-        TopDocs docs = searcher.search(q,hitsPerPage,sort);
-        
-//        TopDocs docs = searcher.search(q,hitsPerPage);
-        
+        if(doSort){
+        	SortField longSort = new SortedNumericSortField("instanceCount", SortField.Type.INT, true);
+            Sort sort = new Sort(longSort);
+            docs = searcher.search(q,hitsPerPage,sort);
+        }else{
+        	docs = searcher.search(q,hitsPerPage);
+        }
         
         ScoreDoc[] hits = docs.scoreDocs;
 
@@ -75,8 +73,9 @@ public class TargetSearcher {
         for(int i=0;i<hits.length;++i) {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
-            System.out.println((i + 1) + ".  " + d.get("name")+ " : "+d.get("website")+  " : "+ d.get("instanceCount"));
-            result.add(d.get("name"));
+            System.out.println((i + 1) + ".  " + d.get("name")+" ("+d.get("id")+")" +" : "+d.get("website")+  " : "+ d.get("instanceCount")+" (+"+d.get("favorCount")+"/-"+d.get("againstCount")+")");
+            ExplicitTarget explicitTarget= new ExplicitTarget(d.get("id"), d.get("name"), Integer.valueOf(d.get("favorCount")), Integer.valueOf(d.get("againstCount")));
+            result.add(explicitTarget);
         }
 
         reader.close();
@@ -84,12 +83,5 @@ public class TargetSearcher {
 		return result;
 	}
 	
-	
-	
 
-	private void addTarget(IndexWriter w, String name) throws IOException {
-		Document doc = new Document();
-        doc.add(new TextField("name", name, Field.Store.YES));
-        w.addDocument(doc);
-	}
 }

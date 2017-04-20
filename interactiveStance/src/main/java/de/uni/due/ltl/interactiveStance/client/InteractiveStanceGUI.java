@@ -24,7 +24,7 @@ import com.vaadin.v7.data.util.BeanItemContainer;
 import com.vaadin.v7.ui.Grid;
 import com.vaadin.v7.ui.ProgressIndicator;
 
-import de.uni.due.ltl.interactiveStance.backend.ExplicitStanceModel;
+import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 
@@ -36,7 +36,8 @@ public class InteractiveStanceGUI extends UI {
 	TextField filter = new TextField("Filter Term");
 	Grid listOfAvailableTargets = new Grid("Available Targets");
 	Grid listOfSelectedTargets = new Grid("Selected Targets");
-
+	Button searchButton= new Button("Search");
+	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
 
 	@Override
@@ -45,49 +46,49 @@ public class InteractiveStanceGUI extends UI {
 		buildLayout();
 	}
 
+	/**
+	 * Here we configure properties of our components
+	 */
 	private void configureComponents() {
 
 		// configure available grid
 		filter.setDescription("filter");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
-		listOfAvailableTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitStanceModel.class));
+		
+		searchButton.addClickListener(clickEvent -> {
+			service.newSearch(filter.getValue());
+			refresh_AvailableGrid();
+			refresh_SelectedGrid();
+		});
+		
+		listOfAvailableTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
 		listOfAvailableTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
 		listOfAvailableTargets.getColumn("targetName").setWidth(500);
 		listOfAvailableTargets.removeColumn("id");
-		listOfAvailableTargets.removeColumn("model");
 		listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
 		listOfAvailableTargets.addSelectionListener(e -> {
 			listOfAvailableTargets.getContainerDataSource().removeItem(listOfAvailableTargets.getSelectedRow());
-			service.selectTarget((ExplicitStanceModel) listOfAvailableTargets.getSelectedRow());
+			service.selectTarget((ExplicitTarget) listOfAvailableTargets.getSelectedRow());
 			refresh_SelectedGrid();
 		});
 
 		// configure selection grid
-		listOfSelectedTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitStanceModel.class));
+		listOfSelectedTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
 		listOfSelectedTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
 		listOfSelectedTargets.getColumn("targetName").setWidth(500);
 		listOfSelectedTargets.removeColumn("id");
-		listOfSelectedTargets.removeColumn("model");
 		listOfSelectedTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 		listOfSelectedTargets.addSelectionListener(e -> {
 			listOfSelectedTargets.getContainerDataSource().removeItem(listOfSelectedTargets.getSelectedRow());
-			service.deselectTarget((ExplicitStanceModel) listOfSelectedTargets.getSelectedRow());
+			service.deselectTarget((ExplicitTarget) listOfSelectedTargets.getSelectedRow());
 			refresh_AvailableGrid();
 		});
 
 		// initial filling of grid
 		refresh_AvailableGrid();
-
-	}
-
-	private void buildLayout() {
-		HorizontalLayout actions = new HorizontalLayout(filter);
-		actions.setWidth("50%");
-		filter.setWidth("50%");
-		actions.setExpandRatio(filter, 1);
-
-		Button analysisButton = new Button("Analysis");
+		
+		
 		analysisButton.addClickListener(clickEvent -> {
 //			Notification.show("Run Analysis of "+service.printSelectedTargets());
 
@@ -99,6 +100,18 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(FontAwesome.COGS);
+
+	}
+
+	/**
+	 * Here we stack the components together
+	 */
+	private void buildLayout() {
+		HorizontalLayout actions = new HorizontalLayout(filter,searchButton);
+		actions.setWidth("50%");
+		filter.setWidth("50%");
+		actions.setExpandRatio(filter, 1);
+
 
 		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton,listOfSelectedTargets);
 		left.setSpacing(true);
@@ -119,12 +132,12 @@ public class InteractiveStanceGUI extends UI {
 
 	private void refresh_AvailableGrid(String stringFilter) {
 		listOfAvailableTargets.setContainerDataSource(
-				new BeanItemContainer<>(ExplicitStanceModel.class, service.getAllAvailableTargets(stringFilter)));
+				new BeanItemContainer<>(ExplicitTarget.class, service.getAllAvailableTargets(stringFilter)));
 	}
 
 	private void refresh_SelectedGrid() {
 		listOfSelectedTargets.setContainerDataSource(
-				new BeanItemContainer<>(ExplicitStanceModel.class, service.getAllSelectedTargets()));
+				new BeanItemContainer<>(ExplicitTarget.class, service.getAllSelectedTargets()));
 	}
 
 	/*

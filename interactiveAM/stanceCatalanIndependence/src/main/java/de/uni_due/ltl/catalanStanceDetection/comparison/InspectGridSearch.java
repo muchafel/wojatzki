@@ -17,17 +17,17 @@ public class InspectGridSearch {
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv3");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_wiki");
-		File folder= new File("/Users/michael/Desktop/cv_dropOut");
-//		File folder= new File("/Users/michael/Desktop/cv");
+//		File folder= new File("/Users/michael/Desktop/cv_dropOut");
+		File folder= new File("/Users/michael/Desktop/cv");
 		
 		double max= 0;
 		String name= null;
-		String lang="es";
+		String lang="ca";
 		
 		TreeMap<Double, String> resultMap= new TreeMap<>();
 		
 		for(File file: folder.listFiles()){
-			if(!file.getName().contains("id2Outcome") && (file.getName().startsWith(lang) || file.getName().startsWith("CONV_"+lang)) ){
+			if(!file.getName().contains("id2Outcome") && (file.getName().startsWith(lang) || file.getName().startsWith("CONV_"+lang))&& !file.getName().endsWith("_id2Prob.txt")){
 				System.out.println(file.getName());
 				double result= evaluate(file);
 				resultMap.put(result, file.getName());
@@ -39,6 +39,7 @@ public class InspectGridSearch {
 		}
 		System.out.println("--------------");
 		System.out.println("best config "+name+ " "+max);
+		System.out.println("# "+resultMap.size());
 		for(Double key: resultMap.keySet()){
 			System.out.println(key+ " "+resultMap.get(key));
 		}

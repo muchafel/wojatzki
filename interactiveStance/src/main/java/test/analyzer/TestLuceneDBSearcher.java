@@ -17,14 +17,14 @@ public class TestLuceneDBSearcher {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
 		
 		TargetSearcher searcher= new TargetSearcher();
-		searcher.SetUp(db);
+		searcher.SetUp(db,100);
 		
-		searcher.search("atheism");
-		searcher.search("hillary");
-		searcher.search("trump");
-		searcher.search("abortion");
-		searcher.search("climate*change");
-		searcher.search("feminism");
+		searcher.search("atheism",true);
+		searcher.search("hillary",true);
+		searcher.search("trump",true);
+		searcher.search("abortion",true);
+		searcher.search("climate*change",true);
+		searcher.search("feminism",true);
 		
 		
 //		assertEquals(db.printConnection(), "jdbc:mysql://localhost/interactiveArgumentMining?user=root&password=&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"

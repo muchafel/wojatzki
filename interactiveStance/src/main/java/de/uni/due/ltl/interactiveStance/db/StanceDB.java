@@ -52,39 +52,42 @@ public class StanceDB {
 	}
 	
 	/**
-	 * be careful to close DB connection after iterating the resultset
+	 * equpis a lucene index with all datasets in the DB
 	 * @param w 
 	 * @return
 	 * @throws SQLException
 	 * @throws IOException 
 	 */
 	public void setUpIndex(IndexWriter w) throws SQLException, IOException{
-		List<String> result= new ArrayList<>();
 		Connection connection = getConnection();
 		Statement statement = connection.createStatement();
 		
-		
-		ResultSet resultSet = statement.executeQuery("SELECT `Name`,`Website`, COUNT(data_point.Label) FROM `Data_Set`,`data_point` WHERE `Data_Set`.`ID` = `data_point`.`Data_Set_ID` GROUP By `Name`");
+		ResultSet resultSet = statement.executeQuery("Select  a.ID, a.Name, a.Website, fav, ag from (	SELECT a.ID, Name,Website, COUNT(b.Label) as fav FROM Data_Set as a, data_point as b WHERE a.ID = b.Data_Set_ID AND b.Label='FAVOR' GROUP By ID ) as a inner join (	SELECT a.ID, Name,Website, COUNT(b.Label) as ag FROM Data_Set as a, data_point as b WHERE a.ID = b.Data_Set_ID AND b.Label='AGAINST' GROUP By ID) as b on a.ID = b.ID;");
+//		ResultSet resultSet = statement.executeQuery("SELECT `Data_Set`.`ID`,`Name`,`Website`, COUNT(data_point.Label) FROM `Data_Set`,`data_point` WHERE `Data_Set`.`ID` = `data_point`.`Data_Set_ID`  GROUP By `Name`");
 		
 		while (resultSet.next()) {
-            addTarget(w, resultSet.getString("Name"),resultSet.getString("Website"),Integer.valueOf(resultSet.getInt("COUNT(data_point.Label)")));
+            addTarget(w, resultSet.getString("a.ID"),resultSet.getString("a.Name"),resultSet.getString("a.Website"),resultSet.getInt("fav"),resultSet.getInt("ag"));
 		}
 		terminateSQLArtitfacts(connection,statement,resultSet);
 	}
 	
-	private void addTarget(IndexWriter w, String name, String website, Integer count) throws IOException {
-		
-		
+	private void addTarget(IndexWriter w,String id, String name, String website, Integer favor, Integer against) throws IOException {
+		int count= favor+against;
 		Document doc = new Document();
+		doc.add(new TextField("id", id, Field.Store.YES));
         doc.add(new TextField("name", name, Field.Store.YES));
         doc.add(new TextField("website", website, Field.Store.YES));
         
         doc.add(new IntPoint("instanceCount", count));
         doc.add(new StoredField("instanceCount", count));
         doc.add(new NumericDocValuesField("instanceCount", count));
-
-//        doc.add(field);
+        doc.add(new IntPoint("favorCount", favor));
+        doc.add(new StoredField("favorCount", favor));
+        doc.add(new NumericDocValuesField("favorCount", favor));
         
+        doc.add(new IntPoint("againstCount", against));
+        doc.add(new StoredField("againstCount", against));
+        doc.add(new NumericDocValuesField("againstCount", against));
         
         w.addDocument(doc);
 	}
@@ -124,6 +127,8 @@ public class StanceDB {
 	            this.user= user;
 	            this.pw=pw;
 	            this.dbPath=dbPath;
+	            //register driver as we cannot be sure whether it is in catalina
+	            Class.forName("com.mysql.jdbc.Driver");
 	}
 
 	public DataSet getDataByNameAndOrigin(String name, String website) throws SQLException {
