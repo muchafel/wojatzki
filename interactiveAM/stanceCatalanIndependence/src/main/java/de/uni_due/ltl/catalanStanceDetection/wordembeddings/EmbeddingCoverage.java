@@ -53,6 +53,7 @@ public class EmbeddingCoverage extends FeatureExtractorResource_ImplBase impleme
 		}
 		double coverageNormalized=(double)contained/(double)tokens.size();
 		featList.add(new Feature("embeddingCoverage", coverageNormalized));
+		featList.add(new Feature("numberOfContainedEmbeddings",tokens.size()- contained));
 		return featList;
 	}
 

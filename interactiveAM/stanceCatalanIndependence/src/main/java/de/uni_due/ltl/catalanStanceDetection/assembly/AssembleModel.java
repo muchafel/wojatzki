@@ -19,7 +19,7 @@ import de.unidue.ltl.evaluation.measure.categorial.Fscore;
 public class AssembleModel {
 	
 	private static int lstmCounter=0;
-	private static String language="es";
+	private static String language="ca";
 	
 	public static void main(String[] args) throws Exception {
 
@@ -28,9 +28,12 @@ public class AssembleModel {
 
 	private static void assembleCV() throws Exception {
 		
-		File typePredictionFile= new File("src/main/resources/id2outcome/typePrediction_"+language+"_4fold.txt");
+//		File typePredictionFile= new File("src/main/resources/id2outcome/typePrediction_"+language+"_4fold.txt");
+		File typePredictionFile= new File("src/main/resources/id2outcome/typePrediction_"+language+"_J48.txt");
 		File svmPredictionFile= new File("src/main/resources/id2outcome/"+language+"_char_word_embeddings_id2homogenizedOutcome.txt");
 		File lstmPredictionFile= new File("src/main/resources/id2outcome/"+language+"_sparse10_id2Outcome.txt");
+//		File lstmPredictionFile= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr/"+language+"_activation_softmax_dropOut_0.3_sparse10_id2Outcome.txt");
+		
 		
 		Map<String,String> typePrediction=Id2OutcomeUtil.getId2OutcomeMap_String(typePredictionFile.getAbsolutePath(),true);
 		Map<String,String> lstmPrediction=Id2OutcomeUtil.getId2OutcomeMap_String(lstmPredictionFile.getAbsolutePath());

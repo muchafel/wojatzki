@@ -15,10 +15,10 @@ public class InspectGridSearch {
 	public static void main(String[] args) throws Exception {
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv3");
-//		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr");
+		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_wiki");
 //		File folder= new File("/Users/michael/Desktop/cv_dropOut");
-		File folder= new File("/Users/michael/Desktop/cv");
+//		File folder= new File("/Users/michael/Desktop/cv");
 		
 		double max= 0;
 		String name= null;

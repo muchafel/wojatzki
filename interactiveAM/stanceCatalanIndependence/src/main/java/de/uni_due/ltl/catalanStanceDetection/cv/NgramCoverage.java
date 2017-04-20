@@ -28,18 +28,28 @@ public class NgramCoverage extends LuceneFeatureExtractorBase implements Feature
 	public Set<Feature> extract(JCas jcas, TextClassificationTarget target) throws TextClassificationException {
 		Set<Feature> features = new HashSet<Feature>();
 
-		int coberedUnigrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
+		int coveredUnigrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
 				1, 1, stopwords));
 		int coveredBigrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
 				2, 2, stopwords));
 		int coveredTrigrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
 				3, 3, stopwords));
+		int coveredFourgrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
+				4, 4, stopwords));
+		
+		int coveredFivegrams=getCoverage(NGramUtils.getAnnotationNgrams(jcas, target, ngramLowerCase, filterPartialStopwordMatches,
+				5, 5, stopwords));
+		
 		
 		int numberOfTokens=JCasUtil.selectCovered(Token.class, target).size();
+		int distinctTokens= new HashSet<>(JCasUtil.selectCovered(Token.class, target)).size();
 		
-		features.add(new Feature("UniGramCoverage", ((double)coberedUnigrams/(double)numberOfTokens)));
+		features.add(new Feature("OOV", ((double)distinctTokens)-(double)coveredUnigrams));
+		features.add(new Feature("UniGramCoverage", ((double)coveredUnigrams/(double)numberOfTokens)));
 		features.add(new Feature("BiGramCoverage", ((double)coveredBigrams/(double)numberOfTokens)));
 		features.add(new Feature("TriGramCoverage", ((double)coveredTrigrams/(double)numberOfTokens)));
+		features.add(new Feature("FourGramCoverage", ((double)coveredFourgrams/(double)numberOfTokens)));
+		features.add(new Feature("FiveGramCoverage", ((double)coveredFivegrams/(double)numberOfTokens)));
 		
 		
 		return features;

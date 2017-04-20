@@ -19,7 +19,7 @@ import de.unidue.ltl.evaluation.measure.categorial.Fscore;
 public class AssembleModel_svm_lstm_predictions {
 	
 	private static int lstmCounter=0;
-	private static String language="es";
+	private static String language="ca";
 	
 	public static void main(String[] args) throws Exception {
 
