@@ -28,6 +28,11 @@ import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 
+/**
+ * main GUI class; use this to start the application
+ * @author michael
+ *
+ */
 @Title("Interactive Stance Detection")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
@@ -40,6 +45,9 @@ public class InteractiveStanceGUI extends UI {
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
 
+	/**
+	 * entry point for GUI
+	 */
 	@Override
 	protected void init(VaadinRequest request) {
 		configureComponents();
