@@ -11,18 +11,12 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.ProgressBar;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.Item;
 import com.vaadin.v7.data.util.BeanItemContainer;
+import com.vaadin.v7.shared.ui.grid.HeightMode;
 import com.vaadin.v7.ui.Grid;
-import com.vaadin.v7.ui.ProgressIndicator;
 
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
@@ -40,7 +34,8 @@ public class InteractiveStanceGUI extends UI {
 
 	TextField filter = new TextField("Filter Term");
 	Grid listOfAvailableTargets = new Grid("Available Targets");
-	Grid listOfSelectedTargets = new Grid("Selected Targets");
+	Grid listOfSelectedFavorTargets = new Grid("Selected Targets of Favor");
+	Grid listOfSelectedAgainstTargets = new Grid("Selected Targets of Against");
 	Button searchButton= new Button("Search");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
@@ -71,7 +66,8 @@ public class InteractiveStanceGUI extends UI {
 		
 		listOfAvailableTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
 		listOfAvailableTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
-		listOfAvailableTargets.getColumn("targetName").setWidth(500);
+		// The length of Target Name is often long. let it take all extra space.
+		listOfAvailableTargets.getColumn("targetName").setExpandRatio(1);
 		listOfAvailableTargets.removeColumn("id");
 		listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
@@ -81,22 +77,32 @@ public class InteractiveStanceGUI extends UI {
 			refresh_SelectedGrid();
 		});
 
-		// configure selection grid
-		listOfSelectedTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
-		listOfSelectedTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
-		listOfSelectedTargets.getColumn("targetName").setWidth(500);
-		listOfSelectedTargets.removeColumn("id");
-		listOfSelectedTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
-		listOfSelectedTargets.addSelectionListener(e -> {
-			listOfSelectedTargets.getContainerDataSource().removeItem(listOfSelectedTargets.getSelectedRow());
-			service.deselectTarget((ExplicitTarget) listOfSelectedTargets.getSelectedRow());
+		// configure selection grid of favor and against
+		listOfSelectedFavorTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
+		listOfSelectedFavorTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
+		listOfSelectedFavorTargets.getColumn("targetName").setExpandRatio(1);
+		listOfSelectedFavorTargets.removeColumn("id");
+		listOfSelectedFavorTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
+		listOfSelectedFavorTargets.addSelectionListener(e -> {
+			listOfSelectedFavorTargets.getContainerDataSource().removeItem(listOfSelectedFavorTargets.getSelectedRow());
+			service.deselectTarget((ExplicitTarget) listOfSelectedFavorTargets.getSelectedRow());
+			refresh_AvailableGrid();
+		});
+
+		listOfSelectedAgainstTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
+		listOfSelectedAgainstTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
+		listOfSelectedAgainstTargets.getColumn("targetName").setExpandRatio(1);
+		listOfSelectedAgainstTargets.removeColumn("id");
+		listOfSelectedAgainstTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
+		listOfSelectedAgainstTargets.addSelectionListener(e -> {
+			listOfSelectedAgainstTargets.getContainerDataSource().removeItem(listOfSelectedAgainstTargets.getSelectedRow());
+			service.deselectTarget((ExplicitTarget) listOfSelectedAgainstTargets.getSelectedRow());
 			refresh_AvailableGrid();
 		});
 
 		// initial filling of grid
 		refresh_AvailableGrid();
-		
-		
+
 		analysisButton.addClickListener(clickEvent -> {
 //			Notification.show("Run Analysis of "+service.printSelectedTargets());
 
@@ -108,28 +114,40 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(FontAwesome.COGS);
-
 	}
 
 	/**
 	 * Here we stack the components together
 	 */
 	private void buildLayout() {
-		HorizontalLayout actions = new HorizontalLayout(filter,searchButton);
-		actions.setWidth("50%");
-		filter.setWidth("50%");
-		actions.setExpandRatio(filter, 1);
+		FormLayout filterWrapper = new FormLayout(filter);
+		filterWrapper.setMargin(false);
+		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
+		actions.setSpacing(true);
+		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
 
-
-		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton,listOfSelectedTargets);
+		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
+		selectedTargetsContent.addComponent(listOfSelectedFavorTargets);
+		selectedTargetsContent.addComponent(listOfSelectedAgainstTargets);
+		selectedTargetsContent.setWidth("100%");
+		selectedTargetsContent.setSpacing(true);
+		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton, selectedTargetsContent);
 		left.setSpacing(true);
-		listOfAvailableTargets.setSizeFull();
-		listOfAvailableTargets.setHeightByRows(6);
-		listOfSelectedTargets.setSizeFull();
-		listOfSelectedTargets.setHeightByRows(4);
+
+		listOfAvailableTargets.setWidth("100%");
+		listOfAvailableTargets.setHeightMode(HeightMode.ROW);
+		listOfAvailableTargets.setHeightByRows(6.0D);
+
+		listOfSelectedFavorTargets.setWidth("100%");
+		listOfSelectedFavorTargets.setHeightMode(HeightMode.ROW);
+		listOfSelectedFavorTargets.setHeightByRows(4.0D);
+		listOfSelectedAgainstTargets.setWidth("100%");
+		listOfSelectedAgainstTargets.setHeightMode(HeightMode.ROW);
+		listOfSelectedAgainstTargets.setHeightByRows(4.0D);
 
 		HorizontalLayout mainLayout = new HorizontalLayout(left);
-		mainLayout.setSizeFull();
+		mainLayout.setWidth("100%");
+		mainLayout.setMargin(true);
 
 		setContent(mainLayout);
 	}
@@ -144,7 +162,7 @@ public class InteractiveStanceGUI extends UI {
 	}
 
 	private void refresh_SelectedGrid() {
-		listOfSelectedTargets.setContainerDataSource(
+		listOfSelectedFavorTargets.setContainerDataSource(
 				new BeanItemContainer<>(ExplicitTarget.class, service.getAllSelectedTargets()));
 	}
 
@@ -156,6 +174,8 @@ public class InteractiveStanceGUI extends UI {
 	@WebServlet(urlPatterns = "/*")
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
+
+
 	}
 
 }
