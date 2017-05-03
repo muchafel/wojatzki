@@ -42,12 +42,15 @@ public class CatalanStanceSVMorSVMTypeReader extends CatalanStanceReader{
 	}
 	
 	 @Override
-	protected TextClassificationOutcome getTextClassificationOutcome(JCas jcas, Sentence sentence, String docId)
+	protected TextClassificationOutcome getTextClassificationOutcome(JCas jcas, Sentence sentence, String docId,int unitId)
 			throws IOException {
 		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(), sentence.getEnd());
 		DocumentMetaData md = JCasUtil.selectSingle(jcas, DocumentMetaData.class);
 		try {
-			outcome.setOutcome(getTextClassificationOutcome(md.getDocumentId()));
+//			System.out.println(md.getDocumentId()+ " "+(unitId-1));
+//			System.out.println(getTextClassificationOutcome(md.getDocumentId()));
+//			outcome.setOutcome(getTextClassificationOutcome(md.getDocumentId()));
+			outcome.setOutcome(getTextClassificationOutcome(String.valueOf(unitId-1)));
 		} catch (Exception e) {
 			throw new IOException(e);
 		}

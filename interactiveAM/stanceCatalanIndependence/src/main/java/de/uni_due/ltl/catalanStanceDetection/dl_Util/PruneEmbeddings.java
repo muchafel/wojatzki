@@ -35,6 +35,7 @@ public class PruneEmbeddings {
 				CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE, CatalanStanceReader.PARAM_SOURCE_LOCATION,
 				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt", CatalanStanceReader.PARAM_LABEL_FILE,
 				baseDir + "/IberEval/training_truth_" + LANGUAGE_CODE + ".txt");
+		
 
 		AnalysisEngine tokenizerEngine = getTokenizerEngine(
 				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt");

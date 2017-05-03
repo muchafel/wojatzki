@@ -55,22 +55,17 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	/**
 	 * XXX CONSTANTS
 	 */
-	public static final String LANGUAGE_CODE = "es";
+	public static final String LANGUAGE_CODE = "ca";
 	private static final int NUM_FOLDS = 10;
-
+	public static String modelOutputFolder="src/main/resources/trainedModels/"+LANGUAGE_CODE+"/";
+	
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-//			TcFeatureFactory.create(LuceneNGram.class, LuceneNGram.PARAM_NGRAM_MAX_N, 3, LuceneNGram.PARAM_NGRAM_MIN_N,
-//					1, LuceneNGram.PARAM_NGRAM_USE_TOP_K, 3000)
-//			,
 			TcFeatureFactory.create(NgramCoverage.class, NgramCoverage.PARAM_NGRAM_MAX_N, 5,
 					NgramCoverage.PARAM_NGRAM_MIN_N, 1, NgramCoverage.PARAM_NGRAM_USE_TOP_K, 3000),
 			TcFeatureFactory.create(NrOfTokensPerSentence.class), 
 			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-//			TcFeatureFactory.create(ClassifierProbabilities.class, ClassifierProbabilities.PARAM_LSTM_CERTAINTY_FILE,"src/main/resources/probabilities/"+LANGUAGE_CODE+"dropOut_0.3_sparse10_id2Prob.txt",ClassifierProbabilities.PARAM_SVM_CERTAINTY_FILE,"test"),
-//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-//					"src/main/resources/" + LANGUAGE_CODE + ".polyglot.txt"),
 			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")
 
 	);
@@ -80,7 +75,19 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		LSTMorSVM_Type_NgramCV experiment = new LSTMorSVM_Type_NgramCV();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
+//		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
+		experiment.save(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
+	}
+
+	private void save(ParameterSpace pSpace, String experimentName) throws Exception {
+		ExperimentSaveModel batch = new ExperimentSaveModel(experimentName, WekaClassificationAdapter.class,new File(modelOutputFolder+experimentName));
+
+		batch.setPreprocessing(getPreprocessing());
+		batch.setParameterSpace(pSpace);
+
+		// Run
+		Lab.getInstance().run(batch);
+		
 	}
 
 	private static String getValidName(String experimentName) {

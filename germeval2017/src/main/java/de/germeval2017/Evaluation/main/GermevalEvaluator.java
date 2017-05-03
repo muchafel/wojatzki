@@ -1,4 +1,4 @@
-package de.germeval2017.udeAtGermeval.main;
+package de.germeval2017.Evaluation.main;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentAspect;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentDocument;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentDocumentSet;
-import de.unidue.ltl.evaluation.EvaluationData;
-import de.unidue.ltl.evaluation.measure.categorial.Accuracy;
-import de.unidue.ltl.evaluation.measure.categorial.Fscore;
+import de.germeval2017.Evaluation.EvaluationUtil.EvaluationData;
+import de.germeval2017.Evaluation.EvaluationUtil.Fscore;
+import de.germeval2017.Evaluation.objectBindings.SentimentAspect;
+import de.germeval2017.Evaluation.objectBindings.SentimentDocument;
+import de.germeval2017.Evaluation.objectBindings.SentimentDocumentSet;
 
 public class GermevalEvaluator {
 
@@ -22,7 +21,6 @@ public class GermevalEvaluator {
 		
 		if(toEvaluate.equals("relevance")){
 			evaluateRelevance(id2Document_predicted,id2Document_gold);
-		
 		}else if(toEvaluate.equals("sentiment")){
 			evaluateSentiment(id2Document_predicted,id2Document_gold);
 		}else if(toEvaluate.equals("category")){
@@ -52,12 +50,10 @@ public class GermevalEvaluator {
 			}
 		}
 		
-		System.out.println("Evaluation Results for exact OTE matching");
+		System.out.println("Evaluation Results for exact OTE matching (based on "+ote_exact.size()+" instances):");
 		printEvaluation(ote_exact);
-		System.out.println(ote_exact.size());
-		System.out.println("Evaluation Results for exact OTE overlap matching");
+		System.out.println("Evaluation Results for OTE with overlapping (based on "+ote_exact.size()+" instances):");
 		printEvaluation(ote_overlap);
-		System.out.println(ote_overlap.size());
 		
 	}
 
@@ -76,10 +72,6 @@ public class GermevalEvaluator {
 	private boolean overlapMatch(SentimentAspect aspect, List<SentimentAspect> aspects_predicted, String docText) {
 		int lowerBound= getLowerBound(aspect.getBegin(),docText);
 		int upperBound= getUpperBound(aspect.getEnd(),docText);
-		System.out.println(aspect.getOte());
-		System.out.println(lowerBound+ " "+ upperBound);
-		System.out.println(docText);
-		System.out.println("----");
 		for(SentimentAspect aspect_predcited: aspects_predicted){
 			if(betweenBounds(aspect_predcited,aspect.getBegin()-lowerBound,aspect.getEnd()+upperBound)){
 				return true;
@@ -108,7 +100,6 @@ public class GermevalEvaluator {
 		if(upperText.contains(" ")){
 			String[] tokens = upperText.split(" ");
 			String nextToken= tokens[0];
-			System.out.println("next Token '"+nextToken+"'");
 			return nextToken.length()+1;
 		}
 		return docText.length();
@@ -120,7 +111,6 @@ public class GermevalEvaluator {
 		if(lowerText.contains(" ")){
 			String[] tokens = lowerText.split(" ");
 			String preceddingToken= tokens[tokens.length-1];
-			System.out.println("previous Token "+preceddingToken);
 			return preceddingToken.length()+1;
 		}
 		return 0;
@@ -165,12 +155,11 @@ public class GermevalEvaluator {
 			}
 		}
 		
-		System.out.println("Evaluation Results for Categories");
+		System.out.println("Evaluation Results for Categories (based on "+aspectOccurrence.size()+" instances):");
 		printEvaluation(aspectOccurrence);
-		System.out.println(aspectOccurrence.size());
-		System.out.println("Evaluation Results for Categories + Sentiment");
+		
+		System.out.println("Evaluation Results for Categories + Sentiment (based on "+aspectOccurrence_Sentiment.size()+" instances):");
 		printEvaluation(aspectOccurrence_Sentiment);
-		System.out.println(aspectOccurrence_Sentiment.size());
 		
 		
 	}
@@ -226,12 +215,7 @@ public class GermevalEvaluator {
 
 	private void printEvaluation(EvaluationData<String> evalData) {
 		Fscore<String> fscore= new Fscore<>(evalData);
-		Accuracy<String> acc= new Accuracy<>(evalData);
-		
-		System.out.println("Accuracy "+ acc.getAccuracy());
-		System.out.println("MACRO_F1 "+fscore.getMacroFscore());
 		System.out.println("MICRO_F1 "+fscore.getMicroFscore());
-		
 	}
 
 	private void evaluateSentiment(Map<String, SentimentDocument> id2Document_predicted,
@@ -248,6 +232,7 @@ public class GermevalEvaluator {
 			evaluationData.register(doc_gold.getSentiment(), doc_predicted.getSentiment());
 		}
 		
+		System.out.println("Evaluation Results for Sentiment (based on "+evaluationData.size()+" instances):");
 		printEvaluation(evaluationData);
 		
 	}
@@ -266,11 +251,8 @@ public class GermevalEvaluator {
 			evaluationData.register(doc_gold.isRelevance(), doc_predicted.isRelevance());
 		}
 		
+		System.out.println("Evaluation Results for Relevance (based on "+evaluationData.size()+" instances):");
 		Fscore<Boolean> fscore= new Fscore<>(evaluationData);
-		Accuracy<Boolean> acc= new Accuracy<>(evaluationData);
-		
-		System.out.println("Accuracy "+ acc.getAccuracy());
-		System.out.println("MACRO_F1 "+fscore.getMacroFscore());
 		System.out.println("MICRO_F1 "+fscore.getMicroFscore());
 		
 		return evaluationData;

@@ -1,4 +1,4 @@
-package de.germeval2017.udeAtGermeval.io;
+package de.germeval2017.Evaluation.objectBindings;
 
 import java.util.List;
 

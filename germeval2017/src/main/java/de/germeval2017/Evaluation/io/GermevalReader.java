@@ -1,4 +1,4 @@
-package de.germeval2017.udeAtGermeval.io;
+package de.germeval2017.Evaluation.io;
 
 import java.awt.FontFormatException;
 import java.io.File;
@@ -14,10 +14,10 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FileUtils;
 
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentAspect;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentAspectSet;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentDocument;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentDocumentSet;
+import de.germeval2017.Evaluation.objectBindings.SentimentAspect;
+import de.germeval2017.Evaluation.objectBindings.SentimentAspectSet;
+import de.germeval2017.Evaluation.objectBindings.SentimentDocument;
+import de.germeval2017.Evaluation.objectBindings.SentimentDocumentSet;
 
 public class GermevalReader {
 

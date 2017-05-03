@@ -21,6 +21,7 @@ import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
+import org.dkpro.tc.api.type.JCasId;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
@@ -48,6 +49,11 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 	    @ConfigurationParameter(name = PARAM_UNESCAPE_JAVA, mandatory = false, defaultValue = "true")
 	    private boolean unescapeJava;
 	    
+	    
+	    public static final String PARAM_IST_TRAIN = "PARAM_READER_IS_TRAIN";
+	    @ConfigurationParameter(name = PARAM_IST_TRAIN, mandatory = false, defaultValue = "true")
+	    private boolean isTrain;
+	    
 	    public static final String PARAM_LABEL_FILE = "PARAM_LABEL_FILE";
 	    @ConfigurationParameter(name = PARAM_LABEL_FILE, mandatory = true)
 	    private String labelFilePath;
@@ -73,10 +79,13 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		try {
-			this.id2Label = getId2LabelMapping(labelFilePath);
-		} catch (IOException e1) {
-			throw new ResourceInitializationException(e1);
+		
+		if(isTrain){
+			try {
+				this.id2Label = getId2LabelMapping(labelFilePath);
+			} catch (IOException e1) {
+				throw new ResourceInitializationException(e1);
+			}
 		}
 
 		for (Resource r : getResources()) {
@@ -103,12 +112,7 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 
 	public void getNext(JCas jcas) throws IOException, CollectionException {
 
-		DocumentMetaData md = new DocumentMetaData(jcas);
-		md.setDocumentTitle("");
-		md.setDocumentId("" + (instanceId++));
-		md.setLanguage(language);
-		md.addToIndexes();
-
+		
 		String documentText = linesIt.next();
 
 		documentText = checkUnescapeHtml(documentText);
@@ -116,6 +120,13 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 		String[] compounds = documentText.split(":::");
 		String docId = compounds[0];
 		documentText = compounds[1];
+		
+		DocumentMetaData md = new DocumentMetaData(jcas);
+		md.setDocumentTitle("");
+		md.setDocumentId(docId);
+		md.setLanguage(language);
+		md.addToIndexes();
+
 
 		// documentText.replace("#27S", "");
 		jcas.setDocumentText(documentText);
@@ -124,15 +135,18 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 		TextClassificationTarget unit = new TextClassificationTarget(jcas, sentence.getBegin(), sentence.getEnd());
 		unit.setId(unitId++);
 		sentence.addToIndexes();
-
-		TextClassificationOutcome outcome= getTextClassificationOutcome(jcas, sentence, docId);
+//		System.out.println(unitId);
+		if(isTrain){
+			TextClassificationOutcome outcome= getTextClassificationOutcome(jcas, sentence, docId,unitId);
+			outcome.addToIndexes();	
+		}
 		
 		unit.addToIndexes();
-		outcome.addToIndexes();
+		
 
 	}
 
-	protected TextClassificationOutcome getTextClassificationOutcome(JCas jcas, Sentence sentence, String docId) throws IOException {
+	protected TextClassificationOutcome getTextClassificationOutcome(JCas jcas, Sentence sentence, String docId, int unitId) throws IOException {
 		TextClassificationOutcome outcome = new TextClassificationOutcome(jcas, sentence.getBegin(), sentence.getEnd());
 		try {
 			outcome.setOutcome(id2Label.get(docId));
