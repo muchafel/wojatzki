@@ -6,21 +6,30 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.event.SelectionEvent;
-import com.vaadin.event.SelectionEvent.SelectionListener;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.event.dnd.DragSourceExtension;
+import com.vaadin.event.dnd.DropTargetExtension;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.ui.dnd.DropEffect;
+import com.vaadin.shared.ui.dnd.EffectAllowed;
+import com.vaadin.shared.ui.grid.DropLocation;
+import com.vaadin.shared.ui.grid.DropMode;
+import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.data.Item;
-import com.vaadin.v7.data.util.BeanItemContainer;
-import com.vaadin.v7.shared.ui.grid.HeightMode;
-import com.vaadin.v7.ui.Grid;
 
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
+import elemental.json.Json;
+import elemental.json.JsonObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * main GUI class; use this to start the application
@@ -30,15 +39,27 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 @Title("Interactive Stance Detection")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
+//@Widgetset("com.vaadin.DefaultWidgetSet")
 public class InteractiveStanceGUI extends UI {
 
 	TextField filter = new TextField("Filter Term");
-	Grid listOfAvailableTargets = new Grid("Available Targets");
-	Grid listOfSelectedFavorTargets = new Grid("Selected Targets of Favor");
-	Grid listOfSelectedAgainstTargets = new Grid("Selected Targets of Against");
+	Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Targets");
+	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Selected Targets of Favor");
+	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Selected Targets of Against");
 	Button searchButton= new Button("Search");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
+	private Set<ExplicitTarget> draggedItems;
+
+	GridDragSource<ExplicitTarget> selectedFavorDrag = new GridDragSource<>(listOfSelectedFavorTargets);
+	GridDragSource<ExplicitTarget> selectedAgainstDrag = new GridDragSource<>(listOfSelectedAgainstTargets);
+	GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets, DropMode.ON_TOP_OR_BETWEEN);
+
+	GridDragSource<ExplicitTarget> availableDrag = new GridDragSource<>(listOfAvailableTargets);
+	GridDropTarget<ExplicitTarget> selectedFavorDrop = new GridDropTarget<>(listOfSelectedFavorTargets,
+			DropMode.ON_TOP_OR_BETWEEN);
+	GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
+			DropMode.ON_TOP_OR_BETWEEN);
 
 	/**
 	 * entry point for GUI
@@ -57,51 +78,37 @@ public class InteractiveStanceGUI extends UI {
 		// configure available grid
 		filter.setDescription("filter");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
-		
-		searchButton.addClickListener(clickEvent -> {
-			service.newSearch(filter.getValue());
-			refresh_AvailableGrid();
-			refresh_SelectedGrid();
-		});
-		
-		listOfAvailableTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
-		listOfAvailableTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
+
+		// duplicated function which is implemented by filter.addValueChangeListener
+//		searchButton.addClickListener(clickEvent -> {
+//			service.newSearch(filter.getValue());
+//			refresh_AvailableGrid();
+//			refresh_SelectedGrid();
+//		});
+
+		listOfAvailableTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
+		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		// The length of Target Name is often long. let it take all extra space.
 		listOfAvailableTargets.getColumn("targetName").setExpandRatio(1);
-		listOfAvailableTargets.removeColumn("id");
 		listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-		listOfAvailableTargets.addSelectionListener(e -> {
-			listOfAvailableTargets.getContainerDataSource().removeItem(listOfAvailableTargets.getSelectedRow());
-			service.selectTarget((ExplicitTarget) listOfAvailableTargets.getSelectedRow());
-			refresh_SelectedGrid();
-		});
-
 		// configure selection grid of favor and against
-		listOfSelectedFavorTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
-		listOfSelectedFavorTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
+		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
+		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		listOfSelectedFavorTargets.getColumn("targetName").setExpandRatio(1);
-		listOfSelectedFavorTargets.removeColumn("id");
 		listOfSelectedFavorTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
-		listOfSelectedFavorTargets.addSelectionListener(e -> {
-			listOfSelectedFavorTargets.getContainerDataSource().removeItem(listOfSelectedFavorTargets.getSelectedRow());
-			service.deselectTarget((ExplicitTarget) listOfSelectedFavorTargets.getSelectedRow());
-			refresh_AvailableGrid();
-		});
 
-		listOfSelectedAgainstTargets.setContainerDataSource(new BeanItemContainer<>(ExplicitTarget.class));
-		listOfSelectedAgainstTargets.setColumnOrder("targetName", "instancesInFavor", "instancesAgainst");
+		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
+		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		listOfSelectedAgainstTargets.getColumn("targetName").setExpandRatio(1);
-		listOfSelectedAgainstTargets.removeColumn("id");
 		listOfSelectedAgainstTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
-		listOfSelectedAgainstTargets.addSelectionListener(e -> {
-			listOfSelectedAgainstTargets.getContainerDataSource().removeItem(listOfSelectedAgainstTargets.getSelectedRow());
-			service.deselectTarget((ExplicitTarget) listOfSelectedAgainstTargets.getSelectedRow());
-			refresh_AvailableGrid();
-		});
 
 		// initial filling of grid
 		refresh_AvailableGrid();
+		refresh_SelectedGrid();
 
 		analysisButton.addClickListener(clickEvent -> {
 //			Notification.show("Run Analysis of "+service.printSelectedTargets());
@@ -113,7 +120,7 @@ public class InteractiveStanceGUI extends UI {
 
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
-		analysisButton.setIcon(FontAwesome.COGS);
+		analysisButton.setIcon(VaadinIcons.COGS);
 	}
 
 	/**
@@ -126,14 +133,6 @@ public class InteractiveStanceGUI extends UI {
 		actions.setSpacing(true);
 		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
 
-		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
-		selectedTargetsContent.addComponent(listOfSelectedFavorTargets);
-		selectedTargetsContent.addComponent(listOfSelectedAgainstTargets);
-		selectedTargetsContent.setWidth("100%");
-		selectedTargetsContent.setSpacing(true);
-		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton, selectedTargetsContent);
-		left.setSpacing(true);
-
 		listOfAvailableTargets.setWidth("100%");
 		listOfAvailableTargets.setHeightMode(HeightMode.ROW);
 		listOfAvailableTargets.setHeightByRows(6.0D);
@@ -145,6 +144,18 @@ public class InteractiveStanceGUI extends UI {
 		listOfSelectedAgainstTargets.setHeightMode(HeightMode.ROW);
 		listOfSelectedAgainstTargets.setHeightByRows(4.0D);
 
+		setDragFromAvailable();
+		setDragFromSelected();
+
+		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
+		selectedTargetsContent.addComponent(listOfSelectedFavorTargets);
+		selectedTargetsContent.addComponent(listOfSelectedAgainstTargets);
+		selectedTargetsContent.setWidth("100%");
+		selectedTargetsContent.setSpacing(true);
+
+		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton, selectedTargetsContent);
+		left.setSpacing(true);
+
 		HorizontalLayout mainLayout = new HorizontalLayout(left);
 		mainLayout.setWidth("100%");
 		mainLayout.setMargin(true);
@@ -152,18 +163,124 @@ public class InteractiveStanceGUI extends UI {
 		setContent(mainLayout);
 	}
 
+	/**
+	 * 	Drag item from available list to seleted list.
+	 */
+	private void setDragFromAvailable() {
+//		GridDragSource<ExplicitTarget> availableDrag = new GridDragSource<>(listOfAvailableTargets);
+//		GridDropTarget<ExplicitTarget> selectedFavorDrop = new GridDropTarget<>(listOfSelectedFavorTargets,
+//				DropMode.ON_TOP_OR_BETWEEN);
+//		GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
+//				DropMode.ON_TOP_OR_BETWEEN);
+
+		configureGridDragSource(availableDrag);
+		configureGridDropTarget(selectedFavorDrop);
+		configureGridDropTarget(selectedAgainstDrop);
+	}
+	/**
+	 * Let item back to available list.
+	 */
+	private void setDragFromSelected() {
+//		GridDragSource<ExplicitTarget> selectedFavorDrag = new GridDragSource<>(listOfSelectedFavorTargets);
+//		GridDragSource<ExplicitTarget> selectedAgainstDrag = new GridDragSource<>(listOfSelectedAgainstTargets);
+//		GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets, DropMode.ON_TOP_OR_BETWEEN);
+
+		configureGridDragSource(selectedFavorDrag);
+		configureGridDragSource(selectedAgainstDrag);
+		configureGridDropTarget(availableDrop);
+	}
+
+	private void configureGridDragSource(GridDragSource<ExplicitTarget> gridDragSource) {
+		gridDragSource.setEffectAllowed(EffectAllowed.MOVE);
+		gridDragSource.addGridDragStartListener(event -> {
+			draggedItems = event.getDraggedItems();
+		});
+		gridDragSource.setDragDataGenerator(target -> {
+			JsonObject data = Json.createObject();
+			data.put("targetName", target.getTargetName());
+			data.put("instanceFavor", target.getInstancesInFavor());
+			data.put("instanceAgainst", target.getInstancesAgainst());
+			return data;
+		});
+	}
+
+	/**
+	 * configure drop effect, drop listener of a Grid object.
+	 * @param gridDropTarget
+	 */
+	private void configureGridDropTarget(GridDropTarget<ExplicitTarget> gridDropTarget) {
+		gridDropTarget.setDropEffect(DropEffect.MOVE);
+		gridDropTarget.addGridDropListener(event -> {
+			event.getDragSourceExtension().ifPresent(source -> {
+				if (source instanceof GridDragSource) {
+					// Add dragged items to the target Grid
+					if (source.equals(availableDrag)) {
+						((ListDataProvider<ExplicitTarget>) listOfAvailableTargets.getDataProvider()).getItems()
+								.removeAll(draggedItems);
+						listOfAvailableTargets.getDataProvider().refreshAll();
+
+						// available to selected favor
+						if (gridDropTarget.equals(selectedFavorDrop)) {
+							for (ExplicitTarget item: draggedItems) {
+								service.selectFavorTarget(item);
+							}
+						} else if (gridDropTarget.equals(selectedAgainstDrop)) {
+							for (ExplicitTarget item: draggedItems) {
+								service.selectAgainstTarget(item);
+							}
+						}
+					} else if (source.equals(selectedFavorDrag)) {
+						((ListDataProvider<ExplicitTarget>) listOfSelectedFavorTargets.getDataProvider()).getItems()
+								.removeAll(draggedItems);
+						listOfSelectedFavorTargets.getDataProvider().refreshAll();
+
+						if (gridDropTarget.equals(availableDrop)) {
+							for (ExplicitTarget item: draggedItems) {
+								service.deselectFavorTarget(item);
+							}
+						}
+
+					} else if (source.equals(selectedAgainstDrag)) {
+						((ListDataProvider<ExplicitTarget>) listOfSelectedAgainstTargets.getDataProvider()).getItems()
+								.removeAll(draggedItems);
+						listOfSelectedAgainstTargets.getDataProvider().refreshAll();
+
+						if (gridDropTarget.equals(availableDrop)) {
+							for (ExplicitTarget item: draggedItems) {
+								service.deselectAgainstTarget(item);
+							}
+						}
+					}
+
+					ListDataProvider<ExplicitTarget> dataProvider = (ListDataProvider<ExplicitTarget>)
+							event.getComponent().getDataProvider();
+					List<ExplicitTarget> items = (List<ExplicitTarget>) dataProvider.getItems();
+
+					// Calculate the target row's index
+					int index = items.indexOf(event.getDropTargetRow()) + (
+							event.getDropLocation() == DropLocation.BELOW ? 1 : 0);
+
+					items.addAll(index, draggedItems);
+					dataProvider.refreshAll();
+
+					// Remove reference to dragged items
+					draggedItems = null;
+				}
+			});
+		});
+	}
+
 	private void refresh_AvailableGrid() {
 		refresh_AvailableGrid(filter.getValue());
 	}
 
 	private void refresh_AvailableGrid(String stringFilter) {
-		listOfAvailableTargets.setContainerDataSource(
-				new BeanItemContainer<>(ExplicitTarget.class, service.getAllAvailableTargets(stringFilter)));
+		listOfAvailableTargets.setItems(service.getAllAvailableTargets(stringFilter));
 	}
 
 	private void refresh_SelectedGrid() {
-		listOfSelectedFavorTargets.setContainerDataSource(
-				new BeanItemContainer<>(ExplicitTarget.class, service.getAllSelectedTargets()));
+		listOfSelectedFavorTargets.setItems(service.getAllSelectedFavorTargets());
+		listOfSelectedAgainstTargets.setItems(service.getAllSelectedAgainstTargets());
 	}
 
 	/*
@@ -175,7 +292,5 @@ public class InteractiveStanceGUI extends UI {
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
 
-
 	}
-
 }
