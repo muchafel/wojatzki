@@ -79,12 +79,12 @@ public class InteractiveStanceGUI extends UI {
 		filter.setDescription("filter");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
 
-		// duplicated function which is implemented by filter.addValueChangeListener
-//		searchButton.addClickListener(clickEvent -> {
-//			service.newSearch(filter.getValue());
-//			refresh_AvailableGrid();
-//			refresh_SelectedGrid();
-//		});
+		// duplicated function which is implemented by filter.addValueChangeListener \\TODO: no! please don't remove functionality without consultation
+		searchButton.addClickListener(clickEvent -> {
+			service.newSearch(filter.getValue());
+			refresh_AvailableGrid();
+			refresh_SelectedGrid();
+		});
 
 		listOfAvailableTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
 		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
