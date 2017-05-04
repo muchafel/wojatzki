@@ -5,6 +5,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.vaadin.v7.event.ItemClickEvent;
 
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
@@ -14,23 +15,42 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * interface class for the GUI to access backend functionalities
+ * use synchronized keyword for access methods
+ * @author michael
+ *
+ */
 public class BackEnd {
 
 	private static long idCounter;
+	/**
+	 * buffer for availbale targets
+	 */
 	private HashMap<String, ExplicitTarget> availableTargets = new HashMap<>();
+	
+	/**
+	 * buffer for selected targets
+	 */
 	private HashMap<String, ExplicitTarget> selectedTargets = new HashMap<>();
 
-	// Create dummy data by randomly combining first and last names
-	static String[] targets = { "Atheism is a cure", "People With Low IQ Scores Should Be Sterilized.",
-			"Hillary is bad", "Atheism ist all bad", "I hate Trump", "the bible is true",
-			"Creatures of the lord are fine", "Jesus is our savious", "Hang em by the neck", "DP for Heinous crimes",
-			"It is time for sugar", "Abortion is SIN", "Everyone has the right to choose", "Ban DP", "I hate gafs",
-			"Harry Potter is the best movie" };
+//	// Create dummy data by randomly combining first and last names
+//	static String[] targets = { "Atheism is a cure", "People With Low IQ Scores Should Be Sterilized.",
+//			"Hillary is bad", "Atheism ist all bad", "I hate Trump", "the bible is true",
+//			"Creatures of the lord are fine", "Jesus is our savious", "Hang em by the neck", "DP for Heinous crimes",
+//			"It is time for sugar", "Abortion is SIN", "Everyone has the right to choose", "Ban DP", "I hate gafs",
+//			"Harry Potter is the best movie" };
 
 	private static BackEnd instance;
 	private static StanceDB db;
 	private static TargetSearcher searcher;
+	private static CollocationNgramAnalyzer analyzer;
 
+	
+	/**
+	 * here we initialize all objects used for retreiving and analyzing data
+	 * @return
+	 */
 	public static BackEnd loadData() {
 		/**
 		 * DB logic here
@@ -66,7 +86,7 @@ public class BackEnd {
 			} catch (SQLException | IOException | ParseException e) {
 				e.printStackTrace();
 			} 			
-			
+			analyzer= new CollocationNgramAnalyzer(db);
 			instance = backend;
 		}
 
@@ -125,10 +145,10 @@ public class BackEnd {
 
 	public synchronized EvaluationResult analyse() {
 		EvaluationResult result= new EvaluationResult();
-		//TODO: proper exception handling
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			Thread.sleep(1000) ;
+			analyzer.analyze(selectedTargets);
+		} catch (InterruptedException | NumberFormatException | SQLException e) {
 			e.printStackTrace();
 		}
 		return result;

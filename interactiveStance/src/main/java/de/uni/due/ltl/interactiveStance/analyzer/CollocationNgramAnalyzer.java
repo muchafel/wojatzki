@@ -30,6 +30,8 @@ public class CollocationNgramAnalyzer {
 	
 	/**
 	 * TODO: check whether we can get rid of all the casting from int to String... ID is a INT!
+	 * TODO: expand to ngrams
+	 * TODO: bind to train data 
 	 * 
 	 * @param selectedTargets
 	 * @return
@@ -37,11 +39,9 @@ public class CollocationNgramAnalyzer {
 	 * @throws SQLException
 	 */
 	public void analyze(HashMap<String, ExplicitTarget> selectedTargets) throws NumberFormatException, SQLException {
+		
 		StanceLexicon lexicon = createStanceLexicon(selectedTargets);
-		
-		
-		
-		
+		System.out.println(lexicon.prettyPrint());
 		
 	}
 

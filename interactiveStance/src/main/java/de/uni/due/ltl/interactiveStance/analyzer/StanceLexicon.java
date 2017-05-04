@@ -3,8 +3,14 @@ package de.uni.due.ltl.interactiveStance.analyzer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Wrapper for the generated stance lexicons
@@ -27,7 +33,8 @@ public class StanceLexicon {
 
 
 	/**
-	 * generates the lexicon according to the specified resource
+	 * loads a serialized lexicon
+	 * generates the lexicon according to the specified resource 
 	 */
 	private HashMap<String, Float> generateLexicon(String path) {
 		HashMap<String, Float> lexicon = new HashMap<String, Float>();
@@ -61,4 +68,26 @@ public class StanceLexicon {
 	public Set<String> getKeys() {
 		return lexicon.keySet();
 	}
+	
+	public String prettyPrint() {
+		lexicon= sort(lexicon);
+		StringBuilder sb = new StringBuilder();
+		for(String key: lexicon.keySet()){
+			sb.append(key+" : "+lexicon.get(key)+"\n");
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * sorts the vector by value (weird java 8 style)
+	 * 
+	 * @param tempVector
+	 * @return
+	 */
+	private Map<String, Float> sort(Map<String, Float> tempVector) {
+		Map<String, Float> sortedMap = tempVector.entrySet().stream().sorted(Entry.comparingByValue())
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		return sortedMap;
+	}
+	
 }
