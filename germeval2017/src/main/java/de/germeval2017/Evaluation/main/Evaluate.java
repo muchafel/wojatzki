@@ -1,12 +1,12 @@
-package de.germeval2017.udeAtGermeval.main;
+package de.germeval2017.Evaluation.main;
 
 import java.io.File;
 
-import de.germeval2017.udeAtGermeval.io.GermevalReader;
-import de.germeval2017.udeAtGermeval.objectBindings.SentimentDocumentSet;
+import de.germeval2017.Evaluation.io.GermevalReader;
+import de.germeval2017.Evaluation.objectBindings.SentimentDocumentSet;
 
 /**
- * evaluation class
+ * entry point for the evaluation, handles cmd line args, reads the data and configures evaluation
  * @author michael
  *
  */
@@ -53,8 +53,10 @@ public class Evaluate {
 		if(predicted.getDocs().size()!= gold.getDocs().size()){
 			throw new Exception("Unequal number of instances. Predicted= "+predicted.getDocs().size()+" - Gold="+gold.getDocs().size());
 		}
+		System.out.println();
 		
 		evaluator.evaluate(predicted,gold,toEvaluate);
+		
 
 	}
 

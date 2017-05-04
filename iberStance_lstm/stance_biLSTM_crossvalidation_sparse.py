@@ -14,7 +14,7 @@ import os
 
 np.random.seed(1337)  # reproducibility
 
-language='es'
+language='ca'
 embeddingsPath = '/Users/michael/git/ucsm_git/interactiveAM/stanceCatalanIndependence/src/main/resources/prunedEmbeddings_wiki.'+language+'.vec'
 
 leave_out_Files=['data/'+language+'/10/','data/'+language+'/1/','data/'+language+'/2/','data/'+language+'/3/','data/'+language+'/4/','data/'+language+'/5/','data/'+language+'/6/','data/'+language+'/7/','data/'+language+'/8/','data/'+language+'/9/']
@@ -25,8 +25,8 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=128
-    numberEpochs=10
+    lstm_units=138
+    numberEpochs=5
     activation='tanh'
     optimizer='nadam'
     dropout=0.2
@@ -201,10 +201,10 @@ for file in leave_out_Files:
         id=getId(files[3:6],i)
         #print predicted, test_set[0][i],labelFromOneHotVec(test_set[0][i])
 
-        with open("result/cv_lr/"+language+"_activation_"+activation+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_.txt", "a+") as file:
+        with open("result/cv_lr/"+language+"_activation_"+activation+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_units_"+str(lstm_units)+"_.txt", "a+") as file:
                                  file.write(str(gold)+"\t"+str(predicted)+"\n")
         # #
-        with open("result/cv_lr/"+language+"_activation_"+activation+"_dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Outcome.txt", "a+") as file2:
+        with open("result/cv_lr/"+language+"_activation_"+activation+"_dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_units_"+str(lstm_units)+"_id2Outcome.txt", "a+") as file2:
                                   file2.write(id+"="+str(getTCVector(predicted))+";"+str(getTCVector(gold))+"\n")
 
        # with open("result/cv_lr/"+"dropOut_"+str(dropout)+language+"dropOut_"+str(dropout)+"_sparse"+str(numberEpochs)+"_id2Prob.txt", "a+") as file2:

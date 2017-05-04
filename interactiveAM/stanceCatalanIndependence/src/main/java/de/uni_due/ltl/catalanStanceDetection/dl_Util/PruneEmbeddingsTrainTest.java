@@ -26,8 +26,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.uni_due.ltl.catalanStanceDetection.io.CatalanStanceReader;
 
-public class PruneEmbeddings {
-	static String LANGUAGE_CODE = "ca";
+public class PruneEmbeddingsTrainTest {
+	static String LANGUAGE_CODE = "es";
 	
 	public static void main(String[] args) throws IOException, ResourceInitializationException, AnalysisEngineProcessException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
@@ -36,12 +36,16 @@ public class PruneEmbeddings {
 				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt", CatalanStanceReader.PARAM_LABEL_FILE,
 				baseDir + "/IberEval/training_truth_" + LANGUAGE_CODE + ".txt");
 		
+		CollectionReaderDescription reader2 = CollectionReaderFactory.createReaderDescription(CatalanStanceReader.class,
+				CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE, CatalanStanceReader.PARAM_SOURCE_LOCATION,
+				baseDir +"/IberEval/test/test_tweets_"+LANGUAGE_CODE+".txt", CatalanStanceReader.PARAM_LABEL_FILE,
+				baseDir + "/IberEval/test_truth_" + LANGUAGE_CODE + ".txt", CatalanStanceReader.PARAM_IST_TRAIN, false);
 
 		AnalysisEngine tokenizerEngine = getTokenizerEngine(
 				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt");
 		
 		Set<String> dataTokens=getTokens(reader,tokenizerEngine);
-		
+		dataTokens.addAll(getTokens(reader2,tokenizerEngine));
 		
 		System.out.println(dataTokens.size());
 		
@@ -52,7 +56,8 @@ public class PruneEmbeddings {
 				String word=line.split(" ")[0];
 				if(dataTokens.contains(word)||particelContained(dataTokens,word)){
 					dataTokens.remove(word);
-					FileUtils.write(new File("src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec"), line+System.lineSeparator(), true);
+					FileUtils.write(new File("src/main/resources/prunedEmbeddings_test_wiki"
+							+ "."+LANGUAGE_CODE+".vec"), line+System.lineSeparator(), true);
 				}
 			} 
 		} 

@@ -25,70 +25,53 @@ import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ExperimentUtil;
-import org.dkpro.tc.features.length.NrOfTokensPerSentence;
 import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
 import org.dkpro.tc.features.ngram.LuceneNGram;
-import org.dkpro.tc.features.style.TokenRatioFeatureExtractor;
-import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentSaveModel;
+import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.springframework.util.Log4jConfigurer;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.uni_due.ltl.catalanStanceDetection.io.CatalanStanceReader;
-import de.uni_due.ltl.catalanStanceDetection.io.CatalanStanceSVMorSVMTypeReader;
 import de.uni_due.ltl.catalanStanceDetection.io.ConfusionMatrixOutput;
 import de.uni_due.ltl.catalanStanceDetection.io.CrossValidationReport;
-import de.uni_due.ltl.catalanStanceDetection.wordembeddings.EmbeddingCoverage;
 import de.uni_due.ltl.catalanStanceDetection.wordembeddings.WordEmbeddingDFE;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
-import weka.classifiers.functions.SimpleLinearRegression;
-import weka.classifiers.meta.CostSensitiveClassifier;
-import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 
-public class LSTMorSVM_Type_NgramCV implements Constants {
+public class NgramCV_saveModel implements Constants{
 	/**
 	 * XXX CONSTANTS
 	 */
-	public static final String LANGUAGE_CODE = "ca";
-	private static final int NUM_FOLDS = 10;
+	public static final String LANGUAGE_CODE = "es"
+			+ "";
+	private static final int NUM_FOLDS = 3;
 	public static String modelOutputFolder="src/main/resources/trainedModels/"+LANGUAGE_CODE+"/";
-	
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-			TcFeatureFactory.create(NgramCoverage.class, NgramCoverage.PARAM_NGRAM_MAX_N, 5,
-					NgramCoverage.PARAM_NGRAM_MIN_N, 1, NgramCoverage.PARAM_NGRAM_USE_TOP_K, 3000),
-			TcFeatureFactory.create(NrOfTokensPerSentence.class), 
-			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")
+			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,3,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_USE_TOP_K,3000),
+			TcFeatureFactory.create(LuceneCharacterNGram.class,LuceneCharacterNGram.PARAM_NGRAM_MAX_N,4,LuceneCharacterNGram.PARAM_NGRAM_MIN_N,2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K,3000)
+			,
+			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/prunedEmbeddings_test_wiki."+LANGUAGE_CODE+".vec")
+			//			,
+//			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/"+LANGUAGE_CODE+".polyglot.txt")
 
 	);
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		LSTMorSVM_Type_NgramCV experiment = new LSTMorSVM_Type_NgramCV();
+		NgramCV_saveModel experiment = new NgramCV_saveModel();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-//		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
-		experiment.save(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
-	}
+		experiment.saveModel(pSpace_explicit, LANGUAGE_CODE+"_embeddings_3_3000_words_3000_char");
+		}
 
-	private void save(ParameterSpace pSpace, String experimentName) throws Exception {
-		ExperimentSaveModel batch = new ExperimentSaveModel(experimentName, WekaClassificationAdapter.class,new File(modelOutputFolder+experimentName));
-
-		batch.setPreprocessing(getPreprocessing());
-		batch.setParameterSpace(pSpace);
-
-		// Run
-		Lab.getInstance().run(batch);
-		
-	}
 
 	private static String getValidName(String experimentName) {
 		experimentName = experimentName.replace(" ", "");
@@ -113,15 +96,11 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	 * @param experimentName
 	 * @throws Exception
 	 */
-	public void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
-				NUM_FOLDS);
+	public void saveModel(ParameterSpace pSpace, String experimentName) throws Exception {
+		ExperimentSaveModel batch = new ExperimentSaveModel(experimentName, WekaClassificationAdapter.class,new File(modelOutputFolder+experimentName));
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
-		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addInnerReport(ConfusionMatrixOutput.class);
-		batch.addReport(CrossValidationReport.class);
 
 		// Run
 		Lab.getInstance().run(batch);
@@ -139,17 +118,13 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	 * @throws ResourceInitializationException
 	 */
 	@SuppressWarnings("unchecked")
-	public ParameterSpace setupCrossValidation(String dataLocation, TcFeatureSet featureSet)
-			throws ResourceInitializationException {
+	public ParameterSpace setupCrossValidation(String dataLocation,TcFeatureSet featureSet) throws ResourceInitializationException {
 		// configure reader dimension
 		Map<String, Object> dimReaders = getDimReaders(dataLocation);
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-//				asList(new String[] { Logistic.class.getName() })
-//		        ,
-		        asList(new String[] { J48.class.getName() })
-//		        ,asList(new String[] { SimpleLinearRegression.class.getName() })
-		        );
-		// asList(new String[] { Logistic.class.getName() }));
+				asList(new String[] { SMO.class.getName() }));
+//				asList(new String[] { RandomForest.class.getName() }));
+//				asList(new String[] { Logistic.class.getName() }));
 
 		Dimension<TcFeatureSet> dimFeatureSets = null;
 		if (ablation) {
@@ -164,19 +139,12 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		return pSpace;
 	}
 
-	private Map<String, Object> getDimReaders(String dir) throws ResourceInitializationException {
+	private Map<String, Object> getDimReaders(String dir)
+			throws ResourceInitializationException {
 		String inputTrainFolder = dir;
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
-		System.out.println("read from " + inputTrainFolder);
-		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(
-				CatalanStanceSVMorSVMTypeReader.class, CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE,
-				CatalanStanceSVMorSVMTypeReader.PARAM_SOURCE_LOCATION,
-				dir + "training_tweets_" + LANGUAGE_CODE + ".txt", CatalanStanceSVMorSVMTypeReader.PARAM_LABEL_FILE,
-				dir + "training_truth_" + LANGUAGE_CODE + ".txt",
-				CatalanStanceSVMorSVMTypeReader.PARAM_LSTM_PREDICTION_FILE,
-				"src/main/resources/id2outcome/" + LANGUAGE_CODE
-						+ "_sparse10_id2Outcome.txt", CatalanStanceSVMorSVMTypeReader.PARAM_SVM_PREDICTION_FILE,"src/main/resources/id2outcome/"+LANGUAGE_CODE+"_char_word_embeddings_id2homogenizedOutcome.txt"));
-
+		System.out.println("read from " + inputTrainFolder );
+		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(CatalanStanceReader.class, CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE, CatalanStanceReader.PARAM_SOURCE_LOCATION, dir+"training_tweets_"+LANGUAGE_CODE+".txt", CatalanStanceReader.PARAM_LABEL_FILE, dir+"training_truth_"+LANGUAGE_CODE+".txt",CatalanStanceReader.PARAM_IST_TRAIN,true));
 		return dimReaders;
 	}
 

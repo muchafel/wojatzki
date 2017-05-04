@@ -15,9 +15,9 @@ public class InspectGridSearch {
 	public static void main(String[] args) throws Exception {
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv3");
-		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr");
+//		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_lr");
 //		File folder= new File("/Users/michael/git/ucsm_git/iberStance_lstm/result/cv_wiki");
-//		File folder= new File("/Users/michael/Desktop/cv_dropOut");
+		File folder= new File("/Users/michael/Desktop/cv_dropOut");
 //		File folder= new File("/Users/michael/Desktop/cv");
 		
 		double max= 0;
@@ -47,6 +47,7 @@ public class InspectGridSearch {
 	}
 
 	private static double evaluate(File targetFileCA_LSTM) throws Exception {
+		
 		EvaluationData<String> evaluationData= TextReader.read(targetFileCA_LSTM);
 		Fscore<String> fscore= new Fscore<>(evaluationData);
 		Accuracy<String> acc= new Accuracy<>(evaluationData);
@@ -61,6 +62,9 @@ public class InspectGridSearch {
 
         System.out.println(matrix.toString());
         System.out.println("  ");
+        if (targetFileCA_LSTM.getName().equals("ca_activation_tanh_opimizernadam_lstmUnits_64result_dropout_0.2_epochs_numberEpochs5_lossFunction_categorical_crossentropy.txt")) {
+			System.out.println("s");
+		}
         return fscore.getMicroFscore();
 		
 	}
