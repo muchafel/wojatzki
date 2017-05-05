@@ -9,9 +9,6 @@ import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 public class TestLuceneDBSearcher {
 	
-	
-	
-	
 	@Test
 	public void searchTest() throws Exception {
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");

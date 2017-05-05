@@ -81,7 +81,7 @@ public class InteractiveStanceGUI extends UI {
 		filter.setDescription("filter");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
 
-		// duplicated function which is implemented by filter.addValueChangeListener
+		// duplicated function which is implemented by filter.addValueChangeListener \\TODO: no! please don't remove functionality without consultation
 		searchButton.addClickListener(clickEvent -> {
 			service.newSearch(filter.getValue());
 			refresh_AvailableGrid();

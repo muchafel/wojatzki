@@ -37,12 +37,12 @@ public class BackEnd {
 			final BackEnd backend = new BackEnd();
 
 			//uncomment for testing
-			Random r = new Random(200);
-			for (int i = 0; i < 100; i++) {
-				ExplicitTarget model = new ExplicitTarget(String.valueOf(idCounter++), targets[r.nextInt(targets.length)],
-						r.nextInt(50), r.nextInt(40));
-				backend.save(model);
-			}
+//			Random r = new Random(200);
+//			for (int i = 0; i < 100; i++) {
+//				ExplicitTarget model = new ExplicitTarget(String.valueOf(idCounter++), targets[r.nextInt(targets.length)],
+//						r.nextInt(50), r.nextInt(40));
+//				backend.save(model);
+//			}
 			// Workaround, grid drad and drop feature still in developing phase. Don't support empty grid.
 			backend.selectTestSave();
 
@@ -50,22 +50,23 @@ public class BackEnd {
 			 * TODO credentials
 			 * TODO exception handling
 			 */
-//			try {
-//				db= new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining");
-//			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//
-//
-//			searcher = new TargetSearcher();
-//			try {
-//				searcher.SetUp(db,100);
-//				for(ExplicitTarget target:searcher.search("atheism",true)){
-//					backend.save(target);
-//				}
-//			} catch (SQLException | IOException | ParseException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				db= new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining");
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+
+			searcher = new TargetSearcher();
+			try {
+				searcher.SetUp(db,100);
+				for(ExplicitTarget target:searcher.search("atheism",true)){
+					backend.save(target);
+				}
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			instance = backend;
 		}

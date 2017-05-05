@@ -176,6 +176,22 @@ public class StanceDB {
 		connection.close();
 		return null;
 	}
+	
+	public List<DataPoint> getDataPointsByDataSetId(int id) throws SQLException {
+		List<DataPoint> result= new ArrayList<>();
+		Connection connection= getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM Data_Point WHERE `Data_Set_ID`="+id);
+		while (resultSet.next()) {
+			DataPoint point= new DataPoint(resultSet.getInt("Data_Set_ID"), resultSet.getString("Text"), resultSet.getString("Label"));
+			point.setId(resultSet.getInt("ID"));
+			result.add(point);
+		}
+		statement.close();
+		connection.close();
+		return result;
+	}
+	
 
 	private Connection getConnection() throws SQLException {
 		return  DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
