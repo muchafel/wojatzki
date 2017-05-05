@@ -51,7 +51,8 @@ public class EvaluationDataIOTest {
 		
 		System.out.println(data.getTrainData().getNumberOfInstances());
 		System.out.println(data.getTrainData().getNumberOfFavor());
-		System.out.println(data.getTestData().getNumberOfFavor());
+		System.out.println(data.getTestData().getNumberOfAgainst());
+		System.out.println(data.getTestData().getNumberOfNone());
 		
 		
 		Assert.assertEquals(513,data.getTrainData().getNumberOfInstances());

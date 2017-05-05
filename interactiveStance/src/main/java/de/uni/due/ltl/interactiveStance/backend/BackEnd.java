@@ -207,7 +207,7 @@ public class BackEnd {
 	 * @param target
 	 * @return
 	 */
-	public synchronized EvaluationDataSet getTrainData (String target) {
+	public synchronized EvaluationDataSet getTrainData () {
 		return evaluationData.getTrainData();
 	}
 	
@@ -216,7 +216,7 @@ public class BackEnd {
 	 * @param target
 	 * @return
 	 */
-	public synchronized EvaluationDataSet getTestData (String target) {
+	public synchronized EvaluationDataSet getTestData () {
 		return evaluationData.getTestData();
 	}
 	

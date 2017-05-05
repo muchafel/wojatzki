@@ -2,6 +2,12 @@ package de.uni.due.ltl.interactiveStance.client;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.vaadin.addon.JFreeChartWrapper;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -27,6 +33,7 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
+import java.awt.Font;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +69,11 @@ public class InteractiveStanceGUI extends UI {
 			DropMode.ON_TOP_OR_BETWEEN);
 	GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
 			DropMode.ON_TOP_OR_BETWEEN);
+	
 
+	JFreeChartWrapper pieChart;
+	
+	
 	/**
 	 * entry point for GUI
 	 */
@@ -123,7 +134,12 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(VaadinIcons.COGS);
+		
+
+		pieChart=createPieChart(service);
+		
 	}
+
 
 	/**
 	 * Here we stack the components together
@@ -131,7 +147,8 @@ public class InteractiveStanceGUI extends UI {
 	private void buildLayout() {
 		FormLayout filterWrapper = new FormLayout(filter);
 		filterWrapper.setMargin(false);
-		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
+		HorizontalLayout actions = new HorizontalLayout(pieChart,filterWrapper, searchButton);
+//		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
 		actions.setSpacing(true);
 		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
 
@@ -286,12 +303,43 @@ public class InteractiveStanceGUI extends UI {
 		listOfSelectedAgainstTargets.setItems(service.getAllSelectedAgainstTargets());
 	}
 
+	
+	public static JFreeChartWrapper createPieChart(BackEnd service) {
+        JFreeChart chart = createchart(createPieData(service));
+        return new JFreeChartWrapper(chart);
+    }
+	
+	
+	private static JFreeChart createchart(DefaultPieDataset dataset) {
+		JFreeChart chart = ChartFactory.createPieChart(
+				"Class Distribution", // chart
+				dataset, // data
+				true, // include legend
+				true, false);
+
+		PiePlot plot = (PiePlot) chart.getPlot();
+		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+		plot.setNoDataMessage("No data available");
+		plot.setCircular(false);
+		plot.setLabelGap(0.02);
+		return chart;
+	}
+
+	private static DefaultPieDataset createPieData(BackEnd service) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("FAVOR", 10);
+        dataset.setValue("AGAINST", 30);
+        dataset.setValue("NONE", 45);
+        return dataset; 
+	}
+
+
 	/*
 	 * You can specify additional servlet parameters like the URI and UI class
 	 * name and turn on production mode when you have finished developing the
 	 * application.
 	 */
-	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
+	@WebServlet(urlPatterns = "/*") // change URI of this website to "/detector"
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
 
