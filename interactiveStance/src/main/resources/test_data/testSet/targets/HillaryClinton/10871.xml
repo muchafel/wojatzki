@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <tweet>
     <id>10871</id>
-    <stance>UNKNOWN</stance>
+    <stance>NONE</stance>
     <target>Hillary Clinton</target>
     <text>It bugs me when some people seek to invalidate centrist Democrats. I prefer a bigger tent. </text>
 </tweet>
