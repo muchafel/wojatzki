@@ -16,18 +16,22 @@ public class CollocationNgramAnalyzerTest {
 		
 		//set up analyzer with some targets from the searcher
 		StanceDB db = new StanceDB("root", "", "jdbc:mysql://localhost/interactiveArgumentMining");
-		HashMap<String, ExplicitTarget> selectedTargets = new HashMap<>();
+		HashMap<String, ExplicitTarget> selectedTargetsFavor = new HashMap<>();
+		HashMap<String, ExplicitTarget> selectedTargetsAgainst = new HashMap<>();
 		TargetSearcher searcher= new TargetSearcher();
-		searcher.SetUp(db,5);
+		searcher.SetUp(db,3);
 		
-		for(ExplicitTarget t :searcher.search("atheism",true)){
-			selectedTargets.put(t.getId(), t);
+		for(ExplicitTarget t :searcher.search("evolution",true)){
+			selectedTargetsFavor.put(t.getId(), t);
 		}
 		
+		for(ExplicitTarget t :searcher.search("god",true)){
+			selectedTargetsAgainst.put(t.getId(), t);
+		}
 		
 		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db);
 		
-		analyzer.analyze(selectedTargets,1);
+		analyzer.analyze(selectedTargetsFavor,selectedTargetsAgainst,1);
 		
 	}
 }

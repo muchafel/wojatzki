@@ -32,6 +32,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
+import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
@@ -60,14 +61,17 @@ public class CollocationNgramAnalyzer {
 	 * @throws UIMAException
 	 * @throws TextClassificationException
 	 */
-	public void analyze(HashMap<String, ExplicitTarget> selectedTargets, int maxNgramSize)
+	public void analyze(HashMap<String, ExplicitTarget> selectedTargetsFavor,HashMap<String, ExplicitTarget> selectedTargetsAgainst, int maxNgramSize)
 			throws NumberFormatException, SQLException, UIMAException, TextClassificationException {
 
 		Map<Integer, StanceLexicon> lexica = new HashMap<Integer, StanceLexicon>();
 
 		for (int i = 1; i <= maxNgramSize; i++) {
-			lexica.put(i, createStanceLexicon(selectedTargets, i));
+			lexica.put(i, createStanceLexicon(selectedTargetsFavor,selectedTargetsAgainst, i));
 		}
+		
+		
+		
 		for (int i : lexica.keySet()) {
 			System.out.println(i + " ----");
 			System.out.println(lexica.get(i).prettyPrint());
@@ -77,6 +81,7 @@ public class CollocationNgramAnalyzer {
 
 	/**
 	 * @param selectedTargets
+	 * @param selectedTargetsAgainst 
 	 * @param i
 	 * @return
 	 * @throws NumberFormatException
@@ -84,26 +89,42 @@ public class CollocationNgramAnalyzer {
 	 * @throws UIMAException
 	 * @throws TextClassificationException
 	 */
-	private StanceLexicon createStanceLexicon(HashMap<String, ExplicitTarget> selectedTargets, int i)
+	private StanceLexicon createStanceLexicon(HashMap<String, ExplicitTarget> selectedTargetsFavor, HashMap<String, ExplicitTarget> selectedTargetsAgainst, int i)
 			throws NumberFormatException, SQLException, UIMAException, TextClassificationException {
 
 		System.out.println("create lexicon for " + i + "-grams");
 
 		FrequencyDistribution<String> favor = new FrequencyDistribution<String>();
 		FrequencyDistribution<String> against = new FrequencyDistribution<String>();
-
-		for (String id : selectedTargets.keySet()) {
+		
+		//TODO refactoring (this is heavy code duplication)
+		// Adding ngrams in naturla order 		
+		for (String id : selectedTargetsFavor.keySet()) {
 			for(DataPoint point: db.getDataPointsByDataSetId(Integer.valueOf(id))){
 				JCas jcas = JCasFactory.createText(point.getText(), "en");
 				engine.process(jcas);
-
 				if (point.getLabel().equals("FAVOR")) {
 					favor = addFd(getNgrams(jcas, i), favor);
 				} else {
 					against = addFd(getNgrams(jcas, i), against);
 				}
 			}
+			System.out.println(".");
 		}
+		// Invert Logic		
+		for (String id : selectedTargetsAgainst.keySet()) {
+			for(DataPoint point: db.getDataPointsByDataSetId(Integer.valueOf(id))){
+				JCas jcas = JCasFactory.createText(point.getText(), "en");
+				engine.process(jcas);
+				if (point.getLabel().equals("FAVOR")) {
+					against = addFd(getNgrams(jcas, i), against);
+				} else {
+					favor = addFd(getNgrams(jcas, i), favor);
+				}
+			}
+		}
+		
+		
 		return createLexiconFromDistributions(favor, against);
 	}
 
@@ -151,7 +172,8 @@ public class CollocationNgramAnalyzer {
 		AggregateBuilder builder = new AggregateBuilder();
 		AnalysisEngine engine = null;
 		try {
-			builder.add(createEngineDescription(createEngineDescription(ArktweetTokenizer.class)));
+//			builder.add(createEngineDescription(createEngineDescription(ArktweetTokenizer.class)));
+			builder.add(createEngineDescription(createEngineDescription(BreakIteratorSegmenter.class)));
 			engine = builder.createAggregate();
 		} catch (ResourceInitializationException e) {
 			e.printStackTrace();
