@@ -4,6 +4,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.io.EvaluationData;
+import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 
 import java.io.IOException;
 import java.util.*;
@@ -27,6 +29,7 @@ public class BackEnd {
 	private static BackEnd instance;
 	private static StanceDB db;
 	private static TargetSearcher searcher;
+	private static EvaluationData evaluationData;
 
 	public static BackEnd loadData() {
 		/**
@@ -36,6 +39,14 @@ public class BackEnd {
 
 			final BackEnd backend = new BackEnd();
 
+			//for testing only, should be done in teh config section
+			try {
+				evaluationData= new EvaluationData("Atheism");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 			//uncomment for testing
 //			Random r = new Random(200);
 //			for (int i = 0; i < 100; i++) {
@@ -69,6 +80,7 @@ public class BackEnd {
 			}
 			
 			instance = backend;
+			
 		}
 
 		return instance;
@@ -174,6 +186,37 @@ public class BackEnd {
 		return result;
 	}
 
+	/**
+	 * loads the selected data in target wrapper class
+	 * @param target
+	 */
+	public synchronized void loadEvaluationData (String target) {
+		try {
+			evaluationData= new EvaluationData(target);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * returns the loaded train data, object can be used to get descriptive stats
+	 * @param target
+	 * @return
+	 */
+	public synchronized EvaluationDataSet getTrainData (String target) {
+		return evaluationData.getTrainData();
+	}
+	
+	/**
+	 * returns the loaded test data, object can be used to get descriptive stats
+	 * @param target
+	 * @return
+	 */
+	public synchronized EvaluationDataSet getTestData (String target) {
+		return evaluationData.getTestData();
+	}
+	
+	
 	public synchronized boolean newSearch(String query) {
 		if (searcher == null) {
 			return false;
