@@ -13,6 +13,8 @@ import de.uni.due.ltl.interactiveStance.io.EvaluationData;
 import de.uni.due.ltl.interactiveStance.io.TaskATweetReader;
 
 public class EvaluationDataIOTest {
+	
+	
 	@Test
 	public void simpleReadTest() throws Exception {
 		String path = "src/main/resources/test_data/testSet/targets/Atheism";
@@ -25,17 +27,32 @@ public class EvaluationDataIOTest {
 //			System.out.println(jcas.getDocumentText()+ " "+ JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance());
 			i++;
 		}
-		System.out.println(i);
-		int numOfTweets= new File(path).list().length;
+		
+		int numOfTweets= getFileCount(new File(path).list());
 		Assert.assertEquals(i,numOfTweets);
 	}
 	
+	private int getFileCount(String[] list) {
+		int count = 0;
+		
+		for(String fileName: list){
+			if(fileName.endsWith(".xml")){
+				count++;
+			}
+		}
+		
+		return count;
+	}
+
 	@Test
 	public void dataSetTest() throws Exception {
 		
 		EvaluationData data = new EvaluationData("Atheism");
 		
 		System.out.println(data.getTrainData().getNumberOfInstances());
+		System.out.println(data.getTrainData().getNumberOfFavor());
+		System.out.println(data.getTestData().getNumberOfFavor());
+		
 		
 		Assert.assertEquals(513,data.getTrainData().getNumberOfInstances());
 		Assert.assertEquals(220,data.getTestData().getNumberOfInstances());
