@@ -10,6 +10,7 @@ import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.dnd.DragSourceExtension;
 import com.vaadin.event.dnd.DropTargetExtension;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.dnd.DropEffect;
@@ -39,7 +40,6 @@ import java.util.Set;
 @Title("Interactive Stance Detection")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-//@Widgetset("com.vaadin.DefaultWidgetSet")
 public class InteractiveStanceGUI extends UI {
 
 	TextField filter = new TextField("Filter Term");
@@ -49,12 +49,14 @@ public class InteractiveStanceGUI extends UI {
 	Button searchButton= new Button("Search");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
-	private Set<ExplicitTarget> draggedItems;
-
+	// keep the reference of dragged items.
+	Set<ExplicitTarget> draggedItems;
+	// drag source: available, drop target: selected
 	GridDragSource<ExplicitTarget> selectedFavorDrag = new GridDragSource<>(listOfSelectedFavorTargets);
 	GridDragSource<ExplicitTarget> selectedAgainstDrag = new GridDragSource<>(listOfSelectedAgainstTargets);
-	GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets, DropMode.ON_TOP_OR_BETWEEN);
-
+	GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets,
+			DropMode.ON_TOP_OR_BETWEEN);
+	// drag source: selected, drop target: available
 	GridDragSource<ExplicitTarget> availableDrag = new GridDragSource<>(listOfAvailableTargets);
 	GridDropTarget<ExplicitTarget> selectedFavorDrop = new GridDropTarget<>(listOfSelectedFavorTargets,
 			DropMode.ON_TOP_OR_BETWEEN);
@@ -80,11 +82,11 @@ public class InteractiveStanceGUI extends UI {
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
 
 		// duplicated function which is implemented by filter.addValueChangeListener
-//		searchButton.addClickListener(clickEvent -> {
-//			service.newSearch(filter.getValue());
-//			refresh_AvailableGrid();
-//			refresh_SelectedGrid();
-//		});
+		searchButton.addClickListener(clickEvent -> {
+			service.newSearch(filter.getValue());
+			refresh_AvailableGrid();
+			refresh_SelectedGrid();
+		});
 
 		listOfAvailableTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
 		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
@@ -278,6 +280,7 @@ public class InteractiveStanceGUI extends UI {
 		listOfAvailableTargets.setItems(service.getAllAvailableTargets(stringFilter));
 	}
 
+	// refresh two selected targets (favor and against)
 	private void refresh_SelectedGrid() {
 		listOfSelectedFavorTargets.setItems(service.getAllSelectedFavorTargets());
 		listOfSelectedAgainstTargets.setItems(service.getAllSelectedAgainstTargets());
@@ -288,7 +291,7 @@ public class InteractiveStanceGUI extends UI {
 	 * name and turn on production mode when you have finished developing the
 	 * application.
 	 */
-	@WebServlet(urlPatterns = "/*")
+	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
 
