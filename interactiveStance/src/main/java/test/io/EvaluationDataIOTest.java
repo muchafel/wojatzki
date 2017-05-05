@@ -5,19 +5,14 @@ import java.io.File;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.JCasIterable;
-import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.uni.due.ltl.interactiveStance.io.EvaluationData;
-import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.TaskATweetReader;
-import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
 
-public class evaluationDataIOTest {
-		
+public class EvaluationDataIOTest {
 	@Test
 	public void simpleReadTest() throws Exception {
 		String path = "src/main/resources/test_data/testSet/targets/Atheism";
@@ -46,6 +41,4 @@ public class evaluationDataIOTest {
 		Assert.assertEquals(220,data.getTestData().getNumberOfInstances());
 		
 	}
-	
-	
 }
