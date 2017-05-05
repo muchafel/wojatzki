@@ -155,15 +155,19 @@ public class BackEnd {
 	}
 
 	public synchronized String printSelectedTargets() {
-		StringBuilder sb= new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		for(String key:selectedFavorTargets.keySet()){
 			sb.append(selectedFavorTargets.get(key).getTargetName()+""+System.lineSeparator());
+		}
+		// add selected targets of against.
+		for(String key:selectedAgainstTargets.keySet()){
+			sb.append(selectedAgainstTargets.get(key).getTargetName()+""+System.lineSeparator());
 		}
 		return sb.toString();
 	}
 
 	public synchronized EvaluationResult analyse() {
-		EvaluationResult result= new EvaluationResult();
+		EvaluationResult result = new EvaluationResult();
 		//TODO: proper exception handling
 		try {
 			Thread.sleep(1000);
