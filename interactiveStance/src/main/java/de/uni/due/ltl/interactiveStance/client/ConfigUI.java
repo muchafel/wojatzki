@@ -13,8 +13,10 @@ import com.vaadin.ui.Label;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.vaadin.addon.JFreeChartWrapper;
 
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +33,7 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ConfigUI extends UI {
 
-    class FileUploder implements Upload.Receiver, Upload.SucceededListener {
+    class FileUploader implements Upload.Receiver, Upload.SucceededListener {
         public File file;
 
         @Override
@@ -57,10 +60,11 @@ public class ConfigUI extends UI {
     }
 
     Label configLabel = new Label("Configuration");
-    FileUploder receiver = new FileUploder();
+    FileUploader receiver = new FileUploader();
     Upload selectedFile = new Upload();
 
     JFreeChartWrapper pieChart;
+    Label pieChartLabel = new Label("inspect data");
 
     List<String> modes = new ArrayList<>();
     ComboBox<String> modeComboBox = new ComboBox<>("Experiment Mode");
@@ -71,6 +75,13 @@ public class ConfigUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         pieChart = createPieChart(service);
+        // Default Width*Height: 809*500
+        pieChart.setWidth(480.0F, Unit.PIXELS);
+        pieChart.setHeight(300.0F, Unit.PIXELS);
+        HorizontalLayout piechartLayout = new HorizontalLayout();
+        piechartLayout.addComponent(pieChart);
+        piechartLayout.addComponent(pieChartLabel);
+        piechartLayout.setComponentAlignment(pieChartLabel, Alignment.MIDDLE_CENTER);
 
         selectedFile.setReceiver(receiver);
         selectedFile.setImmediateMode(false);
@@ -80,7 +91,7 @@ public class ConfigUI extends UI {
         modes.add("Stupid");
         modeComboBox.setItems(modes);
         startBtn.addClickListener(event -> {
-
+            getPage().setLocation("/detector");
         });
         FormLayout comboBoxFormLayout = new FormLayout();
         comboBoxFormLayout.addComponent(modeComboBox);
@@ -92,30 +103,41 @@ public class ConfigUI extends UI {
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addComponent(configLabel);
         verticalLayout.addComponent(selectedFile);
-        verticalLayout.addComponent(pieChart);
+        verticalLayout.addComponent(piechartLayout);
         verticalLayout.addComponent(experimentModeLayout);
         verticalLayout.setComponentAlignment(configLabel, Alignment.TOP_CENTER);
         verticalLayout.setComponentAlignment(selectedFile, Alignment.MIDDLE_CENTER);
-        verticalLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
+        verticalLayout.setComponentAlignment(piechartLayout, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(experimentModeLayout, Alignment.BOTTOM_CENTER);
         selectedFile.addSucceededListener(receiver);
 
         setContent(verticalLayout);
     }
 
+    /**
+     *
+     * @param service Instace of Backend from which data are loaded
+     * @return A wrapper of JFreeChart
+     */
     public static JFreeChartWrapper createPieChart(BackEnd service) {
         JFreeChart chart = createchart(createPieData(service));
         return new JFreeChartWrapper(chart);
     }
 
-
-    private static JFreeChart createchart(DefaultPieDataset dataset) {
+    /**
+     * create a JFreeChart object of pie chart.
+     * @param dataset Data set of pie chart.
+     * @return
+     */
+    private static JFreeChart createchart(PieDataset dataset) {
         JFreeChart chart = ChartFactory.createPieChart(
                 "Class Distribution", // chart
                 dataset, // data
                 false, // include legend
                 true,
                 false);
+        // set chart background transparent
+        chart.setBackgroundPaint(new Color(0, 0, 0, 0));
 
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -123,10 +145,24 @@ public class ConfigUI extends UI {
         plot.setCircular(false);
         plot.setBackgroundPaint(new Color(0, 0, 0, 0));
         plot.setLabelGap(0.02);
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator(
+                "{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()
+        ));
+        // keep space between all blocks.
+        plot.setExplodePercent("FAVOR", 0.05);
+        plot.setExplodePercent("AGAINST", 0.05);
+        plot.setExplodePercent("NONE", 0.05);
+        // no border
+        plot.setOutlineVisible(false);
         return chart;
     }
 
-    private static DefaultPieDataset createPieData(BackEnd service) {
+    /**
+     *
+     * @param service Instace of Backend from which data are loaded
+     * @return
+     */
+    private static PieDataset createPieData(BackEnd service) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("FAVOR", 3);
         dataset.setValue("AGAINST", 4);
