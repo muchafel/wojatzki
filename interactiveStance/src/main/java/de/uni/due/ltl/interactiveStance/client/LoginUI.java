@@ -42,7 +42,7 @@ public class LoginUI extends UI implements LoginForm.LoginListener {
         String username = loginEvent.getLoginParameter("username");
         String password = loginEvent.getLoginParameter("password");
         if (Authentification.authenticate(username, password)) {
-            getPage().setLocation("/detector");
+            getPage().setLocation("/config");
             getSession().close();
         } else {
             Notification errorNotif = new Notification("username or password incorrect.",
@@ -54,7 +54,7 @@ public class LoginUI extends UI implements LoginForm.LoginListener {
 
     @WebServlet(urlPatterns = "/*")
     @VaadinServletConfiguration(ui = LoginUI.class, productionMode = false)
-    public static class MyUIServlet extends VaadinServlet {
+    public static class LoginUIServlet extends VaadinServlet {
 
     }
 }
