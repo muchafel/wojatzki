@@ -171,6 +171,11 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.unidue.ltl</groupId>
+			<artifactId>de.unidue.ltl.evaluation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
