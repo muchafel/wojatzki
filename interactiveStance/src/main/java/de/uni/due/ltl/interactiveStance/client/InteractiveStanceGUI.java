@@ -129,7 +129,7 @@ public class InteractiveStanceGUI extends UI {
 
 			// Set polling frequency to 0.5 seconds.
 			EvaluationResult result= service.analyse();
-			Notification.show("microSemEval: "+result.getMicroSemEval() + System.lineSeparator()+" microF1: "+result.getMicroF());
+			Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
 		});
 
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);

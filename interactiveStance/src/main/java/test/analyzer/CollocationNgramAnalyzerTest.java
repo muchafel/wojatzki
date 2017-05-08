@@ -8,6 +8,7 @@ import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 
 public class CollocationNgramAnalyzerTest {
 
@@ -28,10 +29,11 @@ public class CollocationNgramAnalyzerTest {
 		for(ExplicitTarget t :searcher.search("god",true)){
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
+		// load evaluation Data
+		EvaluationScenario secenario = new EvaluationScenario("Atheism");
+		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,secenario);
 		
-		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db);
-		
-		analyzer.analyze(selectedTargetsFavor,selectedTargetsAgainst,1);
+		analyzer.analyze(selectedTargetsFavor,selectedTargetsAgainst,1,true);
 		
 	}
 }

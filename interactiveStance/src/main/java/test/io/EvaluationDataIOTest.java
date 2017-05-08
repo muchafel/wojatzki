@@ -9,7 +9,7 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.uni.due.ltl.interactiveStance.io.EvaluationData;
+import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.io.TaskATweetReader;
 
 public class EvaluationDataIOTest {
@@ -32,6 +32,11 @@ public class EvaluationDataIOTest {
 		Assert.assertEquals(i,numOfTweets);
 	}
 	
+	/**
+	 * check if files are valid xml files
+	 * @param list
+	 * @return
+	 */
 	private int getFileCount(String[] list) {
 		int count = 0;
 		
@@ -47,7 +52,7 @@ public class EvaluationDataIOTest {
 	@Test
 	public void dataSetTest() throws Exception {
 		
-		EvaluationData data = new EvaluationData("Atheism");
+		EvaluationScenario data = new EvaluationScenario("Atheism");
 		
 		System.out.println(data.getTrainData().getNumberOfInstances());
 		System.out.println(data.getTrainData().getNumberOfFavor());

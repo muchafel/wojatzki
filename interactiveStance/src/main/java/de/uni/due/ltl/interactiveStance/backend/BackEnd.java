@@ -1,13 +1,17 @@
 package de.uni.due.ltl.interactiveStance.backend;
 
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.uima.UIMAException;
+import org.dkpro.tc.api.exception.TextClassificationException;
 
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
-import de.uni.due.ltl.interactiveStance.io.EvaluationData;
+import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,16 +24,13 @@ public class BackEnd {
 	private HashMap<String, ExplicitTarget> selectedAgainstTargets = new HashMap<>();
 
 	// Create dummy data by randomly combining first and last names
-	static String[] targets = { "Atheism is a cure", "People With Low IQ Scores Should Be Sterilized.",
-			"Hillary is bad", "Atheism ist all bad", "I hate Trump", "the bible is true",
-			"Creatures of the lord are fine", "Jesus is our savious", "Hang em by the neck", "DP for Heinous crimes",
-			"It is time for sugar", "Abortion is SIN", "Everyone has the right to choose", "Ban DP", "I hate gafs",
-			"Harry Potter is the best movie" };
+	static String[] targets = { "Dummy I", "Dummy II" };
 
 	private static BackEnd instance;
 	private static StanceDB db;
 	private static TargetSearcher searcher;
-	private static EvaluationData evaluationData;
+	private static EvaluationScenario evaluationScenario;
+	private static CollocationNgramAnalyzer analyzer;
 
 	public static BackEnd loadData() {
 		/**
@@ -41,7 +42,7 @@ public class BackEnd {
 
 			//for testing only, should be done in the config section
 			try {
-				evaluationData= new EvaluationData("Atheism");
+				evaluationScenario= new EvaluationScenario("Atheism");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -78,6 +79,9 @@ public class BackEnd {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			 analyzer = new CollocationNgramAnalyzer(db,evaluationScenario);
+			
 			
 			instance = backend;
 			
@@ -180,11 +184,11 @@ public class BackEnd {
 	}
 
 	public synchronized EvaluationResult analyse() {
-		EvaluationResult result = new EvaluationResult();
+		EvaluationResult result = null;
 		//TODO: proper exception handling
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			result=analyzer.analyze(this.selectedFavorTargets, selectedAgainstTargets, 1, true);
+		} catch ( NumberFormatException | UIMAException | SQLException | TextClassificationException e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -196,7 +200,7 @@ public class BackEnd {
 	 */
 	public synchronized void loadEvaluationData (String target) {
 		try {
-			evaluationData= new EvaluationData(target);
+			evaluationScenario= new EvaluationScenario(target);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,7 +212,7 @@ public class BackEnd {
 	 * @return
 	 */
 	public synchronized EvaluationDataSet getTrainData () {
-		return evaluationData.getTrainData();
+		return evaluationScenario.getTrainData();
 	}
 	
 	/**
@@ -217,7 +221,7 @@ public class BackEnd {
 	 * @return
 	 */
 	public synchronized EvaluationDataSet getTestData () {
-		return evaluationData.getTestData();
+		return evaluationScenario.getTestData();
 	}
 	
 	
