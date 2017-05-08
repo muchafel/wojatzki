@@ -19,10 +19,10 @@ public class EvaluationData implements Serializable, Cloneable{
 	   }
 		
 		//FIXME: proper way of deploying resources (DKPRO_HOME ?)
-		this.trainData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/trainSet/targets/"+target);
-		this.testData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/testSet/targets/"+target);
-//		this.trainData = new EvaluationDataSet( "src/main/resources/test_data/trainSet/targets/"+target);
-//		this.testData = new EvaluationDataSet("src/main/resources/test_data/testSet/targets/"+target);
+//		this.trainData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/trainSet/targets/"+target);
+//		this.testData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/testSet/targets/"+target);
+		this.trainData = new EvaluationDataSet( "src/main/resources/test_data/trainSet/targets/"+target);
+		this.testData = new EvaluationDataSet("src/main/resources/test_data/testSet/targets/"+target);
 	}
 
 
