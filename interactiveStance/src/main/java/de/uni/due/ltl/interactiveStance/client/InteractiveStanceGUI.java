@@ -70,11 +70,7 @@ public class InteractiveStanceGUI extends UI {
 			DropMode.ON_TOP_OR_BETWEEN);
 	GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
 			DropMode.ON_TOP_OR_BETWEEN);
-	
 
-	JFreeChartWrapper pieChart;
-	
-	
 	/**
 	 * entry point for GUI
 	 */
@@ -135,10 +131,6 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(VaadinIcons.COGS);
-		
-
-		pieChart=createPieChart(service);
-		
 	}
 
 
@@ -148,8 +140,7 @@ public class InteractiveStanceGUI extends UI {
 	private void buildLayout() {
 		FormLayout filterWrapper = new FormLayout(filter);
 		filterWrapper.setMargin(false);
-		HorizontalLayout actions = new HorizontalLayout(pieChart,filterWrapper, searchButton);
-//		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
+		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
 		actions.setSpacing(true);
 		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
 
@@ -187,12 +178,6 @@ public class InteractiveStanceGUI extends UI {
 	 * 	Drag item from available list to seleted list.
 	 */
 	private void setDragFromAvailable() {
-//		GridDragSource<ExplicitTarget> availableDrag = new GridDragSource<>(listOfAvailableTargets);
-//		GridDropTarget<ExplicitTarget> selectedFavorDrop = new GridDropTarget<>(listOfSelectedFavorTargets,
-//				DropMode.ON_TOP_OR_BETWEEN);
-//		GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
-//				DropMode.ON_TOP_OR_BETWEEN);
-
 		configureGridDragSource(availableDrag);
 		configureGridDropTarget(selectedFavorDrop);
 		configureGridDropTarget(selectedAgainstDrop);
@@ -201,10 +186,6 @@ public class InteractiveStanceGUI extends UI {
 	 * Let item back to available list.
 	 */
 	private void setDragFromSelected() {
-//		GridDragSource<ExplicitTarget> selectedFavorDrag = new GridDragSource<>(listOfSelectedFavorTargets);
-//		GridDragSource<ExplicitTarget> selectedAgainstDrag = new GridDragSource<>(listOfSelectedAgainstTargets);
-//		GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets, DropMode.ON_TOP_OR_BETWEEN);
-
 		configureGridDragSource(selectedFavorDrag);
 		configureGridDragSource(selectedAgainstDrag);
 		configureGridDropTarget(availableDrop);
@@ -304,46 +285,12 @@ public class InteractiveStanceGUI extends UI {
 		listOfSelectedAgainstTargets.setItems(service.getAllSelectedAgainstTargets());
 	}
 
-	
-	public static JFreeChartWrapper createPieChart(BackEnd service) {
-        JFreeChart chart = createchart(createPieData(service));
-        return new JFreeChartWrapper(chart);
-    }
-	
-	
-	private static JFreeChart createchart(DefaultPieDataset dataset) {
-		JFreeChart chart = ChartFactory.createPieChart(
-				"Class Distribution", // chart
-				dataset, // data
-				false, // include legend
-				true, 
-				false);
-
-		PiePlot plot = (PiePlot) chart.getPlot();
-		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-		plot.setNoDataMessage("No data available");
-		plot.setCircular(false);
-		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
-		plot.setLabelGap(0.02);
-		
-		return chart;
-	}
-
-	private static DefaultPieDataset createPieData(BackEnd service) {
-		DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("FAVOR", service.getTrainData().getNumberOfFavor());
-        dataset.setValue("AGAINST", service.getTrainData().getNumberOfAgainst());
-        dataset.setValue("NONE", service.getTrainData().getNumberOfNone());
-        return dataset; 
-	}
-
-
 	/*
 	 * You can specify additional servlet parameters like the URI and UI class
 	 * name and turn on production mode when you have finished developing the
 	 * application.
 	 */
-	@WebServlet(urlPatterns = "/*") // change URI of this website to "/detector"
+	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
 
