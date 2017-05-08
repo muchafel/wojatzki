@@ -50,11 +50,12 @@ import java.util.Set;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class InteractiveStanceGUI extends UI {
 
+	TextField searchField = new TextField("");
 	TextField filter = new TextField("Filter Term");
 	Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Targets");
 	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Selected Targets of Favor");
 	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Selected Targets of Against");
-	Button searchButton= new Button("Search");
+	Button searchButton= new Button("Get Target Candidates");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
 	// keep the reference of dragged items.
@@ -89,9 +90,8 @@ public class InteractiveStanceGUI extends UI {
 		filter.setDescription("filter");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
 
-		// duplicated function which is implemented by filter.addValueChangeListener \\TODO: no! please don't remove functionality without consultation
 		searchButton.addClickListener(clickEvent -> {
-			service.newSearch(filter.getValue());
+			service.newSearch(searchField.getValue());
 			refresh_AvailableGrid();
 			refresh_SelectedGrid();
 		});
@@ -125,7 +125,7 @@ public class InteractiveStanceGUI extends UI {
 
 			// Set polling frequency to 0.5 seconds.
 			EvaluationResult result= service.analyse();
-			Notification.show("microSemEval: "+result.getMicroSemEval() + System.lineSeparator()+" microF1: "+result.getMicroF());
+			Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
 		});
 
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
@@ -143,6 +143,12 @@ public class InteractiveStanceGUI extends UI {
 		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
 		actions.setSpacing(true);
 		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
+		VerticalLayout controls = new VerticalLayout(searchField, searchButton,filterWrapper);
+		HorizontalLayout headControls = new HorizontalLayout(controls);
+//		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
+		headControls.setSpacing(true);
+//		headControls.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
+//		headControls.setComponentAlignment(filterWrapper, Alignment.BOTTOM_LEFT);
 
 		listOfAvailableTargets.setWidth("100%");
 		listOfAvailableTargets.setHeightMode(HeightMode.ROW);
@@ -164,7 +170,7 @@ public class InteractiveStanceGUI extends UI {
 		selectedTargetsContent.setWidth("100%");
 		selectedTargetsContent.setSpacing(true);
 
-		VerticalLayout left = new VerticalLayout(actions, listOfAvailableTargets, analysisButton, selectedTargetsContent);
+		VerticalLayout left = new VerticalLayout(headControls, listOfAvailableTargets, analysisButton, selectedTargetsContent);
 		left.setSpacing(true);
 
 		HorizontalLayout mainLayout = new HorizontalLayout(left);
