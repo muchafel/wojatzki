@@ -39,7 +39,7 @@ public class BackEnd {
 
 			final BackEnd backend = new BackEnd();
 
-			//for testing only, should be done in teh config section
+			//for testing only, should be done in the config section
 			try {
 				evaluationData= new EvaluationData("Atheism");
 			} catch (Exception e) {

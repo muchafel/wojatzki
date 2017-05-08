@@ -33,6 +33,7 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.List;
@@ -314,22 +315,25 @@ public class InteractiveStanceGUI extends UI {
 		JFreeChart chart = ChartFactory.createPieChart(
 				"Class Distribution", // chart
 				dataset, // data
-				true, // include legend
-				true, false);
+				false, // include legend
+				true, 
+				false);
 
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 		plot.setNoDataMessage("No data available");
 		plot.setCircular(false);
+		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
 		plot.setLabelGap(0.02);
+		
 		return chart;
 	}
 
 	private static DefaultPieDataset createPieData(BackEnd service) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("FAVOR", 10);
-        dataset.setValue("AGAINST", 30);
-        dataset.setValue("NONE", 45);
+        dataset.setValue("FAVOR", service.getTrainData().getNumberOfFavor());
+        dataset.setValue("AGAINST", service.getTrainData().getNumberOfAgainst());
+        dataset.setValue("NONE", service.getTrainData().getNumberOfNone());
         return dataset; 
 	}
 

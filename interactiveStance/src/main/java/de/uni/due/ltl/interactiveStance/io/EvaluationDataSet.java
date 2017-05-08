@@ -30,7 +30,7 @@ public class EvaluationDataSet {
 			classDistribution.inc(JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance());
 			numberOfInstances++;
 		}
-
+		System.out.println("found instances "+numberOfInstances);
 		if (classDistribution.contains("FAVOR")) {
 			numberOfFavor = classDistribution.getCount("FAVOR");
 		}
