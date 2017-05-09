@@ -125,9 +125,6 @@ public class InteractiveStanceGUI extends UI {
 		refresh_SelectedGrid();
 
 		analysisButton.addClickListener(clickEvent -> {
-//			Notification.show("Run Analysis of "+service.printSelectedTargets());
-
-			// Set polling frequency to 0.5 seconds.
 			EvaluationResult result= service.analyse();
 			Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
 		});
@@ -345,7 +342,7 @@ public class InteractiveStanceGUI extends UI {
 	 * name and turn on production mode when you have finished developing the
 	 * application.
 	 */
-	@WebServlet(urlPatterns = "/*") // change URI of this website to "/detector"
+	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
 	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
 

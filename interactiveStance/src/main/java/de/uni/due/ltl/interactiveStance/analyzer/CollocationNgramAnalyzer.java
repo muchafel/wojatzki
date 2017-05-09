@@ -41,9 +41,12 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
 import de.uni.due.ltl.interactiveStance.util.CollocationMeasureHelper;
+import de.uni.due.ltl.interactiveStance.util.EvaluationUtil;
+import de.unidue.ltl.evaluation.ConfusionMatrix;
 import de.unidue.ltl.evaluation.EvaluationData;
 import de.unidue.ltl.evaluation.measure.categorial.Fscore;
 import edu.stanford.nlp.io.EncodingPrintWriter.out;
@@ -64,7 +67,8 @@ public class CollocationNgramAnalyzer {
 
 	/**
 	 * TODO: check whether we can get rid of all the casting from int to
-	 * String... ID is a INT! TODO: expand to ngrams TODO: bind to train data
+	 * String... ID is a INT! 
+	 * TODO evaluation needs to be expandend to larger ngrams than unigrams (we may nee mutual expectation)
 	 * 
 	 * @param selectedTargets
 	 * @return
@@ -85,10 +89,7 @@ public class CollocationNgramAnalyzer {
 		Fscore<String> fscore = null;
 		for (int lexiconId : lexica.keySet()) {
 			if(evaluateTrain){
-				Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(lexica.get(lexiconId));
-				String topConfig=getTopConfig(thresholdId2Outcome);
-				System.out.println("Using threshold config "+ topConfig+" : "+getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
-				fscore=new Fscore<>(thresholdId2Outcome.get(topConfig));
+				fscore=evaluateUsingLexicon(lexica.get(lexiconId),scenario.getTrainData());
 			}
 		}
 		return new EvaluationResult(fscore);
@@ -96,6 +97,14 @@ public class CollocationNgramAnalyzer {
 	}
 
 	
+	public Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
+		Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(stanceLexicon,evaluationDataSet);
+		String topConfig=getTopConfig(thresholdId2Outcome);
+		System.out.println("Using threshold config "+ topConfig+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
+		System.out.println(new ConfusionMatrix<String>(thresholdId2Outcome.get(topConfig)));
+		return new Fscore<>(thresholdId2Outcome.get(topConfig));
+	}
+
 	/**
 	 * get best config from the result map
 	 * @param thresholdId2Outcome
@@ -105,7 +114,7 @@ public class CollocationNgramAnalyzer {
 		String result=null;
 		double bestf=0;
 		for(String key: thresholdId2Outcome.keySet()){
-			double semEval=getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(key)));
+			double semEval=EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(key)));
 			if(semEval>bestf){
 				result=key;
 				bestf=semEval;
@@ -114,17 +123,17 @@ public class CollocationNgramAnalyzer {
 		return result;
 	}
 
-	private Map<String, EvaluationData<String>> getThresholdId2Outcome(StanceLexicon stanceLexicon) throws AnalysisEngineProcessException {
+	private Map<String, EvaluationData<String>> getThresholdId2Outcome(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
 		Map<String, EvaluationData<String>> result= new HashMap<>();
 		
 		
-		for (JCas jcas : new JCasIterable(scenario.getTrainData().getDataReader())){
-			engine.process(jcas);
+		for (JCas jcas : new JCasIterable(evaluationDataSet.getDataReader())){
+			this.engine.process(jcas);
 			result=addEvaluations(result, stanceLexicon,jcas);
 		}
 //		for(String thresholdId: result.keySet()){
 //			Fscore<String> fscore=new Fscore<>(result.get(thresholdId));
-//			System.out.println(thresholdId+":"+ getSemEvalMeasure(fscore));
+//			System.out.println(thresholdId+":"+ EvaluationUtil.getSemEvalMeasure(fscore));
 //
 ////			System.out.println(thresholdId+" : "+ getSemEvalMeasure(fscore)+ " | F(none): "+fscore.getScoreForLabel("NONE")+" | F(against): "+fscore.getScoreForLabel("AGAINST")+" | F(favor): "+fscore.getScoreForLabel("FAVOR"));
 //		}
@@ -132,10 +141,6 @@ public class CollocationNgramAnalyzer {
 		return result;
 	}
 
-	//TODO evaluation Util
-	private double getSemEvalMeasure(Fscore<String> fscore) {
-		return (fscore.getScoreForLabel("AGAINST")+fscore.getScoreForLabel("FAVOR"))/2;
-	}
 
 	private Map<String, EvaluationData<String>> addEvaluations(Map<String, EvaluationData<String>> result,StanceLexicon stanceLexicon, JCas jcas) {
 		
@@ -143,21 +148,12 @@ public class CollocationNgramAnalyzer {
 		for (int i = 0; i <= 100; i+=5) {
 			for (int j = 0; j <= 100; j+=5) {
 
-//				float upperBound = stanceLexicon.getNthPositive(i);
-//				float lowerBound = stanceLexicon.getNthNegative(j);
 				float upperBound = stanceLexicon.getNthPositivePercent(i);
 				float lowerBound = stanceLexicon.getNthNegativePercent(j);
 				float commentPolarity = getPolarity(stanceLexicon, jcas);
-				String outcome = "";
-
-				if (commentPolarity >= upperBound) {
-					outcome = "FAVOR";
-				} else if (commentPolarity < upperBound && commentPolarity > lowerBound) {
-					outcome = "NONE";
-				} else {
-					outcome = "AGAINST";
-				}
-				result = addPredictionOutcomePairing(result, outcome, jcas, getThresholdId(upperBound, lowerBound));
+				String outcome = ressolveOutcome(upperBound,lowerBound,commentPolarity);
+				result = addPredictionOutcomePairing(result, outcome, jcas, getThresholdId(i, j));
+//				result = addPredictionOutcomePairing(result, outcome, jcas, getThresholdId(upperBound, lowerBound));
 			}
 		}
 		
@@ -297,7 +293,13 @@ public class CollocationNgramAnalyzer {
 		return engine;
 	}
 
-	private static StanceLexicon createLexiconFromDistributions(FrequencyDistribution<String> favour,
+	/**
+	 * takes a favor and and against frequency distribution and returns a stance lexicon
+	 * @param favour
+	 * @param against
+	 * @return
+	 */
+	public StanceLexicon createLexiconFromDistributions(FrequencyDistribution<String> favour,
 			FrequencyDistribution<String> against) {
 		Map<String, Float> lexcicon = new TreeMap<String, Float>();
 		Set<String> candidates = new HashSet<String>();
@@ -309,10 +311,40 @@ public class CollocationNgramAnalyzer {
 		CollocationMeasureHelper helper = new CollocationMeasureHelper(favour, against);
 
 		for (String word : candidates) {
-			lexcicon.put(word, helper.getDiffOfGMeans(word));
+			lexcicon.put(word, helper.getDiffOfDice(word));
 		}
 
 		return new StanceLexicon(lexcicon);
+	}
+
+	public Fscore<String> evaluateUsingLexiconAndFixedThreshold(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet,int upperPercentage, int lowerPercentage) throws AnalysisEngineProcessException {
+		EvaluationData<String> evalData = new EvaluationData<>();
+		float upperBound = stanceLexicon.getNthPositivePercent(upperPercentage);
+		float lowerBound = stanceLexicon.getNthNegativePercent(lowerPercentage);
+		
+		for (JCas jcas : new JCasIterable(evaluationDataSet.getDataReader())){
+			this.engine.process(jcas);
+			String goldOutcome= JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance();
+			float commentPolarity = getPolarity(stanceLexicon, jcas);
+			String outcome = ressolveOutcome(upperBound,lowerBound,commentPolarity);
+
+			evalData.register(goldOutcome, outcome);
+			
+		}
+		System.out.println("Using threshold config "+ upperPercentage+"_"+lowerPercentage+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
+		System.out.println(new ConfusionMatrix<String>(evalData));
+		return new Fscore<>(evalData);
+	}
+
+	private String ressolveOutcome(float upperBound, float lowerBound, float commentPolarity) {
+		if (commentPolarity >= upperBound) {
+			return "FAVOR";
+		} else if (commentPolarity < upperBound && commentPolarity > lowerBound) {
+			return "NONE";
+		} else {
+			return "AGAINST";
+		}
+		
 	}
 
 }
