@@ -71,11 +71,7 @@ public class InteractiveStanceGUI extends UI {
 			DropMode.ON_TOP_OR_BETWEEN);
 	GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
 			DropMode.ON_TOP_OR_BETWEEN);
-	
 
-	JFreeChartWrapper pieChart;
-	
-	
 	/**
 	 * entry point for GUI
 	 */
@@ -132,10 +128,6 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(VaadinIcons.COGS);
-		
-
-		pieChart=createPieChart(service);
-		
 	}
 
 
@@ -145,8 +137,11 @@ public class InteractiveStanceGUI extends UI {
 	private void buildLayout() {
 		FormLayout filterWrapper = new FormLayout(filter);
 		filterWrapper.setMargin(false);
+		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
+		actions.setSpacing(true);
+		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
 		VerticalLayout controls = new VerticalLayout(searchField, searchButton,filterWrapper);
-		HorizontalLayout headControls = new HorizontalLayout(pieChart,controls);
+		HorizontalLayout headControls = new HorizontalLayout(controls);
 //		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
 		headControls.setSpacing(true);
 //		headControls.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
@@ -186,12 +181,6 @@ public class InteractiveStanceGUI extends UI {
 	 * 	Drag item from available list to seleted list.
 	 */
 	private void setDragFromAvailable() {
-//		GridDragSource<ExplicitTarget> availableDrag = new GridDragSource<>(listOfAvailableTargets);
-//		GridDropTarget<ExplicitTarget> selectedFavorDrop = new GridDropTarget<>(listOfSelectedFavorTargets,
-//				DropMode.ON_TOP_OR_BETWEEN);
-//		GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
-//				DropMode.ON_TOP_OR_BETWEEN);
-
 		configureGridDragSource(availableDrag);
 		configureGridDropTarget(selectedFavorDrop);
 		configureGridDropTarget(selectedAgainstDrop);
@@ -200,10 +189,6 @@ public class InteractiveStanceGUI extends UI {
 	 * Let item back to available list.
 	 */
 	private void setDragFromSelected() {
-//		GridDragSource<ExplicitTarget> selectedFavorDrag = new GridDragSource<>(listOfSelectedFavorTargets);
-//		GridDragSource<ExplicitTarget> selectedAgainstDrag = new GridDragSource<>(listOfSelectedAgainstTargets);
-//		GridDropTarget<ExplicitTarget> availableDrop = new GridDropTarget<>(listOfAvailableTargets, DropMode.ON_TOP_OR_BETWEEN);
-
 		configureGridDragSource(selectedFavorDrag);
 		configureGridDragSource(selectedAgainstDrag);
 		configureGridDropTarget(availableDrop);
@@ -302,40 +287,6 @@ public class InteractiveStanceGUI extends UI {
 		listOfSelectedFavorTargets.setItems(service.getAllSelectedFavorTargets());
 		listOfSelectedAgainstTargets.setItems(service.getAllSelectedAgainstTargets());
 	}
-
-	
-	public static JFreeChartWrapper createPieChart(BackEnd service) {
-        JFreeChart chart = createchart(createPieData(service));
-        return new JFreeChartWrapper(chart);
-    }
-	
-	
-	private static JFreeChart createchart(DefaultPieDataset dataset) {
-		JFreeChart chart = ChartFactory.createPieChart(
-				"Class Distribution", // chart
-				dataset, // data
-				false, // include legend
-				true, 
-				false);
-
-		PiePlot plot = (PiePlot) chart.getPlot();
-		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-		plot.setNoDataMessage("No data available");
-		plot.setCircular(false);
-		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
-		plot.setLabelGap(0.02);
-		
-		return chart;
-	}
-
-	private static DefaultPieDataset createPieData(BackEnd service) {
-		DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("FAVOR", service.getTrainData().getNumberOfFavor());
-        dataset.setValue("AGAINST", service.getTrainData().getNumberOfAgainst());
-        dataset.setValue("NONE", service.getTrainData().getNumberOfNone());
-        return dataset; 
-	}
-
 
 	/*
 	 * You can specify additional servlet parameters like the URI and UI class
