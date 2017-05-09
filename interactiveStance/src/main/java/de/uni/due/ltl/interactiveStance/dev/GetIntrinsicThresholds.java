@@ -74,22 +74,29 @@ public class GetIntrinsicThresholds {
 				else{
 					// add to none distribution
 				}
-			}
+			} 
 			
 			
 			
 			// set up analyzer
 			CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,data);
 			StanceLexicon lexicon= analyzer.createLexiconFromDistributions(favor, against);
-			EvaluationDataSet dataSet =data.getTrainData();
-//			EvaluationDataSet dataSet =data.getTestData();
-					;
+//			EvaluationDataSet dataSet =data.getTrainData();
+			EvaluationDataSet dataSet =data.getTestData();
+
 			Fscore<String> fmeasure= analyzer.evaluateUsingLexicon(lexicon, dataSet);
 			System.out.println(target+" : semeval "+EvaluationUtil.getSemEvalMeasure(fmeasure)+" micro "+fmeasure.getMicroFscore()+" against "+fmeasure.getScoreForLabel("AGAINST")+" favor "+fmeasure.getScoreForLabel("FAVOR")+" none "+fmeasure.getScoreForLabel("NONE"));
-			Fscore<String> fmeasure2= analyzer.evaluateUsingLexiconAndFixedThreshold(lexicon, dataSet,10,10);
-			System.out.println("FIXED AT 10% "+target+" : semeval "+EvaluationUtil.getSemEvalMeasure(fmeasure2)+" micro "+fmeasure2.getMicroFscore()+" against "+fmeasure2.getScoreForLabel("AGAINST")+" favor "+fmeasure2.getScoreForLabel("FAVOR")+" none "+fmeasure2.getScoreForLabel("NONE"));
+//			Fscore<String> fmeasure2= analyzer.evaluateUsingLexiconAndFixedThreshold(lexicon, dataSet,90,90);
+//			System.out.println("FIXED AT 90% "+target+" : semeval "+EvaluationUtil.getSemEvalMeasure(fmeasure2)+" micro "+fmeasure2.getMicroFscore()+" against "+fmeasure2.getScoreForLabel("AGAINST")+" favor "+fmeasure2.getScoreForLabel("FAVOR")+" none "+fmeasure2.getScoreForLabel("NONE"));
 			
+//			int percentageAgainst=(int) ((double)dataSet.getNumberOfAgainst()/dataSet.getNumberOfInstances()*100);
+//			int percentageFavor=(int) ((double)dataSet.getNumberOfFavor()/dataSet.getNumberOfInstances()*100);
+//			
+//			percentageAgainst=100-percentageFavor;
+//			percentageFavor= 100-percentageAgainst;
 			
+			Fscore<String> fmeasure2= analyzer.evaluateUsingLexiconAndFixedThreshold(lexicon, dataSet,75,75);
+			System.out.println("FIXED AT class distribution 75% "+target+" : semeval "+EvaluationUtil.getSemEvalMeasure(fmeasure2)+" micro "+fmeasure2.getMicroFscore()+" against "+fmeasure2.getScoreForLabel("AGAINST")+" favor "+fmeasure2.getScoreForLabel("FAVOR")+" none "+fmeasure2.getScoreForLabel("NONE"));
 			//test on test data 
 //			analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);
 		}
