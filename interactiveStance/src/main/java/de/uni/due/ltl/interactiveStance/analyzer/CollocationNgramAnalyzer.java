@@ -88,9 +88,9 @@ public class CollocationNgramAnalyzer {
 		Fscore<String> fscore = null;
 		for (int lexiconId : lexica.keySet()) {
 			if(evaluateTrain){
-				fscore=evaluateUsingLexiconAndFixedThreshold(lexica.get(lexiconId), scenario.getTrainData(), fixedThreshold, fixedThreshold);
+				fscore=evaluateUsingLexicon_FixedThreshold(lexica.get(lexiconId), scenario.getTrainData(), fixedThreshold, fixedThreshold);
 			}else{
-				fscore=evaluateUsingLexiconAndFixedThreshold(lexica.get(lexiconId), scenario.getTestData(), fixedThreshold, fixedThreshold);
+				fscore=evaluateUsingLexicon_FixedThreshold(lexica.get(lexiconId), scenario.getTestData(), fixedThreshold, fixedThreshold);
 			}
 		}
 		
@@ -122,9 +122,9 @@ public class CollocationNgramAnalyzer {
 		Fscore<String> fscore = null;
 		for (int lexiconId : lexica.keySet()) {
 			if(evaluateTrain){
-				fscore=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTrainData());
+				fscore=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTrainData());
 			}else{
-				fscore=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTestData());
+				fscore=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTestData());
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class CollocationNgramAnalyzer {
 	 * @return
 	 * @throws AnalysisEngineProcessException
 	 */
-	public Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
+	public Fscore<String> evaluateUsingLexicon_ThresholdOptimization(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
 		Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(stanceLexicon,evaluationDataSet);
 		String topConfig=getTopConfig(thresholdId2Outcome);
 		System.out.println("Using threshold config "+ topConfig+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
@@ -157,7 +157,7 @@ public class CollocationNgramAnalyzer {
 	 * @return
 	 * @throws AnalysisEngineProcessException
 	 */
-	public Fscore<String> evaluateUsingLexiconAndFixedThreshold(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet,int upperPercentage, int lowerPercentage) throws AnalysisEngineProcessException {
+	public Fscore<String> evaluateUsingLexicon_FixedThreshold(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet,int upperPercentage, int lowerPercentage) throws AnalysisEngineProcessException {
 		EvaluationData<String> evalData = new EvaluationData<>();
 		float upperBound = stanceLexicon.getNthPositivePercent(upperPercentage);
 		float lowerBound = stanceLexicon.getNthNegativePercent(lowerPercentage);
