@@ -6,6 +6,7 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 
 import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
+import de.uni.due.ltl.interactiveStance.client.ConfigUI;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
@@ -42,11 +43,10 @@ public class BackEnd {
 
 			//for testing only, should be done in the config section
 			try {
-				evaluationScenario= new EvaluationScenario("Atheism");
+				evaluationScenario = new EvaluationScenario(ConfigUI.getScenario());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 			
 			//uncomment for testing
 //			Random r = new Random(200);
@@ -68,7 +68,6 @@ public class BackEnd {
 				e.printStackTrace();
 			}
 
-
 			searcher = new TargetSearcher();
 			try {
 				searcher.SetUp(db,100);
@@ -80,11 +79,9 @@ public class BackEnd {
 				e.printStackTrace();
 			}
 			
-			 analyzer = new CollocationNgramAnalyzer(db,evaluationScenario);
-			
+			analyzer = new CollocationNgramAnalyzer(db,evaluationScenario);
 			
 			instance = backend;
-			
 		}
 
 		return instance;

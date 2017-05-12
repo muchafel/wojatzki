@@ -66,18 +66,21 @@ public class ConfigUI extends UI {
     FileUploader receiver = new FileUploader();
     Upload selectedFile = new Upload();
     */
+	static String scenario = null;	// store scenario which is set up on config webpage.
     List<String> scenarioItems;
     ComboBox<String> scenarioComboBox = new ComboBox<>("Scenario");
-
-    JFreeChartWrapper pieChart;
-    Label pieChartLabel = new Label("inspect data");
+   
+//    JFreeChartWrapper pieChart;
+//    Label pieChartLabel = new Label("inspect data");
 
     List<String> modes = new ArrayList<>();
     ComboBox<String> modeComboBox = new ComboBox<>("Experiment Mode");
     Button startBtn = new Button("Start");
 
-    BackEnd service = BackEnd.loadData();
-
+    public static String getScenario() {
+    	return scenario;
+    }
+    
     @Override
     protected void init(VaadinRequest request) {
         scenarioItems = EvaluationScenarioUtil.formatTargets();
@@ -89,14 +92,14 @@ public class ConfigUI extends UI {
         HorizontalLayout scenarioHorizon = new HorizontalLayout();
         scenarioHorizon.addComponent(scenarioFormLayout);
 
-        pieChart = createPieChart(service);
-        // Default Width*Height: 809*500
-        pieChart.setWidth(480.0F, Unit.PIXELS);
-        pieChart.setHeight(300.0F, Unit.PIXELS);
-        HorizontalLayout piechartLayout = new HorizontalLayout();
-        piechartLayout.addComponent(pieChart);
-        piechartLayout.addComponent(pieChartLabel);
-        piechartLayout.setComponentAlignment(pieChartLabel, Alignment.MIDDLE_CENTER);
+//        pieChart = createPieChart(service);
+//        // Default Width*Height: 809*500
+//        pieChart.setWidth(480.0F, Unit.PIXELS);
+//        pieChart.setHeight(300.0F, Unit.PIXELS);
+//        HorizontalLayout piechartLayout = new HorizontalLayout();
+//        piechartLayout.addComponent(pieChart);
+//        piechartLayout.addComponent(pieChartLabel);
+//        piechartLayout.setComponentAlignment(pieChartLabel, Alignment.MIDDLE_CENTER);
 
         modes.add("Default");
         modes.add("Smart");
@@ -104,6 +107,7 @@ public class ConfigUI extends UI {
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Default");
         startBtn.addClickListener(event -> {
+        	scenario = scenarioComboBox.getValue();
             getPage().setLocation("/detector");
         });
         FormLayout comboBoxFormLayout = new FormLayout();
@@ -115,11 +119,13 @@ public class ConfigUI extends UI {
 
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addComponent(scenarioHorizon);
-        verticalLayout.addComponent(piechartLayout);
         verticalLayout.addComponent(experimentModeLayout);
-        verticalLayout.setComponentAlignment(piechartLayout, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(experimentModeLayout, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(scenarioHorizon, Alignment.MIDDLE_CENTER);
+        // Pie chart
+//        verticalLayout.addComponent(piechartLayout);
+//        verticalLayout.setComponentAlignment(piechartLayout, Alignment.MIDDLE_CENTER);
+        
         // File uploader
 //        selectedFile.setReceiver(receiver);
 //        selectedFile.setImmediateMode(false);
@@ -170,6 +176,17 @@ public class ConfigUI extends UI {
         plot.setExplodePercent("FAVOR", 0.05);
         plot.setExplodePercent("AGAINST", 0.05);
         plot.setExplodePercent("NONE", 0.05);
+        // set color of each part in pie chart.
+        List<Comparable> keys = dataset.getKeys();
+        for (int i = 0; i < keys.size(); i++) {
+        	if (keys.get(i).equals("FAVOR")) {
+        		plot.setSectionPaint("FAVOR", Color.GREEN);
+        	} else if (keys.get(i).equals("AGAINST")) {
+        		plot.setSectionPaint("AGAINST", Color.RED);
+        	} else if (keys.get(i).equals("NONE")) {
+        		plot.setSectionPaint("NONE", Color.GRAY);
+        	}
+        }
         // no border
         plot.setOutlineVisible(false);
         return chart;
