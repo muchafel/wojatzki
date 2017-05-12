@@ -54,6 +54,8 @@ public class Testbed_PolarityThresholds {
 		
 		//test on test data 
 		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);
+//		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,false);
+//		analyzer.analyzeOptimized(selectedTargetsFavor, selectedTargetsAgainst, 1,true);
 
 	}
 

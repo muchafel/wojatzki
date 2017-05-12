@@ -121,9 +121,6 @@ public class InteractiveStanceGUI extends UI {
 		refresh_SelectedGrid();
 
 		analysisButton.addClickListener(clickEvent -> {
-//			Notification.show("Run Analysis of "+service.printSelectedTargets());
-
-			// Set polling frequency to 0.5 seconds.
 			EvaluationResult result= service.analyse();
 			Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
 		});

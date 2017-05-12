@@ -33,7 +33,6 @@ public class CollocationNgramAnalyzerTest {
 		EvaluationScenario secenario = new EvaluationScenario("Atheism");
 		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,secenario);
 		
-		analyzer.analyze(selectedTargetsFavor,selectedTargetsAgainst,1,true);
 		
 	}
 }
