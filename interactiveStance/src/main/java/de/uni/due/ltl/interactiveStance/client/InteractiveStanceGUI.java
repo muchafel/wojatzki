@@ -19,12 +19,16 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.AbstractErrorMessage.ContentMode;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropLocation;
 import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
@@ -50,12 +54,12 @@ import java.util.Set;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class InteractiveStanceGUI extends UI {
 
-	TextField searchField = new TextField("");
-	TextField filter = new TextField("Filter Term");
+	TextField searchField = new TextField();
+	TextField filter = new TextField();
 	Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Targets");
 	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Selected Targets of Favor");
 	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Selected Targets of Against");
-	Button searchButton= new Button("Get Target Candidates");
+	Button searchButton = new Button("GO");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
 	// keep the reference of dragged items.
@@ -71,6 +75,8 @@ public class InteractiveStanceGUI extends UI {
 			DropMode.ON_TOP_OR_BETWEEN);
 	GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
 			DropMode.ON_TOP_OR_BETWEEN);
+    JFreeChartWrapper pieChart;
+    Label pieChartLabel = new Label("inspect data");
 
 	/**
 	 * entry point for GUI
@@ -85,9 +91,11 @@ public class InteractiveStanceGUI extends UI {
 	 * Here we configure properties of our components
 	 */
 	private void configureComponents() {
-
+		searchField.setPlaceholder("Get Targets Candidates");
+		
 		// configure available grid
 		filter.setDescription("filter");
+		filter.setPlaceholder("Filter Term");
 		filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
 
 		searchButton.addClickListener(clickEvent -> {
@@ -96,7 +104,8 @@ public class InteractiveStanceGUI extends UI {
 			refresh_SelectedGrid();
 		});
 
-		listOfAvailableTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		// add draggable icon before item.
+		listOfAvailableTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
 		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
 		listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		// The length of Target Name is often long. let it take all extra space.
@@ -104,13 +113,13 @@ public class InteractiveStanceGUI extends UI {
 		listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
 		// configure selection grid of favor and against
-		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		listOfSelectedFavorTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
 		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
 		listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		listOfSelectedFavorTargets.getColumn("targetName").setExpandRatio(1);
 		listOfSelectedFavorTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getTargetName).setCaption("targetName").setId("targetName");
+		listOfSelectedAgainstTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
 		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
 		listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
 		listOfSelectedAgainstTargets.getColumn("targetName").setExpandRatio(1);
@@ -134,18 +143,20 @@ public class InteractiveStanceGUI extends UI {
 	/**
 	 * Here we stack the components together
 	 */
-	private void buildLayout() {
-		FormLayout filterWrapper = new FormLayout(filter);
-		filterWrapper.setMargin(false);
-		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
-		actions.setSpacing(true);
-		actions.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
-		VerticalLayout controls = new VerticalLayout(searchField, searchButton,filterWrapper);
-		HorizontalLayout headControls = new HorizontalLayout(controls);
-//		HorizontalLayout actions = new HorizontalLayout(filterWrapper, searchButton);
-		headControls.setSpacing(true);
-//		headControls.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
-//		headControls.setComponentAlignment(filterWrapper, Alignment.BOTTOM_LEFT);
+	private void buildLayout() {		
+		HorizontalLayout searchLayout = new HorizontalLayout(searchField, searchButton);
+		searchLayout.setMargin(false);
+		searchLayout.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
+		searchLayout.setComponentAlignment(searchField, Alignment.MIDDLE_CENTER);
+		
+		pieChart = ConfigUI.createPieChart(service);
+        // Default Width*Height: 809*500
+        pieChart.setWidth(480.0F, Unit.PIXELS);
+        pieChart.setHeight(300.0F, Unit.PIXELS);
+        HorizontalLayout piechartLayout = new HorizontalLayout();
+        piechartLayout.addComponent(pieChart);
+        piechartLayout.addComponent(pieChartLabel);
+        piechartLayout.setComponentAlignment(pieChartLabel, Alignment.MIDDLE_CENTER);
 
 		listOfAvailableTargets.setWidth("100%");
 		listOfAvailableTargets.setHeightMode(HeightMode.ROW);
@@ -167,7 +178,8 @@ public class InteractiveStanceGUI extends UI {
 		selectedTargetsContent.setWidth("100%");
 		selectedTargetsContent.setSpacing(true);
 
-		VerticalLayout left = new VerticalLayout(headControls, listOfAvailableTargets, analysisButton, selectedTargetsContent);
+		VerticalLayout left = new VerticalLayout(pieChart, searchLayout, filter, listOfAvailableTargets, 
+				analysisButton, selectedTargetsContent);
 		left.setSpacing(true);
 
 		HorizontalLayout mainLayout = new HorizontalLayout(left);
@@ -178,7 +190,7 @@ public class InteractiveStanceGUI extends UI {
 	}
 
 	/**
-	 * 	Drag item from available list to seleted list.
+	 * 	Drag item from available list to selected list.
 	 */
 	private void setDragFromAvailable() {
 		configureGridDragSource(availableDrag);
