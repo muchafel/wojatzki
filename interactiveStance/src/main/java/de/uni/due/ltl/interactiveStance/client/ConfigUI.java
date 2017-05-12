@@ -11,6 +11,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
+import de.uni.due.ltl.interactiveStance.util.EvaluationScenarioUtil;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
@@ -33,6 +34,8 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ConfigUI extends UI {
 
+
+    /* complex to user provides a formatted file. Instead of uploader now using a dropdown box.
     class FileUploader implements Upload.Receiver, Upload.SucceededListener {
         public File file;
 
@@ -62,6 +65,9 @@ public class ConfigUI extends UI {
     Label configLabel = new Label("Configuration");
     FileUploader receiver = new FileUploader();
     Upload selectedFile = new Upload();
+    */
+    List<String> scenarioItems;
+    ComboBox<String> scenarioComboBox = new ComboBox<>("Scenario");
 
     JFreeChartWrapper pieChart;
     Label pieChartLabel = new Label("inspect data");
@@ -74,6 +80,15 @@ public class ConfigUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+        scenarioItems = EvaluationScenarioUtil.formatTargets();
+        scenarioComboBox.setItems(scenarioItems);
+        scenarioComboBox.setSelectedItem(scenarioItems.get(0));
+        FormLayout scenarioFormLayout = new FormLayout();
+        scenarioFormLayout.addComponent(scenarioComboBox);
+        // workaround, let it align to center. https://github.com/vaadin/framework/issues/6504
+        HorizontalLayout scenarioHorizon = new HorizontalLayout();
+        scenarioHorizon.addComponent(scenarioFormLayout);
+
         pieChart = createPieChart(service);
         // Default Width*Height: 809*500
         pieChart.setWidth(480.0F, Unit.PIXELS);
@@ -83,13 +98,11 @@ public class ConfigUI extends UI {
         piechartLayout.addComponent(pieChartLabel);
         piechartLayout.setComponentAlignment(pieChartLabel, Alignment.MIDDLE_CENTER);
 
-        selectedFile.setReceiver(receiver);
-        selectedFile.setImmediateMode(false);
-
         modes.add("Default");
         modes.add("Smart");
         modes.add("Stupid");
         modeComboBox.setItems(modes);
+        modeComboBox.setSelectedItem("Default");
         startBtn.addClickListener(event -> {
             getPage().setLocation("/detector");
         });
@@ -101,15 +114,20 @@ public class ConfigUI extends UI {
         experimentModeLayout.setComponentAlignment(startBtn, Alignment.MIDDLE_CENTER);
 
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.addComponent(configLabel);
-        verticalLayout.addComponent(selectedFile);
+        verticalLayout.addComponent(scenarioHorizon);
         verticalLayout.addComponent(piechartLayout);
         verticalLayout.addComponent(experimentModeLayout);
-        verticalLayout.setComponentAlignment(configLabel, Alignment.TOP_CENTER);
-        verticalLayout.setComponentAlignment(selectedFile, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(piechartLayout, Alignment.MIDDLE_CENTER);
-        verticalLayout.setComponentAlignment(experimentModeLayout, Alignment.BOTTOM_CENTER);
-        selectedFile.addSucceededListener(receiver);
+        verticalLayout.setComponentAlignment(experimentModeLayout, Alignment.MIDDLE_CENTER);
+        verticalLayout.setComponentAlignment(scenarioHorizon, Alignment.MIDDLE_CENTER);
+        // File uploader
+//        selectedFile.setReceiver(receiver);
+//        selectedFile.setImmediateMode(false);
+//        verticalLayout.addComponent(configLabel);
+//        verticalLayout.addComponent(selectedFile);
+//        verticalLayout.setComponentAlignment(configLabel, Alignment.TOP_CENTER);
+//        verticalLayout.setComponentAlignment(selectedFile, Alignment.MIDDLE_CENTER);
+//        selectedFile.addSucceededListener(receiver);
 
         setContent(verticalLayout);
     }
