@@ -1,33 +1,22 @@
 package de.uni.due.ltl.interactiveStance.client;
 
-import javax.servlet.annotation.WebServlet;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
+import com.vaadin.ui.components.grid.GridDragSource;
+import com.vaadin.ui.components.grid.GridDropTarget;
 import org.vaadin.addon.JFreeChartWrapper;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.provider.ListDataProvider;
-import com.vaadin.event.dnd.DragSourceExtension;
-import com.vaadin.event.dnd.DropTargetExtension;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.AbstractErrorMessage.ContentMode;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropLocation;
 import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -37,11 +26,7 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -211,13 +196,13 @@ public class InteractiveStanceGUI extends UI {
 		gridDragSource.addGridDragStartListener(event -> {
 			draggedItems = event.getDraggedItems();
 		});
-		gridDragSource.setDragDataGenerator(target -> {
-			JsonObject data = Json.createObject();
-			data.put("targetName", target.getTargetName());
-			data.put("instanceFavor", target.getInstancesInFavor());
-			data.put("instanceAgainst", target.getInstancesAgainst());
-			return data;
-		});
+//		gridDragSource.setDragDataGenerator(target -> {
+//			JsonObject data = Json.createObject();
+//			data.put("targetName", target.getTargetName());
+//			data.put("instanceFavor", target.getInstancesInFavor());
+//			data.put("instanceAgainst", target.getInstancesAgainst());
+//			return data;
+//		});
 	}
 
 	/**
@@ -305,9 +290,9 @@ public class InteractiveStanceGUI extends UI {
 	 * name and turn on production mode when you have finished developing the
 	 * application.
 	 */
-	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
-	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
-	public static class MyUIServlet extends VaadinServlet {
-
-	}
+//	@WebServlet(urlPatterns = "/detector/*") // change URI of this website to "/detector"
+//	@VaadinServletConfiguration(ui = InteractiveStanceGUI.class, productionMode = false)
+//	public static class MyUIServlet extends VaadinServlet {
+//
+//	}
 }

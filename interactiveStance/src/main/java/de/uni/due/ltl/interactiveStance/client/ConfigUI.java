@@ -208,10 +208,10 @@ public class ConfigUI extends UI {
         return dataset;
     }
 
-    @WebServlet(urlPatterns = "/config/*")
-    @VaadinServletConfiguration(ui = ConfigUI.class, productionMode = false)
-    public static class ConfigUIServlet extends VaadinServlet {
-
-    }
+//    @WebServlet(urlPatterns = "/config/*")
+//    @VaadinServletConfiguration(ui = ConfigUI.class, productionMode = false)
+//    public static class ConfigUIServlet extends VaadinServlet {
+//
+//    }
 }
 
