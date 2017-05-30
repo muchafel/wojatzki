@@ -9,6 +9,9 @@ public class EvaluationScenarioUtil {
 	private static ArrayList<String> targets = new ArrayList<String>(
 		    Arrays.asList("Atheism","ClimateChangeisaRealConcern","FeministMovement","HillaryClinton","LegalizationofAbortion"));
 	
+	private static ArrayList<String> experimentalModes = new ArrayList<String>(
+		    Arrays.asList("Fixed Threshold","Optmized Threshold","Distributional Threshold"));
+	
 	
 	public static boolean targetIsValid(String target){
 		if(target.contains(target)){
@@ -38,5 +41,14 @@ public class EvaluationScenarioUtil {
 			return newTargets;
 		}
 	}
+
+	/**
+	 * returns all experimental modes
+	 * @return
+	 */
+	public static ArrayList<String> getExperimentalModes() {
+		return experimentalModes;
+	}
+
 	
 }

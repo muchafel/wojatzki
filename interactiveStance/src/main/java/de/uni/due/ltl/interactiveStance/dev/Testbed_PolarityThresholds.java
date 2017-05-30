@@ -8,7 +8,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.uima.UIMAException;
 import org.dkpro.tc.api.exception.TextClassificationException;
 
-import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
@@ -47,10 +47,10 @@ public class Testbed_PolarityThresholds {
 		}
 
 		// load evaluation Data
-		EvaluationScenario data = new EvaluationScenario("Atheism");
+		EvaluationScenario data = new EvaluationScenario("Atheism","");
 
 		// set up analyzer
-		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,data);
+		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75);
 		
 		//test on test data 
 		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);

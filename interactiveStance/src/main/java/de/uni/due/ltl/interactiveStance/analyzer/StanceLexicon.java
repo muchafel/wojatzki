@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -135,7 +137,7 @@ public class StanceLexicon {
 	}
 
 	public Set<String> getKeys() {
-		return lexicon.keySet();
+		return sort().keySet();
 	}
 
 	public void plotChart(String target) throws IOException {
@@ -160,102 +162,68 @@ public class StanceLexicon {
 	public void plotChartAndThreshold(String target, int upperPercentage, int lower) throws IOException {
 		lexicon = sort();
 		XYSeries series = new XYSeries(target);
+	
+		LevenbergMarquardtOptimizer opt= new LevenbergMarquardtOptimizer();
+		PolynomialFitter fitter = new PolynomialFitter(3,opt);
+		
 		int i = 0;
-		ArrayList<Double> xValues = new ArrayList<>();
-		ArrayList<Double> yValues = new ArrayList<>();
-
 		for (String key : lexicon.keySet()) {
 			series.add(lexicon.keySet().size() - i, lexicon.get(key));
 			i++;
 		}
 		
-		GaussNewtonOptimizer optimizer =new GaussNewtonOptimizer(true);
-		LevenbergMarquardtOptimizer opt= new LevenbergMarquardtOptimizer();
-		PolynomialFitter fitter = new PolynomialFitter(3,opt);
+		//reverse order and put to function
+		int j = 0;
+        List<String> keys = new ArrayList<String>(lexicon.keySet());
+        Collections.reverse(keys);
+        for(String key : keys){
+        	System.out.println(key+" "+lexicon.get(key)+ " "+j);
+        	if(j==0){
+        		fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) j, (double) (lexicon.get(key))));
+        	}else if(j==keys.size()-1){
+        		fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) j, (double) (lexicon.get(key))));
+        	}else{
+        		fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) j, (double) (lexicon.get(key))));
+        	}
+        	
+			j++;
+        }		
 		
-		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
-		int m = 0;
-		int a=0;
-		System.out.println(keys.size());
-		for(int k=keys.size()-1; k>=0;k--){
-//			if(m==a*(keys.size()-1)/22){
-//				System.out.println(m);
-//				System.out.println(a);
-//				if(m==0){
-//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-//				}
-//				if(lexicon.get(keys.get(k))>0){
-					if(m==0){
-						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}else if(m==keys.size()-1){
-						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}
-					else{
-						fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}
-//				}
-				
-//				if(m==keys.size()-1){
-//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-//				}
-//				a++;
-//			}
-//			fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-			m++;
-		}
 		System.out.println("fit");
 		
+		//fit the function and add the interpolated function
 		PolynomialFunction func= new PolynomialFunction(fitter.fit());
-//		PolynomialFunction func= new PolynomialFunction(fitter.fit(new PolynomialFunction.Parametric(), new double[]{0, 0, 0, -0.01}));
+		PolynomialFunction funcI= func.polynomialDerivative();
+		PolynomialFunction funcII= funcI.polynomialDerivative();
 		System.out.println(func.toString());
-		int z = 0;
-//		System.out.println(func.derivative());
+		System.out.println(funcI.toString());
+		System.out.println(funcII.toString());
 		XYSeries interpolated = new XYSeries("approx");
+		XYSeries interpolatedI = new XYSeries("approxI");
+		XYSeries interpolatedII = new XYSeries("approxII");
 		for(WeightedObservedPoint p: fitter.getObservations()){
 			interpolated.add(p.getX(), func.value(p.getX()));
+			interpolatedI.add(p.getX(), funcI.value(p.getX()));
+			interpolatedII.add(p.getX(), funcII.value(p.getX()));
 		}
-//		for(int k=keys.size()-1; k>=0;k--){
-//			interpolated.add((double)z, func.value(z));
-//			z++;
-//		}
-		
-//		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
-//		int m = 0;
-//		for(int k=keys.size()-1; k>=0;k--){
-//			xValues.add((double) (m));
-//			yValues.add((double) (lexicon.get(keys.get(k))));
-//            m++;
-//        }
-		
-		//
-//		SplineInterpolator interpolator = new SplineInterpolator();
-//		PolynomialSplineFunction function = interpolator.interpolate(
-//				ArrayUtils.toPrimitive(xValues.toArray(new Double[xValues.size()])),
-//				ArrayUtils.toPrimitive(yValues.toArray(new Double[yValues.size()])));
-//
-//		System.out.println(function.getPolynomials());
-		
-		
-//		XYSeries interpolated = new XYSeries("Upper Bound");
-//		for (double xvalue : xValues) {
-//			interpolated.add(xvalue, function.value(xvalue));
-//		}
 
+		
+		//do fixed upper and lower bounds
 		XYSeries upperBound = new XYSeries("Upper Bound");
-		upperBound.add(0,
-
-				getNthPositivePercent(upperPercentage));
+		upperBound.add(0,getNthPositivePercent(upperPercentage));
 		upperBound.add(lexicon.keySet().size(), getNthPositivePercent(upperPercentage));
-
 		XYSeries lowerBopund = new XYSeries("Lower Bound");
 		lowerBopund.add(0, getNthNegativePercent(lower));
 		lowerBopund.add(lexicon.keySet().size(), getNthNegativePercent(lower));
 
+		//do plot
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		dataset.addSeries(upperBound);
 		dataset.addSeries(lowerBopund);
-		 dataset.addSeries(interpolated);
+		dataset.addSeries(interpolated);
+		dataset.addSeries(interpolatedI);
+		dataset.addSeries(interpolatedII);
 		JFreeChart xylineChart = ChartFactory.createXYLineChart("dice distribution", "", "Score", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		int width = 1280; /* Width of the image */
