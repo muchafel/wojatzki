@@ -91,8 +91,7 @@ public class StanceDB {
         
         w.addDocument(doc);
 	}
-	
-	
+
 	private void terminateSQLArtitfacts(Connection connection, Statement statement, ResultSet resultset) throws SQLException {
 		if (resultset != null) {
 			resultset.close();
@@ -121,14 +120,14 @@ public class StanceDB {
 		return sb.toString();
 		
 	}
-	
-	
+
 	public StanceDB(String user, String pw, String dbPath) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 	            this.user= user;
 	            this.pw=pw;
 	            this.dbPath=dbPath;
 	            //register driver as we cannot be sure whether it is in catalina
-	            Class.forName("com.mysql.jdbc.Driver");
+//	            Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 	}
 
 	public DataSet getDataByNameAndOrigin(String name, String website) throws SQLException {
@@ -191,10 +190,9 @@ public class StanceDB {
 		connection.close();
 		return result;
 	}
-	
 
 	private Connection getConnection() throws SQLException {
-		return  DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+		return  DriverManager.getConnection(dbPath+"?user=" + user + "&password=" + pw+"&useSSL=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
 	}
 
 	public void deleteDataPoint(DataPoint dataPointRetrieved) throws Exception {
@@ -202,6 +200,4 @@ public class StanceDB {
 		dataPointRetrieved.delete(connection);
 		connection.close();
 	}
-
-
 }

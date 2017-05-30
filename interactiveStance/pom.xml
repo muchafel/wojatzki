@@ -133,6 +133,16 @@
 			<version>3.2.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.0</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.commons</groupId> -->
+<!-- 			<artifactId>commons-math4</artifactId> -->
+<!-- 			<version>4.0</version> -->
+<!-- 		</dependency> -->
+		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 			<version>6.5.0</version>
@@ -195,6 +205,11 @@
 			<groupId>de.unidue.ltl</groupId>
 			<artifactId>de.unidue.ltl.evaluation</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-math</groupId>
+			<artifactId>commons-math</artifactId>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
