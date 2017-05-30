@@ -7,9 +7,7 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
-
 import javax.servlet.annotation.WebServlet;
 
 @Title("Login")
@@ -50,11 +48,11 @@ public class LoginUI extends UI implements LoginForm.LoginListener {
             errorNotif.setDelayMsec(1000);
             errorNotif.show(Page.getCurrent());
         }
-}
-
-    @WebServlet(urlPatterns = "/*")
-    @VaadinServletConfiguration(ui = LoginUI.class, productionMode = false)
-    public static class LoginUIServlet extends VaadinServlet {
-
     }
+
+//    @WebServlet(urlPatterns = "/*")
+//    @VaadinServletConfiguration(ui = LoginUI.class, productionMode = false)
+//    public static class LoginUIServlet extends VaadinServlet {
+//
+//    }
 }

@@ -1,5 +1,6 @@
 package de.uni.due.ltl.interactiveStance.backend;
 
+import de.uni.due.ltl.interactiveStance.client.ConfigView;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.uima.UIMAException;
 import org.dkpro.tc.api.exception.TextClassificationException;
@@ -43,7 +44,7 @@ public class BackEnd {
 
 			//for testing only, should be done in the config section
 			try {
-				evaluationScenario = new EvaluationScenario(ConfigUI.getScenario());
+				evaluationScenario = new EvaluationScenario(ConfigView.getScenario());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -63,7 +64,7 @@ public class BackEnd {
 			 * TODO exception handling
 			 */
 			try {
-				db= new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining");
+				db = new StanceDB("root", "Mysql.sowies0","jdbc:mysql://localhost/interactiveArgumentMining");
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
