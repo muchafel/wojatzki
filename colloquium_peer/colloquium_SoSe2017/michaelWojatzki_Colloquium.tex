@@ -30,6 +30,13 @@
 \usepackage{tikz,pgfplots}
 \usepackage{xcolor,colortbl}
 \usepackage[color=cyan]{todonotes}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{fancybox}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\newcommand{\tnumb}[1]{\fontfamily{phv}\selectfont #1}%
 
 \newcommand{\DEVELOPMENT}{1} % 1= show comments, 0=no comments
 \usepackage{ifthen}
@@ -62,10 +69,11 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This document gives an overview on the progress of my PhD covers the following aspects:
+This document gives an overview on the progress of my PhD and covers the following aspects:
 First, I briefly outline theoretical background and important assumptions of the project. 
 Thereby, I will discuss current state of our knowledge and do not reflect how it has developed over time.
 Second, I describe a methodological framework in which we can arrange the conducted research.
+As I mainly work data-driven this section focusses on data.
 While this framework does not completely fit all of the conducted research, I try to be as comprehensive as possible.
 Using this framework, I subsequently reflect on results which are obtained in the so far executed experiments.
 As requested by the last reviews, I will thereby clearly differentiate between published, unpublished but finished and unfinished works. 
@@ -172,7 +180,7 @@ Second, more traditional classifiers which represent the data mostly through wor
 These representations are than used to train models with algorithms such as support vector machines (SVMs) \cite{StanceSemEval2016,xu2016overview}. 
 While the results of SemEval and NLPCC show that these approaches outperform the neural approaches, neural approaches are highly competitive which underlines that it is ultimately unclear which strand is superior.
 
-\section{Methodology/Data}
+\section{Data-driven Methodology}
 %\label{sec:methods}
 %In this section, I will describe the methodology we follow to get evidence for the introduced model. 
 %This methodology is only to bee seen as framework for the PhD project, modified according to the individual research sub-projects and -questions.
@@ -223,10 +231,10 @@ In the IWG we have so far conducted two studies and corresponding data sets.
 In the first study \cite{hatespeech2016}, we created a german hate speech corpus and conducted an experiment in which we demonstrate that hate speech is a (too) fuzzy concept and that is very hard to reach consensus on whether a tweet is hate speech or not.
 In the second study \cite{hatespeech2017implicitness}, we shed light on the influence of implicitness on hate speech annotations and show an measurable influence which is however, moderated by e.g. content variables. 
 
-%\paragraph{IberEval - Stance and Gender detection in tweets on Catalan Independence \cite{iberEval2017}}
-%This data set is part of a shared task on automated stance detection in tweets on Catalan Independence.
-%So far the organisers have released only the train set, containing 4319 tweets in Spanish and 4319 in Catalan.
-%All the tweets were labeled with the SemEval scheme.
+\paragraph{IberEval - Stance and Gender detection in tweets on Catalan Independence \cite{iberEval2017}}
+This data set is part of a shared task on automated stance detection in tweets on Catalan Independence.
+So far the organisers have released only the train set, containing 4319 tweets in Spanish and 4319 in Catalan.
+All the tweets were labeled with the SemEval scheme.
 %
 %
 %\subsection{Patterns}
@@ -270,8 +278,13 @@ In a second step, we classify the tweets labeled as containing a stance as $\opl
 Our analysis revealed that simple word features are best suited to learn the relationship between tweets and stance.
 
 As demonstrated by the task organizers none of them beats the provided baseline which is  a support vector machine equipped with character and word ngrams \cite{StanceSemEval2016}.
-In a post-hoc analysis they show that this baseline profits from leveraging unlabelled data \cite{mohammad2016stance}.
-In general, the results suggest that the performance of the state-of-the-art is significantly better than a random or a majority class baseline, but still leaves huge room for improvements.
+
+
+\paragraph{Lessons Learnt}
+In general, the results suggest that the performance of the state-of-the-art is significantly better than a random or a majority class baseline, but still leaves huge room for improvements. 
+The state-of-the-art mainly uses lexical/lexical semantic knowledge such as ngrams and wordembeddings.
+In a post-hoc analysis they show that this baseline profits from leveraging target specific unlabelled data \cite{mohammad2016stance}.
+
 
 \subsection{Stance-based Argument Mining \cite{wojatzki2016}}
 In this publications we postulated the model which is explained in section \ref{fig:SBAM}.
@@ -320,7 +333,7 @@ They hardly involve special signal words but still gain high agreements, which s
 An error analysis for the target \textit{Same-Sex Marriage} shows that there is disagreement if the tweet contains a stance towards gay rights in general but not to gay marriage.
 Finally, we obtain a $\kappa$ of 0.63 for the joint decision on both the debate and the explicit targets.
 
-\begin{figure}
+\begin{figure}[ht!]
 \centering
   \includegraphics[width=0.45\textwidth]{figures/patterns_flat.png}
   \caption{Frequency of explicit stances grouped according to debate stance}
@@ -341,31 +354,33 @@ This is a strong indication for the validity of our assumption that the debate s
 \paragraph{Machine Learning}
 
 In order to investigate how well our model can be assigned automatically, we conduct classification experiments and compare with suitable baselines.
-Based on how well the components are classifiable, we can derive how well the model is assignable as a whole.
 
-We re-implement a state-of-the-art classifier as described in section \ref{sec:semeval}, run experiments in the manner of a ten-fold cross-validation and report micro averaged $F_1$.
-Besides the majority class baseline ($F_1=.49$), we use the same setup as for the explicit stances to train an n-gram based classifier and obtain an $F_1$ of $.66$.
-In order to evaluate the usefulness of explicit stances for inferring the debate stance, we use the predictions from the previous experiment as features.
-This stacked classifier performs on par ($.65$) with the n-gram based classifier.
-It seems that the quality of predicting explicit stances is not yet good enough to improve over the state-of-the-art without incorporating general n-gram features.
+We re-implement a state-of-the-art classifier, run experiments in the manner of a ten-fold cross-validation and report micro averaged $F_1$.
+Compared to the majority class baseline ($F_1=.49$), we obtain a higher $F_1$ of $.66$ for the debate stance classification..
+In order to evaluate the usefulness of explicit stances for inferring the debate stance, we use the predictions of explicit targets as features for stance classification.
+This stacked classifier performs en par ($.65$) with the n-gram based classifier.
+
 To estimate the potential of explicit stance features for classifying the debate stance, we add an oracle condition to our experiments in which we assume that the classification of explicit stances is done correctly.
 This classifier using only the manually annotated explicit stances yields an $F_1$ score of $.88$ showing that large improvements over the state of the art are possible if explicit stances can be more reliably classified.
-We believe that this is indeed possible as explicit stances are always grounded in the text itself, while the debate stance might only be indirectly inferred.
+
+\paragraph{Lessons Learnt}
+The proposed model can be reliably annotated and provides interesting quantitative insights in discussions. 
+Stacking classification of explicit targets is currently not improving debate stance classifications, but performs en par. 
 
 \section{Unpublished Results/ Under Review}
 
-\subsection{Neural and Non-neural Stance Classifiers learn Sub-debates: A Study on Death Penalty Comments on YouTube \cite{wojatzki2017youtube} }
+\subsection{Neural and Non-neural Stance Classifiers learn Sub-debates \cite{wojatzki2017youtube} }
 
-For our annotation on the YouTube  data set, we also compute \textit{Fleiss'} $\kappa$  between the three annotators to assess reliability.
+As a result of the previous conducted experiments, we hypothesize that stance classifiers internally learn structures that correspond to explicit stances. 
+Thus, we conducted suitable experiments on the YouTube Stance Corpus \cite{wojatzki2017youtube}.
+
+For reasons of comparability, we compute \textit{Fleiss'} $\kappa$  between the three annotators to assess reliability.
 These scores are shown in Figure \ref{fig:kappa_cmvTargets}.
-For the debate stance, we obtain a value of .66 which is in a similar range as the comparable annotations of \newcite{sobhani2015argumentation} who report a weighted $\kappa$ of .62 and \newcite{wojatzki2016} who report a \textit{Fleiss'} $\kappa$ of $.72$.
-
-Overall, we obtain a mixed picture for the annotation of the sub-debates, as we get $\kappa$ values in a range from .13 up to .87. 
+For the debate stance, we obtain a value of .66 which is in a similar to the previous experiments.
+Overall, we obtain a mixed picture for the annotation of explicit stances, as we get $\kappa$ values in a range from .13 up to .87. 
 While the majority of sub-debates is annotated with a $\kappa$ of above .6, there are significant deviations downwards such as \textit{Financial Burden} with a $\kappa$ of .26.
-With respect to the sets, there are few differences, as both contain sub-debates with low and high reliability.
 
-
-\begin{figure*}
+\begin{figure*}[ht!]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}
@@ -386,7 +401,7 @@ With respect to the sets, there are few differences, as both contain sub-debates
 			tick label style={font=\small},
 			xlabel=Fleiss' $\kappa$,]
           ]
-            \addplot[xbar,orange,fill=orange!25] coordinates {
+           \addplot[xbar,orange,fill=orange!25] coordinates {
             (0.66,Debate Stance)
              (0.64,Explicit Debate Stance)
              (0.87,Electric Chair)
@@ -461,7 +476,7 @@ Strangulation   &    \tnumb{19}   & 1 & 1 & 0 &    \cellcolor[HTML]{FFCE93}3   &
 Use Bodies   &    \tnumb{20}   & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 &    {\ul\textbf{8}} \\
 \bottomrule
 \end{tabular}
- }
+}
 \vspace*{-4.5mm}
 \caption{Frequency of sub-debates (bold-faced, underlined cells on main diagonal) and their co-occurrences with other sub-debates. We highlight cases (row-wise) in which a sub-debate frequently co-occurs with another. Light orange for more than 15\% overlap, and dark orange for more than 30\%.}
 \vspace*{-3mm}
@@ -471,36 +486,29 @@ Use Bodies   &    \tnumb{20}   & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &
 In the main diagonal of the table, we visualize how often a certain explicit target occurrs in the data.
 Overall, none of the two inventories can be clearly preferred over the other, as both contain frequent and thus useful sub-debates and ones that occur infrequently or not at all.
 
-We observe, that the most frequent sub-debates (\textit{Heinous Crimes} and \textit{Eye for an Eye}) are often used as proxies for a general position in the debate, such as in the comment \textit{If someone raped and killed your family, do you think they should continue to exist?}
+We observe, that the most frequent targets(\textit{Heinous Crimes} and \textit{Eye for an Eye}) are often used as proxies for a general position in the debate, such as in the comment \textit{If someone raped and killed your family, do you think they should continue to exist?}.
 The second most common group are more specific sub-debates (e.g.\ \textit{Deterring}) which occur in about $10\%$ of the polar instances.
 The other sub-debates seem to cover rather marginal positions in the debate. 
 
-Another interesting analysis is how often explicit targets interact with each other.
-We observe that they are rarely combined, as only \textit{eye for an eye} co-occurs in over 50\% of its appearances with others.
+W.r.t.\ cooccurrences, we observe that targets are rarely combined, as only \textit{eye for an eye} co-occurs in over 50\% of its appearances with others.
 The two most frequent targets relatively co-occur most with other targets (see column 5 and 15 in Table~\ref{table:occurrenceAndCoOccurrence}), which underlines their role as proxies for a general position. 
 As both sub-debates contain the demand of the death penalty for certain crimes, unsurprisingly, they also co-occur quite frequent.
 
-While most sub-debates are rarely backed up with others, e.g.\ \textit{Gunshot}, \textit{Strangulation} or \textit{Electric Chair} are combined frequently (rows 13,14 and 19). 
-We argue that these sub-debates tend to be rather complementary, as they are used to support other sub-debates or form logical units with them.
+While most targets are rarely backed up with others, e.g.\ \textit{Gunshot}, \textit{Strangulation} or \textit{Electric Chair} are combined frequently (rows 13,14 and 19). 
+We argue that they tend to be rather complementary´and used to support other targets or form logical units with them.
 For instance, \textit{Gunshot} frequently co-occurs with \textit{More Quickly}, which is reasonable if one considers that an execution could be performed very quickly by shooting.
 
 \paragraph{Machine Learning}
-In order to inspect the influence of sub-debates on stance detection, we examine how well classifiers perform on comments that contain a certain explicit target. 
-Therefore, we calculate the performance on subsets of the data, which correspond to the instances annotated with the respective explicit target.
+To get insights in the learned structure, we examine how well classifiers perform on comments that contain a certain explicit target. 
+Therefore, we calculate the performance on subsets of the data, which correspond to the instances annotated with the respective target.
 
-To reflect the state-of-the-art, we implement prototypical representatives of the two main strands of approaches -- an SVM and a neural architecture with a (Bi)LSTM layer in its core. 
-We calculate the classification performance using leave-one-out cross-validation on the video level.
-Before executing the classification, we tokenize the data using the ArkTokenizer \cite{gimpel2011part} from the DKPro Core framework (v1.9.0) \cite{eckartdecastilho-gurevych:2014:OIAF4HLT}.
+Ee implement prototypical representatives of the two main strands of approaches -- an SVM and a neural architecture with a (Bi)LSTM layer in its core. 
+We calculate the classification performance using leave-one-out cross-validation on the video level and the micro-average of $F_1\oplus$ and $F_1\ominus$ for comparability.
+Figure~\ref{fig:performance_perSubtargets} visualizes the corresponding results.
 
-Figure~\ref{fig:performance_perSubtargets} visualizes our results for stance classification.
 Overall, we achieve an $F_1$-score of $.45$ for both classifiers.
 If we consider only the comments that contain a sub-debate, classification works considerably better ($.53$ for LSTM and SVM).
 However, if we exclude comments with sub-debates, we observe a large drop in classification performance (LSTM: $.24$, SVM: $.23$).
-From that, we conclude that classifiers are mainly learning to classify sub-debates.
-
-An interesting special case is the performance on comments that express an \textit{Explicit Debate Stance} towards death penalty.
-We find that the $F_1$-score is in the same range (LSTM: $.52$, SVM: $.55$) as for the classification of sub-debates.
-This further supports our decision to treat the explicit debate stance as a special case of a sub-debate.
 
 Overall, we do not observe major differences between the two sub-debate inventories regarding classification performance.
 
@@ -590,31 +598,158 @@ Overall, we do not observe major differences between the two sub-debate inventor
 \label{fig:performance_perSubtargets}
    \end{figure*}
 
-\subsection{IberEval}
+Interestingly, some of the sub-debates that cause problems for the LSTM achieve relatively high scores using the SVM. 
+For example, the performance on instances annotated with \textit{Overcrowding} is .38 for the LSTM, but .74 for the SVM.
+However, we also see targets, in which the situation is inverted, e.g.\ for \textit{Use Bodies} we obtain a much higher value (.77) for the LSTM than for the SVM (.36).
 
-For the participating system, we strive to combine the strengths of both strands. 
-Consequently, we first implement prototypical representatives of the strands namely and a neural architecture with a (Bi)LSTM layer in its core and an SVM.
-Subsequently, we built a third system that automatically decides whether a tweet should be classfied with the neural or the non-neural system. 
-Therefore, we first labeled every tweet with whether the SVM's respectively the LSTM's prediction was wrong or false. 
+To better understand the interesting differences between the neural and non-neural approach, we examine how strongly they rely on the textual markers of the targets.
+For that reason, analogous to an ablation test, we conduct experiments in which we remove the textual markers and examine the impact on the classification performance.
+As these markers indicate the explicit stance and thus should be especially important for learning models, we expect a decline in performance.
+Overall, the average drop of the LSTM is significantly bigger than that of the SVM, which means that the LSTM's representation is more dependent on the markers than the SVM.
+Since the LSTM's loss is -- especially in the frequent targets -- notable, we assume that the internal LSTM representation is semantically closer to the annotated explicit stances.
+Contrary, the SVM representation is more robust against removed textual evidence from which we infer that its model is more shallow.
+   
+\paragraph{Lessons Learnt}
+Indeed, we could gather evidence for our assumption that stance classifiers internally learn structures that correspond to explicit stances.
+In addition, we show the different algorithms strongly differ in which targets they capture and with respect to robustness.
+
+\subsection{Neural and Non-neural Stance Detection in Tweets on Catalan Independence \cite{wojatzki2017ibereval}}
+
+In this work, we try to utilize the findings described to improve stance detection.
+As shown above, neural and non-neural approaches make different errors and also have different strengths.
+Consequently, we hypothesize that one should be able combine the strengths of both models into a superior, hybrid system.
+We validate this hypothesis by participating in the first shared task on stance detection in tweets on catalan independence \cite{iberEval2017}.
+I here want to outline that I don't speak these languages and that we did not make use of any language-specific models or tools.
+
+In our approach, we first implement prototypical representatives of the two strands, namely and a neural architecture with a (Bi)LSTM layer in its core and an SVM.
+Subsequently, we built a third system that automatically decides whether a tweet should be classified with the neural or the non-neural system. 
+Therefore, we first labeled every tweet with whether the SVM's respectively the LSTM's prediction was wrong or false. 
 We than train an decision tree (weka's J48) for each approach to automate this decision. 
-The trees are equipped with word n-gram coverage, embedding coverage, type token ratio and length features which are suspected of having an influence on the classifiability through the systems. T
+The trees are equipped with word n-gram coverage, embedding coverage, type token ratio and length features which are suspected of having an influence on the classifiability through the systems. 
 Unfortunately, the performance of this classification still needs heavy improvement in future work. 
 Based on these classifications we conduct a final decision. 
 In case the system could not derive preference towards one system as both systems are recommend or none, we rely on the SVM as its performance is overall better.
 
-\section{Ongoing Activities}
-\subsection{Interactive Stance}
-\subsection{Stancembeddings}
+Table \ref{table:Performance_iberstance_train} gives an overview on the performance (micro F) on the training data.
+\begin{table}[]
+\centering
+\begin{tabular}{lll}
+                                          & \textbf{Catalan} & \textbf{Spanish} \\
+                                          \toprule
+\textbf{SVM}                              &    0.80              &    0.70              \\
+{\color[HTML]{656565} - embeddings}       &     0.79             &    0.70             \\
+{\color[HTML]{656565} - character ngrams} &     0.78             &    0.70              \\
+{\color[HTML]{656565} - word ngrams}      &     0.78             &    0.68             \\
+\textbf{(Bi-)LSTM}                        &     0.75             &     0.66             \\
+\textbf{Hybrid}                         &     0.80             &     0.70          \\
+\bottomrule      
+\end{tabular}
+\caption{Micro averaged F$_1$-score obtained from the 10-fold crossvalidation. For the SVM we show the results of an feature ablation test.}
+\label{table:Performance_iberstance_train}
+\end{table}
 
-\section{Future Work}
+Until now, there are only preliminary results of the performance on the test data.
+Nevertheless Table \ref{table:Performance_iberstance_test} gives an overview on the performance on the training data, as reported by the organizers.
+Note, that the results are reported in terms of the macro-average of $F_1\oplus$ and $F_1\ominus$.
+
+
+Table \ref{table:Performance_iberstance_test} gives an overview on the performance (micro F) on the training data.
+\begin{table}[]
+\centering
+\begin{tabular}{lll}
+                                          & \textbf{Catalan} & \textbf{Spanish} \\
+                                          \toprule
+\textbf{SVM}                              &    0.43             &    0.42              \\
+\textbf{(Bi-)LSTM}                        &     0.28             &     0.37             \\
+\textbf{Hybrid}                         &     0.44             &       0.43        \\
+\bottomrule      
+\end{tabular}
+\caption{Macro-average of $F_1\oplus$ and $F_1\ominus$ obtained from the train-test split, as reported by the organizers.}
+\label{table:Performance_iberstance_test}
+\end{table}
+
+For both languages we are ranked 5th out of 12 participating teams.
+For both the languages and splits, we hardly see a difference between the hybrid and the SVM system. 
+This is probably due to the used heuristic, which uses the SVM prediction in cases were we cannot be sure about a decision.
+However, as the the hybrid and the svm prediction is still significantly different, we still see a high potential of hybrid approaches.
+As described, future work should focus on a more accurate type prediction or more advanced heuristics.
+
+\paragraph{Lessons Learnt}
+We could not demonstrate a clear superiority of a hybrid approach.
+However, the obtained results outline its potential and promising directions of further improvements.
+
+\section{Ongoing Activities}
+
+\subsection{Interactive Stance}
+In the experiments shown so far, we faced two recurrent problems: a) Creating data with high quality is time consuming and difficult  and b) without the incorporation of additional data, state-of-the-art approaches reach performance limits which are far from perfect. 
+The internet and especially social media is full of discussions which could serve as such additional data, however, these discussions do not have the structure that is needed by the algorithms.
+In order, to overcome these problems we propose an interactive process with which one can rapidly create training data and classifiers.
+At its core the process grants the user access to thousands of online debates in an aggregated form.
+Users can arrange these aggregates based on whether they think the corresponding debate is in favor or against a given target.
+
+The prototype is currently under development.
+So far we have crawled 2 of the 7 appropriate debate websites and already collected 57\,316 debates containing 339\,472 utterances.
+We already offer access via a newly developed webinterface.  
+A fast access to the aggregates is currently implemented via an apache solr index.
+For linguistic preprocessing such as tokenization, we rely on dkpro.
+
+We plan to evaluate the effectiveness and efficiency of the approach on the previously described data sets in English.
+As users should be able to iteratively refine their arrangement, we already add a feedback mechanism that evaluates the resulting model.
+As this evaluation is time critical, we cannot apply (computational) costly machine-learning algorithms.
+Consequently, we rely on a heuristic scoring function.
+To this end, we create stance lexicons by calculating the \textit{dice} distribution on the selected favor and against texts.
+Subsequently, we define an upper and lower threshold on the resulting distribution.
+The upper threshold indicates that the values above are considered as $\oplus$.
+Accordingly, the lower threshold indicates that values below are considered as $\ominus$.
+Thus, all other values correspond to the \textsc{none} class.
+We than calculate a mean polarity for each of the texts which are to be evaluated and assign a label based on the thresholds.
+
+In order to support the selection and arrangement of aggregates, we plan to add a support mechanism that shows the lexical overlap between selected aggregates and the data which is to be classified. 
+Currently, we are working on two major problems: a) speed of analysis and data access and b) better heuristics for finding thresholds. 
+
+After completing and deploying the prototype, we will conduct a user study in which we control for several parameters and variants of the process such as threshold for the heuristic classification and support mechanisms.
+
+
+\subsection{Target Specific Embeddings}
+As shown by the post-hoc analysis of the SemEval task, it is beneficial to incorporate the semantics of a domain by using domain specific word-embeddings.
+Similarly, in sentiment analysis, studies demonstrate the possibility to boost performance by learning sentiment and topic specific word embeddings from heuristically labeled data \cite{ren2016improving,lan2016three,tang2016sentiment}.
+The following example illustrates the assumed mechanism:
+In the common sense, the words \textit{email} and \textit{scandal} are not related.
+However, in the context of \textit{Hillary Clinton} both words are connected by a strong relationship.
+
+In order to systematically examine this intuition, we constructed a set of words that should be subject to such a semantic shift in the 5 SemEval targets.
+Therefore, we semi-automatically selected 20 words per target by using statistical association with the polarity classes (dice) and manual inspection and pairing.
+As control items we added 20 items from the \cite{finkelstein2001placing} (which is traditionally used in studies on semantic similarity/relatedness).
+
+The study is currently still running.
+So far we have collected the data of $> 100 $ participants ($>50$ per condition).
+When the study is completed, we first plan to statistically examine the estimated semantic drift.
+Subsequently, we will train word-embeddings from large amounts of Twitter data, while optimizing for the measured relatedness.
+We hypothesize that the most important parameter is the selection of the (unlabelled) data, as the data which is related to the target should contain the desired semantics.
+To this end, we already collected huge amounts of target specific Tweets by crawling for certain hashtags (e.g.\ \#atheism for the target atheism).
+
+Finally, we plan to test the usefulness of the embeddings by using them during classifying the SemEval data.
+
+
+\section{Other Future Work}
+We plan to further substantiate the theoretical foundations of the project with a paper and a study that examines the difference of sentiment, stance and argument mining.
+Thereby, we want to compare, definitions and their perception with respect to different focus groups (i.e.\ NLP researchers vs.\ laymen).
+Furthermore, we want to finish the ongoing activities and formulate new research questions based on the gained insights. 
+
 
 \section{Professional Activities}
-NLP4CMC
-GermEval2017
-IGGSA
-Reviewer/PC-member for EMNLP, CoNLL, ALW1, BEA
-
-
+Since my work needs to be based on well elaborated NLP foundations, I often need to do experiments which explore semantic of language in general.
+Sometimes these experiments yield interesting insights, which, however, do not completely fit into the line of my PhD. 
+For instance, by experimenting with automatically generated Thesauri (which were expected to tackle ngram sparsity), we invented a new exercise type that helps assessing language proficiency (called \textit{Bundled Gap Filling}.
+This invention has led to two publications \cite{wojatzki2016bundled,meyer2016}.
+ 
+During the past period of my PhD, I was able to expand my professional, scientific network.
+I was invited to be program committee member and reviewer for the major NLP-conferences \textit{EMNLP} and \textit{CoNLL}.
+I also was invited to be program committee member and reviewer for the workshops \textit{Workshop on Abusive Language Online} and \textit{Innovative Use of NLP for Building Educational Applications}.
+In addition, I co-organized the workshop \textit{Natural Language Processing for Computer-Mediated Communication / Social Media} which was held as a post-conference workshop at KONVENS 2016. 
+This year, together with my PI and the language technology group of the university of Hamburg, I am co-organizing the workshop \textit{Germeval Task 2017
+Shared Task on Aspect-based Sentiment in Social Media Customer Feedback} (\url{https://sites.google.com/view/germeval2017-absa})
+Finally, I became a member of the \textit{Interest Group on German Sentiment Analysis}, which is a a special interest Group of GSCL and an European research collaboration working on German sentiment analysis.
 
 % include your own bib file like this:
 %\bibliographystyle{acl}
