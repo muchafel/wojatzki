@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -16,14 +17,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.math.ArgumentOutsideDomainException;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.analysis.interpolation.BicubicSplineInterpolatingFunction;
-import org.apache.commons.math.analysis.interpolation.LoessInterpolator;
-import org.apache.commons.math.analysis.interpolation.SplineInterpolator;
-import org.apache.commons.math.analysis.interpolation.TricubicSplineInterpolator;
-import org.apache.commons.math.analysis.interpolation.UnivariateRealInterpolator;
-import org.apache.commons.math.analysis.polynomials.PolynomialSplineFunction;
+import org.apache.commons.math.optimization.DifferentiableMultivariateVectorialOptimizer;
+import org.apache.commons.math.optimization.fitting.GaussianFitter;
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+import org.apache.commons.math3.optimization.fitting.HarmonicFitter;
+import org.apache.commons.math3.optimization.fitting.PolynomialFitter;
+import org.apache.commons.math3.optimization.fitting.WeightedObservedPoint;
+import org.apache.commons.math3.optimization.general.GaussNewtonOptimizer;
+import org.apache.commons.math3.optimization.general.LevenbergMarquardtOptimizer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -156,7 +157,7 @@ public class StanceLexicon {
 
 	}
 
-	public void plotChartAndThreshold(String target, int upperPercentage, int lower) throws IOException, MathException {
+	public void plotChartAndThreshold(String target, int upperPercentage, int lower) throws IOException {
 		lexicon = sort();
 		XYSeries series = new XYSeries(target);
 		int i = 0;
@@ -168,12 +169,62 @@ public class StanceLexicon {
 			i++;
 		}
 		
+		GaussNewtonOptimizer optimizer =new GaussNewtonOptimizer(true);
+		LevenbergMarquardtOptimizer opt= new LevenbergMarquardtOptimizer();
+		PolynomialFitter fitter = new PolynomialFitter(3,opt);
+		
+		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
+		int m = 0;
+		int a=0;
+		System.out.println(keys.size());
+		for(int k=keys.size()-1; k>=0;k--){
+//			if(m==a*(keys.size()-1)/22){
+//				System.out.println(m);
+//				System.out.println(a);
+//				if(m==0){
+//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+//				}
+//				if(lexicon.get(keys.get(k))>0){
+					if(m==0){
+						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+					}else if(m==keys.size()-1){
+						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+					}
+					else{
+						fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+					}
+//				}
+				
+//				if(m==keys.size()-1){
+//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+//				}
+//				a++;
+//			}
+//			fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
+			m++;
+		}
+		System.out.println("fit");
+		
+		PolynomialFunction func= new PolynomialFunction(fitter.fit());
+//		PolynomialFunction func= new PolynomialFunction(fitter.fit(new PolynomialFunction.Parametric(), new double[]{0, 0, 0, -0.01}));
+		System.out.println(func.toString());
+		int z = 0;
+//		System.out.println(func.derivative());
+		XYSeries interpolated = new XYSeries("approx");
+		for(WeightedObservedPoint p: fitter.getObservations()){
+			interpolated.add(p.getX(), func.value(p.getX()));
+		}
+//		for(int k=keys.size()-1; k>=0;k--){
+//			interpolated.add((double)z, func.value(z));
+//			z++;
+//		}
+		
 //		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
 //		int m = 0;
-//		for(int k=keys.size()-1; k>=0;k-=50){
+//		for(int k=keys.size()-1; k>=0;k--){
 //			xValues.add((double) (m));
 //			yValues.add((double) (lexicon.get(keys.get(k))));
-//            m+=50;
+//            m++;
 //        }
 		
 		//
@@ -183,9 +234,9 @@ public class StanceLexicon {
 //				ArrayUtils.toPrimitive(yValues.toArray(new Double[yValues.size()])));
 //
 //		System.out.println(function.getPolynomials());
-//		
-//		XYSeries interpolated = new XYSeries("f(x)");
-//		
+		
+		
+//		XYSeries interpolated = new XYSeries("Upper Bound");
 //		for (double xvalue : xValues) {
 //			interpolated.add(xvalue, function.value(xvalue));
 //		}
@@ -204,7 +255,7 @@ public class StanceLexicon {
 		dataset.addSeries(series);
 		dataset.addSeries(upperBound);
 		dataset.addSeries(lowerBopund);
-//		 dataset.addSeries(interpolated);
+		 dataset.addSeries(interpolated);
 		JFreeChart xylineChart = ChartFactory.createXYLineChart("dice distribution", "", "Score", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		int width = 1280; /* Width of the image */

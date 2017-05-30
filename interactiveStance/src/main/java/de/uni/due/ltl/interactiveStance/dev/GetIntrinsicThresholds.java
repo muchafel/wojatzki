@@ -71,10 +71,10 @@ public class GetIntrinsicThresholds {
 				
 				for(Sentence s: JCasUtil.select(jcas, Sentence.class)){
 					if(JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance().equals("FAVOR")){
-							favor=addNgrams(jcas, s, true, 2, favor);
+							favor=addNgrams(jcas, s, true, 1, favor);
 					}
 					else if(JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance().equals("AGAINST")){
-						against=addNgrams(jcas, s, true, 2, against);
+						against=addNgrams(jcas, s, true, 1, against);
 					}
 					else{
 						// add to none distribution
@@ -101,7 +101,7 @@ public class GetIntrinsicThresholds {
 			// set up analyzer
 			CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,data);
 			StanceLexicon lexicon= analyzer.createLexiconFromDistributions(favor, against);
-			lexicon.plotChartAndThreshold(target+"_2", 70, 70);
+			lexicon.plotChartAndThreshold(target+"_1_d", 70, 70);
 			
 			
 ////			EvaluationDataSet dataSet =data.getTrainData();
