@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBUtil {
 
     private static String user = "root";
-    private static String password = "Mysql.sowies0";
+    private static String password = "";
     private static String dbName = "jdbc:mysql://localhost/interactiveArgumentMining";
     private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
     private static Connection conn = null;
