@@ -68,6 +68,11 @@
 			<artifactId>vaadin-client-compiler</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
 		<!-- project bases on Vaadin 8, not need to use compatiblility packages. -->
 		<!--<dependency>-->
 			<!--<groupId>com.vaadin</groupId>-->
