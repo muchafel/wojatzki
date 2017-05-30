@@ -33,6 +33,7 @@ import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
 import org.dkpro.tc.fstore.filter.UniformClassDistributionFilter;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentSaveModel;
+import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.springframework.util.Log4jConfigurer;
 
@@ -48,6 +49,7 @@ import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SimpleLinearRegression;
 import weka.classifiers.meta.CostSensitiveClassifier;
+import weka.classifiers.rules.ZeroR;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 
@@ -62,8 +64,8 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	private boolean ablation = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-			TcFeatureFactory.create(NgramCoverage.class, NgramCoverage.PARAM_NGRAM_MAX_N, 5,
-					NgramCoverage.PARAM_NGRAM_MIN_N, 1, NgramCoverage.PARAM_NGRAM_USE_TOP_K, 3000),
+			TcFeatureFactory.create(LuceneNGram.class),
+			TcFeatureFactory.create(NgramCoverage.class, NgramCoverage.PARAM_NGRAM_MAX_N, 5,NgramCoverage.PARAM_NGRAM_MIN_N, 1, NgramCoverage.PARAM_NGRAM_USE_TOP_K, 3000),
 			TcFeatureFactory.create(NrOfTokensPerSentence.class), 
 			TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
 			TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")
@@ -75,8 +77,8 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		LSTMorSVM_Type_NgramCV experiment = new LSTMorSVM_Type_NgramCV();
 		ParameterSpace pSpace_explicit = experiment.setupCrossValidation(baseDir + "/IberEval/", featureSet);
-//		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
-		experiment.save(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
+		experiment.runCrossValidation(pSpace_explicit, LANGUAGE_CODE + "LSTM");
+//		experiment.save(pSpace_explicit, LANGUAGE_CODE + "_SVMorLSTM_Tree");
 	}
 
 	private void save(ParameterSpace pSpace, String experimentName) throws Exception {
@@ -116,6 +118,8 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 	public void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
 				NUM_FOLDS);
+		
+//		ExperimentTrainTest batch = new ExperimentTrainTest(experimentName, WekaClassificationAdapter.class);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
@@ -146,6 +150,7 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 //				asList(new String[] { Logistic.class.getName() })
 //		        ,
+//				 asList(new String[] { ZeroR.class.getName() })
 		        asList(new String[] { J48.class.getName() })
 //		        ,asList(new String[] { SimpleLinearRegression.class.getName() })
 		        );
@@ -169,6 +174,15 @@ public class LSTMorSVM_Type_NgramCV implements Constants {
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		System.out.println("read from " + inputTrainFolder);
 		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(
+				CatalanStanceSVMorSVMTypeReader.class, CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE,
+				CatalanStanceSVMorSVMTypeReader.PARAM_SOURCE_LOCATION,
+				dir + "training_tweets_" + LANGUAGE_CODE + ".txt", CatalanStanceSVMorSVMTypeReader.PARAM_LABEL_FILE,
+				dir + "training_truth_" + LANGUAGE_CODE + ".txt",
+				CatalanStanceSVMorSVMTypeReader.PARAM_LSTM_PREDICTION_FILE,
+				"src/main/resources/id2outcome/" + LANGUAGE_CODE
+						+ "_sparse10_id2Outcome.txt", CatalanStanceSVMorSVMTypeReader.PARAM_SVM_PREDICTION_FILE,"src/main/resources/id2outcome/"+LANGUAGE_CODE+"_char_word_embeddings_id2homogenizedOutcome.txt"));
+		
+		dimReaders.put(DIM_READER_TEST, CollectionReaderFactory.createReaderDescription(
 				CatalanStanceSVMorSVMTypeReader.class, CatalanStanceReader.PARAM_LANGUAGE, LANGUAGE_CODE,
 				CatalanStanceSVMorSVMTypeReader.PARAM_SOURCE_LOCATION,
 				dir + "training_tweets_" + LANGUAGE_CODE + ".txt", CatalanStanceSVMorSVMTypeReader.PARAM_LABEL_FILE,

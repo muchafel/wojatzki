@@ -37,8 +37,10 @@ public class SVM_Prediction {
 				baseDir +"/IberEval/test/test_tweets_"+LANGUAGE_CODE+".txt", CatalanStanceReader.PARAM_LABEL_FILE,
 				baseDir + "/IberEval/test_truth_" + LANGUAGE_CODE + ".txt", CatalanStanceReader.PARAM_IST_TRAIN, false);
 
+//		AnalysisEngine engine = getPredictionEngiEngine(
+//				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt", "src/main/resources/trainedModels/"+LANGUAGE_CODE+"/"+LANGUAGE_CODE+"_embeddings_3_3000_words_3000_char");
 		AnalysisEngine engine = getPredictionEngiEngine(
-				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt", "src/main/resources/trainedModels/"+LANGUAGE_CODE+"/"+LANGUAGE_CODE+"_embeddings_3_3000_words_3000_char");
+				baseDir + "/IberEval/training_tweets_" + LANGUAGE_CODE + ".txt", "src/main/resources/trainedModels/"+LANGUAGE_CODE+"/"+LANGUAGE_CODE+"_SVMorLSTM_Tree");
 		
 	
 		makePredictions(reader,engine);
@@ -50,7 +52,7 @@ public class SVM_Prediction {
 			DocumentMetaData md= JCasUtil.selectSingle(jcas, DocumentMetaData.class);
 			TextClassificationOutcome outcome= JCasUtil.select(jcas, TextClassificationOutcome.class).iterator().next();
 			String result= md.getDocumentId()+","+outcome.getOutcome()+","+"DUMMY";
-			FileUtils.write(new File("src/main/resources/"+LANGUAGE_CODE+"_svm_prediction_id2Outcome.txt"), result+System.lineSeparator(), "UTF-8", true);
+			FileUtils.write(new File("src/main/resources/"+LANGUAGE_CODE+"_typePred.txt"), result+System.lineSeparator(), "UTF-8", true);
 //			FileUtils.write(new File("src/main/resources/result/"+LANGUAGE_CODE+"_svm_prediction"), result+System.lineSeparator(), "UTF-8", true);
 		}
 		
