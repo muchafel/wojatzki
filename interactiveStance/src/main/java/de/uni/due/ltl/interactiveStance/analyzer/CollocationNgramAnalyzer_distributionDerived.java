@@ -6,21 +6,33 @@ import java.util.List;
 
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
+import org.apache.commons.math3.distribution.ZipfDistribution;
 import org.apache.commons.math3.optimization.fitting.PolynomialFitter;
 import org.apache.commons.math3.optimization.fitting.WeightedObservedPoint;
 import org.apache.commons.math3.optimization.general.LevenbergMarquardtOptimizer;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
 import org.jfree.data.xy.XYSeries;
 
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
+import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
+import de.uni.due.ltl.interactiveStance.util.EvaluationUtil;
+import de.unidue.ltl.evaluation.ConfusionMatrix;
+import de.unidue.ltl.evaluation.EvaluationData;
 import de.unidue.ltl.evaluation.measure.categorial.Fscore;
+import nl.peterbloem.powerlaws.Continuous;
 
 public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgramAnalyzerBase {
 
-	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario) {
+	private double percentil=95;
+	
+	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d) {
 		super(db, scenario);
+		this.percentil=d;
 	}
 
 	@Override
@@ -29,41 +41,22 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 		return evaluateUsingLexicon_Distributional(stanceLexicon, data);
 	}
 
-	private Fscore<String> evaluateUsingLexicon_Distributional(StanceLexicon stanceLexicon, EvaluationDataSet data) {
-
-	
-		LevenbergMarquardtOptimizer opt= new LevenbergMarquardtOptimizer();
-		PolynomialFitter fitter = new PolynomialFitter(3,opt);
-	
-		int j = 0;
-        List<String> keys = new ArrayList<String>(stanceLexicon.getKeys());
-        System.out.println(keys);
-        Collections.reverse(keys);
-        for(String key : keys){
-        	if(j==0){
-        		fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) j, (double) (stanceLexicon.getStancePolarity(key))));
-        	}else if(j==keys.size()-1){
-        		fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) j, (double) (stanceLexicon.getStancePolarity(key))));
-        	}else{
-        		fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) j, (double) (stanceLexicon.getStancePolarity(key))));
-        	}
-			j++;
-        }		
+	private Fscore<String> evaluateUsingLexicon_Distributional(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
+		EvaluationData<String> evalData = new EvaluationData<>();
 		
-		System.out.println("fit");
+		ZipfDistributionsContainer zipfContainer= new ZipfDistributionsContainer(stanceLexicon, percentil);
 		
-		//fit the function and add the interpolated function
-		PolynomialFunction func= new PolynomialFunction(fitter.fit());
-		System.out.println(func.toString());
-		PolynomialFunction funcII= func.polynomialDerivative().polynomialDerivative();
-		System.out.println(funcII.toString());
-		LaguerreSolver solver= new LaguerreSolver();
-		double root1= solver.solve(100,funcII,0,keys.size()-1,100);
-		double root2= solver.solve(100,funcII,0,keys.size()-1,keys.size()/2+100);
-		System.out.println(root1+ " "+func.value((int)(root1)));
-		System.out.println(root2+ " "+func.value((int)(root2)));
-		
-		return null;
+		for (JCas jcas : new JCasIterable(data.getDataReader())){
+			this.engine.process(jcas);
+			String goldOutcome= JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance();
+			float commentPolarity = getPolarity(stanceLexicon, jcas);
+			String outcome = ressolveOutcome((float)zipfContainer.getZipfUpperBound(),(float)zipfContainer.getZipfLowerBound(),commentPolarity);
+			evalData.register(goldOutcome, outcome);
+			
+		}
+		System.out.println("Using found thresholds "+ zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound()+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
+		System.out.println(new ConfusionMatrix<String>(evalData));
+		return new Fscore<>(evalData);
 	}
 
 }

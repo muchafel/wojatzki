@@ -109,7 +109,7 @@ public class BackEnd {
 		}else if(evaluationScenario.getMode().equals("Optmized Threshold")){
 			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario);
 		}else if(evaluationScenario.getMode().equals("Distributional Threshold")){
-			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario);
+			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95);
 		}else{
 			throw new Exception(evaluationScenario.getMode()+" is not a valid analyzer");
 		}
