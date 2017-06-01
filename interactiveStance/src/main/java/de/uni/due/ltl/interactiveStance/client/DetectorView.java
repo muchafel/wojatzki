@@ -49,6 +49,9 @@ public class DetectorView extends VerticalLayout implements View {
             DropMode.ON_TOP_OR_BETWEEN);
     HorizontalLayout piechartLayout = new HorizontalLayout();
     JFreeChartWrapper pieChart;
+    TextField favorSelectionTextField = new TextField();
+    TextField againstSelectionTextField = new TextField();
+    
 
     public DetectorView() {
         configureComponents();
@@ -101,6 +104,10 @@ public class DetectorView extends VerticalLayout implements View {
         analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
         analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
         analysisButton.setIcon(VaadinIcons.COGS);
+        
+        favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
+		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
+        
     }
 
     /**
@@ -123,21 +130,31 @@ public class DetectorView extends VerticalLayout implements View {
         listOfSelectedAgainstTargets.setHeightMode(HeightMode.ROW);
         listOfSelectedAgainstTargets.setHeightByRows(4.0D);
 
-        setDragFromAvailable();
-        setDragFromSelected();
+		setDragFromAvailable();
+		setDragFromSelected();
 
-        HorizontalLayout selectedTargetsContent = new HorizontalLayout();
-        selectedTargetsContent.addComponent(listOfSelectedFavorTargets);
-        selectedTargetsContent.addComponent(listOfSelectedAgainstTargets);
-        selectedTargetsContent.setWidth("100%");
-        selectedTargetsContent.setSpacing(true);
+		// selected favor targets
+		VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
+		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
+		selectedFavorTargetsContent.addComponent(listOfSelectedFavorTargets);
 
-        this.addComponent(this.piechartLayout);
-        this.addComponent(searchLayout);
-        this.addComponent(filter);
-        this.addComponent(listOfAvailableTargets);
-        this.addComponent(analysisButton);
-        this.addComponent(selectedTargetsContent);
+		VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
+		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
+		selectedAgainstTargetsContent.addComponent(listOfSelectedAgainstTargets);
+
+		// all selected content
+		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
+		selectedTargetsContent.addComponent(selectedFavorTargetsContent);
+		selectedTargetsContent.addComponent(selectedAgainstTargetsContent);
+		selectedTargetsContent.setWidth("100%");
+		selectedTargetsContent.setSpacing(true);
+
+		this.addComponent(this.piechartLayout);
+		this.addComponent(searchLayout);
+		this.addComponent(filter);
+		this.addComponent(listOfAvailableTargets);
+		this.addComponent(analysisButton);
+		this.addComponent(selectedTargetsContent);
         this.setSpacing(true);
     }
 
