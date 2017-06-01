@@ -13,7 +13,7 @@ public class LoginView extends VerticalLayout implements View, LoginForm.LoginLi
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
+        ((MainUI) this.getUI()).hideMenubar();
     }
 
     @Override

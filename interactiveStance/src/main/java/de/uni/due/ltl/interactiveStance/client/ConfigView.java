@@ -73,7 +73,7 @@ public class ConfigView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
+        ((MainUI) this.getUI()).showMenubar();
     }
 
 	

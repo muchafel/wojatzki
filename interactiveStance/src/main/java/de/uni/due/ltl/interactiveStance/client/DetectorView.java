@@ -288,6 +288,8 @@ public class DetectorView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        ((MainUI) this.getUI()).showMenubar();
+
         // Moved loading data here, because don't touch data in backend before loading the view.
         service = BackEnd.loadData();
         StanceDataPieChart pc = new StanceDataPieChart();
