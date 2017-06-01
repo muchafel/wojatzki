@@ -41,9 +41,9 @@ public class InteractiveStanceGUI extends UI {
 
 	TextField searchField = new TextField();
 	TextField filter = new TextField();
-	Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Targets");
-	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Selected Targets of Favor");
-	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Selected Targets of Against");
+	Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Topics");
+	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Favor Topics");
+	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Against Topics");
 	Button searchButton = new Button("GO");
 	Button analysisButton = new Button("Analysis");
 	BackEnd service = BackEnd.loadData();
@@ -62,6 +62,10 @@ public class InteractiveStanceGUI extends UI {
 			DropMode.ON_TOP_OR_BETWEEN);
     JFreeChartWrapper pieChart;
     Label pieChartLabel = new Label("inspect data");
+    TextField favorSelectionTextField = new TextField(" ");
+    TextField againstSelectionTextField = new TextField(" X ");
+  
+    
 
 	/**
 	 * entry point for GUI
@@ -122,6 +126,9 @@ public class InteractiveStanceGUI extends UI {
 		analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
 		analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		analysisButton.setIcon(VaadinIcons.COGS);
+		
+		favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
+		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
 	}
 
 
@@ -157,9 +164,21 @@ public class InteractiveStanceGUI extends UI {
 		setDragFromAvailable();
 		setDragFromSelected();
 
+		
+		
+		//selected favor targets
+		VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
+		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
+		selectedFavorTargetsContent.addComponent(listOfSelectedFavorTargets);
+		
+		VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
+		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
+		selectedAgainstTargetsContent.addComponent(listOfSelectedAgainstTargets);
+		
+		// all selected content
 		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
-		selectedTargetsContent.addComponent(listOfSelectedFavorTargets);
-		selectedTargetsContent.addComponent(listOfSelectedAgainstTargets);
+		selectedTargetsContent.addComponent(selectedFavorTargetsContent);
+		selectedTargetsContent.addComponent(selectedAgainstTargetsContent);
 		selectedTargetsContent.setWidth("100%");
 		selectedTargetsContent.setSpacing(true);
 

@@ -29,9 +29,9 @@ public class DetectorView extends VerticalLayout implements View {
     BackEnd service;
     TextField searchField = new TextField();
     TextField filter = new TextField();
-    Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Targets");
-    Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Selected Targets of Favor");
-    Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Selected Targets of Against");
+    Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Topics");
+	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Favor Topics");
+	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Against Topics");
     Button searchButton = new Button("GO");
     Button analysisButton = new Button("Analysis");
     // keep the reference of dragged items.
