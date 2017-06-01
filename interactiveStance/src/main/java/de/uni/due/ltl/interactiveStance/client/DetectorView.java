@@ -260,9 +260,12 @@ public class DetectorView extends VerticalLayout implements View {
                             event.getComponent().getDataProvider();
                     List<ExplicitTarget> items = (List<ExplicitTarget>) dataProvider.getItems();
 
+                    int index = items.size();
                     // Calculate the target row's index
-                    int index = items.indexOf(event.getDropTargetRow()) + (
-                            event.getDropLocation() == DropLocation.BELOW ? 1 : 0);
+                    if (event.getDropTargetRow().isPresent()) {
+                        index = items.indexOf(event.getDropTargetRow().get()) + (
+                                event.getDropLocation() == DropLocation.BELOW ? 1 : 0);
+                    }
 
                     items.addAll(index, draggedItems);
                     dataProvider.refreshAll();
@@ -297,6 +300,7 @@ public class DetectorView extends VerticalLayout implements View {
         // Default Width*Height: 809*500
         pieChart.setWidth(480.0F, Sizeable.Unit.PIXELS);
         pieChart.setHeight(300.0F, Sizeable.Unit.PIXELS);
+        this.piechartLayout.removeAllComponents();
         this.piechartLayout.addComponent(pieChart);
 
         // initial filling of grid

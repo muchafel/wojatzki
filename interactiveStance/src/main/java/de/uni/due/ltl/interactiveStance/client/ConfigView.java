@@ -26,12 +26,10 @@ public class ConfigView extends VerticalLayout implements View {
     private Button startBtn = new Button("Start");
 
     public static String getScenario() {
-        System.out.println("scenario: " + scenario);
         return scenario;
     }
     
     public static String getExperimentMode() {
-    	System.out.println("mode: " + experimentMode);
 		return experimentMode;
 	}
 
