@@ -9,7 +9,6 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,8 +43,7 @@ public class MainUI extends UI {
         MenuBar.MenuItem homepage = menuBar.addItem("Homepage", null, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getPage().setLocation("/");
-//                getUI().getNavigator().navigateTo(LOGINVIEW);
+                getUI().getNavigator().navigateTo(LOGINVIEW);
             }
         });
 
@@ -54,7 +52,7 @@ public class MainUI extends UI {
     }
 
     @WebServlet(urlPatterns = "/*", asyncSupported = true)
-    @VaadinServletConfiguration(widgetset = "com.vaadin.client.widget.grid", ui = MainUI.class, productionMode = false)
+    @VaadinServletConfiguration(ui = MainUI.class, productionMode = false)
     public static class MainUIServlet extends VaadinServlet {
 
     }
