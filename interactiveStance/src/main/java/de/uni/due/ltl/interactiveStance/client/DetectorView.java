@@ -49,8 +49,8 @@ public class DetectorView extends VerticalLayout implements View {
             DropMode.ON_TOP_OR_BETWEEN);
     HorizontalLayout piechartLayout = new HorizontalLayout();
     JFreeChartWrapper pieChart;
-    TextField favorSelectionTextField = new TextField();
-    TextField againstSelectionTextField = new TextField();
+    Label favorSelectionTextField = new Label();
+    Label againstSelectionTextField = new Label();
     
 
     public DetectorView() {
@@ -107,6 +107,7 @@ public class DetectorView extends VerticalLayout implements View {
         
         favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
 		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
+		
         
     }
 
