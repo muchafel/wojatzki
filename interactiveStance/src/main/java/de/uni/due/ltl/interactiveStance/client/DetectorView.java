@@ -1,5 +1,6 @@
 package de.uni.due.ltl.interactiveStance.client;
 
+import com.gargoylesoftware.htmlunit.javascript.host.Popup;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -18,6 +19,9 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
+import de.uni.due.ltl.interactiveStance.client.charts.AccuracyPieChart;
+import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
+
 import org.vaadin.addon.JFreeChartWrapper;
 
 import java.util.List;
@@ -51,6 +55,8 @@ public class DetectorView extends VerticalLayout implements View {
     JFreeChartWrapper pieChart;
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
+    PopupView popup;
+
     
 
     public DetectorView() {
@@ -98,7 +104,9 @@ public class DetectorView extends VerticalLayout implements View {
 
         analysisButton.addClickListener(clickEvent -> {
             EvaluationResult result = service.analyse();
-            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
+//            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
+            popup= new PopupView("Pop it up", getPopUpComponents(result));
+            popup.setPopupVisible(true);
         });
 
         analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
@@ -108,10 +116,19 @@ public class DetectorView extends VerticalLayout implements View {
         favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
 		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
 		
-        
+		PopupView popup;
     }
 
-    /**
+    private Component getPopUpComponents(EvaluationResult result) {
+    	HorizontalLayout pieCharts = new HorizontalLayout();
+    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("FAVOR", result.getAccuracyFAVOR()));
+    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("AGAINST", result.getAccuracyAGAINST()));
+    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("NONE", result.getAccuracyNONE()));
+		return pieCharts;
+	}
+
+
+	/**
      * Here we stack the components together
      */
     private void buildLayout() {
@@ -275,7 +292,7 @@ public class DetectorView extends VerticalLayout implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         // Moved loading data here, because don't touch data in backend before loading the view.
         service = BackEnd.loadData();
-        JFreePieChart pc = new JFreePieChart();
+        StanceDataPieChart pc = new StanceDataPieChart();
         pieChart = pc.createPieChart(service);
         // Default Width*Height: 809*500
         pieChart.setWidth(480.0F, Sizeable.Unit.PIXELS);
