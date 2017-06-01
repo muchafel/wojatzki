@@ -5,7 +5,10 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.uima.UIMAException;
 import org.dkpro.tc.api.exception.TextClassificationException;
 
-import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzerBase;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_distributionDerived;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_optimized;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.client.ConfigUI;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
@@ -32,7 +35,7 @@ public class BackEnd {
 	private static StanceDB db;
 	private static TargetSearcher searcher;
 	private static EvaluationScenario evaluationScenario;
-	private static CollocationNgramAnalyzer analyzer;
+	private static CollocationNgramAnalyzerBase analyzer;
 
 	public static BackEnd loadData() {
 		/**
@@ -42,9 +45,9 @@ public class BackEnd {
 
 			final BackEnd backend = new BackEnd();
 
-			//for testing only, should be done in the config section
+			//set up scenario
 			try {
-				evaluationScenario = new EvaluationScenario(ConfigView.getScenario());
+				evaluationScenario = new EvaluationScenario(ConfigView.getScenario(), ConfigView.getExperimentMode());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -59,16 +62,19 @@ public class BackEnd {
 			// Workaround, grid drad and drop feature still in developing phase. Don't support empty grid.
 			backend.selectTestSave();
 
+			
+			//set up db
 			/**
 			 * TODO credentials
 			 * TODO exception handling
 			 */
 			try {
-				db = new StanceDB("root", "Mysql.sowies0","jdbc:mysql://localhost/interactiveArgumentMining");
+				db = new StanceDB("root", "","jdbc:mysql://localhost/interactiveArgumentMining");
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 
+			//Set up Searcher
 			searcher = new TargetSearcher();
 			try {
 				searcher.SetUp(db,100);
@@ -80,12 +86,35 @@ public class BackEnd {
 				e.printStackTrace();
 			}
 			
-			analyzer = new CollocationNgramAnalyzer(db,evaluationScenario);
+			//Set up analyzer
+			try {
+				analyzer= selectAnalyzer(db,evaluationScenario);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			
 			instance = backend;
 		}
 
 		return instance;
+	}
+
+	private static CollocationNgramAnalyzerBase selectAnalyzer(StanceDB db2,
+			EvaluationScenario evaluationScenario2) throws Exception {
+		CollocationNgramAnalyzerBase analyzer = null;
+		
+		if(evaluationScenario.getMode().equals("Fixed Threshold")){
+			analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,evaluationScenario,75);
+		}else if(evaluationScenario.getMode().equals("Optmized Threshold")){
+			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario);
+		}else if(evaluationScenario.getMode().equals("Distributional Threshold")){
+			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95);
+		}else{
+			throw new Exception(evaluationScenario.getMode()+" is not a valid analyzer");
+		}
+		
+		return analyzer;
 	}
 
 	public synchronized List<ExplicitTarget> getAllAvailableTargets(String stringFilter) {
@@ -198,7 +227,7 @@ public class BackEnd {
 	 */
 	public synchronized void loadEvaluationData (String target) {
 		try {
-			evaluationScenario= new EvaluationScenario(target);
+			evaluationScenario= new EvaluationScenario(ConfigView.getScenario(), ConfigView.getExperimentMode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

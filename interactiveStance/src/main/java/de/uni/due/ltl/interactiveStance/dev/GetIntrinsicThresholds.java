@@ -24,7 +24,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.NGramStringListIterable;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
 import de.uni.due.ltl.interactiveStance.analyzer.StanceLexicon;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
@@ -60,7 +60,7 @@ public class GetIntrinsicThresholds {
 			HashMap<String, ExplicitTarget> selectedTargetsAgainst = new HashMap<>();
 
 			// load evaluation Data
-			EvaluationScenario data = new EvaluationScenario(target);
+			EvaluationScenario data = new EvaluationScenario(target, "");
 
 			FrequencyDistribution<String> favor = new FrequencyDistribution<String>();
 			FrequencyDistribution<String> against = new FrequencyDistribution<String>();
@@ -99,7 +99,7 @@ public class GetIntrinsicThresholds {
 			
 			
 			// set up analyzer
-			CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,data);
+			CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75);
 			StanceLexicon lexicon= analyzer.createLexiconFromDistributions(favor, against);
 			lexicon.plotChartAndThreshold(target+"_1_d", 70, 70);
 			

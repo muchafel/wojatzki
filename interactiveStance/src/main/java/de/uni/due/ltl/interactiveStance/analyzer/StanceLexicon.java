@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,12 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.apache.commons.compress.archivers.zip.ZipEightByteInteger;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math.optimization.DifferentiableMultivariateVectorialOptimizer;
 import org.apache.commons.math.optimization.fitting.GaussianFitter;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+import org.apache.commons.math3.distribution.PascalDistribution;
+import org.apache.commons.math3.distribution.ZipfDistribution;
 import org.apache.commons.math3.optimization.fitting.HarmonicFitter;
 import org.apache.commons.math3.optimization.fitting.PolynomialFitter;
 import org.apache.commons.math3.optimization.fitting.WeightedObservedPoint;
@@ -28,11 +33,15 @@ import org.apache.commons.math3.optimization.general.LevenbergMarquardtOptimizer
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import com.mysql.cj.api.x.Result;
+
+import de.uni.due.ltl.interactiveStance.util.PlotUtil;
+import nl.peterbloem.powerlaws.Continuous;
 
 /**
  * Wrapper for the generated stance lexicons provides reading-from-text methods
@@ -135,7 +144,7 @@ public class StanceLexicon {
 	}
 
 	public Set<String> getKeys() {
-		return lexicon.keySet();
+		return sort().keySet();
 	}
 
 	public void plotChart(String target) throws IOException {
@@ -159,110 +168,60 @@ public class StanceLexicon {
 
 	public void plotChartAndThreshold(String target, int upperPercentage, int lower) throws IOException {
 		lexicon = sort();
-		XYSeries series = new XYSeries(target);
+		XYSeries observedSeries = new XYSeries(target);
+	
 		int i = 0;
-		ArrayList<Double> xValues = new ArrayList<>();
-		ArrayList<Double> yValues = new ArrayList<>();
-
 		for (String key : lexicon.keySet()) {
-			series.add(lexicon.keySet().size() - i, lexicon.get(key));
+			observedSeries.add(lexicon.keySet().size() - i, lexicon.get(key));
 			i++;
 		}
+		List<Double> dataPositive= new ArrayList<>();
+		List<Double> dataNegative= new ArrayList<>();
 		
-		GaussNewtonOptimizer optimizer =new GaussNewtonOptimizer(true);
-		LevenbergMarquardtOptimizer opt= new LevenbergMarquardtOptimizer();
-		PolynomialFitter fitter = new PolynomialFitter(3,opt);
+		//reverse order and data for the 
+		int j = 0;
+        List<String> keys = new ArrayList<String>(lexicon.keySet());
+        Collections.reverse(keys);
+        for(String key : keys){
+        	if((double) (lexicon.get(key))>0){
+        		dataPositive.add((double) (lexicon.get(key)));
+        	}
+        	if((double) (lexicon.get(key))<0){
+        		dataNegative.add(-(double) (lexicon.get(key)));
+        	}
+			j++;
+        }		
 		
-		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
-		int m = 0;
-		int a=0;
-		System.out.println(keys.size());
-		for(int k=keys.size()-1; k>=0;k--){
-//			if(m==a*(keys.size()-1)/22){
-//				System.out.println(m);
-//				System.out.println(a);
-//				if(m==0){
-//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-//				}
-//				if(lexicon.get(keys.get(k))>0){
-					if(m==0){
-						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}else if(m==keys.size()-1){
-						fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}
-					else{
-						fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-					}
-//				}
-				
-//				if(m==keys.size()-1){
-//					fitter.addObservedPoint(new WeightedObservedPoint(1000.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-//				}
-//				a++;
-//			}
-//			fitter.addObservedPoint(new WeightedObservedPoint(1.0, (double) m, (double) (lexicon.get(keys.get(k)))));
-			m++;
-		}
 		System.out.println("fit");
 		
-		PolynomialFunction func= new PolynomialFunction(fitter.fit());
-//		PolynomialFunction func= new PolynomialFunction(fitter.fit(new PolynomialFunction.Parametric(), new double[]{0, 0, 0, -0.01}));
-		System.out.println(func.toString());
-		int z = 0;
-//		System.out.println(func.derivative());
-		XYSeries interpolated = new XYSeries("approx");
-		for(WeightedObservedPoint p: fitter.getObservations()){
-			interpolated.add(p.getX(), func.value(p.getX()));
-		}
-//		for(int k=keys.size()-1; k>=0;k--){
-//			interpolated.add((double)z, func.value(z));
-//			z++;
-//		}
+		//fit the function, transform to a Zipf distribution
+		Continuous distributionPositive = Continuous.fit(dataPositive).fit();
+		ZipfDistribution zipfPositive= new ZipfDistribution(keys.size(), distributionPositive.exponent());
+		Continuous distributionNegative = Continuous.fit(dataNegative).fit();
+		ZipfDistribution zipfNegative= new ZipfDistribution(keys.size(), distributionNegative.exponent());
 		
-//		ArrayList<String> keys = new ArrayList<String>(lexicon.keySet());
-//		int m = 0;
-//		for(int k=keys.size()-1; k>=0;k--){
-//			xValues.add((double) (m));
-//			yValues.add((double) (lexicon.get(keys.get(k))));
-//            m++;
-//        }
+		double upperBoundFixed= getNthPositivePercent(upperPercentage);
+		double lowerBoundFixed= getNthNegativePercent(lower);
+		double zipfUpperBound= getCumulatedPercentageBound(zipfPositive, 0.95);
+		// IMPORTANT we have to change the sign of the cut of as zipf is only defined in the positive space 
+		double zipfLowerBound= -getCumulatedPercentageBound(zipfNegative, 0.95);
 		
-		//
-//		SplineInterpolator interpolator = new SplineInterpolator();
-//		PolynomialSplineFunction function = interpolator.interpolate(
-//				ArrayUtils.toPrimitive(xValues.toArray(new Double[xValues.size()])),
-//				ArrayUtils.toPrimitive(yValues.toArray(new Double[yValues.size()])));
-//
-//		System.out.println(function.getPolynomials());
-		
-		
-//		XYSeries interpolated = new XYSeries("Upper Bound");
-//		for (double xvalue : xValues) {
-//			interpolated.add(xvalue, function.value(xvalue));
-//		}
+		PlotUtil.plotDistributionChart(upperBoundFixed,lowerBoundFixed, zipfLowerBound, zipfUpperBound, zipfPositive, zipfNegative, observedSeries,new File("src/main/resources/plots/" + target + ".jpeg"),keys);
+	}
 
-		XYSeries upperBound = new XYSeries("Upper Bound");
-		upperBound.add(0,
-
-				getNthPositivePercent(upperPercentage));
-		upperBound.add(lexicon.keySet().size(), getNthPositivePercent(upperPercentage));
-
-		XYSeries lowerBopund = new XYSeries("Lower Bound");
-		lowerBopund.add(0, getNthNegativePercent(lower));
-		lowerBopund.add(lexicon.keySet().size(), getNthNegativePercent(lower));
-
-		final XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(series);
-		dataset.addSeries(upperBound);
-		dataset.addSeries(lowerBopund);
-		 dataset.addSeries(interpolated);
-		JFreeChart xylineChart = ChartFactory.createXYLineChart("dice distribution", "", "Score", dataset,
-				PlotOrientation.VERTICAL, true, true, false);
-		int width = 1280; /* Width of the image */
-		int height = 960; /* Height of the image */
-		File XYChart = new File("src/main/resources/plots/" + target + ".jpeg");
-		ChartUtilities.saveChartAsJPEG(XYChart, xylineChart, width, height);
-
+	/**
+	 * search for a quantile in the zipf distribution that splits according to the specified threshold
+	 * returns the corresponding probability then
+	 * TODO  use exact values? double zipfUpperBound= 1/Math.pow(zipfPositive.getNumericalMean(), zipfPositive.getExponent());
+	 * @param zipfD
+	 * @param percentage
+	 * @return
+	 */
+	public double getCumulatedPercentageBound(ZipfDistribution zipfD, double percentage) {
+		int counter=zipfD.inverseCumulativeProbability(percentage);
+		double result= zipfD.probability(counter);
+		System.out.println("cut off at position "+counter+ " prob "+result);
+		return result;
 	}
 
 	public String prettyPrint() {

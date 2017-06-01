@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<vaadin.version>8.1.0.alpha8</vaadin.version>
-		<!--<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>-->
+		<!--<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version> -->
 		<vaadin.plugin.version>8.1-SNAPSHOT</vaadin.plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -56,6 +56,10 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -74,21 +78,21 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 		<!-- project bases on Vaadin 8, not need to use compatiblility packages. -->
-		<!--<dependency>-->
-			<!--<groupId>com.vaadin</groupId>-->
-			<!--<artifactId>vaadin-compatibility-server</artifactId>-->
-			<!--<version>${vaadin.version}</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.vaadin</groupId>-->
-			<!--<artifactId>vaadin-compatibility-shared</artifactId>-->
-			<!--<version>${vaadin.version}</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.vaadin</groupId>-->
-			<!--<artifactId>vaadin-compatibility-client-compiled</artifactId>-->
-			<!--<version>${vaadin.version}</version>-->
-		<!--</dependency>-->
+		<!--<dependency> -->
+		<!--<groupId>com.vaadin</groupId> -->
+		<!--<artifactId>vaadin-compatibility-server</artifactId> -->
+		<!--<version>${vaadin.version}</version> -->
+		<!--</dependency> -->
+		<!--<dependency> -->
+		<!--<groupId>com.vaadin</groupId> -->
+		<!--<artifactId>vaadin-compatibility-shared</artifactId> -->
+		<!--<version>${vaadin.version}</version> -->
+		<!--</dependency> -->
+		<!--<dependency> -->
+		<!--<groupId>com.vaadin</groupId> -->
+		<!--<artifactId>vaadin-compatibility-client-compiled</artifactId> -->
+		<!--<version>${vaadin.version}</version> -->
+		<!--</dependency> -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -100,12 +104,12 @@
 			<version>4.0.0</version>
 		</dependency>
 		<!-- negative influence on mvn vaadin:run-codeserver -->
-		<!--<dependency>-->
-			<!--<groupId>javax.servlet</groupId>-->
-			<!--<artifactId>javax.servlet-api</artifactId>-->
-			<!--<version>3.0.1</version>-->
-			<!--<scope>provided</scope>-->
-		<!--</dependency>-->
+		<!--<dependency> -->
+		<!--<groupId>javax.servlet</groupId> -->
+		<!--<artifactId>javax.servlet-api</artifactId> -->
+		<!--<version>3.0.1</version> -->
+		<!--<scope>provided</scope> -->
+		<!--</dependency> -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -137,11 +141,16 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.0</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.commons</groupId> -->
-<!-- 			<artifactId>commons-math4</artifactId> -->
-<!-- 			<version>4.0</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.commons</groupId> -->
+		<!-- <artifactId>commons-math4</artifactId> -->
+		<!-- <version>4.0</version> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
@@ -210,6 +219,11 @@
 			<groupId>commons-math</groupId>
 			<artifactId>commons-math</artifactId>
 			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.Data2Semantics</groupId>
+			<artifactId>powerlaws</artifactId>
+			<version>v0.1.0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -287,7 +301,7 @@
 					<noServer>true</noServer>
 					<persistentunitcachedir>${basedir}/target/tmp/gwt-unitCache</persistentunitcachedir>
 					<compileReport>false</compileReport>
-					<!--<strict>true</strict>-->
+					<!--<strict>true</strict> -->
 					<runTarget>http://localhost:8080/</runTarget>
 				</configuration>
 				<executions>
@@ -295,7 +309,7 @@
 					<execution>
 						<configuration>
 							<!-- if you don't specify any modules, the plugin will find them -->
-							<!--<module>com.vaadin.client.widget.grid</module>-->
+							<module>com.vaadin.client.widget.grid</module>
 						</configuration>
 						<goals>
 							<goal>resources</goal>

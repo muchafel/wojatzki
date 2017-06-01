@@ -52,7 +52,7 @@ public class EvaluationDataIOTest {
 	@Test
 	public void dataSetTest() throws Exception {
 		
-		EvaluationScenario data = new EvaluationScenario("Atheism");
+		EvaluationScenario data = new EvaluationScenario("Atheism","");
 		
 		System.out.println(data.getTrainData().getNumberOfInstances());
 		System.out.println(data.getTrainData().getNumberOfFavor());

@@ -8,13 +8,14 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.uima.UIMAException;
 import org.dkpro.tc.api.exception.TextClassificationException;
 
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_distributionDerived;
 import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 
-public class Testbed_PolarityThresholds {
+public class Testbed_PolarityThresholds_distributional {
 
 	public static void main(String[] args) throws Exception {
 		// set up DB and selection
@@ -22,27 +23,15 @@ public class Testbed_PolarityThresholds {
 		HashMap<String, ExplicitTarget> selectedTargetsFavor = new HashMap<>();
 		HashMap<String, ExplicitTarget> selectedTargetsAgainst = new HashMap<>();
 		TargetSearcher searcher = new TargetSearcher();
-		searcher.SetUp(db, 3);
+		searcher.SetUp(db, 1);
 
 		System.out.println("adding favor targets");
 		for (ExplicitTarget t : searcher.search("God_Does_Not_Exist", true)) {
 			selectedTargetsFavor.put(t.getId(), t);
 		}
-		for (ExplicitTarget t : searcher.search("Religious_Tale", true)) {
-			selectedTargetsFavor.put(t.getId(), t);
-		}
-		for (ExplicitTarget t : searcher.search("Darwin", true)) {
-			selectedTargetsFavor.put(t.getId(), t);
-		}
 
 		System.out.println("adding against targets");
-		for (ExplicitTarget t : searcher.search("God", true)) {
-			selectedTargetsAgainst.put(t.getId(), t);
-		}
-		for (ExplicitTarget t : searcher.search("Christ", true)) {
-			selectedTargetsAgainst.put(t.getId(), t);
-		}
-		for (ExplicitTarget t : searcher.search("Bible", true)) {
+		for (ExplicitTarget t : searcher.search("Jesus", true)) {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 
@@ -50,7 +39,7 @@ public class Testbed_PolarityThresholds {
 		EvaluationScenario data = new EvaluationScenario("Atheism","");
 
 		// set up analyzer
-		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75);
+		CollocationNgramAnalyzer_distributionDerived analyzer = new CollocationNgramAnalyzer_distributionDerived(db,data,0.95);
 		
 		//test on test data 
 		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);
