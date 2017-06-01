@@ -62,7 +62,7 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 
 
 	@Override
-	protected Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
+	protected EvaluationData<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
 		return evaluateUsingLexicon_FixedThreshold(stanceLexicon, data, fixedThreshold, fixedThreshold);
 	}
 
@@ -77,7 +77,7 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 	 * @return
 	 * @throws AnalysisEngineProcessException
 	 */
-	public Fscore<String> evaluateUsingLexicon_FixedThreshold(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet,int upperPercentage, int lowerPercentage) throws AnalysisEngineProcessException {
+	public EvaluationData<String> evaluateUsingLexicon_FixedThreshold(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet,int upperPercentage, int lowerPercentage) throws AnalysisEngineProcessException {
 		EvaluationData<String> evalData = new EvaluationData<>();
 		float upperBound = stanceLexicon.getNthPositivePercent(upperPercentage);
 		float lowerBound = stanceLexicon.getNthNegativePercent(lowerPercentage);
@@ -92,7 +92,7 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 		}
 		System.out.println("Using threshold config "+ upperPercentage+"_"+lowerPercentage+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
-		return new Fscore<>(evalData);
+		return evalData;
 	}
 
 

@@ -56,6 +56,10 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -137,6 +141,11 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math</artifactId>
+			<version>2.2</version>
+		</dependency>
 		<!-- <dependency> -->
 		<!-- <groupId>org.apache.commons</groupId> -->
 		<!-- <artifactId>commons-math4</artifactId> -->
@@ -210,6 +219,11 @@
 			<groupId>commons-math</groupId>
 			<artifactId>commons-math</artifactId>
 			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.Data2Semantics</groupId>
+			<artifactId>powerlaws</artifactId>
+			<version>v0.1.0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

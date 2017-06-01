@@ -36,12 +36,12 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 	}
 
 	@Override
-	protected Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data)
+	protected EvaluationData<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data)
 			throws AnalysisEngineProcessException {
 		return evaluateUsingLexicon_Distributional(stanceLexicon, data);
 	}
 
-	private Fscore<String> evaluateUsingLexicon_Distributional(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
+	private EvaluationData<String> evaluateUsingLexicon_Distributional(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
 		EvaluationData<String> evalData = new EvaluationData<>();
 		
 		ZipfDistributionsContainer zipfContainer= new ZipfDistributionsContainer(stanceLexicon, percentil);
@@ -56,7 +56,7 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 		}
 		System.out.println("Using found thresholds "+ zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound()+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
-		return new Fscore<>(evalData);
+		return evalData;
 	}
 
 }

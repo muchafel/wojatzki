@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer;
+import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
@@ -30,8 +30,8 @@ public class CollocationNgramAnalyzerTest {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 		// load evaluation Data
-		EvaluationScenario secenario = new EvaluationScenario("Atheism");
-		CollocationNgramAnalyzer analyzer = new CollocationNgramAnalyzer(db,secenario);
+		EvaluationScenario secenario = new EvaluationScenario("Atheism","");
+		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,secenario,75);
 		
 		
 	}

@@ -78,19 +78,19 @@ public abstract class CollocationNgramAnalyzerBase {
 		}
 		
 		//TODO Cascading logic using backoff
-		Fscore<String> fscore = null;
+		EvaluationData<String> result = null;
 		for (int lexiconId : lexica.keySet()) {
 			if(evaluateTrain){
-				fscore=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTrainData());
+				result=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTrainData());
 			}else{
-				fscore=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTestData());
+				result=evaluateUsingLexicon(lexica.get(lexiconId), scenario.getTestData());
 			}
 		}
 		
-		return new EvaluationResult(fscore);
+		return new EvaluationResult(result);
 	}
 
-	protected abstract Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet trainData) throws AnalysisEngineProcessException;
+	protected abstract EvaluationData<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet trainData) throws AnalysisEngineProcessException;
 	
 	protected String getThresholdId(float upperBound, float lowerBound) {
 		return String.valueOf(upperBound)+"_"+String.valueOf(lowerBound);

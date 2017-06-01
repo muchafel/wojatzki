@@ -61,7 +61,7 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 
 
 	@Override
-	protected Fscore<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
+	protected EvaluationData<String> evaluateUsingLexicon(StanceLexicon stanceLexicon, EvaluationDataSet data) throws AnalysisEngineProcessException {
 		return evaluateUsingLexicon_ThresholdOptimization(stanceLexicon, data);
 	}
 
@@ -79,7 +79,7 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 	 * @throws UIMAException
 	 * @throws TextClassificationException
 	 */
-	public EvaluationResult analyzeOptimized(HashMap<String, ExplicitTarget> selectedTargetsFavor,HashMap<String, ExplicitTarget> selectedTargetsAgainst, int maxNgramSize, boolean evaluateTrain)
+	public EvaluationData<String> analyzeOptimized(HashMap<String, ExplicitTarget> selectedTargetsFavor,HashMap<String, ExplicitTarget> selectedTargetsAgainst, int maxNgramSize, boolean evaluateTrain)
 			throws NumberFormatException, SQLException, UIMAException, TextClassificationException {
 
 		Map<Integer, StanceLexicon> lexica = new HashMap<Integer, StanceLexicon>();
@@ -89,16 +89,16 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 		}
 
 		
-		Fscore<String> fscore = null;
+		EvaluationData<String> result = null;
 		for (int lexiconId : lexica.keySet()) {
 			if(evaluateTrain){
-				fscore=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTrainData());
+				result=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTrainData());
 			}else{
-				fscore=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTestData());
+				result=evaluateUsingLexicon_ThresholdOptimization(lexica.get(lexiconId), scenario.getTestData());
 			}
 		}
 		
-		return new EvaluationResult(fscore);
+		return result;
 	}
 	
 	
@@ -110,12 +110,12 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 	 * @return
 	 * @throws AnalysisEngineProcessException
 	 */
-	public Fscore<String> evaluateUsingLexicon_ThresholdOptimization(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
+	public EvaluationData<String> evaluateUsingLexicon_ThresholdOptimization(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
 		Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(stanceLexicon,evaluationDataSet);
 		String topConfig=getTopConfig(thresholdId2Outcome);
 		System.out.println("Using threshold config "+ topConfig+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
 		System.out.println(new ConfusionMatrix<String>(thresholdId2Outcome.get(topConfig)));
-		return new Fscore<>(thresholdId2Outcome.get(topConfig));
+		return thresholdId2Outcome.get(topConfig);
 	}
 	
 	
