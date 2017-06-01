@@ -10,7 +10,6 @@ import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_distri
 import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedThresholds;
 import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_optimized;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
-import de.uni.due.ltl.interactiveStance.client.ConfigUI;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
