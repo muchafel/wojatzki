@@ -56,7 +56,6 @@ public class DetectorView extends VerticalLayout implements View {
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
     PopupView popup;
-
     
 
     public DetectorView() {
@@ -126,7 +125,6 @@ public class DetectorView extends VerticalLayout implements View {
     	pieCharts.addComponent(new AccuracyPieChart().createPieChart("NONE", result.getAccuracyNONE()));
 		return pieCharts;
 	}
-
 
 	/**
      * Here we stack the components together
@@ -198,14 +196,6 @@ public class DetectorView extends VerticalLayout implements View {
         gridDragSource.addGridDragStartListener(event -> {
             draggedItems = event.getDraggedItems();
         });
-        // transferring extra data along with drag&drop operation.
-//        gridDragSource.setDragDataGenerator("targets", target -> {
-//            JsonObject data = Json.createObject();
-//            data.put("targetName", target.getTargetName());
-//            data.put("instanceFavor", target.getInstancesInFavor());
-//            data.put("instanceAgainst", target.getInstancesAgainst());
-//            return data;
-//        });
     }
 
     /**
@@ -263,8 +253,13 @@ public class DetectorView extends VerticalLayout implements View {
                     int index = items.size();
                     // Calculate the target row's index
                     if (event.getDropTargetRow().isPresent()) {
-                        index = items.indexOf(event.getDropTargetRow().get()) + (
-                                event.getDropLocation() == DropLocation.BELOW ? 1 : 0);
+                        // drag and drop at the title column in same grid will get the index -1.
+                        if (items.indexOf(event.getDropTargetRow().get()) == -1) {
+                            index = 0;
+                        } else {
+                            index = items.indexOf(event.getDropTargetRow().get()) + (
+                                    event.getDropLocation() == DropLocation.BELOW ? 1 : 0);
+                        }
                     }
 
                     items.addAll(index, draggedItems);
@@ -293,6 +288,8 @@ public class DetectorView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        ((MainUI) this.getUI()).showMenubar();
+
         // Moved loading data here, because don't touch data in backend before loading the view.
         service = BackEnd.loadData();
         StanceDataPieChart pc = new StanceDataPieChart();

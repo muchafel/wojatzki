@@ -22,7 +22,7 @@ public class MainUI extends UI {
     protected static final String DETECTORVIEW = "detector";
     protected static final String ERRORVIEW = "error";
 
-    private MenuBar menuBar;
+    private MenuBar menuBar = null;
     private VerticalLayout placeholder = new VerticalLayout();
 
     @Override
@@ -49,6 +49,18 @@ public class MainUI extends UI {
 
         VerticalLayout mainLayout = new VerticalLayout(menuBar, placeholder);
         setContent(mainLayout);
+    }
+
+    public void hideMenubar() {
+        if (menuBar != null) {
+            menuBar.setVisible(false);
+        }
+    }
+
+    public void showMenubar() {
+        if (menuBar != null) {
+            menuBar.setVisible(true);
+        }
     }
 
     @WebServlet(urlPatterns = "/*", asyncSupported = true)
