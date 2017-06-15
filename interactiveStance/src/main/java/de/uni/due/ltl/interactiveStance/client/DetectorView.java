@@ -156,10 +156,12 @@ public class DetectorView extends VerticalLayout implements View {
 		VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
 		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
 		selectedFavorTargetsContent.addComponent(listOfSelectedFavorTargets);
+        selectedFavorTargetsContent.setMargin(false);
 
-		VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
+        VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
 		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
 		selectedAgainstTargetsContent.addComponent(listOfSelectedAgainstTargets);
+        selectedAgainstTargetsContent.setMargin(false);
 
 		// all selected content
 		HorizontalLayout selectedTargetsContent = new HorizontalLayout();
@@ -172,9 +174,9 @@ public class DetectorView extends VerticalLayout implements View {
 		this.addComponent(searchLayout);
 		this.addComponent(filter);
 		this.addComponent(listOfAvailableTargets);
-		this.addComponent(analysisButton);
 		this.addComponent(selectedTargetsContent);
-        this.setSpacing(true);
+        this.addComponent(analysisButton);
+        this.setComponentAlignment(analysisButton, Alignment.BOTTOM_RIGHT);
     }
 
     /**
