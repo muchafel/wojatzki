@@ -15,13 +15,13 @@ public class Performance_RemovedSignal {
 //		File folder = new File("src/main/resources/id2outcome/replaced_explicitTarget_svm");
 		File folder = new File("src/main/resources/id2outcome/wo_explicitTarget_lstm");
 		for (File file : folder.listFiles()) {
-			Evaluation<String> evaluation = Filtereable_TcId2OutcomeReader.read(file);
+			EvaluationData<String> evaluation = Filtereable_TcId2OutcomeReader.read(file);
 			System.out.println(file.getName()+"***");
 			printResult(evaluation);
 		}
 	}
 
-	private static void printResult(Evaluation<String> evaluation) {
+	private static void printResult(EvaluationData<String> evaluation) {
 		Map<String, EvaluationResult> results = CategorialMeasuresUtil
 				.computeCategorialResults(evaluation.getEntries());
 
@@ -47,7 +47,7 @@ public class Performance_RemovedSignal {
 		System.out.println("+\t"+ "DROP "+ (0.45085470085470086 -getMicroSemEval(evaluation)));
 	}
 
-	private static double getMicroSemEval(Evaluation<String> evaluation) {
+	private static double getMicroSemEval(EvaluationData<String> evaluation) {
 		ConfusionMatrix<String> confusionMatrix = evaluation.getConfusionMatrix();
 		long microTP = confusionMatrix.getTruePositives("FAVOR");
 		microTP += confusionMatrix.getTruePositives("AGAINST");

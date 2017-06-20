@@ -45,7 +45,7 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 	@ConfigurationParameter(name = PARAM_USE_SET1, mandatory = true)
 	protected boolean useSet1;
 	
-	public static final String PARAM_USE_SET2 = "useTargetSet1ForClassification";
+	public static final String PARAM_USE_SET2 = "useTargetSet2ForClassification";
 	@ConfigurationParameter(name = PARAM_USE_SET2, mandatory = true)
 	protected boolean useSet2;
 	
@@ -95,10 +95,11 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 //		System.out.println(unit.getCoveredText());
 		if(useSet1){
 			for (String target : explicitTargets_SET1) {
+				if(!explcitTarget_SET1_2id2Outcome.containsKey(target)) continue;
 				try {
 					int resultForTarget = getClassificationOutcome(unit, jcas, target,
 							explcitTarget_SET1_2id2Outcome.get(target),true);
-					featList.add(new Feature(identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
+					featList.add(new Feature("SET1_"+identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
 				} catch (Exception e) {
 					throw new TextClassificationException(e);
 				}
@@ -106,10 +107,11 @@ public class ClassifiedSubdebateDFE extends FeatureExtractorResource_ImplBase im
 		}
 		if(useSet2){
 			for (String target : explicitTargets_SET2) {
+				if(!explcitTarget_SET2_2id2Outcome.containsKey(target)) continue;
 				try {
 					int resultForTarget = getClassificationOutcome(unit, jcas, target,
 							explcitTarget_SET2_2id2Outcome.get(target),false);
-					featList.add(new Feature(identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
+					featList.add(new Feature("SET1_"+identifier+"_ClassifiedSubTarget_"+target, resultForTarget));
 				} catch (Exception e) {
 					throw new TextClassificationException(e);
 				}

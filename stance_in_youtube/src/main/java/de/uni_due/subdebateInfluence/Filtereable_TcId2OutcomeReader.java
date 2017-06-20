@@ -8,22 +8,22 @@ import java.util.List;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.uni_due.ltl.util.Id2OutcomeUtil;
-import de.unidue.ltl.evaluation.Evaluation;
+import de.unidue.ltl.evaluation.EvaluationData;
 
 public class Filtereable_TcId2OutcomeReader {
-	public static Evaluation<String> read(File id2OutcomeFile) throws ResourceInitializationException{
-		Evaluation<String> evaluation= new Evaluation<>();
+	public static EvaluationData<String> read(File id2OutcomeFile) throws ResourceInitializationException{
+		EvaluationData<String> evaluation= new EvaluationData<>();
 		evaluation=registerId2OutcomePairs(evaluation,id2OutcomeFile);
 		return evaluation;
 	}
 	
-	public static Evaluation<String> read_butExclude(File id2OutcomeFile,List<String> exludeIds) throws ResourceInitializationException{
-		Evaluation<String> evaluation= new Evaluation<>();
+	public static EvaluationData<String> read_butExclude(File id2OutcomeFile,List<String> exludeIds) throws ResourceInitializationException{
+		EvaluationData<String> evaluation= new EvaluationData<>();
 		evaluation=registerId2OutcomePairsBUtExclude(evaluation,id2OutcomeFile,exludeIds);
 		return evaluation;
 	}
 	
-	private static Evaluation<String> registerId2OutcomePairsBUtExclude(Evaluation<String> evaluation,
+	private static EvaluationData<String> registerId2OutcomePairsBUtExclude(EvaluationData<String> evaluation,
 			File id2OutcomeFile, List<String> exludeIds) throws ResourceInitializationException {
 		List<String> labels=null;
 		try (BufferedReader br = new BufferedReader(new FileReader(id2OutcomeFile))) {
@@ -51,13 +51,13 @@ public class Filtereable_TcId2OutcomeReader {
 		return evaluation;
 	}
 
-	public static Evaluation<String> read_only(File id2OutcomeFile,List<String> includeIds) throws ResourceInitializationException{
-		Evaluation<String> evaluation= new Evaluation<>();
+	public static EvaluationData<String> read_only(File id2OutcomeFile,List<String> includeIds) throws ResourceInitializationException{
+		EvaluationData<String> evaluation= new EvaluationData<>();
 		evaluation=registerOnlyCertainId2OutcomePairs(evaluation,id2OutcomeFile,includeIds);
 		return evaluation;
 	}
 	
-	private static Evaluation<String> registerOnlyCertainId2OutcomePairs(Evaluation<String> evaluation,
+	private static EvaluationData<String> registerOnlyCertainId2OutcomePairs(EvaluationData<String> evaluation,
 			File id2OutcomeFile, List<String> includeIds) throws ResourceInitializationException {
 		List<String> labels=null;
 		try (BufferedReader br = new BufferedReader(new FileReader(id2OutcomeFile))) {
@@ -85,7 +85,7 @@ public class Filtereable_TcId2OutcomeReader {
 		return evaluation;
 	}
 
-	private static Evaluation<String> registerId2OutcomePairs(Evaluation<String> evaluation, File id2OutcomeFile) throws ResourceInitializationException {
+	private static EvaluationData<String> registerId2OutcomePairs(EvaluationData<String> evaluation, File id2OutcomeFile) throws ResourceInitializationException {
 		List<String> labels=null;
 		try (BufferedReader br = new BufferedReader(new FileReader(id2OutcomeFile))) {
 			String line = null;

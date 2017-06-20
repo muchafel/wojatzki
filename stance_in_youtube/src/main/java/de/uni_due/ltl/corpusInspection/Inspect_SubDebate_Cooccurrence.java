@@ -16,6 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.uni_due.ltl.util.TargetSets;
 import de.unidue.ltl.evaluation.ConfusionMatrix;
+import de.unidue.ltl.evaluation.EvaluationData;
 import io.YouTubeReader;
 
 public class Inspect_SubDebate_Cooccurrence {
@@ -23,19 +24,19 @@ public class Inspect_SubDebate_Cooccurrence {
 	public static void main(String[] args) throws IOException, ResourceInitializationException {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		ConfusionMatrix<String> confusionMatrix= new ConfusionMatrix<>();
+		EvaluationData<String> evalData= new EvaluationData<>();
 		for (String explicitTarget : TargetSets.targets_Set1) {
-			inspectCooccurence(explicitTarget,"1",baseDir+"/youtubeStance/corpus_curated/bin_preprocessed/",confusionMatrix);
+			inspectCooccurence(explicitTarget,"1",baseDir+"/youtubeStance/corpus_curated/bin_preprocessed/",evalData);
 		}
 		for (String explicitTarget : TargetSets.targets_Set2) {
-			inspectCooccurence(explicitTarget,"2",baseDir+"/youtubeStance/corpus_curated/bin_preprocessed/",confusionMatrix);
+			inspectCooccurence(explicitTarget,"2",baseDir+"/youtubeStance/corpus_curated/bin_preprocessed/",evalData);
 		}
 		
-		System.out.println(confusionMatrix.toString());
+		System.out.println(new ConfusionMatrix<>(evalData).toString());
 
 	}
 
-	private static void inspectCooccurence(String explicitTarget, String set, String path, ConfusionMatrix<String> confusionMatrix) throws ResourceInitializationException {
+	private static void inspectCooccurence(String explicitTarget, String set, String path, EvaluationData<String> evalData) throws ResourceInitializationException {
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, path, YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,set);
 	
@@ -51,17 +52,17 @@ public class Inspect_SubDebate_Cooccurrence {
 						if(explicitStance.getTarget().equals(explicitTarget) && !explicitStance.getPolarity().equals("NONE")){
 //							System.out.println("FOUND "+explicitTarget);
 							result.get(explicitTarget).inc("OCC");
-							confusionMatrix.register(explicitTarget, explicitTarget);
+							evalData.register(explicitTarget, explicitTarget);
 							for(curated.Explicit_Stance_Set1 explicitStanceInner: JCasUtil.selectCovered(curated.Explicit_Stance_Set1.class, outcome)){
 								if(!explicitStanceInner.getTarget().equals(explicitTarget) && !explicitStanceInner.getPolarity().equals("NONE")){
 									result.get(explicitTarget).inc(explicitStanceInner.getTarget());
-									confusionMatrix.register(explicitTarget, explicitStanceInner.getTarget());
+									evalData.register(explicitTarget, explicitStanceInner.getTarget());
 								}
 							}
 							for(curated.Explicit_Stance_Set2 explicitStanceInner: JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class, outcome)){
 								if(!explicitStanceInner.getTarget().equals(explicitTarget) && !explicitStanceInner.getPolarity().equals("NONE")){
 									result.get(explicitTarget).inc(explicitStanceInner.getTarget());
-									confusionMatrix.register(explicitTarget, explicitStanceInner.getTarget());
+									evalData.register(explicitTarget, explicitStanceInner.getTarget());
 								}
 							}
 						}
@@ -71,17 +72,17 @@ public class Inspect_SubDebate_Cooccurrence {
 					for (curated.Explicit_Stance_Set2 explicitStance : JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class, outcome)) {
 						if (explicitStance.getTarget().equals(explicitTarget)&& !explicitStance.getPolarity().equals("NONE")) {
 							result.get(explicitTarget).inc("OCC");
-							confusionMatrix.register(explicitTarget, explicitTarget);
+							evalData.register(explicitTarget, explicitTarget);
 							for(curated.Explicit_Stance_Set2 explicitStanceInner: JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class, outcome)){
 								if(!explicitStanceInner.getTarget().equals(explicitTarget) && !explicitStanceInner.getPolarity().equals("NONE")){
 									result.get(explicitTarget).inc(explicitStanceInner.getTarget());
-									confusionMatrix.register(explicitTarget, explicitStanceInner.getTarget());
+									evalData.register(explicitTarget, explicitStanceInner.getTarget());
 								}
 							}
 							for(curated.Explicit_Stance_Set1 explicitStanceInner: JCasUtil.selectCovered(curated.Explicit_Stance_Set1.class, outcome)){
 								if(!explicitStanceInner.getTarget().equals(explicitTarget) && !explicitStanceInner.getPolarity().equals("NONE")){
 									result.get(explicitTarget).inc(explicitStanceInner.getTarget());
-									confusionMatrix.register(explicitTarget, explicitStanceInner.getTarget());
+									evalData.register(explicitTarget, explicitStanceInner.getTarget());
 								}
 							}
 						}

@@ -26,7 +26,8 @@ public class TargetSets {
 //			));
 	
 	public static ArrayList<String> targets_Set1 = new ArrayList<String>(Arrays.asList(
-			"Death Penalty (Debate)",
+			"Death Penalty (Debate)"
+			,
 			"Bodies of people sentenced to death should be used to repay society (e.g. medical experiments, organ donation)",	//*
 			"Death Penalty for heinous crimes (murder, mass murder, rape, child molestation etc.)"
 			,	
@@ -35,14 +36,14 @@ public class TargetSets {
 			"Death Penalty should be done by the electric chair",	//*
 			"Death Penalty should be enforced more quickly e.g. by minimizing the number of appeals",
 			"If Death Penalty is allowed, abortion should be legal, too.",	
-//			"If Death Penalty is allowed, euthanasia should be allowed",	//*
-//			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	//*
-//			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",//*	
+			"If Death Penalty is allowed, euthanasia should be allowed",	//*
+			"If one is against death penalty, one has to be against all state use of lethal force (e.g. military)",	//*
+			"If studies were to show that the Death Penalty is deterrend, it would be immoral to oppose it",//*	
 			"In certain cases, capital punishment shouldn’t have to be humane but more harsh",
 			"Life-long prison should be replaced by Death Penalty",	
 			"The level of certainty that is necessary for Death Penalty is unachievable"
-//			,
-//			"There is currently no human form of Death Penalty"//*
+			,
+			"There is currently no human form of Death Penalty"//*
 //			,	
 //			"Witnessing Death Penalty can have a negative impact on humans psyche (e.g. for the executioner)"//*
 			));

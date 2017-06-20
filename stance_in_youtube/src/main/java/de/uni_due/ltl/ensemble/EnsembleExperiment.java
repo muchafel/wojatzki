@@ -23,11 +23,14 @@ import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ExperimentUtil;
 import org.dkpro.tc.features.length.NrOfTokens;
 import org.dkpro.tc.features.length.NrOfTokensPerSentence;
+import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
+import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
+import de.uni_due.ltl.featureExtractors.NgramCoverage;
 import de.uni_due.ltl.featureExtractors.PredictedStance;
 import de.uni_due.ltl.featureExtractors.SocherSentimentFE;
 import de.uni_due.ltl.featureExtractors.commentNgrams.CommentNGram;
@@ -65,20 +68,28 @@ public class EnsembleExperiment implements Constants{
 	public static boolean filterNONE = false;
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
-			TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"SVM_ngrams_sentiment")
+//			TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"SVM_ngrams_sentiment")
 //			,TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"LSTM_ngrams_embeddings")
 //			,TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/ngrams_embeddings_sentiment.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"LSTM_ngrams_embeddings_sentiment")
-			,TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random2.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"LSTM")
-//			TcFeatureFactory.create(ClassifiedSubdebateDFE.class, ClassifiedSubdebateDFE.PARAM_USE_ORACLE, false,ClassifiedSubdebateDFE.PARAM_ORACLE_DROPOUT, 0,
-//					ClassifiedSubdebateDFE.PARAM_USE_SET1, true, ClassifiedSubdebateDFE.PARAM_USE_SET2, true,
-//					ClassifiedSubdebateDFE.PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH,
-//					"src/main/resources/id2outcome/binary_subsampled_ngrams_embeddings",
-//					ClassifiedSubdebateDFE.PARAM_IDENTIFIER,"binary"),
+//			,TcFeatureFactory.create(PredictedStance.class,PredictedStance.PARAM_ID2OUTCOME_FILE_PATH,"src/main/resources/id2outcome/debateStance/curated/lstm_100_fixed_random2.txt",PredictedStance.PARAM_ID2OUTCOME_IDENTIFIER,"LSTM")
+			TcFeatureFactory.create(ClassifiedSubdebateDFE.class, ClassifiedSubdebateDFE.PARAM_USE_ORACLE, true,ClassifiedSubdebateDFE.PARAM_ORACLE_DROPOUT, 0,
+					ClassifiedSubdebateDFE.PARAM_USE_SET1, true, ClassifiedSubdebateDFE.PARAM_USE_SET2, false,
+					ClassifiedSubdebateDFE.PARAM_ID2OUTCOME_SUBTARGETS_FOLDER_PATH,
+					"src/main/resources/id2outcome/binary_subsampled_ngrams_embeddings",
+					ClassifiedSubdebateDFE.PARAM_IDENTIFIER,"3way")
+//			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//					CommentNGram.PARAM_NGRAM_MIN_N, 1, CommentNGram.PARAM_NGRAM_MAX_N, 1, CommentNGram.PARAM_UNIQUE_NAME, "A")
+//			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//					CommentNGram.PARAM_NGRAM_MIN_N, 2, CommentNGram.PARAM_NGRAM_MAX_N, 2, CommentNGram.PARAM_UNIQUE_NAME, "B")
+//			,TcFeatureFactory.create(CommentNGram.class, CommentNGram.PARAM_NGRAM_USE_TOP_K, 500,
+//					CommentNGram.PARAM_NGRAM_MIN_N, 3, CommentNGram.PARAM_NGRAM_MAX_N, 3 , CommentNGram.PARAM_UNIQUE_NAME, "C"),
+//			TcFeatureFactory.create(SocherSentimentFE.class)
 //			,TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
-			,TcFeatureFactory.create(NrOfTokensPerSentence.class)
+//			,TcFeatureFactory.create(NrOfTokensPerSentence.class)
 //			,TcFeatureFactory.create(SVM_or_LSTM_target.class)
-			,TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class)
-			,TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+//			,TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class)
+//			,TcFeatureFactory.create(EmbeddingCoverage.class,EmbeddingCoverage.PARAM_WORDEMBEDDINGLOCATION,"src/main/resources/list/prunedEmbeddings.84B.300d.txt")
+//			,TcFeatureFactory.create(NgramCoverage.class)
 			);
 
 	public static void main(String[] args) throws Exception {
@@ -86,7 +97,7 @@ public class EnsembleExperiment implements Constants{
 		System.out.println("DKPRO_HOME: " + baseDir);
 		EnsembleExperiment experiment = new EnsembleExperiment();
 		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/youtubeStance/corpus_curated/bin_preprocessed/", TARGET_LABLE,TARGET_Set,featureSet);
-		experiment.runCrossValidation(pSpace, "simple_ensemble");
+		experiment.runCrossValidation(pSpace, "s1_wo_exp");
 	}
 
 	
@@ -103,6 +114,8 @@ public class EnsembleExperiment implements Constants{
 	public void runCrossValidation(ParameterSpace pSpace, String experimentName) throws Exception {
 		ExperimentCrossValidation batch = new ExperimentCrossValidation(experimentName, WekaClassificationAdapter.class,
 				NUM_FOLDS);
+		
+//		ExperimentTrainTest batch = new ExperimentTrainTest(experimentName, WekaClassificationAdapter.class);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
@@ -135,8 +148,8 @@ public class EnsembleExperiment implements Constants{
 		// the paper; ZeroR is majority class classifier)
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 				asList(new String[] { SMO.class.getName() })
-		 ,
-		 asList(new String[] { J48.class.getName() }),
+//		 ,
+		 ,asList(new String[] { J48.class.getName() }),
 //		 asList(new String[] { BayesNet.class.getName() }),
 //		 asList(new String[] { MultilayerPerceptron.class.getName() })
 //		 ,
@@ -161,6 +174,9 @@ public class EnsembleExperiment implements Constants{
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		System.out.println("read from "+inputTrainFolder);
 		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
+				LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,subTarget, YouTubeReader.PARAM_TARGET_SET,targetSet));
+		
+		dimReaders.put(DIM_READER_TEST, CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
 				LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,subTarget, YouTubeReader.PARAM_TARGET_SET,targetSet));
 
 		return dimReaders;

@@ -156,9 +156,9 @@ public class TypeClassifierExperiment implements Constants{
 		System.out.println("read from "+inputTrainFolder);
 		dimReaders.put(DIM_READER_TRAIN,
 				CollectionReaderFactory.createReaderDescription(YouTubeClassificationTypeReader.class,
-						YouTubeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeReader.PARAM_LANGUAGE,
-						LANGUAGE_CODE, YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,
-						subTarget, YouTubeReader.PARAM_TARGET_SET, targetSet,
+						YouTubeClassificationTypeReader.PARAM_SOURCE_LOCATION, inputTrainFolder, YouTubeClassificationTypeReader.PARAM_LANGUAGE,
+						LANGUAGE_CODE, YouTubeClassificationTypeReader.PARAM_PATTERNS, "*.bin", YouTubeClassificationTypeReader.PARAM_TARGET_LABEL,
+						subTarget, YouTubeClassificationTypeReader.PARAM_TARGET_SET, targetSet,
 						YouTubeClassificationTypeReader.PARAM_SVM_ID2OUTCOME_FILE_PATH,
 						"src/main/resources/id2outcome/debateStance/curated/ngrams_sentiment.txt",
 						YouTubeClassificationTypeReader.PARAM_LSTM_ID2OUTCOME_FILE_PATH,

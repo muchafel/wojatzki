@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -45,8 +46,8 @@ public class InspectCorpus {
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(YouTubeReader.class, YouTubeReader.PARAM_SOURCE_LOCATION, "/Users/michael/DKPRO_HOME/youtubeStance/corpus_curated/bin_preprocessed", YouTubeReader.PARAM_LANGUAGE,
 				"en", YouTubeReader.PARAM_PATTERNS, "*.bin", YouTubeReader.PARAM_TARGET_LABEL,"DEATH PENALTY", YouTubeReader.PARAM_TARGET_SET,"1");
 		AnalysisEngine engine= getPreprocessingEngine();
-		
-//		
+		inspectExplicitTargetOccurrence(reader,engine);
+////		
 //		for(String target : TargetSets.targets_Set1){
 //			inspectExplicitTarget(engine,target,"1");
 //		}
@@ -56,13 +57,114 @@ public class InspectCorpus {
 //		}
 //		printVocab(reader,engine);
 //		inspectOutcomePerDoc(reader,engine);
+//		inspectPolarityNoExplicit(reader,engine);
 //		inspectAuthorAndRefereesPerPolarity(reader,engine);
 //		inspectAuthorAndReferees(reader,engine);
 //		inspectUsersAndCommentType(reader,engine);
-		inspectText(reader,engine);
+//		inspectText(reader,engine);
 //		inspectOutcome(reader,engine);
 //		AnalysisEngine engineSentiment= getSentimentPreprocessingEngine();
 //		inspectSentimemts(reader,engineSentiment);
+	}
+
+	private static void inspectExplicitTargetOccurrence(CollectionReaderDescription reader, AnalysisEngine engine) {
+		FrequencyDistribution<String> favor = new FrequencyDistribution<>();
+		FrequencyDistribution<String> against = new FrequencyDistribution<>();
+		FrequencyDistribution<String> none = new FrequencyDistribution<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			for (TextClassificationOutcome outcome : JCasUtil.select(jcas, TextClassificationOutcome.class)) {
+				int numberOfSubdebates = getNumberOfSubdebates(outcome, jcas);
+				if (outcome.getOutcome().equals("FAVOR")) {
+					favor.inc(String.valueOf(numberOfSubdebates));
+				}
+				if (outcome.getOutcome().equals("AGAINST")) {
+					against.inc(String.valueOf(numberOfSubdebates));
+				}
+				if (outcome.getOutcome().equals("NONE")) {
+					none.inc(String.valueOf(numberOfSubdebates));
+				}
+			}
+		}
+		System.out.println("FAVOR");
+		printfd(favor);
+		System.out.println("AGAINST");
+		printfd(against);
+		System.out.println("NONE");
+		printfd(none);
+	}
+		
+
+	private static int getNumberOfSubdebates(TextClassificationOutcome outcome, JCas jcas) {
+		int count=0;	
+		for (curated.Explicit_Stance_Set1 explicitStance : JCasUtil.selectCovered(curated.Explicit_Stance_Set1.class,
+				outcome)) {
+			if (!explicitStance.getPolarity().equals("NONE")) {
+				count++;
+			}
+		}
+		for (curated.Explicit_Stance_Set2 explicitStance : JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class,
+				outcome)) {
+			if (!explicitStance.getPolarity().equals("NONE")) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private static void inspectPolarityNoExplicit(CollectionReaderDescription reader, AnalysisEngine engine) {
+		FrequencyDistribution<String> fdAll= new FrequencyDistribution<>();
+		FrequencyDistribution<String> fdinvers= new FrequencyDistribution<>();
+		Map<String,FrequencyDistribution<String>> docId2outcome= new HashMap<>();
+		for (JCas jcas : new JCasIterable(reader)) {
+			DocumentMetaData metaData= DocumentMetaData.get(jcas);
+			String id= metaData.getDocumentId();
+			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
+				boolean explicitStance=false;
+				for(String target : TargetSets.targets_Set1){
+					if(contains(outcome,target,"1")){
+						explicitStance=true;
+					}
+				}
+				
+				for(String target : TargetSets.targets_Set2){
+					if(contains(outcome,target,"1")){
+						explicitStance=true;
+					}
+				}
+				if(explicitStance){
+					fdAll.inc(outcome.getOutcome());
+				}
+				if(!explicitStance){
+					fdinvers.inc(outcome.getOutcome());
+				}
+			}
+		}
+		//
+		System.out.println("All");
+
+		printfd(fdAll);
+		printfd(fdinvers);
+		
+	}
+
+	private static boolean contains(TextClassificationOutcome outcome, String explicitTarget, String set) {
+		if(set.equals("1")){
+			for(curated.Explicit_Stance_Set1 explicitStance: JCasUtil.selectCovered(curated.Explicit_Stance_Set1.class, outcome)){
+				if(explicitStance.getTarget().equals(explicitTarget) && !explicitStance.getPolarity().equals("NONE")){
+					return true;
+				}
+			}
+		}
+		if(set.equals("1")){
+			for (curated.Explicit_Stance_Set2 explicitStance : JCasUtil.selectCovered(curated.Explicit_Stance_Set2.class, outcome)) {
+				if (explicitStance.getTarget().equals(explicitTarget)&& !explicitStance.getPolarity().equals("NONE")) {
+					return true;
+				}
+			}
+		}
+		
+		
+		return false;
 	}
 
 	private static void printVocab(CollectionReaderDescription reader, AnalysisEngine engine) throws AnalysisEngineProcessException, IOException {
@@ -127,12 +229,14 @@ public class InspectCorpus {
 	}
 
 	private static void inspectOutcomePerDoc(CollectionReaderDescription reader, AnalysisEngine engine) {
+		FrequencyDistribution<String> fdAll= new FrequencyDistribution<>();
 		Map<String,FrequencyDistribution<String>> docId2outcome= new HashMap<>();
 		for (JCas jcas : new JCasIterable(reader)) {
 			DocumentMetaData metaData= DocumentMetaData.get(jcas);
 			String id= metaData.getDocumentId();
 			for(TextClassificationOutcome outcome: JCasUtil.select(jcas, TextClassificationOutcome.class)){
 				System.out.println(outcome.getCoveredText()+ " "+outcome.getOutcome());
+				fdAll.inc(outcome.getOutcome());
 				if(docId2outcome.containsKey(id)){
 					docId2outcome.get(id).inc(outcome.getOutcome());
 				}else{
@@ -146,7 +250,9 @@ public class InspectCorpus {
 			System.out.println(id);
 			printfd(docId2outcome.get(id));
 		}
-		
+		//
+		System.out.println("All");
+		printfd(fdAll);
 	}
 
 	private static void inspectOutcome(CollectionReaderDescription reader, AnalysisEngine engine) {

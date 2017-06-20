@@ -190,7 +190,8 @@ public class IAAHelper {
 							System.err.println(annotatorName+ " null stance for "+target);
 							return "NONE";
 						}
-						return stance.getPolarity();
+						return "Debate";
+//						return stance.getPolarity();
 					}
 				}
 			}
@@ -208,7 +209,8 @@ public class IAAHelper {
 				}
 				for(Explicit_Stance_Container stance:decision.getExplicitStances_Set2()){
 					if(stance.getTarget().equals(target)){
-						return stance.getPolarity();
+						return "Debate";
+//						return stance.getPolarity();
 					}
 				}
 			}
