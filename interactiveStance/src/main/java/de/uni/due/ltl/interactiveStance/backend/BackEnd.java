@@ -77,7 +77,7 @@ public class BackEnd {
 			searcher = new TargetSearcher();
 			try {
 				searcher.SetUp(db,100);
-				for(ExplicitTarget target:searcher.search("atheism",true)){
+				for(ExplicitTarget target:searcher.search(ConfigView.getScenario(),true)){
 					backend.save(target);
 				}
 			} 
