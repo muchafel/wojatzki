@@ -55,7 +55,6 @@ public class DetectorView extends VerticalLayout implements View {
     JFreeChartWrapper pieChart;
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
-    PopupView popup;
 
     
 
@@ -107,8 +106,8 @@ public class DetectorView extends VerticalLayout implements View {
             EvaluationResult result = service.analyse();
 //            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
             System.out.println("analysis..");
-            popup = new PopupView("Pop it up", getPopUpComponents(result));
-            popup.setPopupVisible(true);
+            ((MainUI) this.getUI()).showResult(result);
+            
         });
 
         analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
@@ -118,16 +117,9 @@ public class DetectorView extends VerticalLayout implements View {
         favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
 		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
 		
-		PopupView popup;
     }
 
-    private Component getPopUpComponents(EvaluationResult result) {
-    	HorizontalLayout pieCharts = new HorizontalLayout();
-    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("FAVOR", result.getAccuracyFAVOR()));
-    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("AGAINST", result.getAccuracyAGAINST()));
-    	pieCharts.addComponent(new AccuracyPieChart().createPieChart("NONE", result.getAccuracyNONE()));
-		return pieCharts;
-	}
+   
 
 	/**
      * Here we stack the components together

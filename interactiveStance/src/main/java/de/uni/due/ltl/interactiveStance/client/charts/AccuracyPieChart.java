@@ -35,44 +35,37 @@ import elemental.json.JsonObject;
 
 public class AccuracyPieChart {
 	private DefaultPieDataset dataset = new DefaultPieDataset();
-	
-	 public AccuracyPieChart() {
-	    }
 
-	    public JFreeChartWrapper createPieChart(String label, double accuracyFAVOR) {
-	        JFreeChart chart = createchart(label,createPieData(accuracyFAVOR));
-	        return new JFreeChartWrapper(chart);
-	    }
+	public AccuracyPieChart() {
+	}
 
-		private JFreeChart createchart(String label, DefaultPieDataset defaultPieDataset) {
-			 JFreeChart chart = ChartFactory.createPieChart(
-		                label, // chart
-		                dataset, // data
-		                false, // include legend
-		                true,
-		                false);
-		        chart.setBackgroundPaint(new Color(0, 0, 0, 0));
+	public JFreeChartWrapper createPieChart(String label, double accuracyFAVOR) {
+		JFreeChart chart = createchart(label, createPieData(accuracyFAVOR));
+		return new JFreeChartWrapper(chart);
+	}
 
-		        PiePlot plot = (PiePlot) chart.getPlot();
-		        plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-		        plot.setNoDataMessage("No data available");
-		        plot.setCircular(false);
-		        plot.setBackgroundPaint(new Color(0, 0, 0, 0));
-		        plot.setLabelGap(0.02);
-		        plot.setLabelGenerator(new StandardPieSectionLabelGenerator(
-		                "{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()
-		        ));
-		        plot.setOutlineVisible(false);
-		        return chart;
-		}
+	private JFreeChart createchart(String label, DefaultPieDataset defaultPieDataset) {
+		JFreeChart chart = ChartFactory.createPieChart(label, // chart
+				dataset, // data
+				false, // include legend
+				true, false);
+		chart.setBackgroundPaint(new Color(0, 0, 0, 0));
 
-		private DefaultPieDataset createPieData(double accuracy) {
-			this.dataset.setValue("Correct", accuracy);
-	        this.dataset.setValue("Wrong", 1.0-accuracy);
-	        return this.dataset;
-		}
-	
-		
+		PiePlot plot = (PiePlot) chart.getPlot();
+		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+		plot.setNoDataMessage("No data available");
+		plot.setCircular(false);
+		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
+		plot.setLabelGap(0.02);
+		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1}", NumberFormat.getNumberInstance(),NumberFormat.getPercentInstance()));
+		plot.setOutlineVisible(true);
+		return chart;
+	}
 
+	private DefaultPieDataset createPieData(double accuracy) {
+		this.dataset.setValue("Correct", accuracy);
+		this.dataset.setValue("Wrong", 1.0 - accuracy);
+		return this.dataset;
+	}
 
 }
