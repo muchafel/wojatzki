@@ -11,7 +11,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
-import de.uni.due.ltl.interactiveStance.client.charts.AccuracyPieChart;
+import de.uni.due.ltl.interactiveStance.client.charts.PredictionQualityPieChart;
 
 public class ResultView extends VerticalLayout implements View {
 
@@ -47,9 +47,9 @@ public class ResultView extends VerticalLayout implements View {
 	 * @param result
 	 */
 	private void addResults(EvaluationResult result) {
-		pieCharts.addComponent(new AccuracyPieChart().createPieChart("FAVOR", result.getAccuracyFAVOR()));
-		pieCharts.addComponent(new AccuracyPieChart().createPieChart("AGAINST", result.getAccuracyAGAINST()));
-		pieCharts.addComponent(new AccuracyPieChart().createPieChart("NONE", result.getAccuracyNONE()));
+		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("FAVOR", result.getfFAVOR()));
+		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("AGAINST", result.getfAGAINST()));
+		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("NONE", result.getfNONE()));
 		microF1Label.setValue("MICRO F1 "+String.valueOf(result.getMicroF()));
 		macroF1Label.setValue("MACRO F1 "+String.valueOf(result.getMacroF()));
 	}

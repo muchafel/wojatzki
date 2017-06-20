@@ -10,18 +10,18 @@ public class EvaluationResult {
 	private double semEval;
 	private double microF;
 	private double macroF;
-	private double accuracyFAVOR;
-	private double accuracyAGAINST;
-	private double accuracyNONE;
+	private double fFAVOR;
+	private double fAGAINST;
+	private double fNONE;
 	private Fscore<String> fscore;
 
 	public EvaluationResult(EvaluationData<String> data) {
 		this.fscore = new Fscore<>(data);
 		Accuracy<String> accuracy = new Accuracy<>(data);
 		CategoricalAccuracy<String> categoricalAccuracy = new CategoricalAccuracy<>(data);
-		this.accuracyNONE = categoricalAccuracy.getScoreForLabel("NONE");
-		this.accuracyAGAINST = categoricalAccuracy.getScoreForLabel("AGAINST");
-		this.accuracyFAVOR = categoricalAccuracy.getScoreForLabel("FAVOR");
+		this.fNONE = fscore.getScoreForLabel("NONE");
+		this.fAGAINST = fscore.getScoreForLabel("AGAINST");
+		this.fFAVOR = fscore.getScoreForLabel("FAVOR");
 		this.microF = fscore.getMicroFscore();
 		this.macroF = fscore.getMacroFscore();
 		this.semEval = getSemEvalMeasure(fscore);
@@ -43,16 +43,16 @@ public class EvaluationResult {
 		return macroF;
 	}
 
-	public double getAccuracyFAVOR() {
-		return accuracyFAVOR;
+	public double getfFAVOR() {
+		return fFAVOR;
 	}
 
-	public double getAccuracyAGAINST() {
-		return accuracyAGAINST;
+	public double getfAGAINST() {
+		return fAGAINST;
 	}
 
-	public double getAccuracyNONE() {
-		return accuracyNONE;
+	public double getfNONE() {
+		return fNONE;
 	}
 
 }

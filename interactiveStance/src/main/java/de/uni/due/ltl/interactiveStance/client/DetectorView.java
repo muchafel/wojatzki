@@ -19,7 +19,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
-import de.uni.due.ltl.interactiveStance.client.charts.AccuracyPieChart;
+import de.uni.due.ltl.interactiveStance.client.charts.PredictionQualityPieChart;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
 
 import org.vaadin.addon.JFreeChartWrapper;
