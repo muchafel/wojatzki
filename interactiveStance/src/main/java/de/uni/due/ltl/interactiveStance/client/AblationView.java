@@ -30,6 +30,8 @@ public class AblationView  extends VerticalLayout implements View {
 		this.service= service;
 		this.result= result;
 		this.addComponent(barcharts);
+		this.addComponent(backToResult);
+		this.addComponent(backToDetectorBtn);
 		barcharts.setWidth("100%");
 		
 		
