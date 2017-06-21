@@ -10,26 +10,34 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.client.charts.PredictionQualityPieChart;
 
 public class ResultView extends VerticalLayout implements View {
 
+	private EvaluationResult result;
 	HorizontalLayout pieCharts = new HorizontalLayout();
 	Label microF1Label= new Label();
 	Label macroF1Label= new Label();
 	
 	Button backToDetectorBtn = new Button("Back");
+	Button ablationBtn = new Button("Analyze Topic Contribution");
 
-	public ResultView(EvaluationResult result) {
-		
-		this.addResults(result);
+	public ResultView(EvaluationResult result, BackEnd service) {
+		this.result=result;
 		
 		pieCharts.setWidth("100%");
 		this.addComponent(pieCharts);
 		this.addComponent(microF1Label);
 		this.addComponent(macroF1Label);
+		this.addComponent(ablationBtn);
 		this.addComponent(backToDetectorBtn);
+		
+		
+		ablationBtn.addClickListener(event -> {
+			 ((MainUI) this.getUI()).showAblationView(result,service);
+		});
 		
 		backToDetectorBtn.addClickListener(event -> {
 			getUI().getNavigator().navigateTo(MainUI.DETECTORVIEW);
@@ -38,8 +46,7 @@ public class ResultView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
+		this.addResults(this.result);
 	}
 
 	/**

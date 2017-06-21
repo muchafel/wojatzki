@@ -9,6 +9,7 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +25,7 @@ public class MainUI extends UI {
     protected static final String DETECTORVIEW = "detector";
     protected static final String ERRORVIEW = "error";
     protected static final String RESULTVIEW = "result";
+    protected static final String ABLATIONVIEW = "ablation";
 
     private MenuBar menuBar = null;
     private VerticalLayout placeholder = new VerticalLayout();
@@ -60,10 +62,15 @@ public class MainUI extends UI {
         }
     }
 
-    public void showResult(EvaluationResult result){
-        navigator.addView(RESULTVIEW, new ResultView( result));
+    public void showResult(EvaluationResult result, BackEnd service){
+        navigator.addView(RESULTVIEW, new ResultView( result,service));
         navigator.navigateTo(MainUI.RESULTVIEW);
     }
+    
+    public void showAblationView(EvaluationResult result, BackEnd service) {
+    	navigator.addView(ABLATIONVIEW, new AblationView(result,service));
+        navigator.navigateTo(MainUI.ABLATIONVIEW);
+	}
     
     public void showMenubar() {
         if (menuBar != null) {
@@ -76,4 +83,6 @@ public class MainUI extends UI {
     public static class MainUIServlet extends VaadinServlet {
 
     }
+
+	
 }

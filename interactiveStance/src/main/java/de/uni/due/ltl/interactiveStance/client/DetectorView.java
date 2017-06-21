@@ -106,7 +106,7 @@ public class DetectorView extends VerticalLayout implements View {
             EvaluationResult result = service.analyse();
 //            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
             System.out.println("analysis..");
-            ((MainUI) this.getUI()).showResult(result);
+            ((MainUI) this.getUI()).showResult(result,service);
             
         });
 
