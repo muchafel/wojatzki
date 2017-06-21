@@ -274,7 +274,6 @@ public class BackEnd {
 
 	public Map<String, Double> getAblation(boolean evaluateFavor) {
 		TargetAblationTest ablation= new TargetAblationTest(selectedFavorTargets,selectedAgainstTargets,analyzer, true);
-		
 		try {
 			return ablation.ablationTest(evaluateFavor);
 		} catch (NumberFormatException | UIMAException | SQLException | TextClassificationException e) {
