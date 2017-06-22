@@ -25,7 +25,7 @@ public class StanceDataPieChart {
      * @return A wrapper of JFreeChart
      */
     public JFreeChartWrapper createPieChart(BackEnd service) {
-        JFreeChart chart = createchart(createPieData(service));
+        JFreeChart chart = createchart(createPieData(service), service.getEvaluationScenario().getTarget());
         return new JFreeChartWrapper(chart);
     }
 
@@ -34,9 +34,9 @@ public class StanceDataPieChart {
      * @param dataset Data set of pie chart.
      * @return
      */
-    private JFreeChart createchart(PieDataset dataset) {
+    private JFreeChart createchart(PieDataset dataset, String title) {
         JFreeChart chart = ChartFactory.createPieChart(
-                "Class Distribution", // chart
+                title, // chart
                 dataset, // data
                 false, // include legend
                 true,
@@ -79,9 +79,9 @@ public class StanceDataPieChart {
      * @return
      */
     public PieDataset createPieData(BackEnd service) {
-        this.dataset.setValue("FAVOR", service.getTrainData().getNumberOfFavor());
-        this.dataset.setValue("AGAINST", service.getTrainData().getNumberOfAgainst());
-        this.dataset.setValue("NONE", service.getTrainData().getNumberOfNone());
+        this.dataset.setValue("FAVOR", service.getEvaluationScenario().getTrainData().getNumberOfFavor());
+        this.dataset.setValue("AGAINST", service.getEvaluationScenario().getTrainData().getNumberOfAgainst());
+        this.dataset.setValue("NONE", service.getEvaluationScenario().getTrainData().getNumberOfNone());
         return this.dataset;
     }
 

@@ -28,12 +28,8 @@ public class EvaluationScenario implements Serializable, Cloneable{
 	   String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 	   System.out.println("DKPRO_HOME: " + baseDir);
 
-//		this.trainData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/trainSet/targets/"+target);
-//		this.testData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/testSet/targets/"+target);
-//		this.trainData = new EvaluationDataSet( "src/main/resources/test_data/trainSet/targets/"+target);
-//		this.testData = new EvaluationDataSet("src/main/resources/test_data/testSet/targets/"+target);
-		this.trainData = new EvaluationDataSet( baseDir+"/interactiveStance/trainSet/targets/"+target);
-		this.testData = new EvaluationDataSet( baseDir+"/interactiveStance/testSet/targets/"+target);
+	   this.trainData = new EvaluationDataSet( baseDir+"/interactiveStance/trainSet/targets/"+target);
+	   this.testData = new EvaluationDataSet( baseDir+"/interactiveStance/testSet/targets/"+target);
 
 	}
 

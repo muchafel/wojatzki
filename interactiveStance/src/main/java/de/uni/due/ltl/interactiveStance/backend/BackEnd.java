@@ -232,23 +232,23 @@ public class BackEnd {
 		}
 	}
 	
-	/**
-	 * returns the loaded train data, object can be used to get descriptive stats
-	 * @param target
-	 * @return
-	 */
-	public synchronized EvaluationDataSet getTrainData () {
-		return evaluationScenario.getTrainData();
-	}
-	
-	/**
-	 * returns the loaded test data, object can be used to get descriptive stats
-	 * @param target
-	 * @return
-	 */
-	public synchronized EvaluationDataSet getTestData () {
-		return evaluationScenario.getTestData();
-	}
+//	/**
+//	 * returns the loaded train data, object can be used to get descriptive stats
+//	 * @param target
+//	 * @return
+//	 */
+//	public synchronized EvaluationDataSet getTrainData () {
+//		return evaluationScenario.getTrainData();
+//	}
+//	
+//	/**
+//	 * returns the loaded test data, object can be used to get descriptive stats
+//	 * @param target
+//	 * @return
+//	 */
+//	public synchronized EvaluationDataSet getTestData () {
+//		return evaluationScenario.getTestData();
+//	}
 	
 	
 	public synchronized boolean newSearch(String query) {
@@ -280,5 +280,13 @@ public class BackEnd {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public synchronized EvaluationScenario getEvaluationScenario() {
+		return evaluationScenario;
+	}
+
+	public synchronized void setEvaluationScenario(EvaluationScenario evaluationScenario) {
+		BackEnd.evaluationScenario = evaluationScenario;
 	}
 }
