@@ -1,6 +1,8 @@
 package de.uni.due.ltl.interactiveStance.client.charts;
 
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
+import de.uni.due.ltl.interactiveStance.util.EvaluationScenarioUtil;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;

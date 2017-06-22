@@ -19,7 +19,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
-import de.uni.due.ltl.interactiveStance.client.charts.PredictionQualityPieChart;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
 
 import org.vaadin.addon.JFreeChartWrapper;
@@ -295,20 +294,23 @@ public class DetectorView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        ((MainUI) this.getUI()).showMenubar();
+		((MainUI) this.getUI()).showMenubar();
 
-        // Moved loading data here, because don't touch data in backend before loading the view.
-        service = BackEnd.loadData();
-        StanceDataPieChart pc = new StanceDataPieChart();
-        pieChart = pc.createPieChart(service);
-        // Default Width*Height: 809*500
-        pieChart.setWidth(480.0F, Sizeable.Unit.PIXELS);
-        pieChart.setHeight(300.0F, Sizeable.Unit.PIXELS);
-        this.piechartLayout.removeAllComponents();
-        this.piechartLayout.addComponent(pieChart);
+		System.out.println(event.getOldView() instanceof ConfigView);
+		if (event.getOldView() instanceof ConfigView) {
+			service = BackEnd.loadData();
+		}
 
-        // initial filling of grid
-        refresh_AvailableGrid();
-        refresh_SelectedGrid();
+		StanceDataPieChart pc = new StanceDataPieChart();
+		pieChart = pc.createPieChart(service);
+		// Default Width*Height: 809*500
+		pieChart.setWidth(480.0F, Sizeable.Unit.PIXELS);
+		pieChart.setHeight(300.0F, Sizeable.Unit.PIXELS);
+		this.piechartLayout.removeAllComponents();
+		this.piechartLayout.addComponent(pieChart);
+
+		// initial filling of grid
+		refresh_AvailableGrid();
+		refresh_SelectedGrid();
     }
 }

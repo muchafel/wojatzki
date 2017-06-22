@@ -29,21 +29,27 @@ public class MainUI extends UI {
 
     private MenuBar menuBar = null;
     private VerticalLayout placeholder = new VerticalLayout();
+    private DetectorView detectorView;
 
     @Override
     protected void init(VaadinRequest request) {
         buildOutline();
-
-        navigator = new Navigator(this, placeholder);
-        navigator.addView(LOGINVIEW, new LoginView());
-        navigator.addView(CONFIGVIEW, new ConfigView());
-        navigator.addView(DETECTORVIEW, new DetectorView());
-        navigator.setErrorView(new ErrorView());
-
-        navigator.navigateTo(LOGINVIEW);
+        setUpNavigator();
+        
+       
     }
 
-    private void buildOutline() {
+    private void setUpNavigator() {
+    	 navigator = new Navigator(this, placeholder);
+         navigator.addView(LOGINVIEW, new LoginView());
+         navigator.addView(CONFIGVIEW, new ConfigView());
+         navigator.addView(DETECTORVIEW,new DetectorView());
+         navigator.setErrorView(new ErrorView());
+         navigator.navigateTo(LOGINVIEW);
+		
+	}
+
+	private void buildOutline() {
         menuBar = new MenuBar();
         MenuBar.MenuItem homepage = menuBar.addItem("Homepage", null, new MenuBar.Command() {
             @Override
@@ -66,6 +72,7 @@ public class MainUI extends UI {
         navigator.addView(RESULTVIEW, new ResultView( result,service));
         navigator.navigateTo(MainUI.RESULTVIEW);
     }
+    
     
     public void showAblationView(EvaluationResult result, BackEnd service) {
     	navigator.addView(ABLATIONVIEW, new AblationView(result,service));

@@ -54,6 +54,7 @@ public class ConfigView extends VerticalLayout implements View {
         startBtn.addClickListener(event -> {
             this.scenario = scenarioComboBox.getValue().replace(" ", "");
             this.experimentMode=modeComboBox.getValue();
+//            ((MainUI) this.getUI()).goToNewDetector();
             getUI().getNavigator().navigateTo(MainUI.DETECTORVIEW);
         });
         

@@ -40,7 +40,7 @@ public class BackEnd {
 		/**
 		 * DB logic here
 		 */
-		if (instance == null) {
+//		if (instance == null) {
 
 			final BackEnd backend = new BackEnd();
 
@@ -94,7 +94,7 @@ public class BackEnd {
 			
 			
 			instance = backend;
-		}
+//		}
 
 		return instance;
 	}
