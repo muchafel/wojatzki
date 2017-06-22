@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.uima.resource.ResourceInitializationException;
 
+import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.uni.due.ltl.interactiveStance.util.EvaluationScenarioUtil;
 
 public class EvaluationScenario implements Serializable, Cloneable{
@@ -23,13 +24,16 @@ public class EvaluationScenario implements Serializable, Cloneable{
 	   
 	   this.mode=experimentalMode;
 		
-		//FIXME: proper way of deploying resources (DKPRO_HOME ?)
+	   
+	   String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
+	   System.out.println("DKPRO_HOME: " + baseDir);
+
 //		this.trainData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/trainSet/targets/"+target);
 //		this.testData = new EvaluationDataSet( "/Users/michael/git/ucsm_git/interactiveStance/src/main/resources/test_data/testSet/targets/"+target);
 //		this.trainData = new EvaluationDataSet( "src/main/resources/test_data/trainSet/targets/"+target);
 //		this.testData = new EvaluationDataSet("src/main/resources/test_data/testSet/targets/"+target);
-		this.trainData = new EvaluationDataSet( "../webapps/interactiveStance-2.0/test_data/trainSet/targets/"+target);
-		this.testData = new EvaluationDataSet( "../webapps/interactiveStance-2.0/test_data/testSet/targets/"+target);
+		this.trainData = new EvaluationDataSet( baseDir+"/interactiveStance/trainSet/targets/"+target);
+		this.testData = new EvaluationDataSet( baseDir+"/interactiveStance/testSet/targets/"+target);
 
 	}
 

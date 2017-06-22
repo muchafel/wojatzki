@@ -52,7 +52,7 @@ public class StanceDB {
 	}
 	
 	/**
-	 * equpis a lucene index with all datasets in the DB
+	 * equipps a lucene index with all datasets in the DB
 	 * @param w 
 	 * @return
 	 * @throws SQLException
