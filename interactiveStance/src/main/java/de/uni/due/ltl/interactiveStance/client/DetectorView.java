@@ -4,6 +4,7 @@ import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
@@ -102,10 +103,17 @@ public class DetectorView extends VerticalLayout implements View {
         listOfSelectedAgainstTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         analysisButton.addClickListener(clickEvent -> {
-            EvaluationResult result = service.analyse();
 //            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
-            System.out.println("analysis..");
-            ((MainUI) this.getUI()).showResult(result,service);
+            if (((ListDataProvider<ExplicitTarget>)listOfSelectedFavorTargets.getDataProvider()).getItems().isEmpty() &&
+                    ((ListDataProvider<ExplicitTarget>)listOfSelectedAgainstTargets.getDataProvider()).getItems().isEmpty()) {
+                Notification notification = new Notification("Select at least one explicit target before analysis",
+                        Notification.Type.WARNING_MESSAGE);
+                notification.setDelayMsec(1000);
+                notification.show(Page.getCurrent());
+            } else {
+                EvaluationResult result = service.analyse();
+                ((MainUI) this.getUI()).showResult(result, service);
+            }
             
         });
 
