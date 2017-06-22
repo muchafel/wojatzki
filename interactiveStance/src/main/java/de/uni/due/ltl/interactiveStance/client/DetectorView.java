@@ -87,6 +87,7 @@ public class DetectorView extends VerticalLayout implements View {
         listOfAvailableTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
         // The length of Target Name is often long. let it take all extra space.
         listOfAvailableTargets.getColumn("targetName").setExpandRatio(1);
+        listOfAvailableTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         // configure selection grid of favor and against
@@ -94,12 +95,14 @@ public class DetectorView extends VerticalLayout implements View {
         listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
         listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
         listOfSelectedFavorTargets.getColumn("targetName").setExpandRatio(1);
+        listOfSelectedFavorTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfSelectedFavorTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         listOfSelectedAgainstTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
         listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
         listOfSelectedAgainstTargets.addColumn(ExplicitTarget::getInstancesAgainst).setCaption("instancesAgainst").setId("instancesAgainst");
         listOfSelectedAgainstTargets.getColumn("targetName").setExpandRatio(1);
+        listOfSelectedAgainstTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfSelectedAgainstTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         analysisButton.addClickListener(clickEvent -> {
