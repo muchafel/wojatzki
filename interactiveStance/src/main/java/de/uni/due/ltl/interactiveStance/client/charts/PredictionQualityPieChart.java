@@ -72,10 +72,6 @@ public class PredictionQualityPieChart {
         }
         // no border
         plot.setOutlineVisible(false);
-		
-		
-		
-		plot.setOutlineVisible(true);
 		return chart;
 	}
 

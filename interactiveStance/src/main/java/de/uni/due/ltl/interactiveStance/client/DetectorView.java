@@ -1,6 +1,5 @@
 package de.uni.due.ltl.interactiveStance.client;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Popup;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;

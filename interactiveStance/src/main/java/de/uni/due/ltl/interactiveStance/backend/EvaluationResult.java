@@ -2,7 +2,6 @@ package de.uni.due.ltl.interactiveStance.backend;
 
 import de.unidue.ltl.evaluation.EvaluationData;
 import de.unidue.ltl.evaluation.measure.categorial.Accuracy;
-import de.unidue.ltl.evaluation.measure.categorial.CategoricalAccuracy;
 import de.unidue.ltl.evaluation.measure.categorial.Fscore;
 
 public class EvaluationResult {
@@ -18,7 +17,6 @@ public class EvaluationResult {
 	public EvaluationResult(EvaluationData<String> data) {
 		this.fscore = new Fscore<>(data);
 		Accuracy<String> accuracy = new Accuracy<>(data);
-		CategoricalAccuracy<String> categoricalAccuracy = new CategoricalAccuracy<>(data);
 		this.fNONE = fscore.getScoreForLabel("NONE");
 		this.fAGAINST = fscore.getScoreForLabel("AGAINST");
 		this.fFAVOR = fscore.getScoreForLabel("FAVOR");
