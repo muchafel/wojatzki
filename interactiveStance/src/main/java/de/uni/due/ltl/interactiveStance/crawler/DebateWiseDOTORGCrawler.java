@@ -20,7 +20,7 @@ import de.uni.due.ltl.interactiveStance.db.StanceDB;
 
 /**
  * TODO crawling is not finished (only likns are crawled yet)
- * We need to think about how we treat the quite different data 
+ * We need to think about how we treat the quite different data (--> we should probably use yes and no points)
  * @author michael
  *
  */
