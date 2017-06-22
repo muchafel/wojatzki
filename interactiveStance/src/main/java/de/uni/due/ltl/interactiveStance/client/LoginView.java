@@ -2,7 +2,9 @@ package de.uni.due.ltl.interactiveStance.client;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
 import com.vaadin.ui.*;
+import de.uni.due.ltl.interactiveStance.db.DBUtil;
 
 
 public class LoginView extends VerticalLayout implements View, LoginForm.LoginListener {
@@ -20,14 +22,20 @@ public class LoginView extends VerticalLayout implements View, LoginForm.LoginLi
     public void onLogin(LoginForm.LoginEvent event) {
         String username = event.getLoginParameter("username");
         String password = event.getLoginParameter("password");
+        if (!DBUtil.hasConnection()) {
+            Notification errorNotif = new Notification("No connection with database.",
+                    Notification.Type.ERROR_MESSAGE);
+            errorNotif.setDelayMsec(1000);
+            errorNotif.show(Page.getCurrent());
+            return ;
+        }
         if (Authentification.authenticate(username, password)) {
             getUI().getNavigator().navigateTo(MainUI.CONFIGVIEW);
         } else {
-            getUI().getNavigator().navigateTo(MainUI.ERRORVIEW);
-//            Notification errorNotif = new Notification("username or password incorrect.",
-//                    Notification.Type.ERROR_MESSAGE);
-//            errorNotif.setDelayMsec(1000);
-//            errorNotif.show(Page.getCurrent());
+            Notification errorNotif = new Notification("username or password incorrect.",
+                    Notification.Type.ERROR_MESSAGE);
+            errorNotif.setDelayMsec(1000);
+            errorNotif.show(Page.getCurrent());
         }
     }
     private void initialize() {
