@@ -47,7 +47,14 @@ public class DBUtil {
                 e.printStackTrace();
             }
         }
+    }
 
+    public static boolean hasConnection() {
+        if (getConnection() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
