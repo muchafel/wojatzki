@@ -213,6 +213,10 @@ public class DetectorView extends VerticalLayout implements View {
         gridDropTarget.addGridDropListener(event -> {
             event.getDragSourceExtension().ifPresent(source -> {
                 if (source instanceof GridDragSource) {
+                    if (draggedItems == null) {
+                        return ;
+                    }
+
                     // Add dragged items to the target Grid
                     if (source.equals(availableDrag)) {
                         ((ListDataProvider<ExplicitTarget>) listOfAvailableTargets.getDataProvider()).getItems()
