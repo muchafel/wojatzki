@@ -39,37 +39,39 @@ public class ConfigView extends VerticalLayout implements View {
         scenarioComboBox.setItems(scenarioItems);
         scenarioComboBox.setSelectedItem(scenarioItems.get(0));
         
-        modes=EvaluationScenarioUtil.getExperimentalModes();
+        modes = EvaluationScenarioUtil.getExperimentalModes();
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Fixed Threshold");
-        
-        //layout
-        FormLayout scenarioFormLayout = new FormLayout();
-        scenarioFormLayout.addComponent(scenarioComboBox);
-        // workaround, let it align to center. https://github.com/vaadin/framework/issues/6504
-        HorizontalLayout scenarioHorizon = new HorizontalLayout();
-        scenarioHorizon.addComponent(scenarioFormLayout);
+
+        //layout, for your information to remind there has an issue of alignment in vaadin
+//        FormLayout scenarioFormLayout = new FormLayout();
+//        scenarioFormLayout.addComponent(scenarioComboBox);
+//        workaround, let it align to center. https://github.com/vaadin/framework/issues/6504
+//        HorizontalLayout scenarioHorizon = new HorizontalLayout();
+//        scenarioHorizon.addComponent(scenarioFormLayout);
 
        
         startBtn.addClickListener(event -> {
             this.scenario = scenarioComboBox.getValue().replace(" ", "");
-            this.experimentMode=modeComboBox.getValue();
+            this.experimentMode = modeComboBox.getValue();
 //            ((MainUI) this.getUI()).goToNewDetector();
             getUI().getNavigator().navigateTo(MainUI.DETECTORVIEW);
         });
-        
-        
-        FormLayout comboBoxFormLayout = new FormLayout();
-        comboBoxFormLayout.addComponent(modeComboBox);
-        HorizontalLayout experimentModeLayout = new HorizontalLayout();
-        experimentModeLayout.addComponent(comboBoxFormLayout);
-        experimentModeLayout.addComponent(startBtn);
-        experimentModeLayout.setComponentAlignment(startBtn, Alignment.MIDDLE_CENTER);
 
-        this.addComponent(scenarioHorizon);
-        this.addComponent(experimentModeLayout);
-        this.setComponentAlignment(experimentModeLayout, Alignment.MIDDLE_CENTER);
-        this.setComponentAlignment(scenarioHorizon, Alignment.MIDDLE_CENTER);
+        Panel configPanel = new Panel();
+        configPanel.setCaption("Basis Configurations");
+
+        FormLayout formLayout = new FormLayout();
+        formLayout.addComponent(scenarioComboBox);
+        formLayout.addComponent(modeComboBox);
+        formLayout.addComponent(startBtn);
+        formLayout.setMargin(true);
+
+        configPanel.setContent(formLayout);
+        configPanel.setSizeUndefined();
+
+        this.addComponent(configPanel);
+        this.setComponentAlignment(configPanel, Alignment.MIDDLE_CENTER);
     }
 
     @Override
