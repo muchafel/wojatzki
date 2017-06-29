@@ -6,6 +6,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropLocation;
@@ -32,7 +33,7 @@ public class DetectorView extends VerticalLayout implements View {
     BackEnd service;
     TextField searchField = new TextField();
     TextField filter = new TextField();
-    Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Topics");
+    Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>();
 	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>();
 	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>();
     Button searchButton = new Button("GO");
@@ -50,10 +51,14 @@ public class DetectorView extends VerticalLayout implements View {
             DropMode.ON_TOP_OR_BETWEEN);
     GridDropTarget<ExplicitTarget> selectedAgainstDrop = new GridDropTarget<>(listOfSelectedAgainstTargets,
             DropMode.ON_TOP_OR_BETWEEN);
-    HorizontalLayout piechartLayout = new HorizontalLayout();
+    VerticalLayout piechartLayout = new VerticalLayout();
+    Panel piechartPanel = new Panel(piechartLayout);
     JFreeChartWrapper pieChart;
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
+    Label analysisLabel = new Label("Targets Choosing");
+    Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
+    Label availableCaption = new Label("Available Topics");
 
 
     public DetectorView() {
@@ -65,19 +70,27 @@ public class DetectorView extends VerticalLayout implements View {
      * Here we configure properties of our components
      */
     private void configureComponents() {
+
         searchField.setPlaceholder("Get Targets Candidates");
+        searchField.addValueChangeListener(event -> {
+           filter.setVisible(false);
+        });
 
         // configure available grid
         filter.setDescription("filter");
-        filter.setPlaceholder("Filter Term");
+        filter.setPlaceholder("Filter Choosed Targets");
         filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
+        filter.setVisible(false);
 
         searchButton.addClickListener(clickEvent -> {
             this.service.newSearch(searchField.getValue());
             filter.setValue("");
+            filter.setVisible(true);
             refresh_AvailableGrid();
             refresh_SelectedGrid();
         });
+
+        breaklineLabel.setWidth("20%");
 
         // add draggable icon before item.
         listOfAvailableTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
@@ -88,12 +101,11 @@ public class DetectorView extends VerticalLayout implements View {
         listOfAvailableTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-
         //set icon
         listOfSelectedFavorTargets.setIcon(VaadinIcons.PLUS_CIRCLE);
         listOfSelectedFavorTargets.setCaption("Favor Topics");
         listOfSelectedAgainstTargets.setIcon(VaadinIcons.MINUS_CIRCLE);
-        listOfSelectedAgainstTargets.setCaption("Favor Topics");
+        listOfSelectedAgainstTargets.setCaption("Against Topics");
         // configure selection grid of favor and against
         listOfSelectedFavorTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
         listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
@@ -132,14 +144,15 @@ public class DetectorView extends VerticalLayout implements View {
 //		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
     }
 
-   
-
 	/**
      * Here we stack the components together
      */
     private void buildLayout() {
-        HorizontalLayout searchLayout = new HorizontalLayout(searchField, searchButton);
+        HorizontalLayout searchLayout = new HorizontalLayout(availableCaption, searchField, searchButton, filter);
         searchLayout.setMargin(false);
+        searchLayout.setWidth("100%");
+        searchLayout.setExpandRatio(availableCaption, 1);
+        searchLayout.setComponentAlignment(availableCaption, Alignment.MIDDLE_LEFT);
         searchLayout.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
         searchLayout.setComponentAlignment(searchField, Alignment.MIDDLE_CENTER);
 
@@ -175,9 +188,14 @@ public class DetectorView extends VerticalLayout implements View {
 		selectedTargetsContent.setWidth("100%");
 		selectedTargetsContent.setSpacing(true);
 
-		this.addComponent(this.piechartLayout);
-		this.addComponent(searchLayout);
-		this.addComponent(filter);
+		this.addComponent(piechartPanel);
+		this.addComponent(analysisLabel);
+		this.setComponentAlignment(analysisLabel, Alignment.MIDDLE_CENTER);
+		this.addComponent(breaklineLabel);
+        this.setComponentAlignment(breaklineLabel, Alignment.MIDDLE_CENTER);
+        this.addComponent(searchLayout);
+        this.setComponentAlignment(searchLayout, Alignment.MIDDLE_RIGHT);
+//		this.addComponent(filter);
 		this.addComponent(listOfAvailableTargets);
 		this.addComponent(selectedTargetsContent);
         this.addComponent(analysisButton);
@@ -309,13 +327,17 @@ public class DetectorView extends VerticalLayout implements View {
 			service = BackEnd.loadData();
 		}
 
+		Label basicResultLabel = new Label("Analyized Result based on basis configurations");
 		StanceDataPieChart pc = new StanceDataPieChart();
 		pieChart = pc.createPieChart(service);
 		// Default Width*Height: 809*500
 		pieChart.setWidth(480.0F, Sizeable.Unit.PIXELS);
 		pieChart.setHeight(300.0F, Sizeable.Unit.PIXELS);
 		this.piechartLayout.removeAllComponents();
-		this.piechartLayout.addComponent(pieChart);
+        this.piechartLayout.addComponent(basicResultLabel);
+        this.piechartLayout.addComponent(pieChart);
+        this.piechartLayout.setComponentAlignment(basicResultLabel, Alignment.MIDDLE_CENTER);
+        this.piechartLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
 
 		// initial filling of grid
 		refresh_AvailableGrid();
