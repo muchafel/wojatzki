@@ -36,7 +36,7 @@ public class DetectorView extends VerticalLayout implements View {
     Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>();
 	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>();
 	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>();
-    Button searchButton = new Button("GO");
+    Button searchButton = new Button("Retrieve");
     Button analysisButton = new Button("Analysis");
     // keep the reference of dragged items.
     Set<ExplicitTarget> draggedItems;
@@ -56,10 +56,9 @@ public class DetectorView extends VerticalLayout implements View {
     JFreeChartWrapper pieChart;
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
-    Label analysisLabel = new Label("Targets Choosing");
+    Label analysisLabel = new Label("Choose Targets which are in Favor or Against");
     Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
-    Label availableCaption = new Label("Available Topics");
-
+    Label availableCaption = new Label("Available Statements");
 
     public DetectorView() {
         configureComponents();
@@ -71,14 +70,14 @@ public class DetectorView extends VerticalLayout implements View {
      */
     private void configureComponents() {
 
-        searchField.setPlaceholder("Get Targets Candidates");
+        searchField.setPlaceholder("search term");
         searchField.addValueChangeListener(event -> {
            filter.setVisible(false);
         });
 
         // configure available grid
         filter.setDescription("filter");
-        filter.setPlaceholder("Filter Choosed Targets");
+        filter.setPlaceholder("Filter Retrieved Statements");
         filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
         filter.setVisible(false);
 
@@ -327,7 +326,7 @@ public class DetectorView extends VerticalLayout implements View {
 			service = BackEnd.loadData();
 		}
 
-		Label basicResultLabel = new Label("Analyized Result based on basis configurations");
+		Label basicResultLabel = new Label("Composition of Training Data");
 		StanceDataPieChart pc = new StanceDataPieChart();
 		pieChart = pc.createPieChart(service);
 		// Default Width*Height: 809*500
@@ -339,6 +338,8 @@ public class DetectorView extends VerticalLayout implements View {
         this.piechartLayout.setComponentAlignment(basicResultLabel, Alignment.MIDDLE_CENTER);
         this.piechartLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
 
+        this.
+        
 		// initial filling of grid
 		refresh_AvailableGrid();
 		refresh_SelectedGrid();
