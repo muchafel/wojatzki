@@ -76,12 +76,15 @@ public class UserHelper {
 
     public boolean checkUser(String username, String password) {
         User user = getUser(username);
-        if (user.getPassword().equals(password)) {
-            return true;
-        } else {
+        if (user == null) {
             return false;
+        } else {
+            if (user.getPassword().equals(password)) {
+                return true;
+            } else {
+                return false;
+            }
         }
-
     }
 
     public String hashPassword(String pass) {
