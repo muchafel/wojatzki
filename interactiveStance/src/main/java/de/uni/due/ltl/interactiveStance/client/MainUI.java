@@ -59,6 +59,7 @@ public class MainUI extends UI {
         });
 
         VerticalLayout mainLayout = new VerticalLayout(menuBar, placeholder);
+        placeholder.setMargin(false);
         setContent(mainLayout);
     }
 
