@@ -33,8 +33,8 @@ public class DetectorView extends VerticalLayout implements View {
     TextField searchField = new TextField();
     TextField filter = new TextField();
     Grid<ExplicitTarget> listOfAvailableTargets = new Grid<>("Available Topics");
-	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>("Favor Topics");
-	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>("Against Topics");
+	Grid<ExplicitTarget> listOfSelectedFavorTargets = new Grid<>();
+	Grid<ExplicitTarget> listOfSelectedAgainstTargets = new Grid<>();
     Button searchButton = new Button("GO");
     Button analysisButton = new Button("Analysis");
     // keep the reference of dragged items.
@@ -55,7 +55,6 @@ public class DetectorView extends VerticalLayout implements View {
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
 
-    
 
     public DetectorView() {
         configureComponents();
@@ -89,6 +88,12 @@ public class DetectorView extends VerticalLayout implements View {
         listOfAvailableTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
+
+        //set icon
+        listOfSelectedFavorTargets.setIcon(VaadinIcons.PLUS_CIRCLE);
+        listOfSelectedFavorTargets.setCaption("Favor Topics");
+        listOfSelectedAgainstTargets.setIcon(VaadinIcons.MINUS_CIRCLE);
+        listOfSelectedAgainstTargets.setCaption("Favor Topics");
         // configure selection grid of favor and against
         listOfSelectedFavorTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("targetName").setId("targetName");
         listOfSelectedFavorTargets.addColumn(ExplicitTarget::getInstancesInFavor).setCaption("instancesInFavor").setId("instancesInFavor");
@@ -123,9 +128,8 @@ public class DetectorView extends VerticalLayout implements View {
         analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
         analysisButton.setIcon(VaadinIcons.COGS);
         
-        favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
-		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
-		
+//      favorSelectionTextField.setIcon(VaadinIcons.PLUS_CIRCLE);
+//		againstSelectionTextField.setIcon(VaadinIcons.MINUS_CIRCLE);
     }
 
    
