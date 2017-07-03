@@ -56,9 +56,11 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     JFreeChartWrapper pieChart;
     Label favorSelectionTextField = new Label();
     Label againstSelectionTextField = new Label();
-    Label analysisLabel = new Label("Choose Statements which are in Favor or Against");
+    Label analysisLabel = new Label();
     Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
     Label availableCaption = new Label("Available Statements");
+    protected VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
+    protected VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
 
     public DetectorView_Base() {
         configureComponents();
@@ -68,12 +70,56 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     /**
      * Here we configure properties of our components
      */
-    protected abstract void configureComponents();
+    protected void configureComponents(){
+    	searchField.setPlaceholder("search term");
+        searchField.addValueChangeListener(event -> {
+           filter.setVisible(false);
+        });
+
+        // configure available grid
+        filter.setDescription("filter");
+        filter.setPlaceholder("Filter Retrieved Statements");
+        filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
+        filter.setVisible(false);
+
+        searchButton.addClickListener(clickEvent -> {
+            this.service.newSearch(searchField.getValue());
+            filter.setValue("");
+            filter.setVisible(true);
+            refresh_AvailableGrid();
+            refresh_SelectedGrid();
+        });
+
+        breaklineLabel.setWidth("20%");
+
+        configureGrids();
+
+        analysisButton.addClickListener(clickEvent -> {
+//            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
+            if (((ListDataProvider<ExplicitTarget>)listOfSelectedFavorTargets.getDataProvider()).getItems().isEmpty() &&
+                    ((ListDataProvider<ExplicitTarget>)listOfSelectedAgainstTargets.getDataProvider()).getItems().isEmpty()) {
+                Notification notification = new Notification("Select at least one explicit target before analysis",
+                        Notification.Type.WARNING_MESSAGE);
+                notification.setDelayMsec(1000);
+                notification.show(Page.getCurrent());
+            } else {
+                EvaluationResult result = service.analyse();
+                ((MainUI) this.getUI()).showResult(result, service);
+            }
+            
+        });
+
+        analysisButton.addStyleName(ValoTheme.BUTTON_HUGE);
+        analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
+        analysisButton.setIcon(VaadinIcons.COGS);
+    }
+
+	protected abstract void configureGrids();
 
 	/**
      * Here we stack the components together
      */
-    private void buildLayout() {
+    protected void buildLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout(availableCaption, searchField, searchButton, filter);
         searchLayout.setMargin(false);
         searchLayout.setWidth("100%");
@@ -97,12 +143,11 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 		setDragFromSelected();
 
 		// selected favor targets
-		VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
+		
 		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
 		selectedFavorTargetsContent.addComponent(listOfSelectedFavorTargets);
         selectedFavorTargetsContent.setMargin(false);
 
-        VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
 		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
 		selectedAgainstTargetsContent.addComponent(listOfSelectedAgainstTargets);
         selectedAgainstTargetsContent.setMargin(false);
@@ -265,7 +310,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         this.piechartLayout.setComponentAlignment(basicResultLabel, Alignment.MIDDLE_CENTER);
         this.piechartLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
 
-        this.
+        this.analysisLabel.setValue("Choose Statements which are in favor or against "+service.getEvaluationScenario().getTarget());
         
 		// initial filling of grid
 		refresh_AvailableGrid();
