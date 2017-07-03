@@ -24,6 +24,8 @@ public class ConfigView extends VerticalLayout implements View {
     private ComboBox<String> modeComboBox = new ComboBox<>("Experiment Mode");
   
     private Button startBtn = new Button("Start");
+    private CheckBox simpleModeCheckBox = new CheckBox("Simple Mode");
+
 
     public static String getScenario() {
         return scenario;
@@ -42,6 +44,7 @@ public class ConfigView extends VerticalLayout implements View {
         modes = EvaluationScenarioUtil.getExperimentalModes();
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Fixed Threshold");
+        simpleModeCheckBox.setValue(true);
 
         //layout, for your information to remind there has an issue of alignment in vaadin
 //        FormLayout scenarioFormLayout = new FormLayout();
@@ -51,12 +54,12 @@ public class ConfigView extends VerticalLayout implements View {
 //        scenarioHorizon.addComponent(scenarioFormLayout);
 
        
-        startBtn.addClickListener(event -> {
-            this.scenario = scenarioComboBox.getValue().replace(" ", "");
-            this.experimentMode = modeComboBox.getValue();
-//            ((MainUI) this.getUI()).goToNewDetector();
-            getUI().getNavigator().navigateTo(MainUI.DETECTORVIEW);
-        });
+		startBtn.addClickListener(event -> {
+			this.scenario = scenarioComboBox.getValue().replace(" ", "");
+			this.experimentMode = modeComboBox.getValue();
+			// create a simplified or expert detector and access it
+			((MainUI) this.getUI()).showDetectorView(simpleModeCheckBox.getValue());
+		});
 
         Panel configPanel = new Panel();
         configPanel.setCaption("Basis Configurations");
@@ -64,6 +67,7 @@ public class ConfigView extends VerticalLayout implements View {
         FormLayout formLayout = new FormLayout();
         formLayout.addComponent(scenarioComboBox);
         formLayout.addComponent(modeComboBox);
+        formLayout.addComponent(simpleModeCheckBox);
         formLayout.addComponent(startBtn);
         formLayout.setMargin(true);
 

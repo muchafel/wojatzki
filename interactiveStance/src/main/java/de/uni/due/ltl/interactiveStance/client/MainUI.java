@@ -29,7 +29,6 @@ public class MainUI extends UI {
 
     private MenuBar menuBar = null;
     private VerticalLayout placeholder = new VerticalLayout();
-    private DetectorView detectorView;
 
     @Override
     protected void init(VaadinRequest request) {
@@ -43,7 +42,6 @@ public class MainUI extends UI {
     	 navigator = new Navigator(this, placeholder);
          navigator.addView(LOGINVIEW, new LoginView());
          navigator.addView(CONFIGVIEW, new ConfigView());
-         navigator.addView(DETECTORVIEW,new DetectorView());
          navigator.setErrorView(new ErrorView());
          navigator.navigateTo(LOGINVIEW);
 		
@@ -70,10 +68,18 @@ public class MainUI extends UI {
     }
 
     public void showResult(EvaluationResult result, BackEnd service){
-        navigator.addView(RESULTVIEW, new ResultView( result,service));
+        navigator.addView(RESULTVIEW, new ResultView(result,service));
         navigator.navigateTo(MainUI.RESULTVIEW);
     }
     
+    public void showDetectorView(boolean simpleMode){
+    	if(simpleMode){
+    		navigator.addView(DETECTORVIEW,new DetectorView_Simplified());
+    	}else{
+    		navigator.addView(DETECTORVIEW,new DetectorView_Expert());
+    	}
+    	navigator.navigateTo(DETECTORVIEW);
+    }
     
     public void showAblationView(EvaluationResult result, BackEnd service) {
     	navigator.addView(ABLATIONVIEW, new AblationView(result,service));

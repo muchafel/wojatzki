@@ -62,7 +62,7 @@ public class StanceDB {
 		Connection connection = getConnection();
 		Statement statement = connection.createStatement();
 		
-		ResultSet resultSet = statement.executeQuery("Select  a.ID, a.Name, a.Website, fav, ag from (	SELECT a.ID, Name,Website, COUNT(b.Label) as fav FROM Data_Set as a, data_point as b WHERE a.ID = b.Data_Set_ID AND b.Label='FAVOR' GROUP By ID ) as a inner join (	SELECT a.ID, Name,Website, COUNT(b.Label) as ag FROM Data_Set as a, data_point as b WHERE a.ID = b.Data_Set_ID AND b.Label='AGAINST' GROUP By ID) as b on a.ID = b.ID;");
+		ResultSet resultSet = statement.executeQuery("Select  a.ID, a.Name, a.Website, fav, ag from (	SELECT a.ID, Name,Website, COUNT(b.Label) as fav FROM Data_Set as a, Data_Point as b WHERE a.ID = b.Data_Set_ID AND b.Label='FAVOR' GROUP By ID ) as a inner join (	SELECT a.ID, Name,Website, COUNT(b.Label) as ag FROM Data_Set as a, Data_Point as b WHERE a.ID = b.Data_Set_ID AND b.Label='AGAINST' GROUP By ID) as b on a.ID = b.ID;");
 //		ResultSet resultSet = statement.executeQuery("SELECT `Data_Set`.`ID`,`Name`,`Website`, COUNT(data_point.Label) FROM `Data_Set`,`data_point` WHERE `Data_Set`.`ID` = `data_point`.`Data_Set_ID`  GROUP By `Name`");
 		
 		while (resultSet.next()) {
