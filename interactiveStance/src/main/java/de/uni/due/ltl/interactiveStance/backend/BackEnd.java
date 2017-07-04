@@ -1,6 +1,9 @@
 package de.uni.due.ltl.interactiveStance.backend;
 
 import de.uni.due.ltl.interactiveStance.client.ConfigView;
+import de.uni.due.ltl.interactiveStance.coverage.CoverageAnalyzer;
+import de.uni.due.ltl.interactiveStance.coverage.CoverageResult;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.uima.UIMAException;
 import org.dkpro.tc.api.exception.TextClassificationException;
@@ -35,6 +38,7 @@ public class BackEnd {
 	private static TargetSearcher searcher;
 	private static EvaluationScenario evaluationScenario;
 	private static CollocationNgramAnalyzerBase analyzer;
+	private static CoverageAnalyzer coverageAnalyzer;
 
 	public static BackEnd loadData() {
 		/**
@@ -92,6 +96,7 @@ public class BackEnd {
 				e.printStackTrace();
 			}
 			
+			coverageAnalyzer= new CoverageAnalyzer(db,evaluationScenario);
 			
 			instance = backend;
 //		}
@@ -288,5 +293,15 @@ public class BackEnd {
 
 	public synchronized void setEvaluationScenario(EvaluationScenario evaluationScenario) {
 		BackEnd.evaluationScenario = evaluationScenario;
+	}
+
+	public synchronized CoverageResult analyseCoverage() {
+		CoverageResult result= null;
+		try {
+			result= coverageAnalyzer.analyseCoverage(selectedFavorTargets,selectedAgainstTargets,availableTargets,true);
+		} catch (NumberFormatException | UIMAException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

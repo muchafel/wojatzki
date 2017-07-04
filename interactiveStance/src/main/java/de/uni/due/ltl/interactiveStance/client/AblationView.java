@@ -23,7 +23,7 @@ public class AblationView  extends VerticalLayout implements View {
 	private EvaluationResult result;
 	
 	
-	Button backToDetectorBtn = new Button("Back to Detector Config");
+	Button backToDetectorBtn = new Button("Back to Detector");
 	Button backToResult = new Button("Back");
 	
 	public AblationView(EvaluationResult result, BackEnd service) {

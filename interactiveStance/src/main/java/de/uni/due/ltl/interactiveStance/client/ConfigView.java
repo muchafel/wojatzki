@@ -36,22 +36,25 @@ public class ConfigView extends VerticalLayout implements View {
 	}
 
     public ConfigView() {
+    	
+    	
     	//SetUp lists
         scenarioItems = EvaluationScenarioUtil.formatTargets();
         scenarioComboBox.setItems(scenarioItems);
         scenarioComboBox.setSelectedItem(scenarioItems.get(0));
-        scenarioComboBox.setVisible(false);
+//        scenarioComboBox.setVisible(false);
         
         modes = EvaluationScenarioUtil.getExperimentalModes();
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Fixed Threshold");
-        modeComboBox.setVisible(false);
+//        modeComboBox.setEnabled(false);
+        modeComboBox.setEnabled(false);
         
         simpleModeCheckBox.setValue(true);
 
         simpleModeCheckBox.addValueChangeListener(event -> {
-        	scenarioComboBox.setVisible(!event.getValue());
-        	modeComboBox.setVisible(!event.getValue());
+//        	modeComboBox.setEnabled(!event.getValue());
+        	modeComboBox.setEnabled(!event.getValue());
 		});
         
         //layout, for your information to remind there has an issue of alignment in vaadin

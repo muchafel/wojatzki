@@ -1,5 +1,6 @@
 package de.uni.due.ltl.interactiveStance.client;
 
+import com.mysql.cj.api.x.Result;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -21,6 +22,7 @@ import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
+import de.uni.due.ltl.interactiveStance.coverage.CoverageResult;
 
 import org.vaadin.addon.JFreeChartWrapper;
 
@@ -30,6 +32,24 @@ import java.util.Set;
 
 public class DetectorView_Expert extends DetectorView_Base implements View {
 
+ private Button coverageButton;
+	
+	@Override
+	protected void configureComponents() {
+		super.configureComponents();
+		coverageButton= new Button("Coverage ");
+		coverageButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
+		coverageButton.setIcon(VaadinIcons.MAGIC);
+		
+		coverageButton.addClickListener(clickEvent -> {
+              CoverageResult result = service.analyseCoverage();
+              Notification.show("coverage of your selection "+String.valueOf(result.getCoverageSelection()));
+			});
+		
+		this.addComponent(coverageButton);
+		
+	}
+ 
  
 	@Override
 	protected void configureGrids() {

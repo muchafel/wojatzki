@@ -34,8 +34,6 @@ public class MainUI extends UI {
     protected void init(VaadinRequest request) {
         buildOutline();
         setUpNavigator();
-        
-       
     }
 
     private void setUpNavigator() {
@@ -44,7 +42,6 @@ public class MainUI extends UI {
          navigator.addView(CONFIGVIEW, new ConfigView());
          navigator.setErrorView(new ErrorView());
          navigator.navigateTo(LOGINVIEW);
-		
 	}
 
 	private void buildOutline() {

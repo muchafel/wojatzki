@@ -41,7 +41,7 @@ public class LoginView extends VerticalLayout implements View, LoginForm.LoginLi
     private void initialize() {
         this.setSizeFull();
         Panel loginPanel = new Panel("Login");
-        loginPanel.setWidth("50%");
+        loginPanel.setSizeUndefined();
         this.addComponent(loginPanel);
 
 //        LoginForm loginForm = new LoginForm();
