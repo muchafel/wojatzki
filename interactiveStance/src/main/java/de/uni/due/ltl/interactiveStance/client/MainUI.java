@@ -11,6 +11,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.HashSet;
@@ -29,29 +30,23 @@ public class MainUI extends UI {
 
     private MenuBar menuBar = null;
     private VerticalLayout placeholder = new VerticalLayout();
-    private DetectorView detectorView;
 
     @Override
     protected void init(VaadinRequest request) {
         buildOutline();
         setUpNavigator();
-        
-       
     }
 
     private void setUpNavigator() {
     	 navigator = new Navigator(this, placeholder);
          navigator.addView(LOGINVIEW, new LoginView());
-         navigator.addView(CONFIGVIEW, new ConfigView());
-         navigator.addView(DETECTORVIEW,new DetectorView());
          navigator.setErrorView(new ErrorView());
          navigator.navigateTo(LOGINVIEW);
-		
 	}
 
 	private void buildOutline() {
         menuBar = new MenuBar();
-        MenuBar.MenuItem homepage = menuBar.addItem("Homepage", null, new MenuBar.Command() {
+        MenuBar.MenuItem homepage = menuBar.addItem("log out", null, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 getUI().getNavigator().navigateTo(LOGINVIEW);
@@ -68,13 +63,43 @@ public class MainUI extends UI {
             menuBar.setVisible(false);
         }
     }
-
+    
+    /**
+     * go to configuration view and hands over the logging object
+     * @param simpleMode
+     */
+    public void showConfigView(ExperimentLogging logging){
+    	navigator.addView(CONFIGVIEW, new ConfigView(logging));
+        navigator.navigateTo(MainUI.CONFIGVIEW);
+    }
+    
+    /**
+     * go to result view and hands over a result object and the backend
+     * @param simpleMode
+     */
     public void showResult(EvaluationResult result, BackEnd service){
-        navigator.addView(RESULTVIEW, new ResultView( result,service));
+        navigator.addView(RESULTVIEW, new ResultView(result,service));
         navigator.navigateTo(MainUI.RESULTVIEW);
     }
     
+    /**
+     * go to detector and hands the flag that determines whether we are in simple mode or not
+     * @param simpleMode
+     * @param logging 
+     */
+    public void showDetectorView(boolean simpleMode, ExperimentLogging logging){
+    	if(simpleMode){
+    		navigator.addView(DETECTORVIEW,new DetectorView_Simplified(logging));
+    	}else{
+    		navigator.addView(DETECTORVIEW,new DetectorView_Expert(logging));
+    	}
+    	navigator.navigateTo(DETECTORVIEW);
+    }
     
+    /**
+     * go to ablation view and hands over a result object and the backend
+     * @param simpleMode
+     */
     public void showAblationView(EvaluationResult result, BackEnd service) {
     	navigator.addView(ABLATIONVIEW, new AblationView(result,service));
         navigator.navigateTo(MainUI.ABLATIONVIEW);
