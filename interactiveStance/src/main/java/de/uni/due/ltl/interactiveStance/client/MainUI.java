@@ -17,7 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import java.util.HashSet;
 import java.util.Set;
 
-@Theme("valo")
+@Theme("valo-stance")
 public class MainUI extends UI {
 
     private Navigator navigator;

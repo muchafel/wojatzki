@@ -61,8 +61,9 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     JFreeChartWrapper pieChart;
 //    Label favorSelectionTextField = new Label();
 //    Label againstSelectionTextField = new Label();
+    Label gap = new Label();
     Label analysisLabel = new Label();
-    Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
+//    Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
     Label availableCaption = new Label("Available Statements");
     protected VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
     protected VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
@@ -77,6 +78,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
      * Here we configure properties of our components
      */
     protected void configureComponents(){
+        gap.setHeight("1em");
+
     	searchField.setPlaceholder("search term");
         searchField.addValueChangeListener(event -> {
            filter.setVisible(false);
@@ -100,7 +103,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
             refresh_SelectedGrid();
         });
 
-        breaklineLabel.setWidth("20%");
+//        breaklineLabel.setWidth("20%");
 
         configureGrids();
 
@@ -169,13 +172,16 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 		selectedTargetsContent.addComponent(selectedFavorTargetsContent);
 		selectedTargetsContent.addComponent(selectedAgainstTargetsContent);
 		selectedTargetsContent.setWidth("100%");
+        selectedTargetsContent.setExpandRatio(selectedFavorTargetsContent, 1.0f);
+        selectedTargetsContent.setExpandRatio(selectedAgainstTargetsContent, 1.0f);
 		selectedTargetsContent.setSpacing(true);
 
 		this.addComponent(piechartPanel);
+		this.addComponent(gap);
 		this.addComponent(analysisLabel);
 		this.setComponentAlignment(analysisLabel, Alignment.MIDDLE_CENTER);
-		this.addComponent(breaklineLabel);
-        this.setComponentAlignment(breaklineLabel, Alignment.MIDDLE_CENTER);
+//		this.addComponent(breaklineLabel);
+//      this.setComponentAlignment(breaklineLabel, Alignment.MIDDLE_CENTER);
         this.addComponent(searchLayout);
         this.setComponentAlignment(searchLayout, Alignment.MIDDLE_RIGHT);
 //		this.addComponent(filter);
@@ -327,7 +333,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         this.piechartLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
 
         this.analysisLabel.setValue("Choose Statements which are in favor or against "+service.getEvaluationScenario().getTarget());
-        
+        this.analysisLabel.addStyleName(ValoTheme.LABEL_H2);
+        this.analysisLabel.addStyleName("label-wrap");
 		// initial filling of grid
 		refresh_AvailableGrid();
 		refresh_SelectedGrid();
