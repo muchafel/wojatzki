@@ -5,6 +5,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import de.uni.due.ltl.interactiveStance.db.DBUtil;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 
 
 public class LoginView extends VerticalLayout implements View, LoginForm.LoginListener {
@@ -30,7 +31,8 @@ public class LoginView extends VerticalLayout implements View, LoginForm.LoginLi
             return ;
         }
         if (Authentification.authenticate(username, password)) {
-            getUI().getNavigator().navigateTo(MainUI.CONFIGVIEW);
+        	ExperimentLogging logging= new ExperimentLogging(username);
+        	((MainUI) this.getUI()).showConfigView(logging);
         } else {
             Notification errorNotif = new Notification("username or password incorrect.",
                     Notification.Type.ERROR_MESSAGE);

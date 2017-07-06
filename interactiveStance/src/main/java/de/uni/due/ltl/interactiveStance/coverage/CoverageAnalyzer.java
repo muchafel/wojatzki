@@ -55,6 +55,18 @@ public class CoverageAnalyzer {
 	}
 	
 
+	/**
+	 * returns the coverage of the currently selected targets
+	 * TODO: think of a coverage suggestion
+	 * @param selectedFavorTargets
+	 * @param selectedAgainstTargets
+	 * @param availableTargets
+	 * @param evaluateOnTrain
+	 * @return
+	 * @throws UIMAException
+	 * @throws NumberFormatException
+	 * @throws SQLException
+	 */
 	public CoverageResult analyseCoverage(HashMap<String, ExplicitTarget> selectedFavorTargets, HashMap<String, ExplicitTarget> selectedAgainstTargets, HashMap<String, ExplicitTarget> availableTargets, boolean evaluateOnTrain) throws UIMAException, NumberFormatException, SQLException {
 //		HashMap<String, Set<String>> targetToText=getAvailableTargetsToText(availableTargets);
 		Set<String> wordsInSelectedTargets= getWordsInSelectedTargets(selectedFavorTargets,selectedAgainstTargets);

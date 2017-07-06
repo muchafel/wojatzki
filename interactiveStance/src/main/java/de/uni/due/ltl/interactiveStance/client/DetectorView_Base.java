@@ -21,6 +21,9 @@ import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
+import de.uni.due.ltl.interactiveStance.experimentLogging.FilterEvent;
+import de.uni.due.ltl.interactiveStance.experimentLogging.SearchEvent;
 
 import org.vaadin.addon.JFreeChartWrapper;
 
@@ -30,6 +33,7 @@ import java.util.Set;
 
 public abstract class DetectorView_Base extends VerticalLayout implements View {
 
+	private ExperimentLogging logging;
     BackEnd service;
     TextField searchField = new TextField();
     TextField filter = new TextField();
@@ -62,7 +66,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     protected VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
     protected VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
 
-    public DetectorView_Base() {
+    public DetectorView_Base(ExperimentLogging logging) {
+    	this.logging=logging;
         configureComponents();
         buildLayout();
     }
@@ -79,10 +84,14 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         // configure available grid
         filter.setDescription("filter");
         filter.setPlaceholder("Filter Retrieved Statements");
-        filter.addValueChangeListener(e -> refresh_AvailableGrid(e.getValue()));
+		filter.addValueChangeListener(e -> {
+			new FilterEvent(logging, e.getValue()).persist();
+			refresh_AvailableGrid(e.getValue());
+		});
         filter.setVisible(false);
 
         searchButton.addClickListener(clickEvent -> {
+        	new SearchEvent(logging, searchField.getValue()).persist();
             this.service.newSearch(searchField.getValue());
             filter.setValue("");
             filter.setVisible(true);

@@ -17,8 +17,10 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 
 public class DetectorView_Simplified extends DetectorView_Base implements View {
+
 
 	private HorizontalLayout favorExplanation;
 	private HorizontalLayout againstExplanation;
@@ -65,7 +67,10 @@ public class DetectorView_Simplified extends DetectorView_Base implements View {
 	}
 	
 	
-	
+	public DetectorView_Simplified(ExperimentLogging logging) {
+		super(logging);
+	}
+
 	
 	@Override
 	protected void configureGrids() {
