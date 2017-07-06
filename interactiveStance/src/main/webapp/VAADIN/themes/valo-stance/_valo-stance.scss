@@ -1,0 +1,10 @@
+@import "../valo/valo";
+
+@mixin valo-stance {
+  @include valo;
+
+  .label-wrap {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+}
