@@ -48,7 +48,9 @@ private Button coverageButton;
 		coverageButton.setIcon(VaadinIcons.MAGIC);
 		
 		coverageButton.addClickListener(clickEvent -> {
+			
               CoverageResult result = service.analyseCoverage();
+              new CoverageEvent(logging,result.getCoverageSelection()).persist();
               Notification.show("coverage of your selection "+String.valueOf(result.getCoverageSelection()));
 			});
 		

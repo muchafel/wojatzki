@@ -34,7 +34,7 @@ import java.util.Set;
 
 public abstract class DetectorView_Base extends VerticalLayout implements View {
 
-	private ExperimentLogging logging;
+	protected ExperimentLogging logging;
     BackEnd service;
     TextField searchField = new TextField();
     TextField filter = new TextField();
@@ -115,6 +115,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
             } else {
             	new AnalysisEvent(logging,service.getAllSelectedFavorTargets(),service.getAllSelectedAgainstTargets()).persist();
                 EvaluationResult result = service.analyse();
+                new ResultEvent(logging,result).persist();
                 ((MainUI) this.getUI()).showResult(result, service);
             }
             

@@ -81,7 +81,7 @@ public class ConfigView extends VerticalLayout implements View {
 			//TODO we should pass a configuration object to the detector instead of messing with statics
 			this.scenario = scenarioComboBox.getValue().replace(" ", "");
 			this.experimentMode = modeComboBox.getValue();
-			new ConfigurationEvent(logging,scenario,experimentMode).persist();
+			new ConfigurationEvent(logging,scenario,experimentMode,simpleModeCheckBox.getValue()).persist();
 			// create a simplified or expert detector and access it
 			((MainUI) this.getUI()).showDetectorView(simpleModeCheckBox.getValue(),logging);
 		});

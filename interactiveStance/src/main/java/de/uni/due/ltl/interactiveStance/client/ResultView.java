@@ -25,6 +25,7 @@ public class ResultView extends VerticalLayout implements View {
 	Button ablationBtn = new Button("Analyze Topic Contribution");
 
 	public ResultView(EvaluationResult result, BackEnd service) {
+		
 		this.result=result;
 		
 		pieCharts.setWidth("100%");
