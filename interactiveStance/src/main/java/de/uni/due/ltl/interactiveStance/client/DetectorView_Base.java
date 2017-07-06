@@ -24,6 +24,7 @@ import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.experimentLogging.FilterEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.SearchEvent;
+import de.uni.due.ltl.interactiveStance.experimentLogging.TargetSelectedEvent;
 
 import org.vaadin.addon.JFreeChartWrapper;
 
@@ -112,6 +113,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
                 notification.setDelayMsec(1000);
                 notification.show(Page.getCurrent());
             } else {
+            	new AnalysisEvent(logging,service.getAllSelectedFavorTargets(),service.getAllSelectedAgainstTargets()).persist();
                 EvaluationResult result = service.analyse();
                 ((MainUI) this.getUI()).showResult(result, service);
             }
@@ -228,11 +230,13 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
                         // available to selected favor
                         if (gridDropTarget.equals(selectedFavorDrop)) {
                             for (ExplicitTarget item: draggedItems) {
+                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),true).persist();
                                 service.selectFavorTarget(item);
                             }
                         } else if (gridDropTarget.equals(selectedAgainstDrop)) {
                             for (ExplicitTarget item: draggedItems) {
-                                service.selectAgainstTarget(item);
+                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),true).persist();
+                            	service.selectAgainstTarget(item);
                             }
                         }
                     } else if (source.equals(selectedFavorDrag)) {
@@ -242,6 +246,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
                         if (gridDropTarget.equals(availableDrop)) {
                             for (ExplicitTarget item: draggedItems) {
+                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),false).persist();
                                 service.deselectFavorTarget(item);
                             }
                         }
@@ -253,6 +258,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
                         if (gridDropTarget.equals(availableDrop)) {
                             for (ExplicitTarget item: draggedItems) {
+                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),false).persist();
                                 service.deselectAgainstTarget(item);
                             }
                         }
