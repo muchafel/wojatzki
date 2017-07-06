@@ -59,8 +59,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     VerticalLayout piechartLayout = new VerticalLayout();
     Panel piechartPanel = new Panel(piechartLayout);
     JFreeChartWrapper pieChart;
-    Label favorSelectionTextField = new Label();
-    Label againstSelectionTextField = new Label();
+//    Label favorSelectionTextField = new Label();
+//    Label againstSelectionTextField = new Label();
     Label analysisLabel = new Label();
     Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
     Label availableCaption = new Label("Available Statements");
@@ -155,11 +155,11 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
 		// selected favor targets
 		
-		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
+//		selectedFavorTargetsContent.addComponent(favorSelectionTextField);
 		selectedFavorTargetsContent.addComponent(listOfSelectedFavorTargets);
         selectedFavorTargetsContent.setMargin(false);
 
-		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
+//		selectedAgainstTargetsContent.addComponent(againstSelectionTextField);
 		selectedAgainstTargetsContent.addComponent(listOfSelectedAgainstTargets);
         selectedAgainstTargetsContent.setMargin(false);
 
