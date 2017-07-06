@@ -6,12 +6,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -40,29 +35,35 @@ public class DetectorView_Simplified extends DetectorView_Base implements View {
 		againstExplanationIcon= new Button();
 		
 		againstExplanationText.addStyleName(ValoTheme.LABEL_H2);
+		againstExplanationText.addStyleName("label-wrap");
 		againstExplanationIcon.setIcon(VaadinIcons.ANGLE_DOUBLE_DOWN);
 		againstExplanationIcon.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		againstExplanationIcon.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		againstExplanationIcon.addStyleName(ValoTheme.BUTTON_HUGE);
 		againstExplanationIcon.setEnabled(false);
-		
-		
+
 		favorExplanationIcon.setIcon(VaadinIcons.ANGLE_DOUBLE_DOWN);
 		favorExplanationIcon.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		favorExplanationIcon.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		favorExplanationIcon.addStyleName(ValoTheme.BUTTON_HUGE);
 		favorExplanationIcon.setEnabled(false);
 		favorExplanationText.addStyleName(ValoTheme.LABEL_H2);
-		
+		favorExplanationText.addStyleName("label-wrap");
+
 		favorExplanation.addComponent(favorExplanationIcon);
 		favorExplanation.addComponent(favorExplanationText);
-		
+		favorExplanation.setWidth("100%");
+		favorExplanation.setExpandRatio(favorExplanationText, 1.0f);
+
 		againstExplanation.addComponent(againstExplanationIcon);
 		againstExplanation.addComponent(againstExplanationText);
-		
+		againstExplanation.setWidth("100%");
+		againstExplanation.setExpandRatio(againstExplanationText, 1.0f);
+
 		selectedFavorTargetsContent.addComponent(favorExplanation);
 		selectedAgainstTargetsContent.addComponent(againstExplanation);
-		
+
+
 		super.buildLayout();
 	}
 	
