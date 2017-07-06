@@ -38,10 +38,12 @@ public class ConfigView extends VerticalLayout implements View {
         scenarioItems = EvaluationScenarioUtil.formatTargets();
         scenarioComboBox.setItems(scenarioItems);
         scenarioComboBox.setSelectedItem(scenarioItems.get(0));
-        
+        scenarioComboBox.setPopupWidth("auto");
+
         modes = EvaluationScenarioUtil.getExperimentalModes();
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Fixed Threshold");
+        modeComboBox.setPopupWidth("auto");
 
         //layout, for your information to remind there has an issue of alignment in vaadin
 //        FormLayout scenarioFormLayout = new FormLayout();
