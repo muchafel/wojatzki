@@ -23,6 +23,7 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
 import de.uni.due.ltl.interactiveStance.coverage.CoverageResult;
+import de.uni.due.ltl.interactiveStance.experimentLogging.CoverageEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 
 import org.vaadin.addon.JFreeChartWrapper;

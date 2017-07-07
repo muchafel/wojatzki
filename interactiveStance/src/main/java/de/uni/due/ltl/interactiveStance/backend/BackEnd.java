@@ -14,6 +14,7 @@ import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedT
 import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_optimized;
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 
@@ -40,7 +41,7 @@ public class BackEnd {
 	private static CollocationNgramAnalyzerBase analyzer;
 	private static CoverageAnalyzer coverageAnalyzer;
 
-	public static BackEnd loadData() {
+	public static BackEnd loadData(ExperimentLogging logging) {
 		/**
 		 * DB logic here
 		 */
@@ -91,7 +92,7 @@ public class BackEnd {
 			
 			//Set up analyzer
 			try {
-				analyzer= selectAnalyzer(db,evaluationScenario);
+				analyzer= selectAnalyzer(db,evaluationScenario,logging);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -105,15 +106,15 @@ public class BackEnd {
 	}
 
 	private static CollocationNgramAnalyzerBase selectAnalyzer(StanceDB db2,
-			EvaluationScenario evaluationScenario2) throws Exception {
+			EvaluationScenario evaluationScenario2, ExperimentLogging logging) throws Exception {
 		CollocationNgramAnalyzerBase analyzer = null;
 		
 		if(evaluationScenario.getMode().equals("Fixed Threshold")){
-			analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,evaluationScenario,75);
+			analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,evaluationScenario,75,logging);
 		}else if(evaluationScenario.getMode().equals("Optmized Threshold")){
-			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario);
+			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario,logging);
 		}else if(evaluationScenario.getMode().equals("Distributional Threshold")){
-			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95);
+			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95,logging);
 		}else{
 			throw new Exception(evaluationScenario.getMode()+" is not a valid analyzer");
 		}

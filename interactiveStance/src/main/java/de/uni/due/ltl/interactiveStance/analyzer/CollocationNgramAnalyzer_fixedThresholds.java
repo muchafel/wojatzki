@@ -41,6 +41,8 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ThresholdEvent;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
@@ -55,8 +57,8 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 
 	private int fixedThreshold=75;
 	
-	public CollocationNgramAnalyzer_fixedThresholds(StanceDB db, EvaluationScenario scenario, int fixedThreshold) {
-		super(db, scenario);
+	public CollocationNgramAnalyzer_fixedThresholds(StanceDB db, EvaluationScenario scenario, int fixedThreshold,ExperimentLogging logging) {
+		super(db, scenario,logging);
 		this.fixedThreshold= fixedThreshold;
 	}
 
@@ -90,6 +92,7 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 			evalData.register(goldOutcome, outcome);
 			
 		}
+		new ThresholdEvent(logging, upperPercentage+"_"+lowerPercentage,"fixed").persist();
 		System.out.println("Using threshold config "+ upperPercentage+"_"+lowerPercentage+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
 		return evalData;

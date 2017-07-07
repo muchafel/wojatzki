@@ -35,6 +35,7 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
@@ -48,18 +49,21 @@ public abstract class CollocationNgramAnalyzerBase {
 	protected StanceDB db;
 	protected AnalysisEngine engine;
 	protected EvaluationScenario scenario;
+	protected ExperimentLogging logging;
 //	private final int fixedThreshold=75;
 
-	public CollocationNgramAnalyzerBase(StanceDB db, EvaluationScenario scenario) {
+	public CollocationNgramAnalyzerBase(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging) {
 		this.db = db;
 		this.engine = getTokenizerEngine();
 		this.scenario=scenario;
+		this.logging= logging;
 	}
 
 	/**
 	 * TODO: check whether we can get rid of all the casting from int to
 	 * String... ID is a INT! 
 	 * TODO evaluation needs to be expandend to larger ngrams than unigrams (we may nee mutual expectation)
+	 * @param logging 
 	 * 
 	 * @param selectedTargets
 	 * @return

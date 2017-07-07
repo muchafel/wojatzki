@@ -54,12 +54,6 @@ public class ConfigView extends VerticalLayout implements View {
         modeComboBox.setItems(modes);
         modeComboBox.setSelectedItem("Fixed Threshold");
         modeComboBox.setPopupWidth("auto");
-//        scenarioComboBox.setVisible(false);
-        
-        modes = EvaluationScenarioUtil.getExperimentalModes();
-        modeComboBox.setItems(modes);
-        modeComboBox.setSelectedItem("Fixed Threshold");
-//        modeComboBox.setEnabled(false);
         modeComboBox.setEnabled(false);
         
         simpleModeCheckBox.setValue(true);

@@ -17,6 +17,8 @@ import org.apache.uima.jcas.JCas;
 import org.jfree.data.xy.XYSeries;
 
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ThresholdEvent;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
@@ -30,8 +32,8 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 
 	private double percentil=95;
 	
-	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d) {
-		super(db, scenario);
+	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d,ExperimentLogging logging) {
+		super(db, scenario,logging);
 		this.percentil=d;
 	}
 
@@ -54,6 +56,7 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 			evalData.register(goldOutcome, outcome);
 			
 		}
+		new ThresholdEvent(logging,"zipfPercentil\t"+ percentil+"\t"+zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound(),"fixed").persist();
 		System.out.println("Using found thresholds "+ zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound()+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
 		return evalData;

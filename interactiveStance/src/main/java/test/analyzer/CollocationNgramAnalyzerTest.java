@@ -8,6 +8,7 @@ import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedT
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 
 public class CollocationNgramAnalyzerTest {
@@ -30,8 +31,11 @@ public class CollocationNgramAnalyzerTest {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 		// load evaluation Data
+		
+		ExperimentLogging logging= new ExperimentLogging("TestUser");
+		
 		EvaluationScenario secenario = new EvaluationScenario("Atheism","");
-		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,secenario,75);
+		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,secenario,75,logging);
 		
 		
 	}

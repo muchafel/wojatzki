@@ -23,6 +23,7 @@ import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.experimentLogging.FilterEvent;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ResultEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.SearchEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.TargetSelectedEvent;
 
@@ -317,7 +318,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
 		System.out.println(event.getOldView() instanceof ConfigView);
 		if (event.getOldView() instanceof ConfigView) {
-			service = BackEnd.loadData();
+			service = BackEnd.loadData(logging);
 		}
 
 		Label basicResultLabel = new Label("Composition of Training Data");

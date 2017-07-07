@@ -30,6 +30,7 @@ import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataSet;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
@@ -96,10 +97,10 @@ public class GetIntrinsicThresholds {
 //				}
 			} 
 			
-			
+			ExperimentLogging logging= new ExperimentLogging("ThresholdTestUser");
 			
 			// set up analyzer
-			CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75);
+			CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75,logging);
 			StanceLexicon lexicon= analyzer.createLexiconFromDistributions(favor, against);
 			lexicon.plotChartAndThreshold(target+"_1_d", 70, 70);
 			

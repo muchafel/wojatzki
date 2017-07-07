@@ -12,6 +12,7 @@ import de.uni.due.ltl.interactiveStance.analyzer.CollocationNgramAnalyzer_fixedT
 import de.uni.due.ltl.interactiveStance.analyzer.TargetSearcher;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 
 public class Testbed_PolarityThresholds {
@@ -49,8 +50,10 @@ public class Testbed_PolarityThresholds {
 		// load evaluation Data
 		EvaluationScenario data = new EvaluationScenario("Atheism","");
 
+		ExperimentLogging logging= new ExperimentLogging("FixedThresholdTestUser");
+		
 		// set up analyzer
-		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75);
+		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75,logging);
 		
 		//test on test data 
 		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);

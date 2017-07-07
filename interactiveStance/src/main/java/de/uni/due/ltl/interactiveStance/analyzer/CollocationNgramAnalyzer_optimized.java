@@ -41,6 +41,8 @@ import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
 import de.uni.due.ltl.interactiveStance.db.DataPoint;
 import de.uni.due.ltl.interactiveStance.db.StanceDB;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
+import de.uni.due.ltl.interactiveStance.experimentLogging.ThresholdEvent;
 import de.uni.due.ltl.interactiveStance.io.EvaluationDataSet;
 import de.uni.due.ltl.interactiveStance.io.EvaluationScenario;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
@@ -55,8 +57,8 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 
 	private final int fixedThreshold=75;
 	
-	public CollocationNgramAnalyzer_optimized(StanceDB db, EvaluationScenario scenario) {
-		super(db, scenario);
+	public CollocationNgramAnalyzer_optimized(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging) {
+		super(db, scenario,logging);
 	}
 
 
@@ -113,6 +115,7 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 	public EvaluationData<String> evaluateUsingLexicon_ThresholdOptimization(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
 		Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(stanceLexicon,evaluationDataSet);
 		String topConfig=getTopConfig(thresholdId2Outcome);
+		new ThresholdEvent(logging, topConfig,"optimized").persist();
 		System.out.println("Using threshold config "+ topConfig+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
 		System.out.println(new ConfusionMatrix<String>(thresholdId2Outcome.get(topConfig)));
 		return thresholdId2Outcome.get(topConfig);
