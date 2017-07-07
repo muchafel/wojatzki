@@ -30,7 +30,7 @@ import nl.peterbloem.powerlaws.Continuous;
 
 public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgramAnalyzerBase {
 
-	private double percentil=95;
+	private double percentil=0.95;
 	
 	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d,ExperimentLogging logging) {
 		super(db, scenario,logging);
@@ -60,6 +60,14 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 		System.out.println("Using found thresholds "+ zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound()+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
 		return evalData;
+	}
+
+	public double getPercentil() {
+		return percentil;
+	}
+
+	public void setPercentil(double percentil) {
+		this.percentil = percentil;
 	}
 
 }

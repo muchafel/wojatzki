@@ -11,6 +11,10 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
+import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
+import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Expert;
+import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Expert_Adjustable;
+import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Simplified;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 
 import javax.servlet.annotation.WebServlet;
@@ -87,11 +91,15 @@ public class MainUI extends UI {
      * @param simpleMode
      * @param logging 
      */
-    public void showDetectorView(boolean simpleMode, ExperimentLogging logging){
-    	if(simpleMode){
-    		navigator.addView(DETECTORVIEW,new DetectorView_Simplified(logging));
+    public void showDetectorView(ExperimentConfiguration config, ExperimentLogging logging){
+    	if(config.isSimpleMode()){
+    		navigator.addView(DETECTORVIEW,new DetectorView_Simplified(logging,config));
     	}else{
-    		navigator.addView(DETECTORVIEW,new DetectorView_Expert(logging));
+    		if(config.getExperimentMode().equals("Fixed Threshold") || config.getExperimentMode().equals("Distributional Threshold")){
+    			navigator.addView(DETECTORVIEW,new DetectorView_Expert_Adjustable(logging,config));
+    		}else{
+    			navigator.addView(DETECTORVIEW,new DetectorView_Expert(logging,config));
+    		}
     	}
     	navigator.navigateTo(DETECTORVIEW);
     }

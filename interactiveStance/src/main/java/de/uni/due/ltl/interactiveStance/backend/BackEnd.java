@@ -30,6 +30,7 @@ public class BackEnd {
 	private HashMap<String, ExplicitTarget> availableTargets = new HashMap<>();
 	private HashMap<String, ExplicitTarget> selectedFavorTargets = new HashMap<>();
 	private HashMap<String, ExplicitTarget> selectedAgainstTargets = new HashMap<>();
+	private static ExperimentConfiguration config;
 
 	// Create dummy data by randomly combining first and last names
 	static String[] targets = { "Dummy I", "Dummy II" };
@@ -41,7 +42,7 @@ public class BackEnd {
 	private static CollocationNgramAnalyzerBase analyzer;
 	private static CoverageAnalyzer coverageAnalyzer;
 
-	public static BackEnd loadData(ExperimentLogging logging) {
+	public static BackEnd loadData(ExperimentLogging logging,ExperimentConfiguration config) {
 		/**
 		 * DB logic here
 		 */
@@ -49,9 +50,10 @@ public class BackEnd {
 
 			final BackEnd backend = new BackEnd();
 
+			config=config;
 			//set up scenario
 			try {
-				evaluationScenario = new EvaluationScenario(ConfigView.getScenario(), ConfigView.getExperimentMode());
+				evaluationScenario = new EvaluationScenario(config.getScenario(), config.getExperimentMode());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -82,9 +84,9 @@ public class BackEnd {
 			searcher = new TargetSearcher();
 			try {
 				searcher.SetUp(db,100);
-				for(ExplicitTarget target:searcher.search(ConfigView.getScenario(),true)){
-					backend.save(target);
-				}
+//				for(ExplicitTarget target:searcher.search(config.getScenario(),true)){
+//					backend.save(target);
+//				}
 			} 
 			catch (Exception e) {
 				e.printStackTrace();
@@ -232,7 +234,7 @@ public class BackEnd {
 	 */
 	public synchronized void loadEvaluationData (String target) {
 		try {
-			evaluationScenario= new EvaluationScenario(ConfigView.getScenario(), ConfigView.getExperimentMode());
+			evaluationScenario= new EvaluationScenario(config.getScenario(), config.getExperimentMode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -304,5 +306,27 @@ public class BackEnd {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public synchronized void adjustAnalyzer(int adjustation){
+		if(analyzer instanceof CollocationNgramAnalyzer_fixedThresholds){
+			((CollocationNgramAnalyzer_fixedThresholds)analyzer).setFixedThreshold(adjustation);
+		}
+		if(analyzer instanceof CollocationNgramAnalyzer_distributionDerived){
+			((CollocationNgramAnalyzer_distributionDerived)analyzer).setPercentil(((int)adjustation)/100.0);
+		}
+	}
+
+	public Double getAnalyzerAdjustment() {
+		if(analyzer instanceof CollocationNgramAnalyzer_fixedThresholds){
+			return (double) ((CollocationNgramAnalyzer_fixedThresholds)analyzer).getFixedThreshold();
+		}
+		if(analyzer instanceof CollocationNgramAnalyzer_distributionDerived){
+			return ((CollocationNgramAnalyzer_distributionDerived)analyzer).getPercentil();
+		}
+		//TODO: exception handling etc.
+		//this should never happen
+		System.err.println("//this should never happen");
+		return null;
 	}
 }

@@ -8,6 +8,7 @@ public class ThresholdEvent extends LoggingEvent {
 	public ThresholdEvent(ExperimentLogging logging, String thresholdConfig,String variant) {
 		super(logging);
 		this.thresholdConfig=thresholdConfig;
+		this.variant=variant;
 	}
 
 	@Override

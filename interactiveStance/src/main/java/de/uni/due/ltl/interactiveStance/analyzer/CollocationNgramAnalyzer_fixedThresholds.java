@@ -99,6 +99,16 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 	}
 
 
+	public int getFixedThreshold() {
+		return fixedThreshold;
+	}
+
+
+	public void setFixedThreshold(int fixedThreshold) {
+		this.fixedThreshold = fixedThreshold;
+	}
+
+
 	
 
 }

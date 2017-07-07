@@ -5,6 +5,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button;
 
+import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ConfigurationEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.experimentLogging.LoggingEvent;
@@ -16,8 +17,8 @@ import java.util.List;
 public class ConfigView extends VerticalLayout implements View {
 
 	 //current config
-    private static String scenario = "Atheism";	// store scenario which is set up on config webpage.
-    private static String experimentMode = "Fixed Threshold"; // store mode which is set up during config.
+//    private static String scenario = "Atheism";	// store scenario which is set up on config webpage.
+//    private static String experimentMode = "Fixed Threshold"; // store mode which is set up during config.
     private ExperimentLogging logging;
     
     //lists for scenarios
@@ -32,13 +33,13 @@ public class ConfigView extends VerticalLayout implements View {
     private CheckBox simpleModeCheckBox = new CheckBox("Simple Mode");
 
 
-    public static String getScenario() {
-        return scenario;
-    }
-    
-    public static String getExperimentMode() {
-		return experimentMode;
-	}
+//    public static String getScenario() {
+//        return scenario;
+//    }
+//    
+//    public static String getExperimentMode() {
+//		return experimentMode;
+//	}
 
     public ConfigView(ExperimentLogging logging) {
     	
@@ -72,12 +73,11 @@ public class ConfigView extends VerticalLayout implements View {
 
        
 		startBtn.addClickListener(event -> {
-			//TODO we should pass a configuration object to the detector instead of messing with statics
-			this.scenario = scenarioComboBox.getValue().replace(" ", "");
-			this.experimentMode = modeComboBox.getValue();
+			String scenario = scenarioComboBox.getValue().replace(" ", "");
+			String experimentMode = modeComboBox.getValue();
 			new ConfigurationEvent(logging,scenario,experimentMode,simpleModeCheckBox.getValue()).persist();
 			// create a simplified or expert detector and access it
-			((MainUI) this.getUI()).showDetectorView(simpleModeCheckBox.getValue(),logging);
+			((MainUI) this.getUI()).showDetectorView(new ExperimentConfiguration(simpleModeCheckBox.getValue(),scenario,experimentMode),logging);
 		});
 
         Panel configPanel = new Panel();
