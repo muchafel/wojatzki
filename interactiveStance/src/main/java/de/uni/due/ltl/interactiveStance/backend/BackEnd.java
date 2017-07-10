@@ -313,7 +313,7 @@ public class BackEnd {
 			((CollocationNgramAnalyzer_fixedThresholds)analyzer).setFixedThreshold(adjustation);
 		}
 		if(analyzer instanceof CollocationNgramAnalyzer_distributionDerived){
-			((CollocationNgramAnalyzer_distributionDerived)analyzer).setPercentil(((int)adjustation)/100.0);
+			((CollocationNgramAnalyzer_distributionDerived)analyzer).setPercentil(((double)adjustation)/100.0);
 		}
 	}
 
@@ -322,7 +322,7 @@ public class BackEnd {
 			return (double) ((CollocationNgramAnalyzer_fixedThresholds)analyzer).getFixedThreshold();
 		}
 		if(analyzer instanceof CollocationNgramAnalyzer_distributionDerived){
-			return ((CollocationNgramAnalyzer_distributionDerived)analyzer).getPercentil();
+			return ((CollocationNgramAnalyzer_distributionDerived)analyzer).getPercentil()*100;
 		}
 		//TODO: exception handling etc.
 		//this should never happen

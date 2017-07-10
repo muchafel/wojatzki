@@ -21,10 +21,10 @@ import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
 import de.uni.due.ltl.interactiveStance.backend.ExplicitTarget;
-import de.uni.due.ltl.interactiveStance.client.AnalysisEvent;
 import de.uni.due.ltl.interactiveStance.client.ConfigView;
 import de.uni.due.ltl.interactiveStance.client.MainUI;
 import de.uni.due.ltl.interactiveStance.client.charts.StanceDataPieChart;
+import de.uni.due.ltl.interactiveStance.experimentLogging.AnalysisEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
 import de.uni.due.ltl.interactiveStance.experimentLogging.FilterEvent;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ResultEvent;
@@ -98,13 +98,13 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         filter.setDescription("filter");
         filter.setPlaceholder("Filter Retrieved Statements");
 		filter.addValueChangeListener(e -> {
-			new FilterEvent(logging, e.getValue()).persist();
+			new FilterEvent(logging, e.getValue()).persist(false);
 			refresh_AvailableGrid(e.getValue());
 		});
         filter.setVisible(false);
 
         searchButton.addClickListener(clickEvent -> {
-        	new SearchEvent(logging, searchField.getValue()).persist();
+        	new SearchEvent(logging, searchField.getValue()).persist(false);
             this.service.newSearch(searchField.getValue());
             filter.setValue("");
             filter.setVisible(true);
@@ -116,20 +116,24 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
         configureGrids();
 
-        analysisButton.addClickListener(clickEvent -> {
-//            Notification.show("SemEval: "+result.getSemEval() + System.lineSeparator()+" MicroF1: "+result.getMicroF());
-            if (((ListDataProvider<ExplicitTarget>)listOfSelectedFavorTargets.getDataProvider()).getItems().isEmpty() &&
-                    ((ListDataProvider<ExplicitTarget>)listOfSelectedAgainstTargets.getDataProvider()).getItems().isEmpty()) {
-                Notification notification = new Notification("Select at least one explicit target before analysis",
-                        Notification.Type.WARNING_MESSAGE);
-                notification.setDelayMsec(1000);
-                notification.show(Page.getCurrent());
-            } else {
-            	new AnalysisEvent(logging,service.getAllSelectedFavorTargets(),service.getAllSelectedAgainstTargets()).persist();
-                EvaluationResult result = service.analyse();
-                new ResultEvent(logging,result).persist();
-                ((MainUI) this.getUI()).showResult(result, service);
-            }
+		analysisButton.addClickListener(clickEvent -> {
+			// Notification.show("SemEval: "+result.getSemEval() +
+			// System.lineSeparator()+" MicroF1: "+result.getMicroF());
+			if (((ListDataProvider<ExplicitTarget>) listOfSelectedFavorTargets.getDataProvider()).getItems().isEmpty()
+					&& ((ListDataProvider<ExplicitTarget>) listOfSelectedAgainstTargets.getDataProvider()).getItems()
+							.isEmpty()) {
+				Notification notification = new Notification("Select at least one explicit target before analysis",
+						Notification.Type.WARNING_MESSAGE);
+				notification.setDelayMsec(1000);
+				notification.show(Page.getCurrent());
+			} else {
+				new AnalysisEvent(logging, service.getAllSelectedFavorTargets(), service.getAllSelectedAgainstTargets())
+						.persist(false);
+				EvaluationResult result = service.analyse();
+				new ResultEvent(logging, result, service.getAllSelectedFavorTargets(),
+						service.getAllSelectedAgainstTargets()).persist(false);
+				((MainUI) this.getUI()).showResult(result, service);
+			}
             
         });
 
@@ -246,12 +250,12 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
                         // available to selected favor
                         if (gridDropTarget.equals(selectedFavorDrop)) {
                             for (ExplicitTarget item: draggedItems) {
-                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),true).persist();
+                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),true).persist(false);
                                 service.selectFavorTarget(item);
                             }
                         } else if (gridDropTarget.equals(selectedAgainstDrop)) {
                             for (ExplicitTarget item: draggedItems) {
-                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),true).persist();
+                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),true).persist(false);
                             	service.selectAgainstTarget(item);
                             }
                         }
@@ -262,7 +266,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
                         if (gridDropTarget.equals(availableDrop)) {
                             for (ExplicitTarget item: draggedItems) {
-                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),false).persist();
+                            	new TargetSelectedEvent(logging, "FAVOR", item.getTargetName(),false).persist(false);
                                 service.deselectFavorTarget(item);
                             }
                         }
@@ -274,7 +278,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
                         if (gridDropTarget.equals(availableDrop)) {
                             for (ExplicitTarget item: draggedItems) {
-                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),false).persist();
+                            	new TargetSelectedEvent(logging, "AGAINST", item.getTargetName(),false).persist(false);
                                 service.deselectAgainstTarget(item);
                             }
                         }

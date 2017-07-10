@@ -12,10 +12,12 @@ import com.vaadin.ui.VerticalLayout;
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
+import de.uni.due.ltl.interactiveStance.client.detectorViews.AdjustmentEvent;
 import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Expert;
 import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Expert_Adjustable;
 import de.uni.due.ltl.interactiveStance.client.detectorViews.DetectorView_Simplified;
 import de.uni.due.ltl.interactiveStance.experimentLogging.ExperimentLogging;
+import de.uni.due.ltl.interactiveStance.experimentLogging.LogOutEvent;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.HashSet;
@@ -24,6 +26,8 @@ import java.util.Set;
 @Theme("valo-stance")
 public class MainUI extends UI {
 
+	//logging gets initialized in Config view
+	private ExperimentLogging logging;
     private Navigator navigator;
     protected static final String LOGINVIEW = "login";
     protected static final String CONFIGVIEW = "config";
@@ -53,6 +57,7 @@ public class MainUI extends UI {
         MenuBar.MenuItem homepage = menuBar.addItem("log out", null, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
+            	new LogOutEvent(logging).persist(true);
                 getUI().getNavigator().navigateTo(LOGINVIEW);
             }
         });
@@ -73,6 +78,7 @@ public class MainUI extends UI {
      * @param simpleMode
      */
     public void showConfigView(ExperimentLogging logging){
+    	this.logging= logging;
     	navigator.addView(CONFIGVIEW, new ConfigView(logging));
         navigator.navigateTo(MainUI.CONFIGVIEW);
     }
@@ -91,7 +97,7 @@ public class MainUI extends UI {
      * @param simpleMode
      * @param logging 
      */
-    public void showDetectorView(ExperimentConfiguration config, ExperimentLogging logging){
+    public void showDetectorView(ExperimentConfiguration config){
     	if(config.isSimpleMode()){
     		navigator.addView(DETECTORVIEW,new DetectorView_Simplified(logging,config));
     	}else{

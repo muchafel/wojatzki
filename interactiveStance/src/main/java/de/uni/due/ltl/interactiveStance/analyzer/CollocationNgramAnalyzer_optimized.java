@@ -115,7 +115,7 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 	public EvaluationData<String> evaluateUsingLexicon_ThresholdOptimization(StanceLexicon stanceLexicon, EvaluationDataSet evaluationDataSet) throws AnalysisEngineProcessException {
 		Map<String,EvaluationData<String>> thresholdId2Outcome=getThresholdId2Outcome(stanceLexicon,evaluationDataSet);
 		String topConfig=getTopConfig(thresholdId2Outcome);
-		new ThresholdEvent(logging, topConfig,"optimized").persist();
+		new ThresholdEvent(logging, topConfig,"optimized").persist(false);
 		System.out.println("Using threshold config "+ topConfig+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(thresholdId2Outcome.get(topConfig))));
 		System.out.println(new ConfusionMatrix<String>(thresholdId2Outcome.get(topConfig)));
 		return thresholdId2Outcome.get(topConfig);

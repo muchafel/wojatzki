@@ -75,9 +75,9 @@ public class ConfigView extends VerticalLayout implements View {
 		startBtn.addClickListener(event -> {
 			String scenario = scenarioComboBox.getValue().replace(" ", "");
 			String experimentMode = modeComboBox.getValue();
-			new ConfigurationEvent(logging,scenario,experimentMode,simpleModeCheckBox.getValue()).persist();
+			new ConfigurationEvent(logging,new ExperimentConfiguration(simpleModeCheckBox.getValue(),scenario,experimentMode)).persist(false);
 			// create a simplified or expert detector and access it
-			((MainUI) this.getUI()).showDetectorView(new ExperimentConfiguration(simpleModeCheckBox.getValue(),scenario,experimentMode),logging);
+			((MainUI) this.getUI()).showDetectorView(new ExperimentConfiguration(simpleModeCheckBox.getValue(),scenario,experimentMode));
 		});
 
         Panel configPanel = new Panel();

@@ -56,7 +56,7 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 			evalData.register(goldOutcome, outcome);
 			
 		}
-		new ThresholdEvent(logging,"zipfPercentil\t"+ percentil+"\t"+zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound(),"fixed").persist();
+		new ThresholdEvent(logging,"zipfPercentil\t"+ percentil+"\t"+zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound(),"fixed").persist(false);
 		System.out.println("Using found thresholds "+ zipfContainer.getZipfUpperBound()+"_"+zipfContainer.getZipfLowerBound()+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
 		return evalData;

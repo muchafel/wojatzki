@@ -29,7 +29,7 @@ public class DetectorView_Expert_Adjustable extends DetectorView_Expert implemen
 		
 		sensitivitySlider.addValueChangeListener(event -> {
 		    int value = event.getValue().intValue();
-		    new AdjustmentEvent(logging, value).persist();
+		    new AdjustmentEvent(logging, value).persist(false);
 		    service.adjustAnalyzer(value);
 		});
 	}

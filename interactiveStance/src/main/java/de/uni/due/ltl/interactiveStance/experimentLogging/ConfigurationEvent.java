@@ -1,21 +1,23 @@
 package de.uni.due.ltl.interactiveStance.experimentLogging;
 
+import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
+
 public class ConfigurationEvent extends LoggingEvent {
 
-	private String scenario;
-	private String mode;
-	private boolean simpleMode;
+	private ExperimentConfiguration config;
 	
-	public ConfigurationEvent(ExperimentLogging logging, String scenario, String mode, boolean simpleMode) {
+	public ConfigurationEvent(ExperimentLogging logging, ExperimentConfiguration config) {
 		super(logging);
-		this.scenario=scenario;
-		this.mode=mode;
-		this.simpleMode=simpleMode;
+		this.config=config;
 	}
 
 	@Override
 	protected String eventToString() {
-		return "CONFIGURATION\tSCENARIO\t"+this.scenario+"\tMODE:\t"+this.mode+"\tSIMPLEMODE:\t"+simpleMode;
+		return "CONFIGURATION\tSCENARIO\t"+config.valuesToString();
+	}
+
+	public ExperimentConfiguration getConfig() {
+		return config;
 	}
 
 }

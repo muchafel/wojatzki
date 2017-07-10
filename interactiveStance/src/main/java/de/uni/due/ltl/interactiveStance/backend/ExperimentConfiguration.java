@@ -22,5 +22,9 @@ public class ExperimentConfiguration {
 	public String getExperimentMode() {
 		return mode;
 	}
+	
+	public String valuesToString(){
+		return this.getScenario()+"\tMODE:\t"+this.getExperimentMode()+"\tSIMPLEMODE:\t"+this.isSimpleMode();
+	}
 
 }

@@ -9,8 +9,13 @@ public abstract class LoggingEvent {
 		this.logging = logging;
 	}
 	
-	public boolean persist(){
-		logging.persist(this);
+	public boolean persist(boolean finalEvent){
+		if(finalEvent){
+			logging.persistExperiment(this);
+		}else{
+			logging.persistEvent(this);
+		}
+		
 		return true;
 	}
 	

@@ -92,7 +92,7 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 			evalData.register(goldOutcome, outcome);
 			
 		}
-		new ThresholdEvent(logging, upperPercentage+"_"+lowerPercentage,"fixed").persist();
+		new ThresholdEvent(logging, upperPercentage+"_"+lowerPercentage,"fixed").persist(false);
 		System.out.println("Using threshold config "+ upperPercentage+"_"+lowerPercentage+" : "+EvaluationUtil.getSemEvalMeasure(new Fscore<>(evalData)));
 		System.out.println(new ConfusionMatrix<String>(evalData));
 		return evalData;
