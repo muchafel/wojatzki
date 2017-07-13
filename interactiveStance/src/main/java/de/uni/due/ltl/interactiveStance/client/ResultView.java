@@ -55,6 +55,7 @@ public class ResultView extends VerticalLayout implements View {
 	 * @param result
 	 */
 	private void addResults(EvaluationResult result) {
+		pieCharts.removeAllComponents();
 		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("FAVOR", result.getfFAVOR()));
 		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("AGAINST", result.getfAGAINST()));
 		pieCharts.addComponent(new PredictionQualityPieChart().createPieChart("NONE", result.getfNONE()));

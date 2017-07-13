@@ -42,8 +42,6 @@ public class AblationView  extends VerticalLayout implements View {
 		backToDetectorBtn.addClickListener(event -> {
 			getUI().getNavigator().navigateTo(MainUI.DETECTORVIEW);
 		});
-		
-		
 	}
 	
 	
@@ -58,6 +56,7 @@ public class AblationView  extends VerticalLayout implements View {
 
 
 	private void addData(Map<String, Double> ablationFavor, Map<String, Double> ablationAgainst) {
+		barcharts.removeAllComponents();
 		barcharts.addComponent(new AblationBarchart().createChart("FAVOR", result.getMicroF(),ablationFavor));
 		barcharts.addComponent(new AblationBarchart().createChart("AGAINST", result.getMicroF(),ablationAgainst));
 	}
