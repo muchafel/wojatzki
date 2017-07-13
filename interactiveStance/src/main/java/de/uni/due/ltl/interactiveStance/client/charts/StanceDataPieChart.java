@@ -9,6 +9,8 @@ import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.util.UnitType;
 import org.vaadin.addon.JFreeChartWrapper;
 
 import java.awt.*;
@@ -44,30 +46,31 @@ public class StanceDataPieChart {
                 true,
                 false);
         // set chart background transparent
-        chart.setBackgroundPaint(new Color(0, 0, 0, 0));
+//        chart.setBackgroundPaint(new Color(0, 0, 0, 0));
 
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
         plot.setNoDataMessage("No data available");
         plot.setCircular(false);
-        plot.setBackgroundPaint(new Color(0, 0, 0, 0));
-        plot.setLabelGap(0.02);
+        plot.setBackgroundPaint(null);
+        plot.setShadowPaint(null);
         plot.setLabelGenerator(new StandardPieSectionLabelGenerator(
                 "{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()
         ));
+
         // keep space between all blocks.
-        plot.setExplodePercent("FAVOR", 0.05);
-        plot.setExplodePercent("AGAINST", 0.1);
-        plot.setExplodePercent("NONE", 0.05);
+//        plot.setExplodePercent("FAVOR", 0.01);
+//        plot.setExplodePercent("AGAINST", 0.05);
+//        plot.setExplodePercent("NONE", 0.01);
         // set color of each part in pie chart.
         java.util.List<Comparable> keys = dataset.getKeys();
         for (int i = 0; i < keys.size(); i++) {
             if (keys.get(i).equals("FAVOR")) {
-                plot.setSectionPaint("FAVOR", Color.GREEN);
+                plot.setSectionPaint("FAVOR", new Color(60, 196, 73));
             } else if (keys.get(i).equals("AGAINST")) {
-                plot.setSectionPaint("AGAINST", Color.RED);
+                plot.setSectionPaint("AGAINST", new Color(234, 107, 93));
             } else if (keys.get(i).equals("NONE")) {
-                plot.setSectionPaint("NONE", Color.GRAY);
+                plot.setSectionPaint("NONE", new Color(188, 183, 183));
             }
         }
         // no border
