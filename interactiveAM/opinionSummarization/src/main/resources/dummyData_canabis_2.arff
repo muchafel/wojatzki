@@ -1,0 +1,32 @@
+@relation Dataset
+
+@attribute 'RT @ericamtucker: Here is my story... Thx @HIGH_TIMES_Mag!! 💖 @HERBworthy @SnoopDogg @JohnMayer @tommychong #thetuckerfight #legalizeit #ma…' numeric
+@attribute 'Add your name to tell AG Jeff Sessions we won\'t let him drag us back to darkest days of the #WarOnDrugs #LegalizeIt https://t.co/Y6tfTzVO2r' numeric
+@attribute 'Gov. Scott signs medical #marijuana plan #cannabis  https://t.co/Is3DBx8fue #medicalmarijuana #CBD… https://t.co/3GOHye7ABn' numeric
+@attribute '@PAHouseGOP Pennsylvania should declare itself independent of federal marijuana law  #legalizeit' numeric
+@attribute 'Long lines in Nevada as recreational marijuana goes on salehttps://t.co/lDpDctJzqI#StonerMagazine #CNN #LasVegas… https://t.co/HJ9WoxuaR8' numeric
+@attribute 'Public Consumption Gets Another Go in Alaska https://t.co/Tz3mnlafNv #legalizeit #sativa #cannabis https://t.co/Fkpyna6gdW' numeric
+@attribute 'RT @RadioRiddler: Working on a special remix! #Reggae #PeterTosh #LegalizeIt' numeric
+@attribute 'Here Are Five Ways #Marijuana Is Better For You Than Alcohol https://t.co/WDrUbLPvow #legalizeit #dope #mmj https://t.co/pJQ08ESHXN' numeric
+
+@data
+1,0,1,1,0,0,0,0
+1,0,1,0,1,1,1,0
+1,0,0,1,0,0,0,0
+1,1,0,1,1,0,1,0
+0,0,1,1,0,0,0,0
+1,0,1,1,1,0,1,0
+1,1,0,1,0,0,1,1
+0,1,0,1,1,0,0,1
+0,1,0,0,0,0,0,1
+1,0,1,1,1,1,1,1
+0,1,1,0,1,0,1,0
+0,0,0,0,1,1,1,1
+1,0,0,0,0,1,0,1
+0,0,0,0,1,0,1,0
+0,1,1,1,0,0,0,1
+0,0,1,0,0,0,0,1
+1,1,0,1,0,1,0,1
+0,1,0,0,1,0,1,0
+1,1,1,0,0,1,0,0
+1,0,1,0,0,0,0,0
