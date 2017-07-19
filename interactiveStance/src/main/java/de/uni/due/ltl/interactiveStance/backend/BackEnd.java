@@ -53,7 +53,7 @@ public class BackEnd {
 			config=config;
 			//set up scenario
 			try {
-				evaluationScenario = new EvaluationScenario(config.getScenario(), config.getExperimentMode());
+				evaluationScenario = new EvaluationScenario(config.getScenario(), config.getExperimentMode(),true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -99,7 +99,7 @@ public class BackEnd {
 				e.printStackTrace();
 			}
 			
-			coverageAnalyzer= new CoverageAnalyzer(db,evaluationScenario);
+			coverageAnalyzer= new CoverageAnalyzer(db,evaluationScenario,true);
 			
 			instance = backend;
 //		}
@@ -112,11 +112,11 @@ public class BackEnd {
 		CollocationNgramAnalyzerBase analyzer = null;
 		
 		if(evaluationScenario.getMode().equals("Fixed Threshold")){
-			analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,evaluationScenario,75,logging);
+			analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,evaluationScenario,75,logging,true);
 		}else if(evaluationScenario.getMode().equals("Optmized Threshold")){
-			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario,logging);
+			analyzer= new CollocationNgramAnalyzer_optimized(db,evaluationScenario,logging,true);
 		}else if(evaluationScenario.getMode().equals("Distributional Threshold")){
-			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95,logging);
+			analyzer= new CollocationNgramAnalyzer_distributionDerived(db,evaluationScenario,0.95,logging,true);
 		}else{
 			throw new Exception(evaluationScenario.getMode()+" is not a valid analyzer");
 		}
@@ -234,7 +234,7 @@ public class BackEnd {
 	 */
 	public synchronized void loadEvaluationData (String target) {
 		try {
-			evaluationScenario= new EvaluationScenario(config.getScenario(), config.getExperimentMode());
+			evaluationScenario= new EvaluationScenario(config.getScenario(), config.getExperimentMode(),true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

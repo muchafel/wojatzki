@@ -34,8 +34,8 @@ public class CollocationNgramAnalyzerTest {
 		
 		ExperimentLogging logging= new ExperimentLogging("TestUser");
 		
-		EvaluationScenario secenario = new EvaluationScenario("Atheism","");
-		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,secenario,75,logging);
+		EvaluationScenario secenario = new EvaluationScenario("Atheism","",true);
+		CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,secenario,75,logging,true);
 		
 		
 	}

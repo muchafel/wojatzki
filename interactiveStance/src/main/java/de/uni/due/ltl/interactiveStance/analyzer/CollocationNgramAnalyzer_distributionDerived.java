@@ -32,8 +32,8 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 
 	private double percentil=0.95;
 	
-	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d,ExperimentLogging logging) {
-		super(db, scenario,logging);
+	public CollocationNgramAnalyzer_distributionDerived(StanceDB db, EvaluationScenario scenario, double d,ExperimentLogging logging, boolean useBinCas) {
+		super(db, scenario,logging,useBinCas);
 		this.percentil=d;
 	}
 
@@ -49,7 +49,9 @@ public class CollocationNgramAnalyzer_distributionDerived extends CollocationNgr
 		ZipfDistributionsContainer zipfContainer= new ZipfDistributionsContainer(stanceLexicon, percentil);
 		
 		for (JCas jcas : new JCasIterable(data.getDataReader())){
-			this.engine.process(jcas);
+			if(!useBinCas){
+				this.engine.process(jcas);
+			}
 			String goldOutcome= JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance();
 			float commentPolarity = getPolarity(stanceLexicon, jcas);
 			String outcome = ressolveOutcome((float)zipfContainer.getZipfUpperBound(),(float)zipfContainer.getZipfLowerBound(),commentPolarity);

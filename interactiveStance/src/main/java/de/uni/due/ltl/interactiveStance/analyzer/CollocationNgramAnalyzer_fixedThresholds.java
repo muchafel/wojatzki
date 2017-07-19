@@ -57,8 +57,8 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 
 	private int fixedThreshold=75;
 	
-	public CollocationNgramAnalyzer_fixedThresholds(StanceDB db, EvaluationScenario scenario, int fixedThreshold,ExperimentLogging logging) {
-		super(db, scenario,logging);
+	public CollocationNgramAnalyzer_fixedThresholds(StanceDB db, EvaluationScenario scenario, int fixedThreshold,ExperimentLogging logging, boolean useBinCas) {
+		super(db, scenario,logging,useBinCas);
 		this.fixedThreshold= fixedThreshold;
 	}
 
@@ -85,7 +85,9 @@ public class CollocationNgramAnalyzer_fixedThresholds extends CollocationNgramAn
 		float lowerBound = stanceLexicon.getNthNegativePercent(lowerPercentage);
 		
 		for (JCas jcas : new JCasIterable(evaluationDataSet.getDataReader())){
-			this.engine.process(jcas);
+			if(!useBinCas){
+				this.engine.process(jcas);
+			}
 			String goldOutcome= JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance();
 			float commentPolarity = getPolarity(stanceLexicon, jcas);
 			String outcome = ressolveOutcome(upperBound,lowerBound,commentPolarity);

@@ -57,8 +57,8 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 
 	private final int fixedThreshold=75;
 	
-	public CollocationNgramAnalyzer_optimized(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging) {
-		super(db, scenario,logging);
+	public CollocationNgramAnalyzer_optimized(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging, boolean useBinCas) {
+		super(db, scenario,logging,useBinCas);
 	}
 
 
@@ -146,7 +146,9 @@ public class CollocationNgramAnalyzer_optimized extends CollocationNgramAnalyzer
 		
 		
 		for (JCas jcas : new JCasIterable(evaluationDataSet.getDataReader())){
-			this.engine.process(jcas);
+			if(!useBinCas){
+				this.engine.process(jcas);
+			}
 			result=addEvaluations(result, stanceLexicon,jcas);
 		}
 		

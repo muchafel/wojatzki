@@ -1,6 +1,8 @@
 package de.uni.due.ltl.interactiveStance.client.detectorViews;
 
 import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -73,6 +75,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     Label availableCaption = new Label("Available Statements");
     protected VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
     protected VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
+    HorizontalLayout controlsPanel= new HorizontalLayout();
 
     public DetectorView_Base(ExperimentConfiguration config,ExperimentLogging logging) {
     	this.logging=logging;
@@ -88,11 +91,19 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         gap.setHeight("1em");
 
     	searchField.setPlaceholder("search term");
+    	searchField.setWidth(400, Unit.PIXELS);
     	searchField.focus();
     	
         searchField.addValueChangeListener(event -> {
            filter.setVisible(false);
         });
+        
+		searchField.addShortcutListener(new ShortcutListener("ENTER", ShortcutAction.KeyCode.ENTER, null) {
+			@Override
+			public void handleAction(Object sender, Object target) {
+				search(searchField.getValue());
+			}
+		});
 
         // configure available grid
         filter.setDescription("filter");
@@ -104,12 +115,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         filter.setVisible(false);
 
         searchButton.addClickListener(clickEvent -> {
-        	new SearchEvent(logging, searchField.getValue()).persist(false);
-            this.service.newSearch(searchField.getValue());
-            filter.setValue("");
-            filter.setVisible(true);
-            refresh_AvailableGrid();
-            refresh_SelectedGrid();
+        	search(searchField.getValue());
         });
 
 //        breaklineLabel.setWidth("20%");
@@ -141,6 +147,15 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         analysisButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
         analysisButton.setIcon(VaadinIcons.COGS);
     }
+
+	private void search(String searchFieldString) {
+		new SearchEvent(logging, searchFieldString).persist(false);
+        this.service.newSearch(searchFieldString);
+        filter.setValue("");
+        filter.setVisible(true);
+        refresh_AvailableGrid();
+        refresh_SelectedGrid();
+	}
 
 	protected abstract void configureGrids();
 
@@ -188,6 +203,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         selectedTargetsContent.setExpandRatio(selectedFavorTargetsContent, 1.0f);
         selectedTargetsContent.setExpandRatio(selectedAgainstTargetsContent, 1.0f);
 		selectedTargetsContent.setSpacing(true);
+		
+		controlsPanel.addComponent(analysisButton);
 
 		this.addComponent(piechartPanel);
 		this.addComponent(gap);
@@ -200,8 +217,9 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 //		this.addComponent(filter);
 		this.addComponent(listOfAvailableTargets);
 		this.addComponent(selectedTargetsContent);
-        this.addComponent(analysisButton);
-        this.setComponentAlignment(analysisButton, Alignment.BOTTOM_RIGHT);
+        this.addComponent(controlsPanel);
+        controlsPanel.setComponentAlignment(analysisButton, Alignment.BOTTOM_RIGHT);
+        this.setComponentAlignment(controlsPanel, Alignment.BOTTOM_RIGHT);
     }
 
     /**

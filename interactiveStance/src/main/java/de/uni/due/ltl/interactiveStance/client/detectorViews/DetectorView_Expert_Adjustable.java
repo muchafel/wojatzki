@@ -19,19 +19,20 @@ public class DetectorView_Expert_Adjustable extends DetectorView_Expert implemen
 	
 	@Override
 	protected void configureComponents() {
-		super.configureComponents();
+		
 		sensitivitySlider=new Slider("Model Sensitivity", 0, 100);
 		sensitivitySlider.setDescription("Sets how sensitive the model is for polarity markers. \n If the sensitivity is high even slight hints on polarity are used. \nIf the sensitivity is low only the stromgest indicators will be used for classification.");
 		sensitivitySlider.setOrientation(SliderOrientation.HORIZONTAL);
 		
 		//TODO do that at the right place!
-		this.addComponent(sensitivitySlider);
+		controlsPanel.addComponent(sensitivitySlider);
 		
 		sensitivitySlider.addValueChangeListener(event -> {
 		    int value = event.getValue().intValue();
 		    new AdjustmentEvent(logging, value).persist(false);
 		    service.adjustAnalyzer(value);
 		});
+		super.configureComponents();
 	}
 	
 	@Override

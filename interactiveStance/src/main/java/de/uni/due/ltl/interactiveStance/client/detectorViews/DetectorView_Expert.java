@@ -44,7 +44,6 @@ private Button coverageButton;
 	
 	@Override
 	protected void configureComponents() {
-		super.configureComponents();
 		coverageButton= new Button("Coverage ");
 		coverageButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 		coverageButton.setIcon(VaadinIcons.MAGIC);
@@ -54,8 +53,8 @@ private Button coverageButton;
               new CoverageEvent(logging,result.getCoverageSelection()).persist(false);
               Notification.show("coverage of your selection "+String.valueOf(result.getCoverageSelection()));
 			});
-		this.addComponent(coverageButton);
-		
+		controlsPanel.addComponent(coverageButton);
+		super.configureComponents();
 	}
  
  

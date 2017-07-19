@@ -8,6 +8,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.frequency.util.FrequencyDistribution;
+import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasReader;
 import de.uni.due.ltl.interactiveStance.types.StanceAnnotation;
 
 public class EvaluationDataSet {
@@ -16,15 +17,24 @@ public class EvaluationDataSet {
 	private long numberOfAgainst;
 	private long numberOfNone;
 	private long numberOfInstances;
+	private boolean useBinCas;
 
 	private CollectionReaderDescription reader;
 
-	public EvaluationDataSet(String path) throws ResourceInitializationException {
+	public EvaluationDataSet(String path, boolean useBinCas) throws ResourceInitializationException {
 		FrequencyDistribution<String> classDistribution = new FrequencyDistribution<>();
 
-		reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
-				TaskATweetReader.PARAM_SOURCE_LOCATION, path, TaskATweetReader.PARAM_PATTERNS, "*.xml",
-				TaskATweetReader.PARAM_LANGUAGE, "en", TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
+		this.useBinCas=useBinCas;
+		if(useBinCas){
+			reader = CollectionReaderFactory.createReaderDescription(  BinaryCasReader.class,
+	                BinaryCasReader.PARAM_SOURCE_LOCATION, path+"/bincas/",
+	                BinaryCasReader.PARAM_PATTERNS, "*.bin");
+		}else{
+			reader = CollectionReaderFactory.createReaderDescription(TaskATweetReader.class,
+					TaskATweetReader.PARAM_SOURCE_LOCATION, path, TaskATweetReader.PARAM_PATTERNS, "*.xml",
+					TaskATweetReader.PARAM_LANGUAGE, "en", TaskATweetReader.PARAM_MEMORIZE_RESOURCE, true);
+		}
+		
 
 		for (JCas jcas : new JCasIterable(reader)) {
 			classDistribution.inc(JCasUtil.select(jcas, StanceAnnotation.class).iterator().next().getStance());

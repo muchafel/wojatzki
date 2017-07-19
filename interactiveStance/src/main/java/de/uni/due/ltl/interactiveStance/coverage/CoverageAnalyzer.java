@@ -33,12 +33,14 @@ public class CoverageAnalyzer {
 	private StanceDB db;
 	private EvaluationScenario evaluationScenario;
 	protected AnalysisEngine engine;
+	private boolean useBinCas;
 	
 	
-	public CoverageAnalyzer(StanceDB db, EvaluationScenario evaluationScenario) {
+	public CoverageAnalyzer(StanceDB db, EvaluationScenario evaluationScenario,boolean useBinCas) {
 		this.db=db;
 		this.evaluationScenario= evaluationScenario;
 		this.engine = getTokenizerEngine();
+		this.useBinCas=useBinCas;
 	}
 
 	
@@ -107,7 +109,7 @@ public class CoverageAnalyzer {
 	private Set<String> getWordsInData(CollectionReaderDescription dataReader) throws AnalysisEngineProcessException {
 		Set<String> result= new HashSet<>();
 		for (JCas jcas : new JCasIterable(dataReader)){
-			this.engine.process(jcas);
+			if(!useBinCas)this.engine.process(jcas);
 			result.addAll(JCasUtil.toText(JCasUtil.select(jcas,Token.class)));
 		}	
 		return result;

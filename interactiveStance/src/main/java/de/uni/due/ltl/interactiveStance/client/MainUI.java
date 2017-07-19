@@ -1,6 +1,7 @@
 package de.uni.due.ltl.interactiveStance.client;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Theme("valo-stance")
+@Title("Interactive Stance Detector")
 public class MainUI extends UI {
 
 	//logging gets initialized in Config view
@@ -57,6 +59,7 @@ public class MainUI extends UI {
         MenuBar.MenuItem homepage = menuBar.addItem("log out", null, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
+            	System.out.println(logging);
             	new LogOutEvent(logging).persist(true);
                 getUI().getNavigator().navigateTo(LOGINVIEW);
             }
