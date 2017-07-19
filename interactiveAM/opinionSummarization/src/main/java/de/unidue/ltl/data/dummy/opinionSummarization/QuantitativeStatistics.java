@@ -21,7 +21,7 @@ public class QuantitativeStatistics {
 		Map<String,Integer> statementToAgreement=getStatementToAgreement(data);
 		statementToAgreement= sort(statementToAgreement);
 		for (String key: statementToAgreement.keySet()){
-			System.out.println(key+" : "+statementToAgreement.get(key));
+			System.out.println(key+" : "+statementToAgreement.get(key)/statementToAgreement.size());
 		}
 	}
 
@@ -58,7 +58,6 @@ public class QuantitativeStatistics {
 				break;
 			}else{
 				j++;
-				
 				statsForCluster(hierarchicalClusters.get(key),data);
 			}
 		}
@@ -89,8 +88,20 @@ public class QuantitativeStatistics {
 	}
 
 	private List<CanabisParticipant> getAllContainedParticipants(Cluster c, OpinionSummarizationData data) {
-		List<Cluster> leafs= getAllLeafs(c, new ArrayList<Cluster>());
+		List<Cluster> leafs= getAllLeafs(c);
 		return mapLeafsToParticipants(leafs,data);
+	}
+
+	private List<Cluster> getAllLeafs(Cluster c) {
+		List<Cluster> leafNodes = new ArrayList<>();
+		if (c.isLeaf()) {
+			leafNodes.add(c);
+		} else {
+			for (Cluster child : c.getChildren()) {
+				leafNodes.addAll(getAllLeafs(child));
+			}
+		}
+		return leafNodes;
 	}
 
 	private List<CanabisParticipant> mapLeafsToParticipants(List<Cluster> leafs, OpinionSummarizationData data) {
@@ -106,19 +117,49 @@ public class QuantitativeStatistics {
 		return result;
 	}
 
-	private List<Cluster> getAllLeafs(Cluster c, ArrayList<Cluster> arrayList) {
-		if(c.isLeaf()){
-			arrayList.add(c);
-		}
-		
-		for(Cluster child: c.getChildren()){
-			if(child.isLeaf()){
-				arrayList.add(child);
+	
+	
+
+	public void calculateAgreement4ClusteredStatetements(Map<String, Cluster> hierarchicalClusters, int i,
+			OpinionSummarizationData data) throws Exception {
+		int j=0;
+		for(String key: hierarchicalClusters.keySet()){
+			if(j==i){
+				break;
 			}else{
-				arrayList.addAll(getAllLeafs(child,arrayList));
+				j++;
+				agreementForCluster(hierarchicalClusters.get(key),data);
 			}
 		}
-		return arrayList;
+		
+	}
+
+	private void agreementForCluster(Cluster cluster, OpinionSummarizationData data) throws Exception {
+		System.out.println(cluster.getName()+" "+cluster.countLeafs());
+		List<String> statements= getAllContainedStatements(cluster,data);
+		int count=0;
+		for(String st: statements){
+			count+=count(data.getRatingsForStatement(st));
+		}
+		System.out.println("agreement for cluster "+cluster.getName()+" "+count/statements.size()/data.getParticipants().size());
+	}
+
+	private List<String> getAllContainedStatements(Cluster cluster, OpinionSummarizationData data) {
+		List<Cluster> leafs= getAllLeafs(cluster);
+		return mapLeafsToStatements(leafs, data);
+	}
+
+	private List<String> mapLeafsToStatements(List<Cluster> leafs, OpinionSummarizationData data) {
+		List<String> result= new ArrayList<>();
+		
+		for(String st : data.getStatements()){
+			for(Cluster leaf: leafs){
+				if(leaf.getName().equals(String.valueOf(st))){
+					result.add(st);
+				}
+			}
+		}
+		return result;
 	}
 
 

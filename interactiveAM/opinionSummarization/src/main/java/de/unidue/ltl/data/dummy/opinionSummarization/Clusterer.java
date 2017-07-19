@@ -38,15 +38,15 @@ public class Clusterer {
 		}else{
 			names = getNames(data.getParticipants());
 		}
-		System.out.println(Arrays.toString(names));
+		System.out.println("instances to cluster "+Arrays.toString(names));
 		
 		double[][] distances = generateDistanceMatrix(data,clusterStatements,true);
-		System.out.println("DISTANCE MATRIX");
+//		System.out.println("DISTANCE MATRIX");
 //		for (double[] row : distances){
 //		    System.out.println(Arrays.toString(row));
 //		}
 		Cluster cluster = alg.performClustering(distances, names,new AverageLinkageStrategy());
-		
+		cluster.toConsole(0);
 		DendrogramPanel dp = new DendrogramPanel();
 		dp.setShowScale(false);
 		dp.setModel(cluster);
@@ -64,7 +64,7 @@ public class Clusterer {
 	private Map<String, Cluster> getClusterMapping(Cluster cluster, Map<String, Cluster> hashMap) {
 		
 		for (Cluster c : cluster.getChildren()) {
-			System.out.println(c.getName()+" "+c.countLeafs()+" "+c.isLeaf());
+//			System.out.println(c.getName()+" "+c.countLeafs()+" "+c.isLeaf());
 			hashMap.put(c.getName(), c);
 			hashMap.putAll(getClusterMapping(c, hashMap));
 		}
