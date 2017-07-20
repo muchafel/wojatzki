@@ -70,6 +70,9 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 //    Label favorSelectionTextField = new Label();
 //    Label againstSelectionTextField = new Label();
     Label gap = new Label();
+    protected Label gridsBaseDesc = new Label("Choose Statements which are in favor or against ");
+    protected Label gridsTargetDesc = new Label();
+    protected VerticalLayout gridsDescription = new VerticalLayout();
     Label analysisLabel = new Label();
 //    Label breaklineLabel = new Label("<hr/>", ContentMode.HTML);
     Label availableCaption = new Label("Available Statements");
@@ -171,6 +174,13 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         searchLayout.setComponentAlignment(searchButton, Alignment.MIDDLE_CENTER);
         searchLayout.setComponentAlignment(searchField, Alignment.MIDDLE_CENTER);
 
+        gridsDescription.addComponent(gridsBaseDesc);
+        gridsDescription.addComponent(gridsTargetDesc);
+        gridsDescription.setComponentAlignment(gridsBaseDesc, Alignment.MIDDLE_CENTER);
+        gridsDescription.setComponentAlignment(gridsTargetDesc, Alignment.MIDDLE_CENTER);
+        gridsDescription.setSpacing(false);
+        gridsDescription.setMargin(false);
+
         listOfAvailableTargets.setWidth("100%");
         listOfAvailableTargets.setHeightMode(HeightMode.ROW);
         listOfAvailableTargets.setHeightByRows(6.0D);
@@ -208,8 +218,8 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 
 		this.addComponent(piechartPanel);
 		this.addComponent(gap);
-		this.addComponent(analysisLabel);
-		this.setComponentAlignment(analysisLabel, Alignment.MIDDLE_CENTER);
+		this.addComponent(gridsDescription);
+//		this.setComponentAlignment(analysisLabel, Alignment.MIDDLE_CENTER);
 //		this.addComponent(breaklineLabel);
 //      this.setComponentAlignment(breaklineLabel, Alignment.MIDDLE_CENTER);
         this.addComponent(searchLayout);
@@ -363,9 +373,12 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         this.piechartLayout.setComponentAlignment(basicResultLabel, Alignment.MIDDLE_CENTER);
         this.piechartLayout.setComponentAlignment(pieChart, Alignment.MIDDLE_CENTER);
 
-        this.analysisLabel.setValue("Choose Statements which are in favor or against "+service.getEvaluationScenario().getTarget());
-        this.analysisLabel.addStyleName(ValoTheme.LABEL_H2);
-        this.analysisLabel.addStyleName("label-wrap");
+        this.gridsTargetDesc.setValue(service.getEvaluationScenario().getTarget());
+        this.gridsTargetDesc.addStyleName(ValoTheme.LABEL_H3);
+        this.gridsTargetDesc.addStyleName("label-wrap");
+//        this.analysisLabel.setValue("Choose Statements which are in favor or against "+service.getEvaluationScenario().getTarget());
+//        this.analysisLabel.addStyleName(ValoTheme.LABEL_H2);
+//        this.analysisLabel.addStyleName("label-wrap");
 		// initial filling of grid
 		refresh_AvailableGrid();
 		refresh_SelectedGrid();
