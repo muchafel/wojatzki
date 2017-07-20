@@ -80,7 +80,7 @@ public class DetectorView_Simplified extends DetectorView_Base implements View {
         listOfAvailableTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("statements").setId("targetName");
         // The length of Target Name is often long. let it take all extra space.
         listOfAvailableTargets.getColumn("targetName").setExpandRatio(1);
-        listOfAvailableTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
+//        listOfAvailableTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfAvailableTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         //set icon
@@ -91,12 +91,12 @@ public class DetectorView_Simplified extends DetectorView_Base implements View {
         // configure selection grid of favor and against
         listOfSelectedFavorTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("statements").setId("targetName");
         listOfSelectedFavorTargets.getColumn("targetName").setExpandRatio(1);
-        listOfSelectedFavorTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
+//        listOfSelectedFavorTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfSelectedFavorTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         listOfSelectedAgainstTargets.addColumn(target -> VaadinIcons.ELLIPSIS_V.getHtml() + " " + target.getTargetName(), new HtmlRenderer()).setCaption("statements").setId("targetName");
         listOfSelectedAgainstTargets.getColumn("targetName").setExpandRatio(1);
-        listOfSelectedAgainstTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
+//        listOfSelectedAgainstTargets.getColumn("targetName").setDescriptionGenerator(ExplicitTarget::getTargetName);
         listOfSelectedAgainstTargets.setSelectionMode(Grid.SelectionMode.SINGLE);
 		
 	}
