@@ -61,7 +61,7 @@ public class GetIntrinsicThresholds {
 			HashMap<String, ExplicitTarget> selectedTargetsAgainst = new HashMap<>();
 
 			// load evaluation Data
-			EvaluationScenario data = new EvaluationScenario(target, "");
+			EvaluationScenario data = new EvaluationScenario(target, "",true);
 
 			FrequencyDistribution<String> favor = new FrequencyDistribution<String>();
 			FrequencyDistribution<String> against = new FrequencyDistribution<String>();
@@ -100,7 +100,7 @@ public class GetIntrinsicThresholds {
 			ExperimentLogging logging= new ExperimentLogging("ThresholdTestUser");
 			
 			// set up analyzer
-			CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75,logging);
+			CollocationNgramAnalyzer_fixedThresholds analyzer = new CollocationNgramAnalyzer_fixedThresholds(db,data,75,logging,true);
 			StanceLexicon lexicon= analyzer.createLexiconFromDistributions(favor, against);
 			lexicon.plotChartAndThreshold(target+"_1_d", 70, 70);
 			

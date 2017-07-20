@@ -17,4 +17,8 @@ public class AdjustmentEvent extends LoggingEvent {
 		return "DETECTOR_ADJUSTED_TO\t"+adjustment;
 	}
 
+	public int getAdjustment() {
+		return adjustment;
+	}
+
 }

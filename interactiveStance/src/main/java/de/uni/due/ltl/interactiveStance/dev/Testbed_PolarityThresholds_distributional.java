@@ -37,13 +37,13 @@ public class Testbed_PolarityThresholds_distributional {
 		}
 
 		// load evaluation Data
-		EvaluationScenario data = new EvaluationScenario("Atheism","");
+		EvaluationScenario data = new EvaluationScenario("Atheism","",true);
 
 		
 		ExperimentLogging logging= new ExperimentLogging("DistributionalThresholdTestUser");
 		
 		// set up analyzer
-		CollocationNgramAnalyzer_distributionDerived analyzer = new CollocationNgramAnalyzer_distributionDerived(db,data,0.95,logging);
+		CollocationNgramAnalyzer_distributionDerived analyzer = new CollocationNgramAnalyzer_distributionDerived(db,data,0.95,logging,true);
 		
 		//test on test data 
 		analyzer.analyze(selectedTargetsFavor, selectedTargetsAgainst, 1,true);

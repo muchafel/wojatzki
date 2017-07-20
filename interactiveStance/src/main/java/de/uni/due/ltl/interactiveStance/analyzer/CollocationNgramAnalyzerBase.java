@@ -50,13 +50,15 @@ public abstract class CollocationNgramAnalyzerBase {
 	protected AnalysisEngine engine;
 	protected EvaluationScenario scenario;
 	protected ExperimentLogging logging;
+	protected boolean useBinCas;
 //	private final int fixedThreshold=75;
 
-	public CollocationNgramAnalyzerBase(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging) {
+	public CollocationNgramAnalyzerBase(StanceDB db, EvaluationScenario scenario,ExperimentLogging logging, boolean useBinCas) {
 		this.db = db;
 		this.engine = getTokenizerEngine();
 		this.scenario=scenario;
 		this.logging= logging;
+		this.useBinCas=useBinCas;
 	}
 
 	/**
