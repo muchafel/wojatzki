@@ -56,7 +56,7 @@ public class AblationBarchart {
 		return barChart;
 	}
 
-	public Component createChart(String label, double microF, Map<String, Double> ablationFavor) {
+	public JFreeChartWrapper createChart(String label, double microF, Map<String, Double> ablationFavor) {
 		JFreeChart chart = createchart(label, createBarData(microF, ablationFavor));
 		return new JFreeChartWrapper(chart);
 	}

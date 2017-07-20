@@ -6,17 +6,19 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.uni.due.ltl.interactiveStance.backend.BackEnd;
 import de.uni.due.ltl.interactiveStance.backend.EvaluationResult;
 import de.uni.due.ltl.interactiveStance.client.charts.AblationBarchart;
 import de.uni.due.ltl.interactiveStance.client.charts.PredictionQualityPieChart;
+import org.vaadin.addon.JFreeChartWrapper;
 
 public class AblationView  extends VerticalLayout implements View {
 
 	
-	HorizontalLayout barcharts = new HorizontalLayout();
+	VerticalLayout barcharts = new VerticalLayout();
 	private Map<String,Double> ablationFavor;
 	private Map<String,Double> ablationAgainst;
 	private BackEnd service;
@@ -57,8 +59,16 @@ public class AblationView  extends VerticalLayout implements View {
 
 	private void addData(Map<String, Double> ablationFavor, Map<String, Double> ablationAgainst) {
 		barcharts.removeAllComponents();
-		barcharts.addComponent(new AblationBarchart().createChart("FAVOR", result.getMicroF(),ablationFavor));
-		barcharts.addComponent(new AblationBarchart().createChart("AGAINST", result.getMicroF(),ablationAgainst));
+		JFreeChartWrapper favorBarChart = new AblationBarchart().createChart("FAVOR", result.getMicroF(),ablationFavor);
+		JFreeChartWrapper againstBarChart = new AblationBarchart().createChart("AGAINST", result.getMicroF(),ablationAgainst);
+//		float w = (float) (UI.getCurrent().getPage().getBrowserWindowWidth());
+//		float h = (w/3.0f) / 1.66f;
+//		favorBarChart.setWidth(w/2, Unit.PIXELS);
+		favorBarChart.setHeight(250, Unit.PIXELS);
+//		againstBarChart.setWidth(w/2, Unit.PIXELS);
+		againstBarChart.setHeight(250, Unit.PIXELS);
+		barcharts.addComponent(favorBarChart);
+		barcharts.addComponent(againstBarChart);
 	}
 
 }
