@@ -4,6 +4,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.Orientation;
 import com.vaadin.shared.ui.slider.SliderOrientation;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Slider;
 
 import de.uni.due.ltl.interactiveStance.backend.ExperimentConfiguration;
@@ -25,8 +26,8 @@ public class DetectorView_Expert_Adjustable extends DetectorView_Expert implemen
 		sensitivitySlider.setOrientation(SliderOrientation.HORIZONTAL);
 		
 		//TODO do that at the right place!
-		controlsPanel.addComponent(sensitivitySlider);
-		
+		advancedSettings.addComponent(sensitivitySlider);
+
 		sensitivitySlider.addValueChangeListener(event -> {
 		    int value = event.getValue().intValue();
 		    new AdjustmentEvent(logging, value).persist(false);

@@ -79,6 +79,7 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
     protected VerticalLayout selectedFavorTargetsContent = new VerticalLayout();
     protected VerticalLayout selectedAgainstTargetsContent = new VerticalLayout();
     HorizontalLayout controlsPanel= new HorizontalLayout();
+    HorizontalLayout advancedSettings = new HorizontalLayout();
 
     public DetectorView_Base(ExperimentConfiguration config,ExperimentLogging logging) {
     	this.logging=logging;
@@ -213,8 +214,10 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
         selectedTargetsContent.setExpandRatio(selectedFavorTargetsContent, 1.0f);
         selectedTargetsContent.setExpandRatio(selectedAgainstTargetsContent, 1.0f);
 		selectedTargetsContent.setSpacing(true);
-		
-		controlsPanel.addComponent(analysisButton);
+
+        controlsPanel.addComponent(advancedSettings);
+        controlsPanel.addComponent(analysisButton);
+        controlsPanel.setWidth("100%");
 
 		this.addComponent(piechartPanel);
 		this.addComponent(gap);
@@ -228,8 +231,9 @@ public abstract class DetectorView_Base extends VerticalLayout implements View {
 		this.addComponent(listOfAvailableTargets);
 		this.addComponent(selectedTargetsContent);
         this.addComponent(controlsPanel);
-        controlsPanel.setComponentAlignment(analysisButton, Alignment.BOTTOM_RIGHT);
-        this.setComponentAlignment(controlsPanel, Alignment.BOTTOM_RIGHT);
+        controlsPanel.setComponentAlignment(analysisButton, Alignment.MIDDLE_RIGHT);
+        controlsPanel.setComponentAlignment(advancedSettings, Alignment.MIDDLE_LEFT);
+//        this.setComponentAlignment(controlsPanel, Alignment.BOTTOM_RIGHT);
     }
 
     /**

@@ -53,7 +53,8 @@ private Button coverageButton;
               new CoverageEvent(logging,result.getCoverageSelection()).persist(false);
               Notification.show("coverage of your selection "+String.valueOf(result.getCoverageSelection()));
 			});
-		controlsPanel.addComponent(coverageButton);
+		advancedSettings.addComponent(coverageButton);
+        advancedSettings.setComponentAlignment(coverageButton, Alignment.MIDDLE_CENTER);
 		super.configureComponents();
 	}
  
