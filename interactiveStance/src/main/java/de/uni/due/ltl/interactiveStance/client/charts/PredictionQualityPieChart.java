@@ -49,27 +49,30 @@ public class PredictionQualityPieChart {
 				dataset, // data
 				false, // include legend
 				true, false);
-		chart.setBackgroundPaint(new Color(0, 0, 0, 0));
+//		chart.setBackgroundPaint(new Color(0, 0, 0, 0));
 
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 		plot.setNoDataMessage("No data available");
 		plot.setCircular(false);
-		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
-		plot.setLabelGap(0.02);
+//		plot.setBackgroundPaint(new Color(0, 0, 0, 0));
+//		plot.setLabelGap(0.02);
+		plot.setBackgroundPaint(null);
+		plot.setShadowPaint(null);
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1}", NumberFormat.getNumberInstance(),NumberFormat.getPercentInstance()));
 		
 		   // keep space between all blocks.
-        plot.setExplodePercent("Correct", 0.05);
+//        plot.setExplodePercent("Correct", 0.05);
         // set color of each part in pie chart.
         java.util.List<Comparable> keys = dataset.getKeys();
         for (int i = 0; i < keys.size(); i++) {
             if (keys.get(i).equals("Correct")) {
-                plot.setSectionPaint("Correct", Color.GREEN);
-            } else if (keys.get(i).equals("Wrong")) {
-                plot.setSectionPaint("Wrong", Color.RED);
-            } 
-        }
+				plot.setSectionPaint("Correct", new Color(60, 196, 73));
+
+			} else if (keys.get(i).equals("Wrong")) {
+				plot.setSectionPaint("Wrong", new Color(234, 107, 93));
+			}
+		}
         // no border
         plot.setOutlineVisible(false);
 		return chart;
