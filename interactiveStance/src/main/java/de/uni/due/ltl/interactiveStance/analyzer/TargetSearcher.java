@@ -3,7 +3,10 @@ package de.uni.due.ltl.interactiveStance.analyzer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -48,7 +51,7 @@ public class TargetSearcher {
 		
 	}
 	
-	public List<ExplicitTarget> search(String query, boolean doSort) throws IOException, ParseException{
+	public List<ExplicitTarget> search(String query, boolean doSort, HashMap<String, ExplicitTarget> selectedFavorTargets, HashMap<String, ExplicitTarget> selectedAgainstTargets) throws IOException, ParseException{
 		List<ExplicitTarget> result= new ArrayList<>();
 		QueryParser parser= new QueryParser("name", analyzer);
 		parser.setAllowLeadingWildcard(true);
@@ -57,6 +60,9 @@ public class TargetSearcher {
         IndexReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
       
+        //get a list of all IDs that have been selected
+        Set<String> selectedIds= getSelectedIds(selectedFavorTargets,selectedAgainstTargets);
+        
         TopDocs docs= null;
         
         if(doSort){
@@ -73,14 +79,31 @@ public class TargetSearcher {
         for(int i=0;i<hits.length;++i) {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
-            System.out.println((i + 1) + ".  " + d.get("name")+" ("+d.get("id")+")" +" : "+d.get("website")+  " : "+ d.get("instanceCount")+" (+"+d.get("favorCount")+"/-"+d.get("againstCount")+")");
-            ExplicitTarget explicitTarget= new ExplicitTarget(d.get("id"), d.get("name"), Integer.valueOf(d.get("favorCount")), Integer.valueOf(d.get("againstCount")));
-            result.add(explicitTarget);
+            
+            //only add the docs if the target is already selected
+            if(!selectedIds.contains(d.get("id"))){
+            	 System.out.println((i + 1) + ".  " + d.get("name")+" ("+d.get("id")+")" +" : "+d.get("website")+  " : "+ d.get("instanceCount")+" (+"+d.get("favorCount")+"/-"+d.get("againstCount")+")");
+                 ExplicitTarget explicitTarget= new ExplicitTarget(d.get("id"), d.get("name"), Integer.valueOf(d.get("favorCount")), Integer.valueOf(d.get("againstCount")));
+                 result.add(explicitTarget);
+            }
         }
 
         reader.close();
 		
 		return result;
+	}
+
+	/**
+	 * returns a list of all IDs that are contained in the selectedFavor and selectedAgainst list
+	 * @param selectedFavorTargets
+	 * @param selectedAgainstTargets
+	 * @return
+	 */
+	private Set<String> getSelectedIds(HashMap<String, ExplicitTarget> selectedFavorTargets,HashMap<String, ExplicitTarget> selectedAgainstTargets) {
+		Set<String> selectedIds = new HashSet<>();
+		selectedIds.addAll(selectedFavorTargets.keySet());
+		selectedIds.addAll(selectedAgainstTargets.keySet());
+		return selectedIds;
 	}
 	
 
