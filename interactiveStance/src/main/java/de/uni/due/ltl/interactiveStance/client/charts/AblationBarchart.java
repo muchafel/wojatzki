@@ -42,6 +42,8 @@ public class AblationBarchart {
 
 		CategoryPlot plot = barChart.getCategoryPlot();
         plot.setBackgroundPaint(Color.white);
+		plot.getRangeAxis().setLowerBound(-1.0);
+		plot.getRangeAxis().setUpperBound(1.0);
         // disable bar outlines...
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         
@@ -50,9 +52,12 @@ public class AblationBarchart {
         		50, 50, Color.RED,
                 300, 100, Color.BLUE
         );
-        renderer.setSeriesPaint(1, gp0);
-		
-		
+
+		renderer.setShadowVisible(false);
+		renderer.setMaximumBarWidth(.2);
+		renderer.setBase(0);
+//        renderer.setSeriesPaint(1, gp0);
+
 		return barChart;
 	}
 
