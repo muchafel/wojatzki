@@ -3,11 +3,13 @@ package de.uni.due.ltl.interactiveStance.client.charts;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Map;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
@@ -15,16 +17,28 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.general.DefaultPieDataset;
 import org.vaadin.addon.JFreeChartWrapper;
 
 import com.vaadin.ui.Component;
 
 public class AblationBarchart {
-	private DefaultPieDataset dataset = new DefaultPieDataset();
+//	private DefaultPieDataset dataset = new DefaultPieDataset();
+	private float recommendedHeight = 0;
 
 	public AblationBarchart() {
 	}
+
+	public float getRecommendedHeight() {
+		return this.recommendedHeight;
+	}
+
+	private void setRecommendedHeight(Map<String, Double> dataset) {
+		int size = dataset.size();
+		this.recommendedHeight = 200 + 40 * size; // 40 pixel for each bar item
+	}
+
 
 	private CategoryDataset createBarData(double f1_all, Map<String, Double> ablationFavor) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -53,8 +67,12 @@ public class AblationBarchart {
                 300, 100, Color.BLUE
         );
 
+		renderer.setBaseItemLabelsVisible(true);
+		DecimalFormat decimalFormat = new DecimalFormat("##,###.00");
+		renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", decimalFormat));
 		renderer.setShadowVisible(false);
-		renderer.setMaximumBarWidth(.2);
+		renderer.setMaximumBarWidth(0.05);
+		renderer.setMinimumBarLength(10);
 		renderer.setBase(0);
 //        renderer.setSeriesPaint(1, gp0);
 
@@ -63,6 +81,7 @@ public class AblationBarchart {
 
 	public JFreeChartWrapper createChart(String label, double microF, Map<String, Double> ablationFavor) {
 		JFreeChart chart = createchart(label, createBarData(microF, ablationFavor));
+		setRecommendedHeight(ablationFavor);
 		return new JFreeChartWrapper(chart);
 	}
 }

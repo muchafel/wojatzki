@@ -59,16 +59,18 @@ public class AblationView  extends VerticalLayout implements View {
 
 	private void addData(Map<String, Double> ablationFavor, Map<String, Double> ablationAgainst) {
 		barcharts.removeAllComponents();
-		JFreeChartWrapper favorBarChart = new AblationBarchart().createChart("FAVOR", result.getMicroF(),ablationFavor);
-		JFreeChartWrapper againstBarChart = new AblationBarchart().createChart("AGAINST", result.getMicroF(),ablationAgainst);
+		AblationBarchart favorBarChart = new AblationBarchart();
+		JFreeChartWrapper favorBarChartWrapper = favorBarChart.createChart("FAVOR", result.getMicroF(),ablationFavor);
+		AblationBarchart againstBarChart = new AblationBarchart();
+		JFreeChartWrapper againstBarChartWrapper = againstBarChart.createChart("AGAINST", result.getMicroF(),ablationAgainst);
 //		float w = (float) (UI.getCurrent().getPage().getBrowserWindowWidth());
 //		float h = (w/3.0f) / 1.66f;
 //		favorBarChart.setWidth(w/2, Unit.PIXELS);
-		favorBarChart.setHeight(250, Unit.PIXELS);
+		favorBarChartWrapper.setHeight(favorBarChart.getRecommendedHeight(), Unit.PIXELS);
 //		againstBarChart.setWidth(w/2, Unit.PIXELS);
-		againstBarChart.setHeight(250, Unit.PIXELS);
-		barcharts.addComponent(favorBarChart);
-		barcharts.addComponent(againstBarChart);
+		againstBarChartWrapper.setHeight(againstBarChart.getRecommendedHeight(), Unit.PIXELS);
+		barcharts.addComponent(favorBarChartWrapper);
+		barcharts.addComponent(againstBarChartWrapper);
 	}
 
 }
