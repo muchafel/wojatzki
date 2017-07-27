@@ -26,24 +26,24 @@ public class Testbed_PolarityThresholds {
 		searcher.SetUp(db, 3);
 
 		System.out.println("adding favor targets");
-		for (ExplicitTarget t : searcher.search("God_Does_Not_Exist", true)) {
+		for (ExplicitTarget t : searcher.search("God_Does_Not_Exist", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsFavor.put(t.getId(), t);
 		}
-		for (ExplicitTarget t : searcher.search("Religious_Tale", true)) {
+		for (ExplicitTarget t : searcher.search("Religious_Tale", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsFavor.put(t.getId(), t);
 		}
-		for (ExplicitTarget t : searcher.search("Darwin", true)) {
+		for (ExplicitTarget t : searcher.search("Darwin", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsFavor.put(t.getId(), t);
 		}
 
 		System.out.println("adding against targets");
-		for (ExplicitTarget t : searcher.search("God", true)) {
+		for (ExplicitTarget t : searcher.search("God", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
-		for (ExplicitTarget t : searcher.search("Christ", true)) {
+		for (ExplicitTarget t : searcher.search("Christ", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
-		for (ExplicitTarget t : searcher.search("Bible", true)) {
+		for (ExplicitTarget t : searcher.search("Bible", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 

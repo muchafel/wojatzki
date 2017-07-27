@@ -23,11 +23,11 @@ public class CollocationNgramAnalyzerTest {
 		TargetSearcher searcher= new TargetSearcher();
 		searcher.SetUp(db,3);
 		
-		for(ExplicitTarget t :searcher.search("evolution",true)){
+		for(ExplicitTarget t :searcher.search("evolution",true,selectedTargetsFavor,selectedTargetsAgainst)){
 			selectedTargetsFavor.put(t.getId(), t);
 		}
 		
-		for(ExplicitTarget t :searcher.search("god",true)){
+		for(ExplicitTarget t :searcher.search("god",true,selectedTargetsFavor,selectedTargetsAgainst)){
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 		// load evaluation Data

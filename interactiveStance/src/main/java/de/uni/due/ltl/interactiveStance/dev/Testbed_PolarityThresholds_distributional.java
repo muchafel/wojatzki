@@ -27,12 +27,12 @@ public class Testbed_PolarityThresholds_distributional {
 		searcher.SetUp(db, 1);
 
 		System.out.println("adding favor targets");
-		for (ExplicitTarget t : searcher.search("God_Does_Not_Exist", true)) {
+		for (ExplicitTarget t : searcher.search("God_Does_Not_Exist", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsFavor.put(t.getId(), t);
 		}
 
 		System.out.println("adding against targets");
-		for (ExplicitTarget t : searcher.search("Jesus", true)) {
+		for (ExplicitTarget t : searcher.search("Jesus", true,selectedTargetsFavor,selectedTargetsAgainst)) {
 			selectedTargetsAgainst.put(t.getId(), t);
 		}
 
