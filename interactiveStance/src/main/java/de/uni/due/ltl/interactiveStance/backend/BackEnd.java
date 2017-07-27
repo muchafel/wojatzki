@@ -267,7 +267,7 @@ public class BackEnd {
 		availableTargets = new HashMap<>();
 		
 		try {
-			List<ExplicitTarget>targets = searcher.search(query,true);
+			List<ExplicitTarget>targets = searcher.search(query,true,selectedFavorTargets,selectedAgainstTargets);
 			if (targets != null) {
 				for(ExplicitTarget target:targets){
 					this.save(target);
