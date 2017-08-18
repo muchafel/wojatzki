@@ -4,28 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Map;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
-import org.jfree.data.general.DefaultPieDataset;
 import org.vaadin.addon.JFreeChartWrapper;
 
-import com.vaadin.ui.Component;
 
 public class AblationBarchart {
 //	private DefaultPieDataset dataset = new DefaultPieDataset();
 	private float recommendedHeight = 0;
+	private int itemSum = 0;
 
 	public AblationBarchart() {
 	}
@@ -34,9 +31,8 @@ public class AblationBarchart {
 		return this.recommendedHeight;
 	}
 
-	private void setRecommendedHeight(Map<String, Double> dataset) {
-		int size = dataset.size();
-		this.recommendedHeight = 200 + 40 * size; // 40 pixel for each bar item
+	private void setRecommendedHeight(int itemSum) {
+		this.recommendedHeight = 100 + itemSum * 40; // 40 pixel for each bar item
 	}
 
 
@@ -45,7 +41,10 @@ public class AblationBarchart {
 		for (String target : ablationFavor.keySet()) {
 			dataset.addValue(f1_all - ablationFavor.get(target), "1", target);
 			System.out.println(f1_all - ablationFavor.get(target)+" "+ target);
+			itemSum++;
 		}
+
+		this.setRecommendedHeight(itemSum);
 		
 		return dataset;
 	}
@@ -55,33 +54,40 @@ public class AblationBarchart {
 				PlotOrientation.HORIZONTAL, false, true, false);
 
 		CategoryPlot plot = barChart.getCategoryPlot();
-        plot.setBackgroundPaint(Color.white);
+        plot.setBackgroundPaint(new Color(0xeaebed));
 		plot.getRangeAxis().setLowerBound(-1.0);
 		plot.getRangeAxis().setUpperBound(1.0);
-        // disable bar outlines...
+		plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
+		plot.setRangeGridlinePaint(Color.white);
+		// target label
+		plot.getDomainAxis().setMaximumCategoryLabelWidthRatio(0.2f);
+
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
-        
+		// disable bar outlines...
+		renderer.setDrawBarOutline(false);
+
         // set up gradient paints for series...
-        GradientPaint gp0 = new GradientPaint(
-        		50, 50, Color.RED,
-                300, 100, Color.BLUE
-        );
+//        GradientPaint gp0 = new GradientPaint(
+//        		50, 50, Color.RED,
+//                300, 100, Color.BLUE
+//        );
+//		 renderer.setSeriesPaint(1, gp0);
 
 		renderer.setBaseItemLabelsVisible(true);
 		DecimalFormat decimalFormat = new DecimalFormat("##,###.00");
 		renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", decimalFormat));
 		renderer.setShadowVisible(false);
-		renderer.setMaximumBarWidth(0.05);
-		renderer.setMinimumBarLength(10);
+		renderer.setMaximumBarWidth((itemSum == 0)?0.05: ((this.recommendedHeight - 100)/(2*itemSum))/(this.recommendedHeight - 100));
 		renderer.setBase(0);
-//        renderer.setSeriesPaint(1, gp0);
+		// remove style of bar painter
+		renderer.setBarPainter(new StandardBarPainter());
+		renderer.setSeriesPaint(0, new Color(0x64bee5));
 
 		return barChart;
 	}
 
 	public JFreeChartWrapper createChart(String label, double microF, Map<String, Double> ablationFavor) {
 		JFreeChart chart = createchart(label, createBarData(microF, ablationFavor));
-		setRecommendedHeight(ablationFavor);
 		return new JFreeChartWrapper(chart);
 	}
 }
