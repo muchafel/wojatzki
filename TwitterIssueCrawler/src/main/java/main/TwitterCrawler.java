@@ -13,20 +13,26 @@ import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterCrawler {
-	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
 
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-
-		cb.setDebugEnabled(true).setOAuthConsumerKey("yp4oAwREIxAHfzcKnRU97vdBW")
-				.setOAuthConsumerSecret("bb9IETVUZVVEdSSaw9txfGTX7rngKSWeYEnj81Slyk1r3Fk2qn")
-				.setOAuthAccessToken("40204501-FP7Umw4784OFHBTIjs2lO2iFKpjovOYSyCtDWEu6j")
-				.setOAuthAccessTokenSecret("BIjImRNXluK71z9Oeh2KCLDZUrA7IQwPs7wex4QPG4Qoa");
-		
-		cb.setJSONStoreEnabled(true);
-		
-		TwitterStream twitterStream= new TwitterStreamFactory(cb.build()).getInstance();
 		File folder= new File("config");
 		for(File file: folder.listFiles()){
+
+			//new connection
+			ConfigurationBuilder cb = new ConfigurationBuilder();
+
+			cb.setDebugEnabled(true).setOAuthConsumerKey("jepApDU1iFv0sURBL8zLFDFTs")
+					.setOAuthConsumerSecret("NaJVtN9IliOQ7gy1HumS17jtXPjk8WKc4zX7yg5zbJypFNhjP8")
+					.setOAuthAccessToken("40204501-Qs4xweEqQTVC6CA6hoScat4u9ScLGIdvLwdQkhbX4")
+					.setOAuthAccessTokenSecret("r4U1abDH5cm0r3owrGcMIlDh1wvENwOEq43sMRmTzqJ1P");
+			
+			cb.setJSONStoreEnabled(true);
+			cb.setIncludeMyRetweetEnabled(true);
+			cb.setIncludeExtAltTextEnabled(true);
+			cb.setTweetModeExtended(true);
+			
+			TwitterStream twitterStream= new TwitterStreamFactory(cb.build()).getInstance();
+			
 			//new query
 			FilterQuery fq = new FilterQuery();
 			Config config= new Config(file.getPath());
@@ -46,6 +52,7 @@ public class TwitterCrawler {
 
 			fq.track(keywordsArray);
 			twitterStream.filter(fq);
+			Thread.sleep(360*1000);
 		}
 	}
 }

@@ -22,22 +22,22 @@ import javax.swing.plaf.FileChooserUI;
 import org.apache.commons.io.FileUtils;
 
 import twitter4j.HashtagEntity;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import twitter4j.json.DataObjectFactory;
 
 public class CrawlerListener implements StatusListener {
 
-	private Date lastTime;
 	private String issue;
-	private String currentDayString;
-	private DateFormat df;
-	private DateFormat dayFormat;
 	
 	public CrawlerListener(String issue){
+		System.out.println("Start crawling for "+issue);
 		this.issue=issue;
 	}
 	
@@ -46,15 +46,23 @@ public class CrawlerListener implements StatusListener {
 	}
 
 	public void onStatus(Status status) {
-		 String username = status.getUser().getScreenName(); 
-
+		String username = status.getUser().getScreenName(); 
 		String content = status.getText();
+		
+
 		if (status.getPlace() != null && !status.getPlace().equals("United States")) {
 			// do nothing
 		} else {
-			System.out.println("@" + username + "\t" + content.replace("\n", "") + "\t");
-			String towrite = "@" + username + "\t" + content.replace("\n", "") + "\n";
 
+			String towrite="";
+			if(status.isRetweet()){ 
+				towrite = "@" + username + "\t" + status.getRetweetedStatus().getText().replace("\n", "") + "\n";
+			}else{
+				towrite = "@" + username + "\t" + content.replace("\n", "") + "\n";
+			}
+			System.out.println(towrite);
+
+			
 			Writer out;
 			try {
 				out = new BufferedWriter(
@@ -67,30 +75,7 @@ public class CrawlerListener implements StatusListener {
 		}
 	}
 
-	private boolean dayFolderexists(String currentDayString2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	private String getFileName(Date date) {
-		long duration = date.getTime() - this.lastTime.getTime();
-		
-		long maxDuration=15*60*1000;
-
-		if (duration >= maxDuration) {
-			this.lastTime=date;
-			return df.format(date);
-		}
-		return df.format(lastTime);
-	}
-
-	private void storeJSON(String rawJSON, String fileName) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
-		    out.println(rawJSON);
-		}catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 
 	public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 		System.err.println(statusDeletionNotice);
