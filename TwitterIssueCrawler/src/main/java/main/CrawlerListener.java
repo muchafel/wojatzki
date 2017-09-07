@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.plaf.FileChooserUI;
 
@@ -35,12 +36,17 @@ import twitter4j.json.DataObjectFactory;
 public class CrawlerListener implements StatusListener {
 
 	private String issue;
+	private Map<String, List<String>> file2Hashtags;
 	
-	public CrawlerListener(String issue){
-		System.out.println("Start crawling for "+issue);
-		this.issue=issue;
+	
+	public CrawlerListener(Map<String, List<String>> file2Hashtags) {
+		this.file2Hashtags= file2Hashtags;
+		for(String issue: this.file2Hashtags.keySet()){
+			System.out.println("Start crawling for "+issue);
+			System.out.println(file2Hashtags.get(issue));
+		}
 	}
-	
+
 	public void onException(Exception ex) {
 		System.out.println(ex.getLocalizedMessage());
 	}
@@ -48,34 +54,48 @@ public class CrawlerListener implements StatusListener {
 	public void onStatus(Status status) {
 		String username = status.getUser().getScreenName(); 
 		String content = status.getText();
+		String json = TwitterObjectFactory.getRawJSON(status);
 		
-
 		if (status.getPlace() != null && !status.getPlace().equals("United States")) {
 			// do nothing
 		} else {
 
 			String towrite="";
 			if(status.isRetweet()){ 
-				towrite = "@" + username + "\t" + status.getRetweetedStatus().getText().replace("\n", "") + "\n";
+				towrite = "@" + username + "\t" + status.getRetweetedStatus().getText().replace("\n", "")+"\t"+ status.isRetweet()+"\t"+status.getCreatedAt() +"\n";
 			}else{
-				towrite = "@" + username + "\t" + content.replace("\n", "") + "\n";
+				towrite = "@" + username + "\t" + content.replace("\n", "")+"\t"+ status.isRetweet() +"\t"+status.getCreatedAt()+ "\n";
 			}
-			System.out.println(towrite);
-
 			
-			Writer out;
-			try {
-				out = new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(new File("statuses/" + issue), true), "UTF-8"));
-				out.write(towrite);
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+			for(String issue: this.file2Hashtags.keySet()){
+				for(String hashtag: file2Hashtags.get(issue)){
+					if(towrite.toLowerCase().contains(" "+hashtag.toLowerCase()+" ")){
+						write(issue,towrite);
+						write(issue.replace(".txt", ".json"),json+ "\n");
+						System.out.println(towrite);
+						System.out.println(json);
+						break;
+					}
+				}
 			}
 		}
 	}
 
 
+
+	private void write(String issue, String towrite) {
+		Writer out;
+		try {
+			out = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(new File("statuses/" + issue), true), "UTF-8"));
+			out.write(towrite);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 		System.err.println(statusDeletionNotice);
