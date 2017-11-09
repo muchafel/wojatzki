@@ -14,6 +14,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.Progress;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 
+import assertionRegression.annotationTypes.Issue;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.parameter.ComponentParameters;
 
@@ -77,6 +78,10 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 		}else{
 			throw new IOException(target+ " not configured as target class.");
 		}
+		
+		Issue assertionIssue= new Issue(aJCas, 0, aJCas.getDocumentText().length());
+		assertionIssue.setIssue(issue);
+		assertionIssue.addToIndexes();
 		
 //		System.out.println(text+ " "+ o);
 		o.addToIndexes();
