@@ -86,7 +86,6 @@ public class CorpusFrequency  extends FeatureExtractorResource_ImplBase implemen
 				if(currentScore>max){
 					max=currentScore;
 				}
-				
 				i++;
 			}
 		}
@@ -96,7 +95,6 @@ public class CorpusFrequency  extends FeatureExtractorResource_ImplBase implemen
 			featList.add(new Feature("MAX_FREQ",0));
 			featList.add(new Feature("MIN_FREQ",0));
 		}else{
-			System.out.println(jcas.getDocumentText()+ " "+score/(double)i);
 			featList.add(new Feature("MAX_FREQ",max));
 			featList.add(new Feature("MIN_FREQ",min));
 			featList.add(new Feature("MEAN_FREQ",score/(double)i));

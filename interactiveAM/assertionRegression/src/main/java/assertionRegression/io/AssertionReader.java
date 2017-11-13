@@ -45,12 +45,14 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 	
 	String text = null;
 	String ad_score = null;
+	String controversity = null;
 	String passion_score = null;
 	String support_score = null;
 	String oppose_score = null;
 	String support_oppose_score = null;
 	String issue=null;
 	String id=null;
+//	int i=0;
 
 	private BufferedReader br;
 
@@ -59,10 +61,12 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 	public void getNext(JCas aJCas) throws IOException, CollectionException {
 		DocumentMetaData dmd = new DocumentMetaData(aJCas);
 		dmd.setDocumentTitle("");
+//		dmd.setDocumentId(String.valueOf(i++));
 		dmd.setDocumentId(id);
 		dmd.addToIndexes();
 
 		aJCas.setDocumentText(text);
+		aJCas.setDocumentLanguage(language);
 
 		TextClassificationOutcome o = new TextClassificationOutcome(aJCas, 0, aJCas.getDocumentText().length());
 		if(target.equals("Agreement")){
@@ -75,7 +79,10 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 			o.setOutcome(oppose_score);
 		}else if(target.equals("Passion")){
 			o.setOutcome(passion_score);
-		}else{
+		}else if(target.equals("Controversity")){
+			o.setOutcome(controversity);
+		}
+		else{
 			throw new IOException(target+ " not configured as target class.");
 		}
 		
@@ -111,6 +118,7 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 			oppose_score = split[5];
 			passion_score = split[6];
 			issue=split[7];
+			controversity=String.valueOf(-Math.abs(Double.valueOf(ad_score)));
 			
 			
 			return true;

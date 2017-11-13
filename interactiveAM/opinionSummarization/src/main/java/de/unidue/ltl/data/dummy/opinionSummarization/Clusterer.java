@@ -1,13 +1,20 @@
 package de.unidue.ltl.data.dummy.opinionSummarization;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import com.apporiented.algorithm.clustering.AverageLinkageStrategy;
 import com.apporiented.algorithm.clustering.Cluster;
@@ -30,13 +37,13 @@ public class Clusterer {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, Cluster> cluster(OpinionSummarizationData data, boolean clusterStatements) throws Exception {
+	public Cluster cluster(OpinionSummarizationData data, boolean clusterStatements) throws Exception {
 		ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
 		String[] names=null;
 		if(clusterStatements){
 			names = data.getStatements().toArray(new String[data.getStatements().size()]);
 		}else{
-			names = getNames(data.getParticipants());
+			names = data.getParticipantStrings().toArray(new String[0]);
 		}
 		System.out.println("instances to cluster "+Arrays.toString(names));
 		
@@ -47,26 +54,35 @@ public class Clusterer {
 //		}
 		Cluster cluster = alg.performClustering(distances, names,new AverageLinkageStrategy());
 		cluster.toConsole(0);
-		DendrogramPanel dp = new DendrogramPanel();
-		dp.setShowScale(false);
-		dp.setModel(cluster);
-		JFrame frame = new JFrame("Hierarchical Clustering "+clusterStatements);
-		frame.add(dp);
-		frame.getContentPane().setPreferredSize(new Dimension(500, 400));
-		frame.pack();
-		frame.setVisible(true);
-		
-		Map<String,Cluster>levelMapping=getClusterMapping(cluster, new LinkedHashMap<String,Cluster>() );
-		return levelMapping;
+//		System.out.println(cluster);
+//		DendrogramPanel dp = new DendrogramPanel();
+//		dp.setShowScale(false);
+//		dp.setModel(cluster);
+//		dp.setBackground(Color.WHITE);
+//	    dp.setLineColor(Color.BLACK);
+//		JFrame frame = new JFrame("Hierarchical Clustering "+clusterStatements);
+//		frame.add(dp);
+//		frame.getContentPane().setPreferredSize(new Dimension(4000, 4000));
+//      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//		frame.pack();
+//		frame.setVisible(true);
+//		BufferedImage bi = new BufferedImage(4000, 4000, BufferedImage.TYPE_INT_ARGB);
+//		Graphics2D graphics = bi.createGraphics();
+//		frame.print(graphics);
+//		ImageIO.write(bi, "png", new File("target/" + String.valueOf(clusterStatements) + ".png"));
+//		
+		return cluster;
 		
 	}
 
-	private Map<String, Cluster> getClusterMapping(Cluster cluster, Map<String, Cluster> hashMap) {
+	public Map<String, Cluster> getClusterMapping(Cluster cluster, Map<String, Cluster> hashMap, String parent,int subLevel) {
 		
+		String name=parent+"."+String.valueOf(subLevel);
+		hashMap.put(name, cluster);
+		int newSubLevel=0;
 		for (Cluster c : cluster.getChildren()) {
-//			System.out.println(c.getName()+" "+c.countLeafs()+" "+c.isLeaf());
-			hashMap.put(c.getName(), c);
-			hashMap.putAll(getClusterMapping(c, hashMap));
+			hashMap.putAll(getClusterMapping(c, hashMap,name,newSubLevel));
+			newSubLevel++;
 		}
 		
 		return hashMap;
@@ -99,8 +115,8 @@ public class Clusterer {
 			for(String statement_inner: statements){
 				int j=0;
 				for(String statement_outer: statements){
-					double[] vector1=data.getRatingsForStatement(statement_outer);
-					double[] vector2=data.getRatingsForStatement(statement_inner);
+					double[] vector1=data.getRatingsForAssertion(statement_outer);
+					double[] vector2=data.getRatingsForAssertion(statement_inner);
 					doublearray[i][j] = SimilarityHelper.getCosineSimilarity(vector1,vector2,useDistance);
 					j++;
 				}

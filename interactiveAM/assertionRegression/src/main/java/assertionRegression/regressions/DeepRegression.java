@@ -47,7 +47,7 @@ public class DeepRegression implements Constants{
         DeepRegression experiment = new DeepRegression();
         ParameterSpace pSpace = getParameterSpace("src/main/resources/data/data.tsv","Agreement");
 
-        experiment.runTrainTest(pSpace,"lstmdropoutzero5");
+        experiment.runTrainTest(pSpace,"tensor");
     }
 
     public static ParameterSpace getParameterSpace(String path, String targetClass)throws ResourceInitializationException{
@@ -57,27 +57,28 @@ public class DeepRegression implements Constants{
                 Dimension.create(DIM_FEATURE_MODE, Constants.FM_DOCUMENT),
                 Dimension.create(DIM_LEARNING_MODE, Constants.LM_REGRESSION),
                 Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION,"/usr/local/bin/python3"),
-//                Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_BiLSTM.py"),
-//                Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_DBN.py"),
-//                Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_DBN_do05.py"),
-                Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_biLSTM + deep.py"),
-                Dimension.create(DeepLearningConstants.DIM_MAXIMUM_LENGTH, 30),
+//              Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_BiLSTM.py"),
+                Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_DBN.py"),
+//              Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_DBN_do05.py"),
+//              Dimension.create(DeepLearningConstants.DIM_USER_CODE,"src/main/resources/kerasCode/regression/regression_biLSTM + deep.py"),
+                Dimension.create(DeepLearningConstants.DIM_MAXIMUM_LENGTH, 50),
                 Dimension.create(DeepLearningConstants.DIM_VECTORIZE_TO_INTEGER, true),
-                Dimension.create(DeepLearningConstants.DIM_PRETRAINED_EMBEDDINGS,"/Users/michael/git/lang-tech-teaching/de.unidue.kbs/src/main/resources/GloVe/glove.6B.200d.txt")
+//                Dimension.create(DeepLearningConstants.DIM_PRETRAINED_EMBEDDINGS,"/Users/michael/git/lang-tech-teaching/de.unidue.kbs/src/main/resources/GloVe/glove.6B.200d.txt")
+//                Dimension.create(DeepLearningConstants.DIM_PRETRAINED_EMBEDDINGS,"src/main/resources/data/pruned/wiki.en.vec")
+                Dimension.create(DeepLearningConstants.DIM_PRETRAINED_EMBEDDINGS,"src/main/resources/data/wiki.en.vec")
+
                 );
 
 		return pSpace;
     }
 
     protected void runTrainTest(ParameterSpace pSpace, String name)
-        throws Exception
-    {
+        throws Exception{
 
-        DeepLearningExperimentCrossValidation batch = new DeepLearningExperimentCrossValidation(name,
-                KerasAdapter.class,10);
+        DeepLearningExperimentCrossValidation batch = new DeepLearningExperimentCrossValidation(name,KerasAdapter.class,10);
         batch.setPreprocessing(getPreprocessing());
         batch.setParameterSpace(pSpace);
-		batch.addReport(CrossValidationReport.class);
+//		batch.addReport(CrossValidationReport.class);
         batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 
         // Run
@@ -94,8 +95,7 @@ public class DeepRegression implements Constants{
 	private static Map<String, Object> getDimReaders(String path, String targetClass) throws ResourceInitializationException {
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		System.out.println("read "+path);
-		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(AssertionReader.class, AssertionReader.PARAM_SOURCE_LOCATION, path, AssertionReader.PARAM_LANGUAGE,
-				"en",AssertionReader.PARAM_TARGETCLASS,targetClass));
+		dimReaders.put(DIM_READER_TRAIN, CollectionReaderFactory.createReaderDescription(AssertionReader.class, AssertionReader.PARAM_SOURCE_LOCATION, path, AssertionReader.PARAM_LANGUAGE,"en",AssertionReader.PARAM_TARGETCLASS,targetClass));
 		
 //		CollectionReaderDescription readerTrain = CollectionReaderFactory.createReaderDescription(
 //				AssertionReader.class, AssertionReader.PARAM_SOURCE_LOCATION, "src/main/resources/data/data_train.tsv", AssertionReader.PARAM_LANGUAGE,
