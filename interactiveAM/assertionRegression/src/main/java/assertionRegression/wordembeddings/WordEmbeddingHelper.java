@@ -16,7 +16,7 @@ public class WordEmbeddingHelper {
 		this.lexicon = lexicon;
 	}
 
-	public List<Double> getAveragedSentenceVector(List<String> embeddingCandidates) {
+	public List<Double> getAveragedSentenceVector(Collection<String> embeddingCandidates) {
 		List<Double> averagedSentenceVector = initAveragedVector();
 		int numberOfEmbeddings = 0;
 		for (String lowerCase : embeddingCandidates) {

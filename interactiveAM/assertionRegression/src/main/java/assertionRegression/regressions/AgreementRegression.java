@@ -38,6 +38,7 @@ import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.dkpro.tc.ml.weka.WekaRegressionAdapter;
 
 import assertionRegression.featureExtractors.CorpusFrequency;
+import assertionRegression.featureExtractors.NRCSentiment;
 import assertionRegression.featureExtractors.SocherSentimentFE;
 import assertionRegression.featureExtractors.WordEmbeddingDFE;
 import assertionRegression.io.AssertionReader;
@@ -54,6 +55,7 @@ import weka.classifiers.functions.SMOreg;
 import weka.classifiers.rules.ZeroR;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
+import org.dkpro.tc.ml.report.ScatterplotReport;
 
 
 public class AgreementRegression implements Constants {
@@ -81,11 +83,11 @@ public class AgreementRegression implements Constants {
 //			 500,
 //			 NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
 //			 NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//			 TcFeatureFactory.create(WordEmbeddingDFE.class,WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
-//			 "src/main/resources/data/pruned/wiki.en.vec")
-//			TcFeatureFactory.create(NrOfTokens.class),
-//			TcFeatureFactory.create(CorpusFrequency.class,CorpusFrequency.PARAM_CORPUS_FOLDER,"/Users/michael/Desktop/statuses/cleaned")
-//	 ,TcFeatureFactory.create(SocherSentimentFE.class)
+//			 ,TcFeatureFactory.create(WordEmbeddingDFE.class,WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "/Users/michael/DKPRO_HOME/UCI/data/pruned/wiki.en.vec")
+//			,TcFeatureFactory.create(NrOfTokens.class),
+//			,TcFeatureFactory.create(CorpusFrequency.class,CorpusFrequency.PARAM_CORPUS_FOLDER,"/Users/michael/Desktop/statuses/cleaned")
+//	 TcFeatureFactory.create(SocherSentimentFE.class)
+	 ,TcFeatureFactory.create(NRCSentiment.class,NRCSentiment.PARAM_PREDICTION_FILE_CLASSES,"/Users/michael/DKPRO_HOME/UCI/sentimentPredictions/assertions-preds.txt",NRCSentiment.PARAM_PREDICTION_FILE_SCORES,"/Users/michael/DKPRO_HOME/UCI/sentimentPredictions/assertions-preds-scores.txt")
 	);
 
 	public static void main(String[] args) throws Exception {
@@ -94,8 +96,8 @@ public class AgreementRegression implements Constants {
 		AgreementRegression experiment = new AgreementRegression();
 
 		// XXX CV for getting the id2outcome file for the DFE
-		ParameterSpace pSpace = experiment.setupCrossValidation("src/main/resources/data/data.tsv", "Agreement");
-		experiment.runCrossValidation(pSpace, "ngram_otherorder");
+		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir+"/UCI/data/data.tsv", "Controversity");
+		experiment.runCrossValidation(pSpace, "nrcsentiment");
 
 	}
 
@@ -106,6 +108,7 @@ public class AgreementRegression implements Constants {
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 		batch.addReport(CrossValidationReport.class);
+		batch.addReport(ScatterplotReport.class);
 
 		// Run
 		Lab.getInstance().run(batch);

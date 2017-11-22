@@ -63,8 +63,6 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 		WordEmbeddingHelper helper=new WordEmbeddingHelper(this.lexicon);
 		List<String> embeddingCandidates= new ArrayList<String>();
 		
-//		CommentText comment=JCasUtil.selectCovered(CommentText.class, target).iterator().next();
-		//only select the tokens in the current comment
 		for(Token t: JCasUtil.selectCovered(jcas, Token.class,target)){
 			String lowerCase = t.getCoveredText().toLowerCase();
 			embeddingCandidates.add(lowerCase);

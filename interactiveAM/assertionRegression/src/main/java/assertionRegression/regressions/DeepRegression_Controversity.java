@@ -35,7 +35,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import weka.classifiers.functions.SMOreg;
 
-public class DeepRegression implements Constants{
+public class DeepRegression_Controversity implements Constants{
 	public static final String LANGUAGE_CODE = "en";
 	public static final int NUM_FOLDS = 10;
 
@@ -62,7 +62,7 @@ public class DeepRegression implements Constants{
 		String[] embeddings = new String[] { baseDir + "/UCI/data/wiki.en.vec",
 				baseDir + "/UCI/data/glove.twitter.27B.200d.txt" };
 
-		DeepRegression experiment = new DeepRegression();
+		DeepRegression_Controversity experiment = new DeepRegression_Controversity();
 
 		// System.setProperty("DKPRO_HOME", System.getProperty("user.home") +
 		// "/Desktop");
@@ -70,9 +70,9 @@ public class DeepRegression implements Constants{
 			int i=0;
 			for (String embeddingPath : embeddings) {
 				String name = script.split("/")[5];
-				ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", script,embeddingPath);
+				ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Controversity", script,embeddingPath);
 				
-				experiment.runTrainTest(pSpace, "agreement_script"+name.split("\\.")[0]+"_embeddings"+String.valueOf(i));
+				experiment.runTrainTest(pSpace, "controversity_script"+name.split("\\.")[0]+"_embeddings"+String.valueOf(i));
 				
 				i++;
 			}

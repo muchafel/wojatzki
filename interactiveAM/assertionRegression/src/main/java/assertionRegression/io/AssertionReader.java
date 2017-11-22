@@ -118,7 +118,7 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 			oppose_score = split[5];
 			passion_score = split[6];
 			issue=split[7];
-			controversity=String.valueOf(-Math.abs(Double.valueOf(ad_score)));
+			controversity=String.valueOf(1-Math.abs(Double.valueOf(ad_score)));
 			
 			
 			return true;

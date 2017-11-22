@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.dkpro.lab.reporting.BatchReportBase;
 import org.dkpro.lab.reporting.FlexTable;
 import org.dkpro.lab.storage.StorageService;
@@ -57,6 +58,7 @@ implements Constants{
                 for (String key : resultTempMap.keySet()) {
                 	Double value = resultTempMap.get(key);
 					resultMap.put(key, String.valueOf(value));
+					System.out.println(key+" : "+value);
 				}
 
                 Map<String, String> values = new HashMap<String, String>();
@@ -95,9 +97,6 @@ implements Constants{
         getContext().getLoggingService().message(getContextLabel(),
                 "Storing detailed results in:\n" + dummyFolder.getParent() + "\n");
         dummyFolder.delete();
-        if(f_Favor!=null && f_Against!=null){
-        	System.out.println("SemEval Measure: "+semEval/getSubtasks().length);
-        }
     }
 
 }
