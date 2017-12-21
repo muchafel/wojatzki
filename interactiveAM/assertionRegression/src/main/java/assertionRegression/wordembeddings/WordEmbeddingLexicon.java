@@ -56,6 +56,7 @@ public class WordEmbeddingLexicon {
 			return this.lexicon.get(key);
 		}
 		else {
+//			System.out.println("empty vector for "+key);
 			return emptyVector();
 		}
 	}

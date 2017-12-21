@@ -37,7 +37,14 @@ public class MostSimilarUserPredictor extends NextJudgmentPredictor {
 
 		if(predcitOnlyNext) {
 			String nextAssertion=experiment.getAssertionsToTest().get(0);
+			
+//			System.out.println(nextAssertion);
 			double prediction = predictionOfMostSimilarParticipant(similarityRankedParticipants,experiment.getAssertionsToTest().get(0),0,experiment);
+			
+			if(experiment.getAssertion2TrueScore().get(nextAssertion)==0.0) return Double.NaN;
+//			System.out.println(experiment.getParticipantToTest().getId()+" "+nextAssertion+" "+prediction+ " "+experiment.getAssertion2TrueScore().get(nextAssertion));
+
+			
 			if(prediction==experiment.getAssertion2TrueScore().get(nextAssertion)) {
 				return 1.0;
 			}else {

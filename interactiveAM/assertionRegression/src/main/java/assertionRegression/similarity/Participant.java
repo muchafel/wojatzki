@@ -115,4 +115,9 @@ public class Participant {
 		USCitizen = uSCitizen;
 	}
 	
+	@Override
+	public String toString() {
+		return print();
+	}
+	
 }

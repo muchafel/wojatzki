@@ -55,8 +55,12 @@ public class DeepRegression implements Constants{
 //				baseDir+"/regression_exp/10.py",
 //				baseDir+"/regression_exp/11.py" };
 		String[] pythonScripts = new String[] { 
-				baseDir+"/regression_conv/A.py",
-				baseDir+"/regression_conv/B.py", baseDir+"/regression_conv/C.py",baseDir+"/regression_conv/D.py"
+				baseDir + "/regression_conv/A.py", baseDir + "/regression_conv/B.py", baseDir + "/regression_conv/C.py",
+				baseDir + "/regression_conv/D.py", baseDir + "/regression_conv/1.py", baseDir + "/regression_conv/2.py",
+				baseDir + "/regression_conv/3.py", baseDir + "/regression_conv/4.py", baseDir + "/regression_conv/5.py",
+				baseDir + "/regression_conv/6.py", baseDir + "/regression_conv/7.py", baseDir + "/regression_conv/8.py",
+				baseDir + "/regression_conv/9.py", baseDir + "/regression_conv/10.py",
+				baseDir + "/regression_conv/11.py"
 				 };
 
 		String[] embeddings = new String[] { baseDir + "/UCI/data/wiki.en.vec",
@@ -66,20 +70,20 @@ public class DeepRegression implements Constants{
 
 		// System.setProperty("DKPRO_HOME", System.getProperty("user.home") +
 		// "/Desktop");
-		for (String script : pythonScripts) {
-			int i=0;
-			for (String embeddingPath : embeddings) {
-				String name = script.split("/")[5];
-				ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", script,embeddingPath);
-				
-				experiment.runTrainTest(pSpace, "agreement_script"+name.split("\\.")[0]+"_embeddings"+String.valueOf(i));
-				
-				i++;
-			}
-		}
-//		ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", baseDir+"/UCI/regression_exp/2.py",embeddings[1]);
-//		
-//		experiment.runTrainTest(pSpace, "test");
+//		for (String script : pythonScripts) {
+//			int i=0;
+//			for (String embeddingPath : embeddings) {
+//				String name = script.split("/")[5];
+//				ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", script,embeddingPath);
+//				
+//				experiment.runTrainTest(pSpace, "agreement_script"+name.split("\\.")[0]+"_embeddings"+String.valueOf(i));
+//				
+//				i++;
+//			}
+//		}
+		ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", "src/main/resources/kerasCode/regression_conv/E.py",embeddings[1]);
+		
+		experiment.runTrainTest(pSpace, "test");
 
     }
 
@@ -89,8 +93,8 @@ public class DeepRegression implements Constants{
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_FEATURE_MODE, Constants.FM_DOCUMENT),
 				Dimension.create(DIM_LEARNING_MODE, Constants.LM_REGRESSION),
-//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
-				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
+				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
+//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
 				Dimension.create(DeepLearningConstants.DIM_USER_CODE, pythonCode),
 				Dimension.create(DeepLearningConstants.DIM_MAXIMUM_LENGTH, 50),
 				Dimension.create(DeepLearningConstants.DIM_VECTORIZE_TO_INTEGER, true),

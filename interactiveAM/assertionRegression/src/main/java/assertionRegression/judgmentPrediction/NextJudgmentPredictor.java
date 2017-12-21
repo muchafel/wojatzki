@@ -17,14 +17,14 @@ public abstract class NextJudgmentPredictor {
 		int counterA=0;
 		int counterB=0;
 		for(double d: experiment.getJudgmentsOfParticipant()) {
-			if(d!=0.0) {
+//			if(d!=0.0) {
 				if(counterA>=givenJudgments) {
 					experiment.getAssertionsToTest().add(experiment.getData().getStatements().get(counterB));
 				}else {
 					experiment.getNonZeroGivenAssertions().add(experiment.getData().getStatements().get(counterB));
 				}
 				counterA++;
-			}
+//			}
 			experiment.getAssertion2TrueScore().put(experiment.getData().getStatements().get(counterB), d);
 			counterB++;
 		}

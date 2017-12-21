@@ -1,6 +1,7 @@
 package assertionRegression.similarity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +74,22 @@ public class OpinionSummarizationData {
 		int index=assertions.indexOf(statement);
 		return valueMatrix.getColumn(index);
 	}
+	
+	
+	public Map<Integer,Double> getRatingsForAssertionMap(String statement) throws Exception{
+		Map<Integer,Double> id2Judgment=new HashMap();
+		if(!assertions.contains(statement)){
+			throw new Exception(statement+" not conatined in list");
+		}
+		int index=assertions.indexOf(statement);
+		int i=0;
+		for(Participant p: participants) {
+			id2Judgment.put(p.getId(), valueMatrix.getColumn(index)[i]);
+			i++;
+		}
+		return id2Judgment;
+	}
+	
 	
 	
 	private String join(double[] ds) {

@@ -17,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 
 import assertionRegression.similarity.OpinionSummarizationData;
 import assertionRegression.similarity.Participant;
-import lombok.val;
 
 public class ParticipanJudgmentPredictionExperiment {
 	private Participant participantToTest;
@@ -37,12 +36,18 @@ public class ParticipanJudgmentPredictionExperiment {
 
 
 	
+	public ParticipanJudgmentPredictionExperiment(String string, List<Integer> order) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public int getNumberOfParticipants() throws IOException {
 		return FileUtils.readLines(new File(this.path),"UTF-8").size();
 	}
 	
 
-	public void setUpExperiment(int idToTest, List<Integer> order) throws IOException {
+	public void setUpExperiment(int idToTest, List<Integer> columnOrder) throws IOException {
 		List<Participant> participants= new ArrayList();
 		List<String> assertions=null;
 		String issue= getIssueFromPath(path);
@@ -58,20 +63,26 @@ public class ParticipanJudgmentPredictionExperiment {
 			if(firstLine) {
 				firstLine=false;
 				assertions=getAssertionsFromLine(line);
+				assertions=reorder(assertions, columnOrder);
+				this.assertionsToTest=assertions;
+//				System.out.println(idToTest + " "+this.assertionsToTest);
 				valueMatrixInput=new double[lines.size()-1][assertions.size()];
 			}else {
 				if(i==idToTest) {
 					this.participantToTest=getParticipantFromLine(line,assertions.size());
-					this.judgmentsOfParticipant=getJudgmentOfParticipant(line,new double[assertions.size()]);
+					double[] judgments=getJudgmentOfParticipant(line,new double[assertions.size()]);
+					this.judgmentsOfParticipant=reorder(judgments, columnOrder);
 				}else {
 					participants.add(getParticipantFromLine(line,assertions.size()));
-					double[] judgmentsOfParticipant=getJudgmentOfParticipant(line,new double[assertions.size()]);
-					valueMatrixInput[j]=judgmentsOfParticipant;
+					double[] judgmentsOfOtherParticipant=getJudgmentOfParticipant(line,new double[assertions.size()]);
+					judgmentsOfOtherParticipant=reorder(judgmentsOfOtherParticipant, columnOrder);
+					valueMatrixInput[j]=judgmentsOfOtherParticipant;
 					j++;
 				}
 				i++;
 			}
 		}
+		
 		this.data=new OpinionSummarizationData(participants, assertions, valueMatrixInput, issue);
 		
 //		try {
@@ -81,6 +92,18 @@ public class ParticipanJudgmentPredictionExperiment {
 //		}
 //		System.out.println();
 	}
+
+	private double[] reorder(double[] judgmentsOfParticipant, List<Integer> columnOrder) {
+		
+		double[] result= new double[judgmentsOfParticipant.length];
+		
+		for(int i =0; i< judgmentsOfParticipant.length; i++) {
+			result[i]=judgmentsOfParticipant[columnOrder.get(i)];
+		}
+		return result;
+	}
+
+
 
 	private void printExperiment(ParticipanJudgmentPredictionExperiment participanJudgmentPredictionExperiment) throws Exception {
 		for(Participant p: data.getParticipants()) {
@@ -93,13 +116,10 @@ public class ParticipanJudgmentPredictionExperiment {
 
 	private List<String> reorder(List<String> lines, List<Integer> order) {
 		List<String> newLines= new ArrayList();
-		String fistLine= lines.get(0);
-		newLines.add(fistLine);
-		lines.remove(0);
 		for(int i: order) {
 			newLines.add(lines.get(i));
 		}
-//		System.out.println(order);
+//		System.out.println(newLines);
 		return newLines;
 	}
 
@@ -115,10 +135,11 @@ public class ParticipanJudgmentPredictionExperiment {
 		return ds;	}
 
 	private static Participant getParticipantFromLine(String line, int i) {
-		i=i-1;
+		i=i+1;
 		String[] parts= line.split("\t");
 		Participant p= new Participant(Integer.parseInt(parts[0]));
-		if(!parts[i+1].isEmpty()){
+		
+		if(parts.length>i+1 && !parts[i+1].isEmpty() ){
 			p.setAge(Integer.parseInt(parts[i+1]));
 			p.setAffiliation(parts[i+3]);
 			p.setEducation(parts[i+4]);
@@ -138,10 +159,11 @@ public class ParticipanJudgmentPredictionExperiment {
 		List<String> assertions=new ArrayList();
 		for(String part: line.split("\t")){
 			if(!part.equals("participant id")) {
-				assertions.add(part);
+				
 				if(part.equals("age")) {
 					return assertions;
 				}
+				assertions.add(part);
 			}
 		}
 		return null;
@@ -152,24 +174,23 @@ public class ParticipanJudgmentPredictionExperiment {
 		return parts[parts.length-1].split("\\.")[0];
 	}
 
-	public Map<Integer, List<Double>> runExperiment(List<Integer> order, int maxGivenJudgments,
+	public Map<Integer, List<Double>> runExperiment(List<Integer> columnOrder, int maxGivenJudgments,
 			Map<Integer, List<Double>> resultsPermutation, NextJudgmentPredictor predictor,boolean predictOnlyNext) throws Exception {
 		for (int j = 1; j <= maxGivenJudgments; j++) {
 			double avg = 0.0;
 			int validInstances = 0;
+//			System.out.println(j+" th assertion");
 			for (int i = 0; i < numberOfParticipants-1 ; i++) {
-				
-				this.setUpExperiment(i, order);
+//				System.out.println(i+" th participant");
+				this.setUpExperiment(i, columnOrder);
 
 				double score=predictor.predict(j, predictOnlyNext,this);
 				
 				if (!Double.isNaN(score)) {
 					validInstances++;
-					// System.out.println("\t"+score);
+//					System.out.println("\t"+score);
 					avg += score;
 				}
-				// System.out.println(exp.predictBasedOnUserSimilarity(40));
-				// System.out.println(avg);
 			}
 			System.out.println(j + "\t" + avg / validInstances + "\t" + validInstances);
 			if (resultsPermutation.containsKey(j)) {
@@ -227,5 +248,34 @@ public class ParticipanJudgmentPredictionExperiment {
 
 	public void setAssertionsToTest(List<String> assertionsToTest) {
 		this.assertionsToTest = assertionsToTest;
+	}
+
+
+
+	public int getNumberOfAssertions() throws IOException {
+		
+		List<String> assertions=null;
+		boolean firstLine=true;
+		List<String> lines= FileUtils.readLines(new File(this.path),"UTF-8");
+		
+		for(String line: lines) {
+			if(firstLine) {
+				firstLine=false;
+				assertions=getAssertionsFromLine(line);
+				System.out.println(assertions);
+				return assertions.size();
+			}
+		}
+		return assertions.size();
+		
+	}
+
+
+
+	public Map<Integer, List<Double>> runExperiment(int i, Map<Integer, List<Double>> resultsPermutation,
+			RandomPredictor randomPredictor, boolean b,
+			ParticipanJudgmentPredictionExperiment participanJudgmentPredictionExperiment) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

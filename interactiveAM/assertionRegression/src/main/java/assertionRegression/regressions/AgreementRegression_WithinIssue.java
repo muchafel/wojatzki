@@ -22,28 +22,39 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.features.length.AvgNrOfCharsPerToken;
 import org.dkpro.tc.features.length.NrOfTokens;
 import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
 import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.LucenePOSNGram;
 import org.dkpro.tc.features.ngram.LucenePhoneticNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
+import org.dkpro.tc.features.style.AdjectiveEndingFeatureExtractor;
+import org.dkpro.tc.features.style.ExclamationFeatureExtractor;
+import org.dkpro.tc.features.style.LongWordsFeatureExtractor;
+import org.dkpro.tc.features.style.ModalVerbsFeatureExtractor;
+import org.dkpro.tc.features.style.TokenRatioFeatureExtractor;
 import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
+import org.dkpro.tc.features.syntax.POSRatioFeatureExtractor;
+import org.dkpro.tc.features.syntax.QuestionsRatioFeatureExtractor;
 import org.dkpro.tc.features.syntax.SuperlativeRatioFeatureExtractor;
 import org.dkpro.tc.features.twitter.EmoticonRatio;
 import org.dkpro.tc.features.twitter.NumberOfHashTags;
 import org.dkpro.tc.features.window.CaseExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
+import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.dkpro.tc.ml.weka.WekaRegressionAdapter;
 
 import assertionRegression.featureExtractors.CorpusFrequency;
 import assertionRegression.featureExtractors.NRCSentiment;
-import assertionRegression.featureExtractors.NegationFeatureExtractor;
 import assertionRegression.featureExtractors.SocherSentimentFE;
 import assertionRegression.featureExtractors.WordEmbeddingDFE;
+import assertionRegression.io.AssertionIssueSpecificReader;
+import assertionRegression.io.AssertionIssueSpecificReaderTrainTest;
 import assertionRegression.io.AssertionReader;
 import assertionRegression.io.CrossValidationReport;
+import assertionRegression.io.FoldReport;
 import assertionRegression.preprocessing.StanfordSentimentAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
@@ -56,12 +67,14 @@ import weka.classifiers.functions.SMOreg;
 import weka.classifiers.rules.ZeroR;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
+import org.dkpro.tc.ml.report.BatchCrossValidationReport;
+import org.dkpro.tc.ml.report.BatchTrainTestReport;
+import org.dkpro.tc.ml.report.InnerBatchReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 
+public class AgreementRegression_WithinIssue implements Constants {
 
-public class AgreementRegression implements Constants {
-
-	private static final int NUM_FOLDS = 10;
+	private static final int NUM_FOLDS = 70;
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 2;
@@ -69,48 +82,68 @@ public class AgreementRegression implements Constants {
 
 	public static int N_GRAM_MAXCANDIDATES = 1000;
 
-	/**
-	 * XXX specify features here we should do some experiments using the
-	 * standard fetaures from dkpro-tc
-	 */
-	public TcFeatureSet featureSet = new TcFeatureSet(
-			 TcFeatureFactory.create(LuceneNGram.class,
-			 NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-			 N_GRAM_MAXCANDIDATES,
-			 NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
-			 NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-			 TcFeatureFactory.create(NegationFeatureExtractor.class)
-//			 ,TcFeatureFactory.create(LuceneCharacterNGram.class,
-//			 NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
-//			 500,
-//			 NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
-//			 NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
-//			 ,TcFeatureFactory.create(WordEmbeddingDFE.class,WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "/Users/michael/DKPRO_HOME/UCI/data/pruned/wiki.en.vec")
-//			,TcFeatureFactory.create(NrOfTokens.class),
-//			,TcFeatureFactory.create(CorpusFrequency.class,CorpusFrequency.PARAM_CORPUS_FOLDER,"/Users/michael/Desktop/statuses/cleaned")
-//	 TcFeatureFactory.create(SocherSentimentFE.class)
-//	 ,TcFeatureFactory.create(NRCSentiment.class,NRCSentiment.PARAM_PREDICTION_FILE_CLASSES,"/Users/michael/DKPRO_HOME/UCI/sentimentPredictions/assertions-preds.txt",NRCSentiment.PARAM_PREDICTION_FILE_SCORES,"/Users/michael/DKPRO_HOME/UCI/sentimentPredictions/assertions-preds-scores.txt")
-	);
+	
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
-		AgreementRegression experiment = new AgreementRegression();
+		
+		
+		ArrayList<String> issues = new ArrayList<String>(Arrays.asList(
+				"Black Lives Matter"
+//				, "Climate Change"
+//				,"Creationism in school curricula"
+//				, "Foreign Aid", "Gender Equality"
+//				, "Gun Rights"
+//				,"Legalization of Marijuana"
+//				, "Legalization of Same-sex Marriage"
+//				, "Mandatory Vaccination"
+//				, "Media Bias"
+//				,"Obama Care -- Affordable Health Care Act"
+//				, "US Electoral System"
+//				, "US Engagement in the Middle East"
+//				,"US Immigration"
+//				, "Vegetarian & Vegan Lifestyle"
+//				, "War on Terrorism"
+				));
+		
+		
+		TcFeatureSet featureSet = new TcFeatureSet(
+				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
+						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 
-		// XXX CV for getting the id2outcome file for the DFE
-		ParameterSpace pSpace = experiment.setupCrossValidation(baseDir+"/UCI/data/data.tsv", "Agreement");
-		experiment.runCrossValidation(pSpace, "nrcsentiment");
+				TcFeatureFactory.create(NRCSentiment.class, NRCSentiment.PARAM_PREDICTION_FILE_CLASSES,
+						baseDir + "/UCI/sentimentPredictions/assertions-preds.txt",
+						NRCSentiment.PARAM_PREDICTION_FILE_SCORES,
+						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"));
+		
+		for(String issue: issues) {
+			AgreementRegression_WithinIssue experiment = new AgreementRegression_WithinIssue();
+
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",featureSet,issue);
+			String issueNameCleaned= cleanName(issue);
+			System.out.println(issueNameCleaned);
+			experiment.runCrossValidation(pSpace, "issueInnerCrossValidation_"+NUM_FOLDS+"_",issueNameCleaned);
+		}
 
 	}
 
-	private void runCrossValidation(ParameterSpace pSpace, String title) throws Exception {
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(title, LibsvmAdapter.class, NUM_FOLDS);
+	private static String cleanName(String issue) {
+		String result=issue.replace(" ", "");
+		result=issue.replaceAll("[^A-Za-z0-9]", "");
+		return result;
+	}
+
+	private void runCrossValidation(ParameterSpace pSpace, String title, String issue) throws Exception {
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(title+""+issue, LibsvmAdapter.class,NUM_FOLDS);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(CrossValidationReport.class);
-		batch.addReport(ScatterplotReport.class);
+		batch.addReport(BatchCrossValidationReport.class);
+//		batch.addReport(ScatterplotReport.class);
+//		 batch.addReport(FoldReport.class);
 
 		// Run
 		Lab.getInstance().run(batch);
@@ -119,16 +152,16 @@ public class AgreementRegression implements Constants {
 
 	protected AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
 		return createEngineDescription(createEngineDescription(BreakIteratorSegmenter.class)
-//				,createEngineDescription(ClearNlpPosTagger.class)
-//				,
-//				createEngineDescription(StanfordSentimentAnnotator.class)
-				);
+		// ,createEngineDescription(ClearNlpPosTagger.class)
+		// ,
+		// createEngineDescription(StanfordSentimentAnnotator.class)
+		);
 	}
 
-	private ParameterSpace setupCrossValidation(String path, String target) throws ResourceInitializationException {
-		Map<String, Object> dimReaders = getDimReaders(path, target);
+	private ParameterSpace setupCrossValidation(String path, String target, TcFeatureSet featureSet, String issue) throws ResourceInitializationException {
+		Map<String, Object> dimReaders = getDimReaders(path, target,issue);
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-                Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION , "-c", "100"}));
+				Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION, "-c", "100" }));
 
 		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
@@ -141,16 +174,18 @@ public class AgreementRegression implements Constants {
 			Dimension<List<String>> dimClassificationArgs) {
 		return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_LEARNING_MODE, LM_REGRESSION), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
-				dimFeatureSets, dimClassificationArgs);
+				dimFeatureSets, dimClassificationArgs,Dimension.create( DIM_CROSS_VALIDATION_MANUAL_FOLDS, true));
 	}
 
-	private Map<String, Object> getDimReaders(String path, String targetClass) throws ResourceInitializationException {
+	private Map<String, Object> getDimReaders(String path, String targetClass, String issue) throws ResourceInitializationException {
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
 		System.out.println("read " + path);
 		dimReaders.put(DIM_READER_TRAIN,
-				CollectionReaderFactory.createReaderDescription(AssertionReader.class,
-						AssertionReader.PARAM_SOURCE_LOCATION, path, AssertionReader.PARAM_LANGUAGE, "en",
-						AssertionReader.PARAM_TARGETCLASS, targetClass));
+				CollectionReaderFactory.createReaderDescription(AssertionIssueSpecificReaderTrainTest.class,
+						AssertionIssueSpecificReaderTrainTest.PARAM_SOURCE_LOCATION, path,
+						AssertionIssueSpecificReaderTrainTest.PARAM_LANGUAGE, "en",
+						AssertionIssueSpecificReaderTrainTest.PARAM_TARGETCLASS, targetClass,AssertionIssueSpecificReaderTrainTest.PARAM_IS_TRAIN, false, AssertionIssueSpecificReaderTrainTest.PARAM_ISSUE, issue));
+		
 
 		return dimReaders;
 	}

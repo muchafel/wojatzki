@@ -18,10 +18,14 @@ public class RandomPredictor extends NextJudgmentPredictor {
 		if(predcitOnlyNext) {
 //			System.out.println(experiment.getAssertionsToTest());
 			String nextAssertion=experiment.getAssertionsToTest().get(0);
+//			System.out.println("toTest "+experiment.getAssertionsToTest());
+//			System.out.println("next in data "+experiment.getData().getStatements().get(0));
 			double prediction = 1.0;
 			if(random.nextBoolean()) {
 				prediction=-1.0;
 			}
+			if(experiment.getAssertion2TrueScore().get(nextAssertion)==0.0) return Double.NaN;
+			System.out.println(experiment.getParticipantToTest().getId()+" "+nextAssertion+" "+prediction+ " "+experiment.getAssertion2TrueScore().get(nextAssertion));
 			if(prediction==experiment.getAssertion2TrueScore().get(nextAssertion)) {
 				return 1.0;
 			}else {

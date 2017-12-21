@@ -50,7 +50,6 @@ implements FeatureExtractor{
 			new ResourceInitializationException(e);
 		}
 		
-		
 		return true;
 	}
 	

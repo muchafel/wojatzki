@@ -28,7 +28,8 @@ public class EmbeddingSimilarityMeasure extends TextSimilarityMeasureBase{
 	public double getSimilarity(Collection<String> strings1, Collection<String> strings2) throws SimilarityException {
 		List<Double> averagedVector1 =embeddingHelper.getAveragedSentenceVector(strings1);
 		List<Double> averagedVector2 =embeddingHelper.getAveragedSentenceVector(strings2);
-		
+//		System.out.println(averagedVector1);
+//		System.out.println(averagedVector2);
 		return similarityHelper.getCosineSimilarity(averagedVector1, averagedVector2);
 	}
 	

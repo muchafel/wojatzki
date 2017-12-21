@@ -17,6 +17,7 @@ public class BaselinePredictor extends NextJudgmentPredictor {
 		if(predcitOnlyNext) {
 			String nextAssertion=experiment.getAssertionsToTest().get(0);
 			double prediction=1.0;
+			if(experiment.getAssertion2TrueScore().get(nextAssertion)==0.0) return Double.NaN;
 			if(prediction==experiment.getAssertion2TrueScore().get(nextAssertion)) {
 				return 1.0;
 			}else {
