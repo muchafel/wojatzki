@@ -53,7 +53,7 @@ public class JudgmentPredictionExperimentFactory {
 
 	public PredictionExperiment setUpExperiment(int idToTest) throws IOException {
 		List<Participant> other_participants= new ArrayList();
-		Map<String,Double> judgments_toTest =null;
+		LinkedHashMap<String,Double> judgments_toTest =null;
 		
 		//here we could introduce some ordering/exlsuioon of assertions etc....
 		List<String> assertions=this.assertions;
@@ -137,8 +137,8 @@ public class JudgmentPredictionExperimentFactory {
 	}
 	
 	
-	private Map<String,Double> getJudgmentMappingOfParticipant(String line, double[] ds) {
-		Map<String,Double> assertionToJudgment= new LinkedHashMap<String,Double>();
+	private LinkedHashMap<String,Double> getJudgmentMappingOfParticipant(String line, double[] ds) {
+		LinkedHashMap<String,Double> assertionToJudgment= new LinkedHashMap<String,Double>();
 		
 		int i=0;
 		for(String part: line.split("\t")){

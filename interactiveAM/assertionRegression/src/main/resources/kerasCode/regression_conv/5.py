@@ -30,7 +30,6 @@ from keras.layers import Conv1D, MaxPooling1D
 from keras.datasets import imdb
 import numpy as np
 
-np.random.seed(1543)  # reproducibility
 
 def numpyizeDataVector(vec):
     trainVecNump=[]
@@ -105,16 +104,17 @@ def runExperiment(trainVec, trainOutcome, testVec, testOutcome, embedding, maxim
 
     model = Sequential()
     model.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=x_train.shape[1], weights=[embeddings], trainable=False))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.2))
     model.add(Flatten())
-    model.add(Dense(150))
+    model.add(Dense(200))
     model.add(Dense(100))
     model.add(Dense(50))
+    model.add(Dense(25))
+    model.add(Dense(10))
+    model.add(Dense(1))
     model.add(Activation('sigmoid'))
-    model.add(Dense(1,activation='linear'))
-   # model.add(Activation('linear'))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(x_train, y_train, epochs=20, shuffle=True)
+    model.fit(x_train, y_train, epochs=10, shuffle=True)
 
     prediction = model.predict(x_test)
 

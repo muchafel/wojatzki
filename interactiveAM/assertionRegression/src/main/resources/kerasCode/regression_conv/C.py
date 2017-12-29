@@ -26,11 +26,11 @@ from keras.layers import Dense, Dropout, Activation
 from keras.layers import Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D
 from keras.layers import Embedding
 from keras.layers import LSTM
-from keras.layers import Conv1D, MaxPooling1D
+from keras.layers import Conv1D, GlobalMaxPooling1D
 from keras.datasets import imdb
 import numpy as np
 
-np.random.seed(1543)  # reproducibility
+np.random.seed(743)  # reproducibility
 
 def numpyizeDataVector(vec):
     trainVecNump=[]
@@ -105,14 +105,13 @@ def runExperiment(trainVec, trainOutcome, testVec, testOutcome, embedding, maxim
 
     model = Sequential()
     model.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=x_train.shape[1], weights=[embeddings], trainable=False))
-    model.add(Dropout(0.5))
-    model.add(Flatten())
-    model.add(Dense(150))
-    model.add(Dense(100))
-    model.add(Dense(50))
-    model.add(Activation('sigmoid'))
-    model.add(Dense(1,activation='linear'))
-   # model.add(Activation('linear'))
+    model.add(Dropout(0.2))
+    model.add(Conv1D(300,2,padding='valid',activation='relu',strides=1))
+    model.add(GlobalMaxPooling1D())
+    model.add(Dense(200, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(100, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(25, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1, kernel_initializer='normal'))
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(x_train, y_train, epochs=20, shuffle=True)
 

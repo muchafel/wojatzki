@@ -23,14 +23,12 @@ from sys import argv
 from keras.preprocessing import sequence
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
-from keras.layers import Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D
 from keras.layers import Embedding
 from keras.layers import LSTM
 from keras.layers import Conv1D, MaxPooling1D
 from keras.datasets import imdb
 import numpy as np
 
-np.random.seed(1543)  # reproducibility
 
 def numpyizeDataVector(vec):
     trainVecNump=[]
@@ -84,7 +82,7 @@ def loadEmbeddings(emb):
     return matrix, dim
 
 def runExperiment(trainVec, trainOutcome, testVec, testOutcome, embedding, maximumLength, predictionOut):
-    
+	
     trainVecNump = numpyizeDataVector(trainVec)
     trainOutcome = numpyizeOutcomeVector(trainOutcome)
     print(trainOutcome)
@@ -105,16 +103,13 @@ def runExperiment(trainVec, trainOutcome, testVec, testOutcome, embedding, maxim
 
     model = Sequential()
     model.add(Embedding(output_dim=embeddings.shape[1], input_dim=embeddings.shape[0], input_length=x_train.shape[1], weights=[embeddings], trainable=False))
-    model.add(Dropout(0.5))
-    model.add(Flatten())
-    model.add(Dense(150))
-    model.add(Dense(100))
-    model.add(Dense(50))
+    model.add(Dropout(0.2))
+    model.add(LSTM(128, return_sequences=True, dropout=0.2, recurrent_dropout=0.2))
+    model.add(LSTM(128, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, go_backwards=True))
+    model.add(Dense(1))
     model.add(Activation('sigmoid'))
-    model.add(Dense(1,activation='linear'))
-   # model.add(Activation('linear'))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(x_train, y_train, epochs=20, shuffle=True)
+    model.fit(x_train, y_train, epochs=10, shuffle=True)
 
     prediction = model.predict(x_test)
 

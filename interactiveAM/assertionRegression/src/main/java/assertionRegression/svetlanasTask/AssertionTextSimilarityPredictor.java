@@ -1,8 +1,10 @@
 package assertionRegression.svetlanasTask;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.bytedeco.javacpp.RealSense.context;
 
@@ -20,7 +22,7 @@ public class AssertionTextSimilarityPredictor extends Predictor {
 	
 	
 	@Override
-	protected String getPredictionForAssertion(String assertion, PredictionExperiment experiment) {
+	protected String getPredictionForAssertion(String assertion, PredictionExperiment experiment) throws Exception {
 		double prediction= predictionOfMostSimilarAssertion(experiment.getNonZeroJudgments_toTest(),assertion);
 		return result(prediction,experiment.getNonZeroJudgments_toTest().get(assertion));
 	}
@@ -30,7 +32,7 @@ public class AssertionTextSimilarityPredictor extends Predictor {
 		
 		String mostSimilar="";
 		double bestSimScore=0.0;
-//		System.out.println(givenAssertions);
+//		System.out.println(assertion+ " "+nonZeroJudgments_toTest.size());
 		for(String previousAssertion:nonZeroJudgments_toTest.keySet()) {
 			
 			if(previousAssertion.equals(assertion))continue;
@@ -51,8 +53,36 @@ public class AssertionTextSimilarityPredictor extends Predictor {
 				bestSimScore=sim;
 			}
 		}
+		if(bestSimScore==0.0) return 1.0;
 //		System.out.println(assertion+" <most similar> "+mostSimilar+ " "+bestSimScore);
 		return nonZeroJudgments_toTest.get(mostSimilar);
 	}
+
+
+	@Override
+	protected String getPredictionForAssertion(String assertion, PredictionExperiment experiment, int historySize) throws Exception {
+		LinkedHashMap<String,Double> subMap= getSubMap(historySize,experiment.getNonZeroJudgments_toTest());
+		double prediction= predictionOfMostSimilarAssertion(subMap,assertion);
+		return result(prediction,experiment.getNonZeroJudgments_toTest().get(assertion));
+
+	}
+	
+	private LinkedHashMap<String, Double> getSubMap(int historySize,
+			LinkedHashMap<String, Double> nonZeroJudgments_toTest) {
+		LinkedHashMap<String,Double> subMap = new LinkedHashMap<>();
+		int i=0;
+		for(String key: nonZeroJudgments_toTest.keySet()) {
+			i++;
+			if(i==historySize) {
+				return subMap;
+			}
+			subMap.put(key, nonZeroJudgments_toTest.get(key));
+		}
+		
+		
+		return null;
+	}
+
+
 	
 }
