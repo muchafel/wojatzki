@@ -1,4 +1,4 @@
-package assertionRegression.featureExtractors;
+package assertionRegression.regressions;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
@@ -30,6 +30,7 @@ import org.dkpro.tc.features.pair.similarity.SimilarityPairFeatureExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
+import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 
@@ -124,7 +125,8 @@ public class AssertionSimilarityPrediction  implements Constants
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(CrossValidationReport.class);
+//		batch.addReport(CrossValidationReport.class);
+		batch.addReport(BatchCrossValidationReport.class);
 		batch.addReport(ScatterplotReport.class);
 
 		// Run
