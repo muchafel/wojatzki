@@ -72,9 +72,9 @@ import org.dkpro.tc.ml.report.BatchTrainTestReport;
 import org.dkpro.tc.ml.report.InnerBatchReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 
-public class AgreementRegression_WithinIssue implements Constants {
+public class AgreementRegression_IssueAblation implements Constants {
 
-	private static final int NUM_FOLDS = 70;
+	private static final int NUM_FOLDS = 16;
 	public static int WORD_N_GRAM_MIN = 1;
 	public static int WORD_N_GRAM_MAX = 3;
 	public static int CHAR_N_GRAM_MIN = 2;
@@ -91,20 +91,20 @@ public class AgreementRegression_WithinIssue implements Constants {
 		
 		ArrayList<String> issues = new ArrayList<String>(Arrays.asList(
 				"Black Lives Matter"
-//				, "Climate Change"
-//				,"Creationism in school curricula"
-//				, "Foreign Aid", "Gender Equality"
-//				, "Gun Rights"
-//				,"Legalization of Marijuana"
-//				, "Legalization of Same-sex Marriage"
-//				, "Mandatory Vaccination"
-//				, "Media Bias"
-//				,"Obama Care -- Affordable Health Care Act"
-//				, "US Electoral System"
-//				, "US Engagement in the Middle East"
-//				,"US Immigration"
-//				, "Vegetarian & Vegan Lifestyle"
-//				, "War on Terrorism"
+				, "Climate Change"
+				,"Creationism in school curricula"
+				, "Foreign Aid", "Gender Equality"
+				, "Gun Rights"
+				,"Legalization of Marijuana"
+				, "Legalization of Same-sex Marriage"
+				, "Mandatory Vaccination"
+				, "Media Bias"
+				,"Obama Care -- Affordable Health Care Act"
+				, "US Electoral System"
+				, "US Engagement in the Middle East"
+				,"US Immigration"
+				, "Vegetarian & Vegan Lifestyle"
+				, "War on Terrorism"
 				));
 		
 		
@@ -119,12 +119,12 @@ public class AgreementRegression_WithinIssue implements Constants {
 						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"));
 		
 		for(String issue: issues) {
-			AgreementRegression_WithinIssue experiment = new AgreementRegression_WithinIssue();
+			AgreementRegression_IssueAblation experiment = new AgreementRegression_IssueAblation();
 
 			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",featureSet,issue);
 			String issueNameCleaned= cleanName(issue);
 			System.out.println(issueNameCleaned);
-			experiment.runCrossValidation(pSpace, "issueInnerCrossValidation_"+NUM_FOLDS+"_",issueNameCleaned);
+			experiment.runTrainTest(pSpace, "ablation",issueNameCleaned);
 		}
 
 	}
@@ -135,8 +135,8 @@ public class AgreementRegression_WithinIssue implements Constants {
 		return result;
 	}
 
-	private void runCrossValidation(ParameterSpace pSpace, String title, String issue) throws Exception {
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(title+""+issue, LibsvmAdapter.class,NUM_FOLDS);
+	private void runTrainTest(ParameterSpace pSpace, String title, String issue) throws Exception {
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(title+"_"+issue, LibsvmAdapter.class,10);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
@@ -184,7 +184,7 @@ public class AgreementRegression_WithinIssue implements Constants {
 				CollectionReaderFactory.createReaderDescription(AssertionIssueSpecificReaderTrainTest.class,
 						AssertionIssueSpecificReaderTrainTest.PARAM_SOURCE_LOCATION, path,
 						AssertionIssueSpecificReaderTrainTest.PARAM_LANGUAGE, "en",
-						AssertionIssueSpecificReaderTrainTest.PARAM_TARGETCLASS, targetClass,AssertionIssueSpecificReaderTrainTest.PARAM_IS_TRAIN, false, AssertionIssueSpecificReaderTrainTest.PARAM_ISSUE, issue));
+						AssertionIssueSpecificReaderTrainTest.PARAM_TARGETCLASS, targetClass,AssertionIssueSpecificReaderTrainTest.PARAM_IS_TRAIN, true, AssertionIssueSpecificReaderTrainTest.PARAM_ISSUE, issue));
 		
 
 		return dimReaders;

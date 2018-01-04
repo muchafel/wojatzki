@@ -74,7 +74,8 @@ public class AgreementRegression implements Constants {
 	 * standard fetaures from dkpro-tc
 	 */
 	public TcFeatureSet featureSet = new TcFeatureSet(
-			 TcFeatureFactory.create(LuceneNGram.class,
+			 TcFeatureFactory.create(
+					 LuceneNGram.class,
 			 NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 			 N_GRAM_MAXCANDIDATES,
 			 NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,

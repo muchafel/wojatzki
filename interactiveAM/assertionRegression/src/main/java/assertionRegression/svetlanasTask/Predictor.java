@@ -69,7 +69,7 @@ public abstract class Predictor {
 			//FALSE NEGATIVE
 			return "fn";
 		}else {
-			throw new Exception("wrong value");
+			throw new Exception("wrong value ("+prediction+" or "+trueValue+")");
 		}
 	}
 

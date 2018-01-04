@@ -130,7 +130,10 @@ public class AssertionSimilarityPairReader extends PairReader_ImplBase implement
 //			rowCounter++;
 //		}
 		
-
+//		if (rowCounter>=2) {
+//			return false;
+//		}
+		
 		if (rowCounter>=numberOfLines-1) {
 			return false;
 		}

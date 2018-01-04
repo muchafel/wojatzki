@@ -30,6 +30,7 @@ import org.dkpro.tc.features.pair.similarity.SimilarityPairFeatureExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
+import org.dkpro.tc.ml.libsvm.report.LibsvmOutcomeIdReport;
 import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
@@ -47,6 +48,9 @@ public class AssertionSimilarityPrediction  implements Constants
 
     public static final String languageCode = "en";
 
+
+	private static final int NUM_FOLDS = 10;
+
     
     static ExternalResourceDescription gstResource = ExternalResourceFactory
             .createExternalResourceDescription(GreedyStringTilingMeasureResource.class,
@@ -61,16 +65,11 @@ public class AssertionSimilarityPrediction  implements Constants
             		WordNGramContainmentResource.PARAM_N, "2");
     
     
-    public static void main(String[] args)
-        throws Exception
-    {
+    public static void main(String[] args)throws Exception {
 
     	
-    
-    	
-    	
 		TcFeatureSet featureSet = new TcFeatureSet(
-				// TcFeatureFactory.create(GreedyStringTilingFeatureExtractor.class)
+//			 TcFeatureFactory.create(GreedyStringTilingFeatureExtractor.class)
 //				TcFeatureFactory.create(SimilarityPairFeatureExtractor.class,
 //						SimilarityPairFeatureExtractor.PARAM_UNIQUE_EXTRACTOR_NAME, "ngram_2",
 //						SimilarityPairFeatureExtractor.PARAM_SEGMENT_FEATURE_PATH, Token.class.getName(),
@@ -90,19 +89,22 @@ public class AssertionSimilarityPrediction  implements Constants
 				LuceneNGramPFE.PARAM_USE_VIEWBLIND_NGRAMS_AS_FEATURES, false)
 				);
         
-        ParameterSpace pSpace = getParameterSpace(featureSet);
+//        ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_gunRights.tsv");
+//		ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_sameSex.tsv");
+		ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_creationism.tsv");
+//		 ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_middleEast.tsv");
         AssertionSimilarityPrediction experiment = new AssertionSimilarityPrediction();
-        experiment.runCrossValidation(pSpace);
+        experiment.runCrossValidation(pSpace,"sameSex");
     }
 
     @SuppressWarnings("unchecked")
-    public static ParameterSpace getParameterSpace(TcFeatureSet featureSet)
+    public static ParameterSpace getParameterSpace(TcFeatureSet featureSet, String path)
         throws ResourceInitializationException
     {
         Map<String, Object> dimReaders = new HashMap<String, Object>();
 
         CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
-                AssertionSimilarityPairReader.class, AssertionSimilarityPairReader.PARAM_SOURCE_LOCATION,"src/main/resources/similarityMatrices/assertionSimilarity_gunRights.tsv");
+                AssertionSimilarityPairReader.class, AssertionSimilarityPairReader.PARAM_SOURCE_LOCATION,path);
         dimReaders.put(DIM_READER_TRAIN, reader);
 
 
@@ -119,14 +121,18 @@ public class AssertionSimilarityPrediction  implements Constants
         return pSpace;
     }
 
-	protected void runCrossValidation(ParameterSpace pSpace) throws Exception {
+	protected void runCrossValidation(ParameterSpace pSpace, String title) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation("sim_test", LibsvmAdapter.class, 10);
+		ExperimentCrossValidation batch = new ExperimentCrossValidation("sim_"+title, LibsvmAdapter.class, NUM_FOLDS);
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
+//		batch.addReport(LibsvmOutcomeIdReport.class);
+		
 //		batch.addReport(CrossValidationReport.class);
 		batch.addReport(BatchCrossValidationReport.class);
+
+		batch.addReport(Id2OutcomeReport.class);
 		batch.addReport(ScatterplotReport.class);
 
 		// Run

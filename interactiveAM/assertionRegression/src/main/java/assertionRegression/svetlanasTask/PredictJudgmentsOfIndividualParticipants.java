@@ -18,13 +18,19 @@ public class PredictJudgmentsOfIndividualParticipants {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 		
-		JudgmentPredictionExperimentFactory experimenter= new JudgmentPredictionExperimentFactory(baseDir+"/UCI/rawMatrices/Black Lives Matter.tsv");
+//		String issue="Vegetarian & Vegan Lifestyle";
+//		String issue="Black Lives Matter";
+//		String issue="US Engagement in the Middle East";
+		String issue="Gun Rights";
+		
+		JudgmentPredictionExperimentFactory experimenter= new JudgmentPredictionExperimentFactory(baseDir+"/UCI/rawMatrices/"+issue+".tsv");
 		System.out.println(experimenter.getAssertions());
 		System.out.println(experimenter.getParticipants());
 		Predictor baselinePredictor= new BaseLinePredictor();
 		
 		Predictor randomPredictor= new RandomPredictor();
 		
+		Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issue+".txt",baseDir+"/UCI/rawMatrices/"+issue+".tsv");
 		Predictor mostSimilarAssertionPredictor_jaccard= new AssertionTextSimilarityPredictor(new WordNGramJaccardMeasure());
 		Predictor mostSimilarAssertionPredictor_embedding= new AssertionTextSimilarityPredictor(new EmbeddingSimilarityMeasure(baseDir + "/UCI/data/pruned/wiki.en.vec"));
 		Predictor mostSimilarAssertionPredictor_gst= new AssertionTextSimilarityPredictor(new GreedyStringTiling(5));
@@ -57,6 +63,8 @@ public class PredictJudgmentsOfIndividualParticipants {
 		Map<Integer,Double> count2Accuracy_userHistory = new TreeMap<>();
 		Map<Integer,Double> count2Accuracy_meanOther = new TreeMap<>();
 		Map<Integer,Double> count2Accuracy_mostSimilarUser = new TreeMap<>();
+		Map<Integer,Double> count2Accuracy_lcss = new TreeMap<>();
+		Map<Integer,Double> count2Accuracy_ownSim = new TreeMap<>();
 		
 		for(Participant participant: experimenter.getParticipants()) {
 //			
@@ -75,14 +83,16 @@ public class PredictJudgmentsOfIndividualParticipants {
 			
 			count2Accuracy_baseline=add2Map(count2Accuracy_baseline,experiment.getNonZeroJudgments_toTest().size(),baselinePredictor.predict(experiment));
 //			count2Accuracy_random=add2Map(count2Accuracy_random,experiment.getNonZeroJudgments_toTest().size(),randomPredictor.predict(experiment));
-			count2Accuracy_jaccard=add2Map(count2Accuracy_jaccard,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_jaccard.predict(experiment));
-			count2Accuracy_embedding=add2Map(count2Accuracy_embedding,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_embedding.predict(experiment));
-			count2Accuracy_judgment=add2Map(count2Accuracy_judgment,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_judgment.predict(experiment));
+//			count2Accuracy_jaccard=add2Map(count2Accuracy_jaccard,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_jaccard.predict(experiment));
+//			count2Accuracy_embedding=add2Map(count2Accuracy_embedding,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_embedding.predict(experiment));
+//			count2Accuracy_judgment=add2Map(count2Accuracy_judgment,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_judgment.predict(experiment));
 //			count2Accuracy_userHistory=add2Map(count2Accuracy_userHistory,experiment.getNonZeroJudgments_toTest().size(),meanhistoryPredictor.predict(experiment));
 //			count2Accuracy_meanOther=add2Map(count2Accuracy_meanOther,experiment.getNonZeroJudgments_toTest().size(),meanOtherPredictor.predict(experiment));
 //			count2Accuracy_mostSimilarUser=add2Map(count2Accuracy_mostSimilarUser,experiment.getNonZeroJudgments_toTest().size(),mostSimilarUserPredictor.predict(experiment));
-			count2Accuracy_gst=add2Map(count2Accuracy_gst,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_gst.predict(experiment));
-			
+//			count2Accuracy_gst=add2Map(count2Accuracy_gst,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_gst.predict(experiment));
+//			count2Accuracy_lcss=add2Map(count2Accuracy_lcss,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_lcss.predict(experiment));
+			count2Accuracy_ownSim=add2Map(count2Accuracy_ownSim,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_learned.predict(experiment));
+
 		}
 //		for(int size: count2Accuracy_baseline.keySet()) {
 //			System.out.println(size+"\t"+count2Accuracy_baseline.get(size)+"\t"+count2Accuracy_random.get(size)+"\t"+count2Accuracy_jaccard.get(size)+"\t"+count2Accuracy_embedding.get(size)+"\t"+count2Accuracy_judgment.get(size)+"\t"+count2Accuracy_userHistory.get(size)+"\t"+count2Accuracy_meanOther.get(size)+"\t"+count2Accuracy_mostSimilarUser.get(size));
@@ -94,9 +104,10 @@ public class PredictJudgmentsOfIndividualParticipants {
 		System.out.println("mostSimilarJudgment:\t"+mean(count2Accuracy_judgment));
 		System.out.println("embedding:\t"+mean(count2Accuracy_embedding));
 		System.out.println("gst:\t"+mean(count2Accuracy_gst));
-		System.out.println("mostSimilarJudgment:\t"+mean(count2Accuracy_judgment));
 		System.out.println("meanOther:\t"+mean(count2Accuracy_meanOther));
+		System.out.println("lcss:\t"+mean(count2Accuracy_lcss));
 		System.out.println("mostSimilarUser:\t"+mean(count2Accuracy_mostSimilarUser));
+		System.out.println("ownSim:\t"+mean(count2Accuracy_ownSim));
 		
 //		System.out.println(overall);
 //		System.out.println(overall/experimenter.getParticipants().size());

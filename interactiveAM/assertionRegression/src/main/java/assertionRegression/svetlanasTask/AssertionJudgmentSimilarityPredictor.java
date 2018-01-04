@@ -42,6 +42,8 @@ public class AssertionJudgmentSimilarityPredictor extends Predictor {
 			double sim=0;
 			try {
 				sim = similarity(previousAssertion,assertion,experiment);
+//				System.out.println(previousAssertion+" - "+assertion);
+//				System.out.println(sim);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -50,13 +52,17 @@ public class AssertionJudgmentSimilarityPredictor extends Predictor {
 				bestSimScore=sim;
 			}
 		}
+		if(bestSimScore<=0.0) return 1.0;
 //		System.out.println(assertion+" most similar "+mostSimilar+ " "+bestSimScore);
 		return nonZeroJudgments_toTest.get(mostSimilar);
 	}
 
 	private double similarity(String previousAssertion, String assertion, PredictionExperiment experiment) throws Exception {
-		double[] vectorA= experiment.getJudgments_other().getRatingsForAssertion(previousAssertion);
+		double[] vectorA= experiment.getJudgments_other().getRatingsForAssertion(assertion);
 		double[] vectorB= experiment.getJudgments_other().getRatingsForAssertion(previousAssertion);
+		
+//		System.out.println(Arrays.toString(vectorA));
+//		System.out.println(Arrays.toString(vectorB));
 		
 		List<Double> listA = toList(vectorA);
 		List<Double> listB = toList(vectorB);

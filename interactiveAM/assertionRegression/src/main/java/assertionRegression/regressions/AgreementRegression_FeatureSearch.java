@@ -44,7 +44,7 @@ import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 import org.dkpro.tc.ml.weka.WekaRegressionAdapter;
 
-import assertionRegression.featureExtractors.AdjEndingFeatureExtractor;
+//import assertionRegression.featureExtractors.AdjEndingFeatureExtractor;
 import assertionRegression.featureExtractors.CorpusFrequency;
 import assertionRegression.featureExtractors.NRCSentiment;
 import assertionRegression.featureExtractors.SocherSentimentFE;
@@ -96,7 +96,7 @@ public class AgreementRegression_FeatureSearch implements Constants {
 				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
 				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
 				TcFeatureFactory.create(NrOfTokens.class),
-				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
+//				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
 				TcFeatureFactory.create(QuestionsRatioFeatureExtractor.class)
 		);
 		
@@ -185,7 +185,7 @@ public class AgreementRegression_FeatureSearch implements Constants {
 				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
 				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
 				TcFeatureFactory.create(NrOfTokens.class),
-				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
+//				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
 				TcFeatureFactory.create(QuestionsRatioFeatureExtractor.class)
 
 		);

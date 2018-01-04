@@ -27,6 +27,7 @@ import org.dkpro.lab.task.Task;
 import org.dkpro.lab.task.TaskContextMetadata;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ReportUtils;
+import org.dkpro.tc.core.util.TcFlexTable;
 import org.dkpro.tc.evaluation.Id2Outcome;
 import org.dkpro.tc.ml.report.TcTaskTypeUtil;
 import org.dkpro.tc.util.EvaluationReportUtil;
@@ -40,7 +41,7 @@ public class FoldReport extends BatchReportBase implements Constants {
 
 		StorageService store = getContext().getStorageService();
 
-		FlexTable<String> table = FlexTable.forClass(String.class);
+		TcFlexTable<String> table = TcFlexTable.forClass(String.class);
 
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			if (!TcTaskTypeUtil.isCrossValidationTask(store, subcontext.getId())) {
@@ -65,14 +66,6 @@ public class FoldReport extends BatchReportBase implements Constants {
 
 			table.addRow(subcontext.getLabel(), values);
 		}
-
-		/*
-		 * TODO: make rows to columns e.g. create a new table and set columns to rows of
-		 * old table and rows to columns but than must be class FlexTable in this case
-		 * adapted accordingly: enable setting
-		 */
-
-		ReportUtils.writeExcelAndCSV(getContext(), getContextLabel(), table, EVAL_FILE_NAME, SUFFIX_EXCEL, SUFFIX_CSV);
 	}
 
 }

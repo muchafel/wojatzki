@@ -153,6 +153,7 @@ public class JudgmentPredictionExperimentFactory {
 	private static Participant getParticipantFromLine(String line, int i) {
 		i=i+1;
 		String[] parts= line.split("\t");
+//		System.out.println(parts[0]);
 		Participant p= new Participant(Integer.parseInt(parts[0]));
 		
 		if(parts.length>i+1 && !parts[i+1].isEmpty() ){

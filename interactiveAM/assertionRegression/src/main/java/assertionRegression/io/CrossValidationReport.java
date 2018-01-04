@@ -14,6 +14,7 @@ import org.dkpro.lab.storage.impl.PropertiesAdapter;
 import org.dkpro.lab.task.TaskContextMetadata;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.util.ReportUtils;
+import org.dkpro.tc.core.util.TcFlexTable;
 import org.dkpro.tc.evaluation.Id2Outcome;
 import org.dkpro.tc.evaluation.evaluator.EvaluatorBase;
 import org.dkpro.tc.evaluation.evaluator.EvaluatorFactory;
@@ -36,7 +37,7 @@ implements Constants{
      	
         StorageService store = getContext().getStorageService();
 
-        FlexTable<String> table = FlexTable.forClass(String.class);
+        TcFlexTable<String> table = TcFlexTable.forClass(String.class);
 
         for (TaskContextMetadata subcontext : getSubtasks()) {
             // FIXME this is a hack
