@@ -2,6 +2,8 @@ package assertionRegression.svetlanasTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,6 +21,7 @@ public class PredictJudgmentsOfIndividualParticipants_allIssues {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 		
+		
 		File folder= new File(baseDir+"/UCI/rawMatrices/");
 		for(File file: folder.listFiles()) {
 			if(file.getName().equals(".DS_Store"))continue;
@@ -35,6 +38,7 @@ public class PredictJudgmentsOfIndividualParticipants_allIssues {
 			Predictor mostSimilarAssertionPredictor_gst= new AssertionTextSimilarityPredictor(new GreedyStringTiling(5));
 			Predictor mostSimilarAssertionPredictor_lcss= new AssertionTextSimilarityPredictor(new LongestCommonSubstringComparator());
 			Predictor mostSimilarAssertionPredictor_judgment= new AssertionJudgmentSimilarityPredictor();
+			Predictor mostSimilarAssertionPredictor_avg= new AssertionJudgmentSimilarityPredictor_averaged(3);
 			Predictor meanhistoryPredictor= new MeanHistoryPredictor();
 			Predictor meanOtherPredictor= new MeanOtherPredictor();
 			Predictor mostSimilarUserPredictor= new MostSimilarUserPredictor();
@@ -50,6 +54,7 @@ public class PredictJudgmentsOfIndividualParticipants_allIssues {
 			Map<Integer,Double> count2Accuracy_meanOther = new TreeMap<>();
 			Map<Integer,Double> count2Accuracy_lcss = new TreeMap<>();
 			Map<Integer,Double> count2Accuracy_mostSimilarUser = new TreeMap<>();
+			Map<Integer,Double> count2Accuracy_mostSimilAssertion_avg = new TreeMap<>();
 			
 			for(Participant participant: experimenter.getParticipants()) {
 				PredictionExperiment experiment= experimenter.setUpExperiment(participant.getId());
@@ -63,6 +68,7 @@ public class PredictJudgmentsOfIndividualParticipants_allIssues {
 				count2Accuracy_mostSimilarUser=add2Map(count2Accuracy_mostSimilarUser,experiment.getNonZeroJudgments_toTest().size(),mostSimilarUserPredictor.predict(experiment));
 				count2Accuracy_lcss=add2Map(count2Accuracy_lcss,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_lcss.predict(experiment));
 				count2Accuracy_gst=add2Map(count2Accuracy_gst,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_gst.predict(experiment));
+				count2Accuracy_mostSimilAssertion_avg=add2Map(count2Accuracy_mostSimilAssertion_avg,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_avg.predict(experiment));
 			}
 
 			System.out.println("baseline:\t"+mean(count2Accuracy_baseline));

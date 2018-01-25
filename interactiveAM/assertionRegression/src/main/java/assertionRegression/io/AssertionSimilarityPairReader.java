@@ -113,7 +113,7 @@ public class AssertionSimilarityPairReader extends PairReader_ImplBase implement
 
 		columnCounter++;
 		
-		if(columnCounter>=numberOfLines-1) {
+		if(columnCounter>=numberOfLines) {
 //			columnCounter=1;
 //			columnCounter=rowCounter+1;
 			columnCounter=rowCounter;
@@ -130,9 +130,9 @@ public class AssertionSimilarityPairReader extends PairReader_ImplBase implement
 //			rowCounter++;
 //		}
 		
-//		if (rowCounter>=2) {
-//			return false;
-//		}
+		if (rowCounter>=2) {
+			return false;
+		}
 		
 		if (rowCounter>=numberOfLines-1) {
 			return false;

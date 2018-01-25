@@ -2,6 +2,7 @@ package assertionRegression.regressions;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 
 import assertionRegression.io.AssertionSimilarityPairReader;
 import assertionRegression.io.CrossValidationReport;
+import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import dkpro.similarity.algorithms.lexical.uima.ngrams.WordNGramContainmentResource;
@@ -66,8 +68,15 @@ public class AssertionSimilarityPrediction  implements Constants
     
     
     public static void main(String[] args)throws Exception {
-
+    	String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
+		System.out.println("DKPRO_HOME: " + baseDir);
     	
+		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList("assertionSimilarity_aid",
+				"assertionSimilarity_blm", "assertionSimilarity_climateChange", "assertionSimilarity_creationism",
+				"assertionSimilarity_electoralSystem", "assertionSimilarity_gender", "assertionSimilarity_gunRights",
+				"assertionSimilarity_immigration", "assertionSimilarity_marijuana", "assertionSimilarity_mediaBias",
+				"assertionSimilarity_middleEast", "assertionSimilarity_obamacare", "assertionSimilarity_sameSex",
+				"assertionSimilarity_terror", "assertionSimilarity_vaccination", "assertionSimilarity_veggie.tsv"));
 		TcFeatureSet featureSet = new TcFeatureSet(
 //			 TcFeatureFactory.create(GreedyStringTilingFeatureExtractor.class)
 //				TcFeatureFactory.create(SimilarityPairFeatureExtractor.class,
@@ -89,12 +98,15 @@ public class AssertionSimilarityPrediction  implements Constants
 				LuceneNGramPFE.PARAM_USE_VIEWBLIND_NGRAMS_AS_FEATURES, false)
 				);
         
-//        ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_gunRights.tsv");
-//		ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_sameSex.tsv");
-		ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_creationism.tsv");
-//		 ParameterSpace pSpace = getParameterSpace(featureSet,"src/main/resources/similarityMatrices/assertionSimilarity_middleEast.tsv");
-        AssertionSimilarityPrediction experiment = new AssertionSimilarityPrediction();
-        experiment.runCrossValidation(pSpace,"sameSex");
+		
+		for (String simil : similarityMatrixes) {
+			ParameterSpace pSpace = getParameterSpace(featureSet,
+					baseDir + "/UCI/similarityMatrices/" + simil + ".tsv");
+			AssertionSimilarityPrediction experiment = new AssertionSimilarityPrediction();
+			experiment.runCrossValidation(pSpace, simil);
+		}
+		
+//      
     }
 
     @SuppressWarnings("unchecked")

@@ -1,35 +1,16 @@
 package assertionRegression.io;
 
-import static org.dkpro.tc.core.util.ReportUtils.getDiscriminatorValue;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 import org.dkpro.lab.reporting.BatchReportBase;
-import org.dkpro.lab.reporting.FlexTable;
-import org.dkpro.lab.reporting.ReportBase;
 import org.dkpro.lab.storage.StorageService;
-import org.dkpro.lab.storage.StorageService.AccessMode;
-import org.dkpro.lab.storage.impl.PropertiesAdapter;
-import org.dkpro.lab.task.Task;
 import org.dkpro.lab.task.TaskContextMetadata;
 import org.dkpro.tc.core.Constants;
+import org.dkpro.tc.core.task.TcTaskTypeUtil;
 import org.dkpro.tc.core.util.ReportUtils;
 import org.dkpro.tc.core.util.TcFlexTable;
-import org.dkpro.tc.evaluation.Id2Outcome;
-import org.dkpro.tc.ml.report.TcTaskTypeUtil;
 import org.dkpro.tc.util.EvaluationReportUtil;
 
 public class FoldReport extends BatchReportBase implements Constants {

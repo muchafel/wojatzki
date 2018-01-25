@@ -1,0 +1,156 @@
+@relation 'Legalization of Marijuana'
+
+@attribute 'Legalizing marijuana creates a danger of second-hand smoke to Bystanders.' numeric
+@attribute 'The accepatance of legal marijuana can cause people to become lax in other drug use.' numeric
+@attribute 'No one is harmed in the consumption of marijuana.' numeric
+@attribute 'Legalizing marijuana will stimulate the local economy.' numeric
+@attribute 'Marijuana has side effects.' numeric
+@attribute 'Marijuana is recognized in the medical profession as an aid for the greatly sick people.' numeric
+@attribute 'It is impossible to overdose on marijuana.' numeric
+@attribute 'Marijuana legalisation can be hazardous.' numeric
+@attribute 'The benefits of the criminalization of marijuana are minuscule to nonexistent.' numeric
+@attribute 'Marijuana is not a drug.' numeric
+@attribute 'Legalization wonâ€™t lead to increased use.' numeric
+@attribute 'Cannabis is not physically addictive.' numeric
+@attribute 'Legalizing marijuana helps people with chronic pain.' numeric
+@attribute 'The whole process is of legalisation could have adverse effects on the masses.' numeric
+@attribute 'The Founding Fathers grew and smoked hemp.' numeric
+@attribute 'Marijuana is less harmful than consuming legal substances such as alcohol or tobacco.' numeric
+@attribute 'Marijuana causes damage to the Brain.' numeric
+@attribute 'Marijuana can be used to treat physical and mental conditions.' numeric
+@attribute 'Legalizing marijuana would keep individual states from violating the federal law.' numeric
+@attribute 'Medical marijuana can aid in methods that do not improve health.' numeric
+@attribute 'Exceptions should be considered allow people with medical issues that will benefit from legalization of Marijuana.' numeric
+@attribute 'Legalizing marijuana lowers crime (no dealers etc.).' numeric
+@attribute 'Legalization of Marijuana is good for the economy.' numeric
+@attribute 'Medicinal marijuana should be legalized.' numeric
+@attribute 'Marijuana users have a greater risk of having children with ADD and other similar conditions.' numeric
+@attribute 'Marijuana has many health benefits that have yet to be explored.' numeric
+@attribute 'Marijuana helps some people out in life.' numeric
+@attribute 'Marijuana is not healthy.' numeric
+@attribute 'Marijuana helps suffering of diseases.' numeric
+@attribute 'Marijuana would cost society less if it were legal because the government could control the quality.' numeric
+@attribute 'The government should not promote the use of marijuna.' numeric
+@attribute 'Overuse of marijuana can be problematic.' numeric
+@attribute 'Marijuana should be denied to people.' numeric
+@attribute 'Legalization may make it appear that drugs are more acceptable for recreational usage.' numeric
+@attribute 'Expanding marijuana legality encourages illegal use.' numeric
+@attribute 'Legalizing medical maraijuana creates a new tax base.' numeric
+@attribute 'Those that are capable of responsible usage in regards to medicinal purposes should be allowed access to legal marijuana.' numeric
+@attribute 'Marijuana use is less addictive than tobacco use.' numeric
+@attribute 'Legalization of marijuana can entail encouragement and may cause people to recklessly engage in other illegal drugs.' numeric
+@attribute 'Cannabis has legitimate medical effects.' numeric
+@attribute 'Marijuana smoking is an offence.' numeric
+@attribute 'Cannabis is nontoxic.' numeric
+@attribute 'Marijuana is fun.' numeric
+@attribute 'Legalizing marijuana will make it easier for people to become addicted to it.' numeric
+@attribute 'If cigarettes are legal Marijuana should be to because marijuana  is healthier  for you than tobacco.' numeric
+@attribute 'Marijuana use is less dangerous than alcohol use.' numeric
+@attribute 'Expanding the legal use of marijuana makes the illegal use easier.' numeric
+@attribute 'Marijuana can be harmful.' numeric
+@attribute 'Legalizing medical marijuana will reduce illegal sale of marijuana.' numeric
+@attribute 'Marijuanna use can help cope with stress.' numeric
+@attribute 'Marijuana should be legalized and approve for medical issues.' numeric
+@attribute 'Freely available marijuana encourages recreational use.' numeric
+@attribute 'Medical marijuana can benefit terminally ill.' numeric
+@attribute 'The consumption on marijuana can lead to more serious drug use.' numeric
+@attribute 'Marijuana can help cancer patients feel better.' numeric
+@attribute 'Marijuana use can lead to other drug use.' numeric
+@attribute 'The government should legalize marijuana nationwide.' numeric
+@attribute 'Marijuana should be made legal.' numeric
+@attribute 'Legalization of marijuana removes the profit incentive for drug cartels.' numeric
+@attribute 'The government should discourage any drug usage.' numeric
+@attribute 'Prohibition has enormous social costs.' numeric
+@attribute 'Marijuana is incorrectly labelled as a Class 1 Narcotic.' numeric
+@attribute 'Marijuana is a less dangerous drug than alcohol.' numeric
+@attribute 'Marijuana as being legal can create a delusion with young people that it is okay and may lead to extensive drug use.' numeric
+@attribute 'Government should not approve the legalization of Marijuana.' numeric
+@attribute 'Marijuana is and should be illegal. End of conversation.' numeric
+@attribute 'Marijuana has medical benefits.' numeric
+@attribute 'Legalization of Marijuana will be very important to sick people.' numeric
+@attribute 'Legalization of marijuana will result to people not pushing hard drugs.' numeric
+@attribute 'Marijuana helps glaucoma patients deal with their sight issues.' numeric
+@attribute 'No drugs at all should be legalized.' numeric
+@attribute 'Marijuana should be legalized for medical purposes only.' numeric
+@attribute 'Allowing the legal use of marijuana will prevent drug dealers from selling it.' numeric
+@attribute 'Marijuana helps treat a number of diseases.' numeric
+@attribute 'Legalization of Marijuana should not be approved.' numeric
+@attribute 'Legalization of Marijuana will result in an increase of Stoned Driving and Related Cases.' numeric
+@attribute 'Promoting the use of marijuana will increase damage of human brain.' numeric
+@attribute 'Decriminalizing marijuana redirects the profit from the black market to government funding.' numeric
+@attribute 'The sale of Marijuana can help boost the economy.' numeric
+@attribute 'Legalizing marijuana opens a new market and strengthens the economy.' numeric
+@attribute 'Cannabis saves lives.' numeric
+@attribute 'Marijuana should be completely legal but subject to the same rules as liquor.' numeric
+@attribute 'Promoting any drugs can be a gateway to harder drugs.' numeric
+@attribute 'Freely available marijuana condones its recreational use.' numeric
+@attribute 'People with chronic illness have benefited by the use of Marijuana.' numeric
+@attribute 'Legalizing marijuana would make it safer because the production process would be regulated.' numeric
+@attribute 'Marijuana use will not increase just because it is legalized.' numeric
+@attribute 'Legal authorities will benefit from legalizing marijuana as it will reduce illegal use and prosecutions.' numeric
+@attribute 'Marijuana eases pain.' numeric
+@attribute 'There is no correlation between marijuana use and harder drug use.' numeric
+@attribute 'There have been no overdoses or risks with the use of marijuana.' numeric
+@attribute 'Making marijuana legal limits issues of crossing state lines.' numeric
+@attribute 'Marijuana could help people with eating disorders.' numeric
+@attribute 'Marijuana prohibition has proved ineffective at preventing marijuana usage.' numeric
+@attribute 'Marijuana should be legailzed.' numeric
+@attribute 'Legalizing marijuana reduces the prison population.' numeric
+@attribute 'Legalization of marijuana promotes violence in the streets.' numeric
+@attribute 'Marijuana is a gateway drug.' numeric
+@attribute 'Marijuana is safer than cigarettes and alcohol.' numeric
+@attribute 'Marijuana should be as readily available as cigarettes are.' numeric
+@attribute 'Marijuana has some effective uses.' numeric
+@attribute 'Decriminalizing marijuana can lead to decreased crime rates.' numeric
+@attribute 'Drug abuse can kill.' numeric
+@attribute 'Marijuana is proven to have medical benefits.' numeric
+@attribute 'Marijuana causes memory loss.' numeric
+@attribute 'Marijuana should be discouraged.' numeric
+@attribute 'Marijuana can be used strictly for medical use of relieving pain.' numeric
+@attribute 'Marijuana is not just a recreational drug.' numeric
+@attribute 'Marijuana has helped several incurable diseases.' numeric
+@attribute 'Marijuana should be scarce.' numeric
+@attribute 'Marijuana alleviates the suffering of people with chronic diseases.' numeric
+@attribute 'Proper administration and monitoring of marijuana can keep use safe and useful.' numeric
+@attribute 'Keeping marijuana illegal just leads to increased police efforts to stop the use of the drug.' numeric
+@attribute 'Legalization of marijuana would increase the index of delinquency.' numeric
+@attribute 'If Marijuana gets legalized it should pay big amounts of taxes.' numeric
+@attribute 'Cannabis has medical properties.' numeric
+@attribute 'Marijuana is addictive.' numeric
+@attribute 'Marijuana use can help people suffering from pain or chronic illness.' numeric
+@attribute 'Legalizing marijuana use allows police authorities focus on other crimes.' numeric
+@attribute 'Legalizing marijuana increases revenue for states.' numeric
+@attribute 'Marijuana is less harmful than other drugs (such as alcohol).' numeric
+@attribute 'Marijauna kills brain cells.' numeric
+@attribute 'People who smoke marijuana perform just as well at their jobs as people who don\'t smoke marijuana.' numeric
+@attribute 'Marijuana can help with a number of health conditions.' numeric
+@attribute 'Marijuana is bad for your health.' numeric
+@attribute 'Legalizing marijuana will keep people out of jail.' numeric
+@attribute 'Marijuana alleviates the suffering of people with chronic diseases. .' numeric
+@attribute 'People who use marijuana are mentally stuck at the age they were when they began using the drug.' numeric
+@attribute 'Legalization results in a reduction in the Business for Drug Dealers (Including Terrorists).' numeric
+@attribute 'Making cannabis illegal has not discouarged its use.' numeric
+@attribute 'Marijuana has been proven to help with migraines.' numeric
+@attribute 'Policing marijuana is not worth the effort and has led to brutality.' numeric
+@attribute 'There is nothing wrong with marijuana.' numeric
+@attribute 'Legalizing marijuana can allow another tax revenue.' numeric
+@attribute 'Legalizing marijuana removes the forbidden fruit factor of its use.' numeric
+@attribute 'Legalization can cause competition with people in places where it is illegal.' numeric
+@attribute 'Marijuana could cause harm to society.' numeric
+@attribute 'Legalization should conly occur once laws surrounding when and where marijuana use is allowed are established.' numeric
+
+@data
+{0 -1,1 1,3 1,4 1,5 1,6 1,8 -1,11 1,13 -1,14 1,16 -1,18 -1,20 1,21 1,23 1,25 1,26 1,27 -1,32 -1,33 -1,34 -1,36 1,37 1,38 -1,39 1,40 -1,41 1,42 1,43 -1,45 1,48 1,49 1,50 1,55 -1,56 1,57 1,58 1,59 -1,60 -1,62 1,64 -1,66 1,68 1,72 1,74 -1,76 -1,78 1,80 1,85 1,91 -1,94 1,96 -1,98 1,100 1,104 -1,105 -1,106 1,107 1,109 -1,110 1,111 1,114 -1,115 1,116 -1,117 1,118 1,119 1,120 1,121 -1,124 -1,127 -1,128 1,136 -1,137 -1}
+{7 -1,8 1,9 1,10 1,11 1,20 1,22 1,25 1,26 1,30 1,33 -1,39 1,40 -1,41 1,43 -1,44 1,46 -1,51 -1,55 -1,56 1,61 1,68 1,69 1,70 -1,71 -1,74 -1,75 -1,76 -1,77 1,78 1,79 1,81 1,83 -1,86 1,87 1,89 1,97 -1,99 1,102 1,109 -1,110 1,113 -1,114 -1,123 1,126 1,128 1,132 1,134 -1,136 -1}
+{1 -1,3 -1,5 1,6 -1,13 -1,16 -1,25 1,27 -1,30 1,32 -1,33 1,34 -1,35 -1,36 1,37 1,38 -1,39 1,41 1,42 1,44 1,45 1,48 -1,49 1,50 1,52 1,53 -1,54 1,55 -1,57 1,63 1,64 -1,66 1,68 -1,71 1,72 -1,75 1,76 -1,78 1,82 -1,83 1,85 1,87 1,89 1,91 -1,98 1,99 1,103 1,104 -1,108 -1,109 -1,110 1,111 1,112 1,113 1,114 -1,119 1,120 1,121 -1,122 1,123 1,124 -1,126 1,127 -1,131 1,132 -1,136 -1,137 1}
+{2 1,6 1,8 1,13 -1,18 1,20 1,21 1,23 1,26 1,35 1,36 1,39 1,40 -1,41 1,42 1,43 -1,45 1,48 1,53 -1,55 -1,58 1,63 -1,64 -1,67 1,68 1,72 1,74 -1,76 -1,80 1,85 1,89 1,104 -1,105 1,106 1,107 1,109 -1,114 1,116 -1,118 1,120 1,124 -1,127 -1,128 1,131 1}
+{1 -1,8 1,9 -1,10 -1,11 1,12 1,20 1,21 1,24 -1,25 1,26 1,27 -1,28 1,39 1,43 -1,44 1,46 1,47 1,48 1,49 1,50 1,51 1,57 1,60 1,66 1,69 1,71 -1,75 1,76 -1,77 1,78 1,79 1,81 1,86 -1,88 1,90 1,95 1,100 1,105 -1,108 1,112 1,113 -1,116 -1,119 1,122 1,123 1,124 -1,125 1,126 1,127 -1,128 1,129 1}
+{2 1,7 -1,8 1,9 -1,10 -1,11 1,13 -1,15 1,20 1,21 1,34 -1,38 -1,39 1,46 -1,48 1,49 1,50 1,51 1,55 -1,65 -1,69 1,70 -1,75 -1,76 -1,77 1,78 1,79 1,80 1,81 1,82 -1,83 1,105 -1,106 1,122 1,125 1,127 -1,128 1,131 1,134 1,137 1}
+{2 1,6 -1,8 1,13 1,18 1,20 1,21 -1,23 1,26 1,36 -1,39 1,40 1,41 1,42 1,43 -1,45 1,48 1,55 -1,58 1,67 1,68 1,74 -1,76 -1,80 1,85 1,104 -1,105 -1,106 -1,107 -1,109 -1,114 -1,116 -1,118 1,120 -1,124 -1,127 1,128 1}
+{0 -1,2 1,6 -1,18 1,20 1,21 1,23 1,24 -1,26 1,31 1,33 -1,34 -1,36 1,38 -1,39 1,40 -1,41 1,42 1,43 -1,44 1,45 1,47 -1,49 1,50 1,51 -1,55 -1,58 1,64 -1,67 1,68 -1,74 -1,76 -1,79 1,81 1,88 1,90 -1,95 1,96 -1,97 -1,98 1,99 1,104 -1,105 -1,106 -1,107 1,109 -1,113 -1,114 -1,115 1,116 -1,118 1,120 1,123 1,124 -1,128 1,129 1,130 1,131 1,132 1,133 1,136 -1,137 -1}
+{2 1,6 1,8 1,13 -1,18 1,20 1,21 1,23 1,26 1,35 1,36 1,39 1,40 -1,41 -1,42 1,43 -1,45 1,48 1,53 -1,55 -1,58 1,63 -1,64 -1,67 1,68 -1,72 1,74 -1,76 -1,80 1,85 1,89 1,104 -1,105 -1,106 1,107 1,109 -1,114 1,116 1,118 1,120 1,124 -1,127 -1,128 1,131 1}
+{7 -1,15 1,22 1,26 1,30 -1,32 -1,35 1,40 -1,41 1,44 1,45 1,48 1,51 -1,53 -1,55 1,56 1,57 1,58 1,59 -1,63 -1,64 -1,67 1,68 1,70 -1,71 -1,72 1,74 -1,75 -1,76 -1,77 1,80 1,81 1,82 -1,83 -1,85 1,87 1,89 1,91 1,95 1,97 -1,99 1,102 1,103 1,104 -1,109 -1,112 1,113 -1,114 1,115 1,122 1,123 1,124 -1,126 1,131 1,132 1,136 1}
+{22 1,26 1,30 -1,34 -1,35 1,38 -1,40 -1,41 1,43 -1,44 1,45 1,50 1,51 1,53 -1,55 -1,63 -1,68 1,71 1,72 1,74 -1,75 -1,76 -1,77 1,79 1,81 1,82 -1,83 1,87 1,88 1,91 1,95 1,96 -1,97 1,99 1,102 1,103 1,104 -1,105 -1,109 -1,112 1,113 -1,114 1,123 1,124 -1,126 -1,128 1,129 1,130 1,131 -1,132 -1,136 -1,137 1}
+{1 -1,7 -1,8 -1,9 1,10 -1,11 1,15 1,20 1,21 1,39 1,46 -1,48 1,49 1,50 1,51 -1,53 -1,56 1,57 1,58 -1,59 -1,60 1,67 1,69 1,70 -1,75 -1,76 -1,77 -1,78 1,79 1,90 1,95 1,100 1,101 1,102 1,103 1,105 -1,108 1,115 1,116 -1,119 1,122 1,125 1,128 1,129 1}
+{4 1,5 1,8 1,10 1,16 -1,19 -1,21 1,22 1,24 -1,26 1,30 -1,31 -1,32 -1,33 -1,34 -1,35 1,36 1,37 1,38 -1,39 1,40 -1,41 1,42 1,43 -1,44 1,50 1,51 -1,52 1,55 -1,56 1,58 1,63 -1,65 -1,68 1,69 1,71 -1,74 -1,75 -1,76 -1,77 1,79 1,80 1,81 1,82 -1,87 1,88 1,89 1,90 1,95 1,96 -1,97 -1,98 1,99 1,102 1,103 1,105 -1,107 1,108 1,109 -1,110 1,112 1,113 -1,114 1,115 1,118 1,123 1,124 -1,126 1,128 1,129 1,130 1,131 1,132 1,133 1,136 -1,137 -1}
+{4 1,5 1,6 -1,7 -1,8 1,16 1,18 1,21 -1,23 1,24 1,25 1,26 1,27 1,28 1,31 1,35 1,36 1,39 1,42 -1,43 -1,51 -1,52 1,54 1,56 1,58 1,65 -1,69 1,72 1,73 1,74 -1,75 -1,77 1,80 -1,81 1,82 -1,88 1,89 1,90 -1,91 1,96 -1,97 -1,98 1,99 1,102 1,107 1,108 1,110 1,112 1,113 -1,114 1,115 1,118 1,121 1,129 1,133 1}

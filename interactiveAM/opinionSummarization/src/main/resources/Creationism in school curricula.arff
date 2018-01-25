@@ -1,0 +1,186 @@
+@relation 'Creationism in school curricula'
+
+@attribute 'Religion should not be in schools.' numeric
+@attribute 'Freedom of expression is vital to our liberties.' numeric
+@attribute 'Scientific fact only should be taught in school.' numeric
+@attribute 'Freedom to choose without discrimination must be done.' numeric
+@attribute 'Christian religion should be promoted in schools.' numeric
+@attribute 'Creationism can be mentioned in school as something some people believe.' numeric
+@attribute 'Parents should help teachers with chats at home.' numeric
+@attribute 'Freedom of religion is protected by the consitution.' numeric
+@attribute 'Teaching creationism as well as evolution gives students freedom to choose.' numeric
+@attribute 'Multiculturalism encourages the teachings of all cultures and beliefs.' numeric
+@attribute 'People should be allowed to wear any religious symbols they choose.' numeric
+@attribute 'Religious education should stay in the church and home.' numeric
+@attribute 'Religion belief should be respected.' numeric
+@attribute 'Public schools must adhere to fact.' numeric
+@attribute 'The theory of evolution has many inconcistencies.' numeric
+@attribute 'Teachers should not have freedom to teach whatever they want to teach to children.' numeric
+@attribute 'Scince always must be first.' numeric
+@attribute 'People who want their kids to learn creationism can send their kids to a Christian school.' numeric
+@attribute 'Science must be taught in detail, not creationism which lacks any kind of facts.' numeric
+@attribute 'Everyone should be free of thought.' numeric
+@attribute 'Education on religion must come from the home mainly.' numeric
+@attribute 'Children should have the freedom to decide if they want to learn about either creationism or evolution or both.' numeric
+@attribute 'Religious symbols should not be allowed in schools.' numeric
+@attribute 'If creationism is taught, then everyone others belief system should be taught.' numeric
+@attribute 'Freedom of speech should apply to teachers as much as anyone else.' numeric
+@attribute 'Teaching creationism\'s truth is necessary in upholding the truth of the Bible.' numeric
+@attribute 'Students also hear the about creation and be presented with evidence for creation.' numeric
+@attribute 'We should not ban religion signs in schools.' numeric
+@attribute 'We should not combine schools and religion.' numeric
+@attribute 'Teaching creationism improves social union.' numeric
+@attribute 'Separation of church and state: The words SEPARATION and CHURCH are not in the US Constitution.' numeric
+@attribute 'Education should broaden our horizons. Showing the differences between evolution and creationism allows each student to choose.' numeric
+@attribute 'Creationism should be taught in school but so should evolution.' numeric
+@attribute 'Religion has no place in education.' numeric
+@attribute 'Extremists should be banned from schools.' numeric
+@attribute 'The school board should decide on a curriculum for all teachers to follow.' numeric
+@attribute 'Teachers should be able to say what they think as mentors.' numeric
+@attribute 'People should be able to choose their own religion.' numeric
+@attribute 'Every body must be free to choose.' numeric
+@attribute 'Parents should have a say in what they want their children tought.' numeric
+@attribute 'People in schools should not be made fun of for their religion.' numeric
+@attribute 'Proponents of creationism only want their own religion taught in schools, no one else\'s.' numeric
+@attribute 'The teachers should take a poll on whether to teach creationism.' numeric
+@attribute 'Creationism in school curricula should be full enforced.' numeric
+@attribute 'Creationism should include just Christian beliefs versus evolution.' numeric
+@attribute 'Creationism is not backed by science.' numeric
+@attribute 'Teaching fact, which can include Bible writings, should be the norm.' numeric
+@attribute 'Children have the freedom to choose.' numeric
+@attribute 'Teachers who wished to present a balanced approach to this particular hypothesis should be free.' numeric
+@attribute 'Each person should be free to choose what to believe in.' numeric
+@attribute 'Teachers should teach all viewpoints on evolution and creationism in school.' numeric
+@attribute 'Teachers should not force students to learn evolution.' numeric
+@attribute 'Evolution should be the predominant discipline taught.' numeric
+@attribute 'Religion and education must be kept separate.' numeric
+@attribute 'Give students the freedom to choose but do not teach them creationism.' numeric
+@attribute 'An additional educational subject could be included for this topic.' numeric
+@attribute 'Teaching Creationism is helpful.' numeric
+@attribute 'Creationism is a first amendement right.' numeric
+@attribute 'Teachers should adhere to the curriculum provided by the school district.' numeric
+@attribute 'Public opinion is unimportant to whether creationism belongs in science classes.' numeric
+@attribute 'Inclusion is always better than seclusion.' numeric
+@attribute 'Children should learn religion at home, not in school.' numeric
+@attribute 'Religion has no place in a school.' numeric
+@attribute 'Not eveyrone is interested in religion.' numeric
+@attribute 'Creationism should be taught at home only.' numeric
+@attribute 'Allowing students the right to learn bothevolution and creationism opens their minds to understanding the views of others.' numeric
+@attribute 'Children have the right to choose their own religion in their school.' numeric
+@attribute 'Many people believe in creationism.' numeric
+@attribute 'Religion should not be imposed.' numeric
+@attribute 'Teachers should teach creationism and evolution to broaden the students minds.' numeric
+@attribute 'Evolution is accepted science.' numeric
+@attribute 'Creationism is not taught in school because it violates separation of church and state.' numeric
+@attribute 'Teaching only evolution does not discriminate religious people.' numeric
+@attribute 'Children should have the freedom not to be misled.' numeric
+@attribute 'Atheists should be banned from schools.' numeric
+@attribute 'By leaving religion out of the classroom, we respect the plurality of contrary views.' numeric
+@attribute 'Help open to different opinions.' numeric
+@attribute 'Students should have the freedom to learn creationism if they wish.' numeric
+@attribute 'Secularism should be strictly enforced in schools.' numeric
+@attribute 'Our school kids deserve the right to hear about creation in school.' numeric
+@attribute 'We are a multicultural society. Differences in the way people choose to live should be taught in the classroom.' numeric
+@attribute 'People should be able to express their religion through symbols even at schools.' numeric
+@attribute 'Creationism is unscientific.' numeric
+@attribute 'Childrens should have the option to participate or not in the religious activities on school.' numeric
+@attribute 'We must separate church and state.' numeric
+@attribute 'Schools can imply either a myopic or anti-religious outlook.' numeric
+@attribute 'Students should have a choice of what they want to be tought.' numeric
+@attribute 'Students should be able to learn what they are comfortable learning.' numeric
+@attribute 'Religion should not be enforced in schools but should be taught.' numeric
+@attribute 'Knowing about Creationism is important.' numeric
+@attribute 'The uniqueness that each student brings to the classroom should be celebrated by allowing each student the opportunity to show and tell anything - including their AWANA book, a Bible, the Koran, a hajib, etc.' numeric
+@attribute 'Religion belongs in church and at home, not in the federally-funded school system.' numeric
+@attribute 'Religious symbols do not have a place in public schools.' numeric
+@attribute 'There should not be seperation between state and relegion.' numeric
+@attribute 'There should be freedom of speech among students.' numeric
+@attribute 'Creationism is a good method that should be applied in all schools.' numeric
+@attribute 'Creationism must be taught in school curriculum.' numeric
+@attribute 'Religion should be tantamount to science.' numeric
+@attribute 'By banning religious symbols you are banning people from expressing their diverse views.' numeric
+@attribute 'Children should be taught truthfullt and freely.' numeric
+@attribute 'Schools should accept different points of view.' numeric
+@attribute 'Religious schools can teach creationism if that is that is their religion\'s belief.' numeric
+@attribute 'Children should know these things from a young age.' numeric
+@attribute 'The idea that creationists reject mutation or natural selection is ridiculous.' numeric
+@attribute 'Parents should teach teir beliefs to their children.' numeric
+@attribute 'Freedom of speech does not include the freedom to preach lies as fact.' numeric
+@attribute 'Public education should only focus on evolution.' numeric
+@attribute 'God made science.' numeric
+@attribute 'Freedom of Speech should be allowed for others and a person of common sense and decency will not abuse this right.' numeric
+@attribute 'Teachers should have a certain curricula to follow what to teach to children.' numeric
+@attribute 'Children should have their own choice to learn what they want.' numeric
+@attribute 'The theory of evolution is a very solid theory that the vast majority of scientists agree upon.' numeric
+@attribute 'All theories should be taught in school.' numeric
+@attribute 'Teaching evolution exclusively is dangerous to science and reason.' numeric
+@attribute 'Attempts to conceal the creationism-evolution controversy from students are dogmatic promotions of evolution.' numeric
+@attribute 'Creationism should not be tought in a classroom because it goes against some beliefs.' numeric
+@attribute 'The children should know about this.' numeric
+@attribute 'Freedom of speech should apply to everyone in schools.' numeric
+@attribute 'Only teaching evolution is pushing students to think there are no other beliefs.' numeric
+@attribute 'Parents should teach the creationism in house too.' numeric
+@attribute 'Creationism should not be denied by those who do not believe and evolution as science and verifiable fact should be accepted teaching as well.' numeric
+@attribute 'All the kids should have the option to choose their religion.' numeric
+@attribute 'Everyone has the right to worship his beliefs.' numeric
+@attribute 'Teachers should not have freedom to teach whatever they wish as fact.' numeric
+@attribute 'Teachers should not be able to teach students stuff that the students may not believe.' numeric
+@attribute 'Teachers should not be allowed to teach whatever they wish.' numeric
+@attribute 'Our schools should teach facts, not beliefs.' numeric
+@attribute 'Religon must be taught in school.' numeric
+@attribute 'Children are pliable.' numeric
+
+@data
+{3 1,8 1,9 1,12 1,13 1,14 1,15 1,17 1,26 1,29 1,30 1,31 1,36 1,39 1,40 1,49 1,50 1,51 1,56 1,57 1,58 1,59 1,60 1,64 1,66 1,68 1,72 1,73 1,74 1,75 1,76 1,77 1,79 1,82 1,83 1,87 1,88 1,89 1,92 1,111 1,112 1,117 1,123 1,124 1,125 1,126 1,127 1,128 1}
+{0 1,1 1,2 1,6 1,9 1,10 1,12 1,13 1,14 1,17 1,21 1,23 1,28 1,29 1,30 1,31 1,34 1,45 1,48 1,53 1,55 1,57 1,63 1,66 1,73 1,75 1,76 1,84 1,91 1,94 1,95 1,97 1,109 1,112 1,113 1,114 1,115 1,120 1,122 1,127 1}
+{0 1,1 1,2 1,3 1,4 -1,5 1,6 1,7 1,8 1,10 1,11 1,14 1,17 1,18 1,20 1,21 1,24 1,25 1,26 1,29 -1,30 1,31 1,35 1,36 1,37 1,40 1,43 -1,45 1,46 1,48 1,51 -1,52 1,54 1,56 -1,60 1,63 -1,64 1,65 1,67 1,68 1,69 1,70 1,72 1,74 -1,75 1,77 1,79 1,80 1,81 1,83 1,84 1,85 1,86 1,87 1,88 1,92 1,93 1,94 1,95 -1,96 1,100 1,101 1,102 1,103 1,104 1,105 1,107 1,108 1,110 1,112 1,114 1,115 -1,116 1,117 1,119 1,120 1,121 1,123 -1,124 -1,126 1,128 1}
+{1 1,3 1,4 1,5 1,7 1,8 1,10 1,11 1,14 1,15 1,16 1,18 1,20 1,21 1,22 1,25 1,26 -1,27 1,29 1,30 1,31 1,34 -1,35 1,37 1,39 1,40 1,41 1,42 -1,43 1,45 1,46 1,49 1,51 1,52 1,54 1,56 1,57 1,58 -1,59 1,61 1,62 1,63 1,64 1,65 1,66 1,67 1,68 1,71 1,72 1,74 1,78 1,80 1,81 1,82 -1,83 1,84 1,86 1,87 1,88 1,92 1,93 1,95 1,96 1,97 1,99 1,100 1,101 1,102 1,104 1,105 1,106 1,107 1,108 1,109 1,110 1,111 -1,113 1,114 1,115 1,116 1,117 1,119 1,120 -1,121 1,123 1,124 1,125 1,126 1,127 -1}
+{0 1,4 1,8 -1,9 -1,10 1,11 -1,20 1,22 1,23 1,24 1,27 1,32 1,33 -1,34 1,35 1,36 1,37 1,38 -1,41 1,42 1,44 1,45 1,47 1,50 1,51 1,52 1,53 -1,54 -1,56 -1,58 1,60 1,62 -1,64 1,65 1,66 1,67 1,68 1,69 1,70 1,71 -1,72 1,75 1,77 1,78 1,81 1,82 -1,84 -1,87 1,88 1,89 1,90 1,91 -1,92 1,94 1,97 -1,99 1,101 1,102 -1,103 -1,104 1,106 -1,109 -1,111 1,116 1,117 1,119 -1,120 1,121 1,122 1,123 -1,124 1,126 -1,128 1}
+{0 1,1 1,2 -1,3 1,4 -1,5 1,6 -1,7 1,8 1,10 -1,14 1,15 -1,16 1,17 -1,19 1,20 1,21 1,22 -1,23 1,26 1,27 1,30 1,31 1,34 1,35 -1,38 1,40 1,43 -1,44 -1,46 -1,47 1,48 1,49 1,50 1,51 -1,52 1,56 1,59 -1,63 1,64 -1,65 1,67 1,69 1,72 -1,74 -1,76 1,77 1,78 -1,79 1,80 1,84 1,85 1,88 1,90 1,94 1,97 -1,100 1,101 1,102 -1,103 1,106 -1,108 1,113 -1,114 -1,115 -1,120 1,121 1,124 -1,125 -1,126 1}
+{1 1,3 1,7 1,14 -1,16 1,20 1,23 1,24 1,25 1,26 1,27 1,32 1,34 1,35 1,36 -1,40 1,41 1,44 -1,46 1,52 1,53 -1,54 -1,55 1,69 1,70 1,71 -1,72 -1,78 -1,80 1,81 -1,82 -1,83 1,86 1,87 -1,95 1,96 1,99 1,101 1,102 1,104 1,105 1,106 -1,107 1,108 1,110 -1,119 -1,121 1,122 1,127 1,128 -1}
+{1 1,3 1,5 1,11 1,12 1,13 1,14 -1,15 1,26 1,28 1,32 1,33 -1,34 -1,35 1,37 1,38 1,47 1,50 1,52 -1,54 1,56 1,57 1,58 1,59 -1,61 1,68 1,73 1,76 1,77 1,78 1,79 1,82 -1,89 1,98 1,102 1,111 1,112 1,116 1,117 1,118 -1,119 1,120 1,121 1,122 1,124 1,125 1,126 1,127 -1}
+{0 1,1 1,2 1,4 1,6 -1,9 1,10 1,13 1,14 1,17 1,18 1,22 1,23 1,24 1,28 1,29 1,30 1,33 1,39 1,45 1,48 1,53 1,55 1,57 1,63 1,65 1,66 1,73 -1,75 1,76 1,88 -1,89 1,90 -1,93 1,94 1,95 1,97 1,109 -1,112 1,118 1,120 1,122 -1,127 1}
+{3 1,4 -1,16 -1,19 1,23 -1,24 1,27 1,29 1,32 -1,33 1,36 -1,37 1,38 1,39 1,42 -1,44 -1,45 1,49 1,52 -1,53 1,54 -1,58 1,72 -1,73 1,74 -1,75 1,81 1,82 1,83 1,84 1,85 -1,86 1,87 1,89 1,90 1,95 -1,98 1,103 1,106 1,108 1,109 1,110 1,111 1,113 1,114 1,115 -1,116 1,121 1,124 -1,125 1}
+{0 1,9 1,17 1,30 1,31 1,36 1,39 1,40 1,41 1,42 1,43 1,51 1,57 1,64 1,72 1,74 1,75 1,76 1,83 1,88 1,89 1,92 1,109 1,119 1,123 1,124 1,125 1,126 1,127 1}
+{1 -1,9 1,10 1,11 1,12 1,13 1,18 1,19 1,23 1,24 1,28 -1,30 1,31 1,32 -1,33 1,34 1,35 1,50 1,52 -1,58 1,72 1,73 1,74 -1,75 1,76 1,77 1,81 -1,82 1,84 -1,88 1,89 1,90 1,91 -1,92 -1,93 1,94 1,98 1,116 1,117 1,118 1,119 -1,120 1,121 1,122 1,123 -1,127 1}
+{1 1,3 1,6 1,7 1,8 1,15 1,20 1,21 1,22 -1,23 1,25 1,27 1,30 -1,31 1,32 1,34 1,35 1,36 -1,37 1,38 1,39 1,40 1,41 1,44 1,52 -1,53 -1,55 1,57 -1,58 1,63 1,66 1,67 1,74 -1,80 1,82 -1,84 1,87 1,94 1,95 1,96 1,99 1,101 1,103 1,104 1,106 -1,107 1,108 1,109 1,110 1,111 -1,113 -1,114 1,115 1,119 -1,121 1,122 1,123 1,124 1,127 1,128 1}
+{1 1,3 1,8 1,9 1,15 1,16 -1,19 1,20 1,23 1,26 1,27 1,30 1,32 1,33 -1,34 1,35 1,43 1,44 -1,46 1,51 -1,52 -1,53 -1,54 -1,55 1,63 1,65 1,66 -1,74 -1,75 1,82 -1,84 1,86 1,90 -1,95 1,98 1,99 1,100 1,101 1,102 1,103 1,104 1,105 1,121 1,123 1,124 -1,125 1,126 1}
+{3 1,8 1,9 -1,12 1,13 1,14 1,15 -1,17 -1,21 1,26 1,29 1,30 -1,40 1,41 1,42 -1,43 -1,49 1,50 1,51 1,54 1,56 1,57 -1,58 1,59 1,60 1,64 1,65 1,66 1,68 -1,72 -1,73 1,74 -1,75 1,76 1,77 1,79 1,82 1,84 1,87 1,89 1,92 1,104 1,105 1,111 1,112 1,117 1,121 1,123 1,128 1}
+{0 1,1 1,4 1,6 1,9 1,10 1,12 1,13 1,14 1,18 1,21 -1,28 1,29 1,30 1,31 1,34 1,53 1,75 1,76 1,84 -1,91 1,93 1,94 1,97 1,112 1,113 1,114 1,115 1,122 1,127 1}
+{1 1,5 1,8 1,11 -1,16 -1,17 -1,18 -1,19 1,20 -1,21 1,22 -1,23 1,35 1,37 1,38 1,43 -1,44 -1,46 1,47 1,48 1,49 1,50 1,51 1,52 -1,54 -1,56 1,61 -1,65 1,69 1,76 1,77 1,78 -1,79 1,90 1,97 -1,98 1,102 1,105 1,124 1,125 1}
+{0 -1,1 1,6 1,9 1,10 1,12 1,14 1,19 1,28 1,29 1,30 1,31 1,36 1,39 1,43 1,47 1,50 1,53 -1,54 -1,57 1,60 1,62 -1,67 1,69 1,75 -1,76 1,81 1,83 1,88 1,89 1,90 1,91 -1,93 -1,94 1,95 1,97 -1,103 -1,112 1,113 1,114 1,115 -1,122 1,125 1,127 -1,128 1}
+{0 1,1 1,2 1,3 1,4 1,5 1,6 1,7 1,8 1,9 1,10 1,11 1,14 1,15 1,18 1,20 1,25 -1,27 1,28 1,30 1,31 1,40 1,41 1,42 -1,43 1,44 1,45 1,47 1,49 1,51 1,52 1,61 1,62 1,64 1,67 1,69 -1,70 -1,71 1,72 1,74 1,80 1,85 1,88 1,91 1,94 1,96 1,100 -1,101 1,102 1,103 1,104 -1,110 1,113 1,115 1,116 -1,119 1,120 1,125 -1,126 1}
+{0 1,1 1,3 1,4 -1,6 1,9 1,10 1,12 1,14 1,15 -1,16 -1,17 1,20 1,22 -1,23 1,25 -1,27 1,28 1,29 -1,30 1,31 1,34 1,37 1,40 1,44 1,45 1,48 1,52 -1,53 1,54 1,55 1,60 1,62 -1,63 1,67 1,68 1,69 1,70 1,71 1,73 1,75 1,76 1,81 1,82 -1,86 1,87 1,91 1,94 1,95 -1,96 -1,97 1,99 1,102 1,103 1,104 1,107 1,109 1,112 1,120 1,121 1,122 1,127 -1,128 1}
+{3 1,12 1,13 -1,14 1,15 1,17 -1,24 -1,26 1,29 -1,39 1,42 -1,48 1,49 1,50 1,55 1,56 1,57 1,58 1,59 -1,61 1,65 1,68 1,73 1,76 -1,79 1,82 1,86 1,87 1,89 1,100 1,111 1,112 1,116 1,120 1,123 1,128 1}
+{3 1,12 1,13 1,14 1,15 1,26 1,38 1,49 1,50 1,56 1,57 1,58 1,59 1,68 1,73 1,76 1,79 1,82 -1,87 -1,89 1,111 1,112 1,123 1,124 -1}
+{3 1,8 1,12 -1,13 1,14 1,15 1,17 1,26 1,29 1,36 1,40 1,42 1,46 1,48 1,49 1,50 1,56 -1,57 1,58 -1,59 -1,60 1,61 1,66 -1,68 1,69 1,72 1,73 1,75 1,76 1,77 -1,79 1,81 1,82 1,83 1,86 1,87 1,89 1,100 -1,102 1,106 -1,110 1,111 1,112 1,116 1,117 1,119 -1,120 1,123 1,128 1}
+{1 1,4 1,5 1,6 1,7 -1,8 1,11 1,15 1,18 1,19 1,20 1,21 1,22 -1,23 1,25 1,32 1,34 1,35 1,37 1,38 1,40 1,43 1,46 1,47 1,48 1,49 1,50 1,51 1,52 1,53 1,55 1,61 1,63 1,65 1,69 1,76 1,77 1,78 -1,79 1,86 1,90 1,96 1,98 1,99 1,100 1,102 1,105 1,107 1,121 1,122 1,124 -1,127 1,128 1}
+{0 1,9 1,17 1,30 1,31 1,36 1,39 1,40 1,41 1,42 1,43 1,51 1,57 1,64 1,72 1,74 1,75 1,76 1,83 1,88 1,89 1,92 1,109 1,123 1,124 1,125 1,126 1,127 1}
+{1 1,3 1,4 -1,5 1,6 1,7 -1,10 -1,11 1,15 -1,16 -1,17 1,19 1,21 1,22 -1,23 -1,25 -1,27 1,29 -1,30 1,32 -1,34 1,35 1,36 1,37 1,39 1,42 -1,43 -1,45 -1,46 -1,47 1,49 1,50 -1,51 1,52 -1,53 1,55 -1,56 -1,57 1,58 -1,59 1,62 1,63 -1,64 1,65 1,66 1,67 -1,68 1,70 1,71 1,72 1,73 1,74 -1,75 1,76 -1,77 -1,79 1,81 -1,82 1,83 1,86 1,87 1,88 1,90 1,92 1,95 -1,96 -1,97 -1,98 -1,99 1,100 -1,102 -1,104 1,105 1,106 -1,107 -1,108 1,109 1,110 1,111 1,114 -1,116 1,121 1,123 -1,124 1,126 -1,128 1}
+{0 1,1 1,2 -1,3 -1,4 1,5 1,8 1,9 1,14 -1,15 -1,16 1,18 1,20 1,21 1,22 1,25 1,27 1,28 1,30 1,31 1,32 1,33 1,34 1,35 1,37 1,39 1,40 1,41 1,42 -1,43 1,46 1,47 1,49 -1,51 1,52 1,57 1,60 -1,61 1,62 1,64 1,67 -1,68 1,71 1,72 -1,73 1,74 1,83 1,84 -1,85 1,88 1,93 1,94 1,95 -1,96 1,97 1,98 1,99 -1,102 1,103 1,105 1,106 1,107 1,110 1,114 1,115 1,116 1,118 1,119 1,120 1,121 -1,122 1,124 1,125 -1,127 -1}
+{3 1,7 1,12 1,13 1,14 -1,26 1,36 1,41 1,42 1,46 1,48 1,50 1,56 1,57 1,58 1,59 -1,60 1,61 1,66 1,68 -1,69 1,70 1,71 -1,72 -1,73 1,76 1,78 -1,79 1,81 1,82 -1,83 1,86 1,87 1,89 1,100 1,101 1,102 1,106 -1,108 1,110 1,111 1,112 1,116 1,117 1,119 -1,120 1,123 -1,128 -1}
+{1 1,5 1,8 1,11 1,16 1,17 1,18 -1,19 1,20 1,21 1,22 -1,23 1,35 1,37 1,38 1,43 1,46 1,47 1,48 1,49 1,50 1,51 1,52 -1,54 -1,61 1,65 1,69 1,76 1,77 1,78 -1,79 1,90 1,98 1,102 1,105 1,124 1}
+{1 1,5 1,8 1,11 1,18 -1,19 1,20 1,21 1,22 1,23 1,25 -1,32 1,35 1,37 1,38 1,40 1,43 -1,46 -1,47 1,48 1,49 1,50 1,51 1,52 -1,54 1,61 1,65 -1,69 -1,76 1,77 1,78 -1,79 1,90 1,96 -1,98 -1,99 1,102 1,105 1,107 1,122 1,124 1,128 1}
+{0 1,4 1,9 1,10 1,17 1,19 -1,22 1,30 -1,31 1,36 1,37 1,39 1,41 -1,43 1,47 1,50 1,51 1,53 1,57 1,60 1,62 -1,64 1,65 1,66 1,67 1,68 1,69 1,70 1,71 -1,74 1,75 1,76 1,81 1,83 -1,87 1,88 -1,89 1,91 1,93 1,95 1,96 -1,97 1,98 1,99 -1,102 1,103 -1,104 1,109 1,111 1,119 1,122 1,123 1,124 -1,125 1,126 1,127 -1,128 1}
+{3 1,8 1,9 1,13 1,17 1,26 1,29 1,30 1,40 1,41 1,42 1,43 1,48 1,49 1,50 1,51 1,60 -1,61 1,64 1,66 1,68 1,72 -1,73 1,74 -1,76 1,77 1,82 -1,86 1,87 1,89 1,92 1,100 1,111 -1,112 1,116 -1,117 1,120 1,123 -1,124 1,125 1,126 1,127 -1}
+{1 1,5 1,8 1,11 1,16 -1,17 1,19 1,20 1,21 1,22 1,23 1,35 1,36 -1,37 1,38 1,39 1,43 1,46 1,47 1,48 1,49 1,50 1,51 1,52 1,54 1,61 1,65 1,69 1,76 1,77 1,78 1,79 1,83 1,90 1,98 1,102 1,103 -1,105 1,124 1}
+{1 1,5 1,6 1,7 1,8 1,11 1,16 1,17 1,18 1,19 1,21 1,22 1,25 1,29 1,30 1,34 1,35 1,37 1,38 1,39 1,41 1,44 1,45 1,46 1,47 1,52 1,54 1,56 1,57 1,58 1,59 1,60 1,62 -1,63 1,69 1,80 1,85 1,94 1,99 -1,100 -1,101 1,102 1,103 1,105 1,106 1,107 1,108 1,110 1,115 1,119 1,124 1,125 1,127 1}
+{8 1,13 1,31 1,36 1,39 1,40 1,41 1,42 1,43 -1,49 1,51 1,57 -1,60 1,64 -1,66 1,72 1,75 -1,76 1,77 1,79 1,83 1,87 1,88 1,89 1,92 -1,112 1,117 1,124 -1,125 1,126 -1,127 1}
+{0 1,1 1,2 1,4 -1,5 1,6 1,7 1,9 1,10 1,11 1,12 1,15 1,16 -1,18 1,20 1,21 1,24 1,25 -1,26 1,27 -1,30 1,31 1,35 1,37 1,38 1,40 1,41 1,48 -1,49 1,50 1,51 1,52 1,55 -1,56 -1,58 1,60 -1,61 1,62 1,63 1,64 1,67 -1,68 1,70 1,72 -1,74 -1,75 1,77 1,78 -1,81 -1,82 -1,83 1,88 -1,90 1,91 1,93 -1,94 1,97 -1,99 1,100 1,101 1,102 1,104 1,105 1,107 -1,108 1,109 1,110 1,111 1,112 1,113 -1,114 1,117 1,118 1,120 1,121 1,122 1,124 1,125 1,126 1}
+{3 1,8 1,12 1,13 1,14 -1,15 1,17 1,26 1,29 -1,40 1,42 -1,48 -1,49 1,50 1,56 1,57 -1,58 1,59 -1,60 1,61 -1,66 1,68 1,73 1,75 1,76 1,77 1,79 1,82 1,86 1,87 1,89 1,100 1,111 -1,112 1,116 1,117 1,120 1,123 1,128 1}
+{2 1,3 1,4 1,5 1,6 1,7 1,10 1,15 -1,17 1,18 -1,24 1,25 1,26 1,27 1,29 -1,32 1,35 1,36 1,40 1,41 -1,42 -1,46 1,48 1,55 1,58 1,61 -1,62 -1,63 -1,64 -1,65 1,66 1,69 1,70 1,71 -1,72 -1,77 1,78 -1,79 1,80 -1,81 1,83 1,84 -1,85 -1,86 1,87 1,88 1,93 1,96 1,99 1,100 1,101 -1,102 1,103 -1,104 1,105 1,106 -1,107 1,108 1,110 1,112 1,116 1,117 1,119 1,120 1,122 1,126 -1}
+{2 -1,3 1,7 1,14 1,15 -1,16 -1,24 1,25 1,26 1,27 1,35 1,36 1,38 1,41 1,46 1,55 1,58 1,60 1,61 -1,62 -1,63 1,64 -1,70 -1,71 1,77 1,78 -1,80 1,81 1,85 -1,87 -1,90 1,93 1,97 1,99 1,101 1,102 1,103 -1,104 1,105 -1,107 1,108 1,109 1,110 -1,115 -1,118 1,119 1}
+{0 1,4 1,9 1,17 1,30 1,31 1,36 1,37 1,39 1,40 1,41 1,42 1,43 1,51 1,53 -1,57 1,64 1,68 1,69 1,70 1,71 1,72 1,74 1,75 1,76 1,83 1,88 1,89 1,91 1,92 1,104 1,109 1,111 1,119 1,123 1,124 1,125 1,126 1,127 1}
+{3 1,7 1,12 1,13 1,14 1,15 1,26 1,40 1,41 1,42 1,43 -1,50 1,51 1,56 1,57 1,58 1,59 1,64 1,68 1,70 1,71 1,72 -1,73 1,76 1,78 1,79 1,82 -1,89 1,92 1,101 -1,108 1,111 1,112 1,123 1,124 1,125 1,126 1,127 -1}
+{0 -1,1 1,4 -1,6 -1,9 1,10 1,12 1,14 -1,17 -1,19 1,22 -1,28 -1,29 1,30 1,31 1,36 -1,37 1,39 -1,41 1,43 -1,47 1,50 1,51 -1,57 -1,60 1,62 -1,64 -1,65 1,66 1,67 1,68 1,69 1,70 1,71 -1,74 -1,75 1,76 1,81 1,83 1,87 1,88 1,89 1,91 -1,93 1,94 1,95 -1,96 1,98 1,99 1,102 1,103 1,104 -1,109 1,111 1,119 1,122 1,123 1,127 -1,128 -1}
+{1 1,4 1,15 -1,16 -1,19 1,20 1,24 1,29 -1,31 1,32 1,33 -1,34 -1,35 1,36 1,38 1,39 1,49 1,52 -1,53 -1,54 1,55 1,57 1,58 1,72 -1,73 1,74 -1,75 1,76 1,81 1,82 -1,84 1,86 1,88 -1,89 1,90 1,92 -1,98 1,99 1,103 -1,106 -1,109 1,111 -1,115 -1,116 1,117 1,119 1,124 1,127 1}
+{2 -1,3 1,7 -1,14 1,15 -1,27 1,35 1,36 1,38 1,41 -1,42 1,46 1,48 1,55 -1,58 1,60 1,62 1,63 -1,64 1,69 1,71 -1,72 -1,77 1,78 -1,80 -1,81 1,83 1,85 -1,86 1,87 1,93 1,97 -1,99 1,100 1,101 -1,102 1,105 -1,107 1,108 1,110 1,116 1,119 1,120 1,128 1}
+{2 -1,12 1,13 -1,17 -1,20 1,21 1,22 -1,23 1,24 1,31 1,33 -1,34 1,39 1,44 -1,45 1,48 1,54 -1,55 1,56 1,57 1,63 1,65 1,66 1,68 1,73 1,84 1,88 1,89 1,90 1,91 -1,95 -1,97 -1,104 1,109 1,112 1,113 1,114 1,115 -1,118 1,120 1,121 1,123 1,125 1}
+{11 -1,19 1,25 -1,28 -1,32 1,33 -1,34 1,35 1,36 1,40 1,50 1,53 -1,64 -1,65 1,66 1,67 -1,69 1,70 1,77 1,93 -1,96 1,97 1,98 1,99 1,107 1,111 1,116 1,117 1,118 -1,119 1,120 1,121 1,122 1,123 -1,128 1}
+{1 1,5 1,8 1,11 1,16 1,17 1,19 1,20 -1,21 1,22 -1,23 1,35 1,37 1,38 1,43 1,46 1,47 1,48 1,49 1,50 1,51 -1,52 1,54 1,61 -1,65 1,69 1,76 1,77 1,78 1,79 1,90 1,98 1,102 1,105 1,124 -1}
+{3 1,7 1,8 1,12 1,13 -1,14 1,15 1,17 1,26 1,29 1,36 -1,40 1,41 -1,42 -1,46 1,48 1,49 1,50 -1,56 1,57 1,58 -1,59 1,60 -1,61 -1,66 1,68 -1,69 1,70 1,71 1,72 -1,73 1,75 1,76 1,77 1,78 -1,79 1,81 1,82 -1,83 1,86 1,89 1,100 1,101 1,102 1,106 -1,108 -1,110 -1,111 1,116 1,117 1,119 1,120 1,123 1,128 1}
+{1 1,3 1,4 -1,6 1,7 1,8 1,9 1,10 -1,11 1,15 1,16 -1,20 1,21 1,23 -1,25 -1,27 -1,30 1,32 -1,33 1,34 1,35 1,36 -1,37 1,38 1,39 1,40 1,41 1,42 1,44 -1,45 1,46 1,47 1,49 1,52 -1,53 1,55 1,56 -1,59 -1,60 1,62 1,63 1,82 1,83 1,84 1,85 -1,86 1,87 1,90 1,92 1,93 -1,94 1,96 -1,99 1,100 1,101 -1,102 1,103 -1,105 1,106 -1,107 1,108 1,109 1,110 1,111 -1,113 1,114 1,116 1,118 1,121 1,122 1,125 1,127 -1,128 -1}
+{2 1,3 1,7 1,14 1,15 1,24 1,25 1,26 1,27 1,35 1,36 1,38 1,41 1,46 1,55 1,58 1,60 1,61 1,62 1,63 1,64 1,69 1,70 1,71 1,72 1,77 1,78 1,80 1,81 1,83 1,85 1,86 1,87 1,93 1,97 1,99 1,101 1,102 1,104 1,105 1,106 1,107 1,108 1,110 1,119 1}
+{0 -1,4 -1,8 -1,9 1,10 1,19 1,20 1,23 -1,24 1,27 -1,28 -1,29 1,32 -1,33 -1,34 -1,35 1,37 1,42 -1,43 1,44 -1,45 -1,47 1,49 1,52 -1,53 -1,54 -1,58 1,67 1,68 1,71 -1,72 1,73 1,74 -1,75 1,77 1,78 -1,81 1,82 -1,84 -1,88 1,89 1,90 1,92 -1,93 1,94 1,95 1,96 1,98 1,110 1,114 1,115 -1,117 1,118 -1,119 1,120 1,121 1,122 1,123 1,125 1,126 -1}
+{0 -1,1 1,2 -1,3 1,4 -1,5 1,6 1,7 1,8 1,9 1,10 1,13 1,14 1,15 1,16 -1,17 1,18 -1,19 1,20 1,21 1,22 -1,23 1,24 1,25 1,26 1,27 1,31 1,32 -1,35 1,37 1,38 1,39 1,40 1,41 1,42 -1,44 1,45 -1,46 1,49 1,50 -1,51 1,52 -1,56 1,57 1,58 1,59 -1,60 1,61 -1,63 1,64 -1,65 1,66 1,67 1,68 1,69 -1,70 -1,71 1,72 -1,73 1,74 -1,75 1,77 1,78 -1,81 1,82 -1,83 1,84 1,85 -1,87 1,88 1,89 1,90 -1,91 -1,94 1,97 1,98 1,99 1,100 1,101 1,102 1,104 1,105 -1,107 1,108 1,111 -1,113 1,114 1,115 -1,117 1,118 1,119 1,120 1,121 1,122 1,123 1,124 -1,128 1}
+{2 1,3 1,7 1,14 1,15 -1,16 -1,24 1,25 1,26 1,27 1,35 -1,36 1,38 1,41 -1,46 1,55 1,58 1,60 1,61 -1,62 -1,63 -1,64 -1,69 1,70 -1,71 -1,72 -1,77 1,78 -1,80 1,81 1,83 1,85 -1,86 1,87 1,90 1,93 1,97 -1,99 1,101 1,102 1,103 1,104 1,105 -1,106 -1,107 1,108 1,110 1,119 1}

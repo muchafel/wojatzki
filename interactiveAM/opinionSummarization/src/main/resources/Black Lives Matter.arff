@@ -1,0 +1,148 @@
+@relation 'Black Lives Matter'
+
+@attribute 'Every race has experienced racism.' numeric
+@attribute 'Historically in the United States there has been discrimination.' numeric
+@attribute 'The Black lives matter movement is important.' numeric
+@attribute 'The Black Lives Matter movement encourages racial hate.' numeric
+@attribute 'The world needs to know that blacks are also humans.' numeric
+@attribute 'Blacks have achieved a lot for the whole society.' numeric
+@attribute 'Black lives matter calls for violence against police.' numeric
+@attribute 'All white people are racist because of their privilege.' numeric
+@attribute 'Police racial profiling reduces minorities to the status of second class citizens.' numeric
+@attribute 'We can all make a better world if we work together.' numeric
+@attribute 'Discrimination is really bad.' numeric
+@attribute 'All people are equal regardless of their race.' numeric
+@attribute 'Being racist should be fined.' numeric
+@attribute 'Many people are discriminated by the legal system.' numeric
+@attribute 'Racial profiling is a violation of human rights.' numeric
+@attribute 'Discrimination in the usa is a serious issue and needs to be addressed.' numeric
+@attribute 'Racial discrimination should not be tolerated.' numeric
+@attribute 'This issues comprises issues of racial profiling and police brutality.' numeric
+@attribute 'Peaceful protesting is more productive than violent rallies.' numeric
+@attribute 'Racial discrimination must be attacked with apprehension.' numeric
+@attribute 'There is such thing as racial profiling.' numeric
+@attribute 'The population is not out to get black people.' numeric
+@attribute 'All races do not have equal access to resources and opportunities.' numeric
+@attribute 'Racial equality is necessary.' numeric
+@attribute 'Blacks should not be maltreated.' numeric
+@attribute 'Black people blame everything on their race.' numeric
+@attribute 'Non white individuals should be treated the same as white.' numeric
+@attribute 'Discrimination against black people still exists.' numeric
+@attribute 'Any police profiling is wrong.' numeric
+@attribute 'Discrimination occurs among people of various race, gender and religion.' numeric
+@attribute 'Although it has declined African Americans are still mistreated.' numeric
+@attribute 'Black people are humans too.' numeric
+@attribute 'The us government must try to treat everyone equally.' numeric
+@attribute 'Most crime against blacks is not from the police.' numeric
+@attribute 'Racists should be sentenced to jail terms.' numeric
+@attribute 'Environment inequality still exists for black communities forced to live near chemical plants.' numeric
+@attribute 'Racial profiling disparages those it effects.' numeric
+@attribute 'Discrimination with blacks causes degredation of one\'s self.' numeric
+@attribute 'Every one has the same rights.' numeric
+@attribute 'The world would be safer without black people.' numeric
+@attribute 'Racial inequality does not only discriminate against one race.' numeric
+@attribute 'Not all people are equal.' numeric
+@attribute 'Black people still make up a disproportionate share of the prison community.' numeric
+@attribute 'What is worse that blacks themselves are falling into racism too.' numeric
+@attribute 'Black lives matter is taken seriously in the US.' numeric
+@attribute 'Not all races in the usa have equal rights like they should.' numeric
+@attribute 'The legal system needs to punish cops that take advantage of their position.' numeric
+@attribute 'Blacks are the scum of society.' numeric
+@attribute 'People in any profession can be racist.' numeric
+@attribute 'Individual instances of discrimination.' numeric
+@attribute 'Skin color is not important.' numeric
+@attribute 'Black people are not inferior and need to stop thinking that way.' numeric
+@attribute 'Everyone is equal.' numeric
+@attribute 'We must maximize campaigns against racism.' numeric
+@attribute 'The country has already done enough to achieve racial equality.' numeric
+@attribute 'There must be respect for all races.' numeric
+@attribute 'Racial equality is a must.' numeric
+@attribute 'Racists should be punished.' numeric
+@attribute 'All humans are equal, no matter their race.' numeric
+@attribute 'No lives should be lost.' numeric
+@attribute 'The cops should be forced to stop doing racial profiling.' numeric
+@attribute 'This country has done nothing to achieve racial equality.' numeric
+@attribute 'The US is not only for white people.' numeric
+@attribute 'Black people cannot be racist because they aren\'t in a position of power.' numeric
+@attribute 'The USA has worked hard enough to fight racial inequality.' numeric
+@attribute 'White people are also sometimes victims of police brutality.' numeric
+@attribute 'Everybody\'s life matters.' numeric
+@attribute 'Black lives matter doesn\'t care about black lives.' numeric
+@attribute 'Everyone has the right to have equal chances.' numeric
+@attribute 'Discrimination must be severely penalized.' numeric
+@attribute 'Rather then just focusing on black people all races need to be treated equal.' numeric
+@attribute 'The police looks for blacks to be thieves.' numeric
+@attribute 'The government needs to do more to stop racism.' numeric
+@attribute 'Blacks are creative.' numeric
+@attribute 'All men are created equal.' numeric
+@attribute 'Racial profiling is bad.' numeric
+@attribute 'Police need to be educated on profiling and deescalation techniques.' numeric
+@attribute 'This country is equal despite what black people want to believe.' numeric
+@attribute 'All races have an equal access to resources.' numeric
+@attribute 'All lives matter.' numeric
+@attribute 'The electoral college is suspect.' numeric
+@attribute 'Police racial profiling reduces minorities to negative stereotypes.' numeric
+@attribute 'Blacks should be respected.' numeric
+@attribute 'Any abuse is not acceptable.' numeric
+@attribute 'More importance should be placed on blacks.' numeric
+@attribute 'Black people don\'t matter any more than anybody else.' numeric
+@attribute 'Racism is out of date.' numeric
+@attribute 'All people are good.' numeric
+@attribute 'Both black and white people need to treat authorities with respect.' numeric
+@attribute 'Not every issue is a race issue and many races face discrimination.' numeric
+@attribute 'We are all equal and deserve to be treated as such.' numeric
+@attribute 'Every human is equal.' numeric
+@attribute 'Black opinions matter.' numeric
+@attribute 'Black people are as human as white people.' numeric
+@attribute 'All people are the same regardless of race.' numeric
+@attribute 'Blacks too must be given priveledges with whites.' numeric
+@attribute 'Black lives matter activists are also racist.' numeric
+@attribute 'Everyone should have access to financial success, regardless of skin color.' numeric
+@attribute 'The greater inequality in a smaller society is the democratic quality of its institutions.' numeric
+@attribute 'People of color are more likely to be born into poverty.' numeric
+@attribute 'Individual instances of discrimination are a bigger concern than discrimination against black people.' numeric
+@attribute 'Lots of innocently killed blacks have been kids lately.' numeric
+@attribute 'Black people have the same rights as whites.' numeric
+@attribute 'Racial profiling has gotten better.' numeric
+@attribute 'All cases of discrimination are important, but racial discrimination must be addressed primarily.' numeric
+@attribute 'Racism should be fought.' numeric
+@attribute 'Black people complain too much.' numeric
+@attribute 'Martin luther king suffered in the flesh this kind of discrimination.' numeric
+@attribute 'It would take 40 years for white people to kill as many black people as blacks have killed.' numeric
+@attribute 'Racial profiling affects minorities.' numeric
+@attribute 'The black lives matter movement is blown out of proportion.' numeric
+@attribute 'Equality for all is a matter of human rights.' numeric
+@attribute 'People should be treated equally regardless of the skin color.' numeric
+@attribute 'Government should enforced severe punishment against racial profiling.' numeric
+@attribute 'Racial discrimination reveals the social backwardness of a society.' numeric
+@attribute 'Police racial profiling reduces minorities.' numeric
+@attribute 'All people should be treated equally regardless of race and color of the skin.' numeric
+@attribute 'Black lives matter is based on a flawed premise.' numeric
+@attribute 'Black Lives Matter are too violent.' numeric
+@attribute 'People should not be discriminated for their skin color.' numeric
+@attribute 'Black people have been mistreated more by the police.' numeric
+@attribute 'United States criminal justice system.' numeric
+@attribute 'Inclusion is a giant step towards a better society.' numeric
+@attribute 'Black people are 58\% of those killed by private citizens by self defence, except 75\% of them were killed by other blacks.' numeric
+@attribute 'Black people are unfairly discriminated against.' numeric
+@attribute 'Racial discrimination has increased over the years.' numeric
+@attribute 'All people are equal.' numeric
+@attribute 'Black people are 4 times more likely to attack whites and Hispanics, than whites and Hispanics are to blacks.' numeric
+@attribute 'Black is as important as white.' numeric
+@attribute 'There must be equality.' numeric
+@attribute 'Black lives matter Is more Of a Movement for Attention, and obviously more money.' numeric
+@attribute 'Whites have more power and they need to use it to raise other racecs, especially black, up.' numeric
+@attribute 'All citizens of a society have the same rights, regardless of ethnic groups or races.' numeric
+@attribute 'Black people are often profiled when it comes to criminal matters.' numeric
+@attribute 'Police brutality should not be allowed in the US.' numeric
+
+@data
+{0 1,2 1,10 1,12 1,15 1,19 -1,26 1,29 -1,37 -1,38 1,39 1,41 1,45 -1,51 1,52 1,64 1,65 1,66 -1,71 -1,80 -1,84 -1,87 1,93 1,95 1,101 -1,109 -1,110 -1,111 1,112 -1,114 -1,116 1,117 1,118 1,119 1,122 -1,125 1,127 1,133 1}
+{0 1,1 1,2 -1,3 1,7 -1,10 -1,20 1,22 1,26 -1,36 1,45 -1,46 1,50 -1,53 -1,56 -1,57 -1,58 -1,59 -1,71 -1,94 -1,101 -1,102 1,104 -1,105 -1,106 1,107 -1,115 -1,118 1,125 1,132 1,133 1,134 -1}
+{0 1,7 1,9 1,11 1,17 1,24 1,30 1,40 1,42 1,43 1,95 1,120 1,121 -1,128 1}
+{3 1,14 1,18 1,19 -1,21 1,22 1,23 1,27 1,28 1,40 1,44 1,45 1,46 1,47 -1,57 1,67 -1,76 1,83 1,84 -1,85 1,86 1,87 1,99 -1,113 1,118 1,129 1,132 1}
+{4 -1,28 1,40 1,63 1,73 1,97 1,102 1,112 1,117 -1,119 1,121 1,124 -1}
+{4 1,22 1,23 -1,27 1,28 1,36 1,79 1,80 -1,81 -1,82 1,83 1,86 -1,99 -1,113 1,116 1,118 1,132 1}
+{3 1,4 -1,8 1,14 -1,16 1,20 1,21 -1,27 1,31 1,34 1,42 1,43 1,48 1,52 1,54 -1,58 1,69 -1,72 1,73 1,82 1,84 -1,85 1,86 1,87 -1,92 -1,101 -1,108 -1,113 -1,119 1,120 1,121 1,124 -1,128 1,129 1,130 1,131 -1}
+{7 1,12 1,14 -1,15 1,16 1,17 1,20 1,21 1,27 -1,31 1,33 1,34 1,35 -1,37 -1,39 -1,43 -1,44 -1,48 1,51 -1,52 -1,53 -1,59 -1,62 1,64 1,65 1,66 1,67 -1,72 1,73 1,79 1,85 1,95 1,97 1,100 1,101 1,103 1,104 -1,107 -1,108 -1,112 -1,114 1,117 1,119 1,121 1,126 -1,127 1,130 1,132 -1,133 1}
+{4 1,16 1,21 1,22 -1,27 1,34 -1,41 -1,43 1,48 1,52 1,54 1,67 1,72 -1,77 1,81 -1,82 1,97 1,102 1,112 1,113 -1,117 1,119 1,121 -1,124 -1,128 1,129 1,130 1,131 -1}

@@ -1,0 +1,283 @@
+@relation 'Mandatory Vaccination'
+
+@attribute 'All the people have right to have all the vaccines.' numeric
+@attribute 'Vaccines ensure public safety.' numeric
+@attribute 'People who do not vaccinate put others at a higher risk.' numeric
+@attribute 'Some people have side effects from vaccination.' numeric
+@attribute 'No vaccination can lead to people getting sick or even killed by a virus.' numeric
+@attribute 'All people should have access to vaccines.' numeric
+@attribute 'Doctors and science are more educated on vaccinations than parents and religious organizations.' numeric
+@attribute 'Vaccination programs have been carried out extensively and have totally eradicated life threatening diseases from the human race.' numeric
+@attribute 'The ingredients in vaccines are safe in the small amounts they are used.' numeric
+@attribute 'Vaccines should be free.' numeric
+@attribute 'Vaccine\'s should be mandatory for everyone.' numeric
+@attribute 'Vaccinations prevents disease.' numeric
+@attribute 'Vaccines prevent disease outbreaks.' numeric
+@attribute 'Vaccines should be mandatory.' numeric
+@attribute 'Vaccines are crucial to make sure diseases don\'t start.' numeric
+@attribute 'Vaccines can cause serious and fatal side effects.' numeric
+@attribute 'A greater number of people should be vaccinated for a vaccine to be effective.' numeric
+@attribute 'Parents should choose whether or not to have their child vaccinated.' numeric
+@attribute 'Vaccinations cause autism.' numeric
+@attribute 'Vaccines help in supporting public health.' numeric
+@attribute 'Vaccines have never been proven to work.' numeric
+@attribute 'Diseases are more controlled under vaccines.' numeric
+@attribute 'Children should not be allowed in school or daycare unless vaccinated.' numeric
+@attribute 'Vaccine\'s can help one from getting sick.' numeric
+@attribute 'Vaccines are very helpful and very needed.' numeric
+@attribute 'Patients have the right to know what is in vaccines.' numeric
+@attribute 'There are social and religious groups that to be educated more about vaccination.' numeric
+@attribute 'Vaccinations should be mandatory.' numeric
+@attribute 'Vaccines help us live longer and protect us from fatal diseases.' numeric
+@attribute 'The people have the right to choose if they want participe in vaccination or not.' numeric
+@attribute 'Side effects of vaccinations are rare.' numeric
+@attribute 'Vaccines can have adverse side effects such as the disease that the vaccine is trying to prevent.' numeric
+@attribute 'No tested vaccines are dangerous.' numeric
+@attribute 'Vaccination is the administration of antigenic material.' numeric
+@attribute 'Vaccinations should be a choice.' numeric
+@attribute 'Vaccines provide immunity against diseases.' numeric
+@attribute 'Vaccines improve the lives of citizens.' numeric
+@attribute 'Vaccines prevent public health epidemics.' numeric
+@attribute 'Artificial immunity will compromise the bodyâ€™s ability to defend itself for a long time.' numeric
+@attribute 'Early vaccines are safe.' numeric
+@attribute 'Vaccines are necessary to tackle strong diseases.' numeric
+@attribute 'Most medical doctors and other healthcare professionals are positive about what has been achieved through vaccination in preventing and eradication a number of life threatening diseases.' numeric
+@attribute 'Someone who is not vaccinated is at higher risk of getting certain diseases.' numeric
+@attribute 'Vaccines should be mandatory when entering a public or private school.' numeric
+@attribute 'The government should promote campaigns for vaccination.' numeric
+@attribute 'Vaccines save people\'s lives.' numeric
+@attribute 'The ingredients in vaccines are safe in the amounts used.' numeric
+@attribute 'Any method is ok to prevent major tragedies.' numeric
+@attribute 'Vaccines are not the perfect solution to diseases.' numeric
+@attribute 'Children should be vaccinated from early childhood.' numeric
+@attribute 'Vaccination should be free for everyone.' numeric
+@attribute 'It is safe to use vaccines if the doctor recommends it.' numeric
+@attribute 'Vaccines do not suit all people (e.g. people with diabetes).' numeric
+@attribute 'Vaccinations should be mandatory for all school children.' numeric
+@attribute 'Vaccines are key to development in Africa.' numeric
+@attribute 'It should be mandatory for all people to get vaccines to protect those who cannot get vaccinated.' numeric
+@attribute 'Vaccines prevent deadly diseases.' numeric
+@attribute 'Vaccinations need to be regulated.' numeric
+@attribute 'The ingredients in vaccines are unsafe in the amounts used.' numeric
+@attribute 'Vaccines has to be somthing thats readilly available for people to buy.' numeric
+@attribute 'There must be greater support of vaccination from medical institutes.' numeric
+@attribute 'Vaccines can cause adverse reactions.' numeric
+@attribute 'Vaccines can cause very harmful side effects and are not always safe.' numeric
+@attribute 'Vaccination should be mandatory at an early age.' numeric
+@attribute 'Vaccination should be offered in school.' numeric
+@attribute 'Vaccination prevents outbreaks of easily preventable diseases.' numeric
+@attribute 'Vaccines endagers the human race in some areas.' numeric
+@attribute 'The government should not intervene in personal medical choices.' numeric
+@attribute 'Vaccines do not suit people with AIDS.' numeric
+@attribute 'The benefits of vaccinations far outweigh the risks.' numeric
+@attribute 'Vaccines prevent people from harmful diseases.' numeric
+@attribute 'Vaccines need to be mandatory to promote safe health.' numeric
+@attribute 'A lot of money has been saved since the advent and adoption of vaccination.' numeric
+@attribute 'Vaccine\'s are good for kids.' numeric
+@attribute 'Vaccine\'s can protect other people than yourself.' numeric
+@attribute 'Must have a containment plan when a new disease is discovered.' numeric
+@attribute 'Vaccines can end up saving childrens lives.' numeric
+@attribute 'Vaccines are an example of where the common good outweighs individual rights.' numeric
+@attribute 'The vaccines must be given by people who are very prepared to put them.' numeric
+@attribute 'Medical treatments like vaccines should be for all the people.' numeric
+@attribute 'The government must interfere with holistic methods that are not safe and anti vaccination.' numeric
+@attribute 'Vaccination protect the young and vulnerable ones.' numeric
+@attribute 'Vaccines are important for newborns.' numeric
+@attribute 'Vaccinations don\'t just protect individuals, they protect the whole country for diseases.' numeric
+@attribute 'People who are against vaccinations are not smart.' numeric
+@attribute 'Government should leave vaccinations to medical practioners.' numeric
+@attribute 'Vaccines have a positive effect on people\'s health.' numeric
+@attribute 'Once a child is born it must be vaccinaced.' numeric
+@attribute 'Vaccine\'s should be free for everyone.' numeric
+@attribute 'Vaccinations are safe.' numeric
+@attribute 'Not everyone has the chance to get vaccinated.' numeric
+@attribute 'Vaccines are not safe.' numeric
+@attribute 'Vaccines prevent disease.' numeric
+@attribute 'Vaccinations increase herd immunity.' numeric
+@attribute 'Vaccination must be a staple in medical benefits.' numeric
+@attribute 'There should be more funding for vaccination.' numeric
+@attribute 'Vaccination should be compulsory.' numeric
+@attribute 'The benefits of vaccines outweigh the risks.' numeric
+@attribute 'Everyone should have certain recommended vaccines.' numeric
+@attribute 'Vaccines keep us healthy.' numeric
+@attribute 'Vaccines should be required by law.' numeric
+@attribute 'Vaccines can have severe side effects.' numeric
+@attribute 'Vaccines are necessary for our safety.' numeric
+@attribute 'Vaccinations saves lives.' numeric
+@attribute 'Compulsory vaccination would avoid epidemics.' numeric
+@attribute 'Viruses like human papilloma can only be prevented with the vaccine.' numeric
+@attribute 'Vaccines are tested and proven to be safe.' numeric
+@attribute 'Vaccination have the risk of harmful and toxic chemicals being introduced to the body.' numeric
+@attribute 'Not vaccinating your child is unhealthy for the child and its contemporaries.' numeric
+@attribute 'Some vaccines are very expensive for the public, such as HPV vaccines.' numeric
+@attribute 'People should not be forced to vaccinate.' numeric
+@attribute 'Vaccinations are expensive and yet not 100\% safe.' numeric
+@attribute 'Vaccines are a dirty business of pharmaceuticals.' numeric
+@attribute 'Some people are unable to receive vaccines.' numeric
+@attribute 'Vaccines are well trusted science.' numeric
+@attribute 'Vaccination is good for everyone\'s health.' numeric
+@attribute 'Vaccines are good for society.' numeric
+@attribute 'The theory of herd immunity has never been proven.' numeric
+@attribute 'Vaccines increase the risk of autism.' numeric
+@attribute 'It is cruel to force someone to get an injection.' numeric
+@attribute 'Vaccination are important for public health.' numeric
+@attribute 'Mandatory vaccination should be implemented.' numeric
+@attribute 'Proper vaccinations are safe.' numeric
+@attribute 'Vaccine ingredients are not always disclosed to patients.' numeric
+@attribute 'Schools shouldn\'t require vaccinations.' numeric
+@attribute 'Vaccination saves lives.' numeric
+@attribute 'Vaccines do not make you develop diseases.' numeric
+@attribute 'It should be a parents choice whether to vaccinate or not.' numeric
+@attribute 'Vaccinations can safeguard against deadly diseases and viruses.' numeric
+@attribute 'Vaccination must be madatory.' numeric
+@attribute 'People should be allowed to make their own decisions about medical choices for their children.' numeric
+@attribute 'Vaccines should be implemented.' numeric
+@attribute 'Vaccination is too expensive.' numeric
+@attribute 'Vaccinations help prevent sickness.' numeric
+
+@data
+{5 1,8 1,9 1,10 1,11 1,17 1,20 1,21 1,22 1,23 1,36 1,37 1,43 1,49 1,56 1,62 1,70 1,72 1,75 1,80 1,81 1,84 1,85 1,86 1,87 1,92 1,93 1,104 1,105 1,110 1,116 1,123 1,124 1}
+{1 1,60 -1,66 1,82 1,86 1,112 1,129 1}
+{6 1,11 1,12 1,13 1,14 1,15 1,19 1,25 1,30 1,48 1,49 1,60 -1,75 1,76 1,97 1,109 -1,116 1,126 1,132 -1}
+{6 1,11 -1,16 -1,18 -1,19 1,20 -1,22 -1,28 1,31 1,32 -1,33 1,34 1,35 1,47 1,48 1,50 1,51 1,53 -1,55 1,69 1,73 1,76 1,80 1,84 1,91 1,92 1,93 -1,94 1,95 1,98 1,99 1,100 1,101 -1,102 -1,103 1,104 -1,106 1,108 1,113 1,114 1,116 1,118 -1,119 1,121 1,123 1,126 1,132 -1,133 1}
+{33 1,46 -1,60 1,61 1,62 1,63 -1,101 1,106 -1}
+{15 1,19 1,24 1,27 1,49 1,50 -1,58 -1,62 1,68 1,71 1,89 1,92 1,96 1,111 -1,130 -1,133 1}
+{24 1,37 1,64 1,83 1}
+{15 -1,44 -1,54 1,63 1,67 1,70 1,79 1,83 1,92 1,98 1,104 1,126 1}
+{21 1,27 1,45 1,52 -1,82 1,96 1,97 1,98 1,99 1,102 1,120 1,125 1}
+{3 1,6 -1,12 1,14 1,20 1,23 1,24 1,25 1,26 1,27 1,31 1,40 1,41 1,42 -1,43 -1,44 1,45 1,47 -1,48 1,49 1,60 -1,61 -1,62 1,63 1,68 -1,69 1,72 -1,74 1,81 -1,85 -1,86 1,88 1,89 1,90 1,91 -1,94 1,95 -1,96 1,97 1,99 -1,103 -1,108 -1,112 1,114 -1,115 -1,127 1,128 1,129 1}
+{15 -1,44 1,54 1,63 1,67 1,70 1,79 1,83 1,92 1,98 1,104 1,126 -1}
+{12 1,36 1,39 -1,43 1,88 1,109 1,114 -1,118 1}
+{9 1,10 -1,11 1,26 1,35 -1,54 -1,56 -1,59 -1,75 1,77 1,81 -1,84 1,85 -1,86 1,87 -1,91 1,92 -1,101 1,110 1,121 -1,124 1}
+{15 1,28 1,29 1,30 -1,31 1,51 1,66 1,131 -1}
+{1 -1,7 -1,15 1,19 -1,20 1,24 -1,27 -1,33 1,37 -1,41 -1,52 1,55 -1,58 1,60 -1,64 -1,65 -1,66 1,67 1,68 1,71 -1,74 -1,82 -1,83 -1,86 -1,111 1,112 1,118 1,125 -1,129 -1,133 -1}
+{1 1,11 1,18 -1,20 -1,28 1,31 1,34 -1,41 1,44 1,45 1,46 1,47 -1,51 1,60 1,65 1,68 -1,73 1,76 1,80 1,84 1,86 1,94 1,95 1,104 1,108 1,116 1,117 1,119 -1,121 1,122 1,123 1,129 1,130 1,132 -1,133 1}
+{8 -1,9 1,10 1,11 1,24 1,31 1,37 1,47 1,64 1,66 -1,75 1,81 1,82 1,83 1,86 1,92 1,94 1,110 1,112 -1,116 1}
+{4 -1,5 1,6 1,7 1,64 1,65 1,66 -1,67 -1,104 1,105 1,106 1,107 -1}
+{0 1,1 1,2 -1,3 1,7 1,8 -1,15 1,19 -1,25 -1,27 1,30 1,40 1,41 1,46 1,54 1,57 1,58 1,60 1,64 1,66 1,67 1,68 1,71 1,86 1,101 1,104 1,105 -1,106 1,107 1,111 1,112 1,117 1,118 1,120 1,127 -1,129 1,133 -1}
+{7 1,15 1,19 1,27 1,33 1,58 -1,67 -1,68 1,71 1,111 -1,118 -1,133 1}
+{0 1,2 1,7 1,13 1,14 1,15 1,21 1,23 1,27 -1,28 1,29 1,30 1,31 1,32 -1,44 1,48 -1,49 1,50 1,51 -1,59 1,66 -1,68 -1,69 1,70 1,71 1,74 1,75 1,78 1,79 1,83 1,85 1,95 1,108 1,111 1,114 -1,115 1,131 1}
+{24 1,49 1,89 1,130 1}
+{9 1,17 -1,37 1,56 1,62 -1,72 1,93 1,105 1}
+{12 1,13 -1,14 1,15 1,25 1,30 1,33 1,46 1,97 1,101 1,106 1,109 1}
+{2 1,4 1,6 -1,7 1,9 1,10 1,14 -1,17 1,20 1,21 -1,22 1,23 1,36 1,37 1,43 1,46 1,56 1,57 -1,62 1,70 1,72 1,73 1,74 1,75 1,77 1,80 1,93 1,94 1,104 1,105 1,123 1,124 1}
+{0 1,1 1,2 1,3 1,4 1,8 1,16 1,17 -1,18 -1,19 1,20 -1,22 1,25 1,35 1,40 1,54 1,56 1,65 1,80 1,120 1,126 1,127 -1}
+{92 -1,93 1,94 1,95 1}
+{10 1,12 -1,31 -1,32 1,34 1,38 -1,39 1,42 -1,43 -1,45 -1,57 1,58 -1,61 -1,63 1,68 1,69 1,73 -1,80 1,81 -1,82 1,83 1,84 1,85 1,88 1,95 1,101 1,109 1,110 1,114 1,115 1,118 -1,119 1,133 -1}
+{1 1,5 1,6 1,13 1,15 -1,28 1,29 -1,30 -1,31 -1,47 1,48 -1,50 1,51 1,53 1,55 1,58 -1,66 -1,69 1,75 1,76 1,78 1,94 1,99 1,105 1,114 1,116 1,124 -1,125 1,126 1,127 1,131 1,132 -1}
+{4 1,5 1,6 1,7 1,9 1,11 1,17 1,20 1,21 1,22 1,23 1,36 1,37 1,43 1,49 1,56 1,62 1,70 1,72 1,75 1,80 1,93 1,104 1,105 1,116 1,123 1,124 1}
+{0 1,1 1,2 1,4 1,6 1,9 1,10 1,13 1,14 -1,15 -1,16 -1,18 -1,19 1,21 1,22 1,23 -1,24 1,26 1,27 1,29 1,30 1,32 -1,37 -1,38 -1,40 1,41 1,42 -1,44 1,45 1,47 1,48 -1,53 1,55 -1,56 -1,57 1,58 -1,59 1,63 1,64 -1,65 -1,66 -1,69 1,70 1,73 1,74 1,75 1,76 -1,77 -1,79 -1,83 -1,84 -1,85 1,86 1,87 1,88 1,89 1,93 -1,94 1,97 -1,98 1,100 -1,102 1,103 -1,105 -1,107 1,108 -1,109 1,110 1,111 1,112 -1,113 1,114 1,115 1,116 -1,118 1,119 -1,120 1,121 1,127 1,129 -1,132 -1,133 1}
+{32 -1,33 -1,34 -1,35 1,53 1,106 1,113 1,133 1}
+{0 1,3 -1,6 1,12 1,13 1,14 1,15 -1,19 1,24 1,25 1,30 1,41 1,46 1,48 1,60 1,72 1,76 1,90 1,97 1,99 1,109 1,115 1,116 1,120 1,127 -1,128 1,129 1,130 1,131 1}
+{5 1,8 1,9 1,10 1,11 1,14 1,15 -1,17 -1,30 1,33 1,35 1,37 1,44 1,54 1,63 1,67 -1,70 1,75 1,79 1,81 1,82 1,83 1,92 1,98 1,103 1,104 1,107 -1,110 -1,121 1,126 1,132 -1}
+{1 1,15 1,19 -1,20 -1,24 1,27 -1,30 1,37 -1,41 1,50 -1,57 -1,58 1,60 1,62 1,64 1,65 1,66 1,68 -1,71 -1,82 -1,83 1,86 1,92 1,96 1,111 1,117 1,129 1,133 1}
+{8 1,9 1,15 1,26 1,35 1,44 1,54 1,56 1,63 1,67 -1,70 1,77 1,79 1,83 1,92 1,98 1,101 1,104 1,124 -1,126 1}
+{36 1,70 1,104 1,123 1}
+{19 -1,27 -1,58 1,71 -1}
+{3 1,10 -1,12 1,13 -1,14 1,15 1,16 1,22 -1,23 1,28 1,30 1,31 -1,32 -1,40 1,41 1,42 1,43 1,44 1,45 1,46 -1,47 -1,56 1,57 1,58 -1,59 1,60 1,61 1,62 1,63 1,66 -1,68 1,70 -1,71 1,75 1,78 1,79 1,81 1,85 1,89 -1,90 1,95 1,96 1,100 -1,103 1,105 1,109 -1,110 -1,111 1,112 1,113 1,114 1,115 1}
+{1 1,5 1,17 1,37 -1,55 1,58 1,76 1,77 1,78 1,79 1,103 1,131 1}
+{30 1,57 1,64 1,117 -1}
+{14 1,22 1,46 1,57 1}
+{0 1,18 -1,40 1,64 1,65 1,97 1,119 -1,122 1}
+{5 1,8 1,9 1,10 1,11 1,17 -1,20 1,21 1,22 1,23 -1,37 1,43 1,49 1,52 1,56 1,62 -1,72 1,75 1,80 1,81 1,82 1,84 1,85 -1,86 1,87 1,92 1,93 1,96 1,97 1,98 1,99 -1,102 1,105 1,110 -1,116 1,124 -1}
+{24 1,25 1,26 -1,27 1,31 -1,34 1,38 1,42 -1,44 1,45 1,46 1,49 1,58 1,63 -1,68 1,73 1,80 1,81 1,82 1,83 -1,84 1,85 1,86 1,88 1,89 1,90 -1,91 1,94 1,110 1,112 1,115 -1,116 1,130 -1,133 1}
+{0 1,14 1,16 -1,20 -1,22 -1,23 1,24 1,25 1,26 1,27 -1,31 1,32 -1,33 1,34 1,35 1,44 -1,45 1,46 1,47 -1,49 1,53 -1,68 -1,69 1,86 1,88 1,89 1,90 1,91 -1,94 1,100 -1,101 -1,102 1,103 1,106 1,108 -1,112 -1,113 1,114 1,115 -1,116 1,117 1,118 -1,119 1,130 1,133 1}
+{4 -1,7 1,21 1,26 1,29 1,32 -1,33 -1,34 1,36 1,37 1,38 -1,39 1,42 1,43 -1,44 1,49 1,52 1,53 1,55 -1,66 -1,67 1,70 1,71 -1,73 1,74 1,77 1,81 1,87 1,88 1,90 1,94 1,104 1,106 1,107 1,111 1,113 1,118 -1,119 -1,122 1,123 1,125 1,129 -1,132 -1}
+{18 -1,19 1,50 1,55 1,91 -1,98 1,99 1}
+{4 1,13 -1,21 1,26 1,29 1,34 1,42 1,66 -1,67 1,81 1,129 -1}
+{6 1,8 1,9 1,10 1,11 1,20 -1,21 1,22 1,23 1,28 1,31 -1,48 -1,49 1,75 1,81 1,92 1,100 1,110 -1,113 1,116 1,126 1,132 -1}
+{10 -1,31 -1,32 -1,36 1,45 1,57 1,61 1,69 1}
+{24 1,25 1,37 1,43 1,50 1,52 1,59 1,62 1,64 1,66 1,82 -1,83 1,86 1,89 1,92 1,96 1,106 1,109 1,111 1,112 1,119 1,127 1,128 1}
+{12 -1,14 1,21 1,22 -1,23 -1,27 1,45 -1,46 1,52 -1,57 -1,74 1,81 1,82 -1,96 1,97 1,98 1,99 -1,102 -1,103 1,120 -1,125 -1,131 1}
+{8 1,9 1,10 -1,11 1,12 1,20 -1,28 -1,29 1,40 1,54 1,59 1,65 1,75 -1,81 1,84 1,85 -1,86 1,87 -1,91 -1,92 1,110 1,120 1,121 -1}
+{8 1,11 1,32 1,33 1,34 -1,35 1,52 -1,53 1,54 1,55 1,59 1,84 1,85 1,86 1,87 1,91 -1,106 1,113 -1,121 1,128 1,133 1}
+{4 -1,5 1,6 1,7 1,8 1,9 1,10 -1,11 1,12 1,13 -1,14 1,15 1,22 1,25 1,30 -1,46 1,57 1,75 1,81 1,92 1,97 1,109 1,110 1}
+{9 1,10 1,11 1,26 1,35 1,54 1,56 1,59 1,75 1,77 1,81 1,84 1,85 1,86 1,87 1,91 1,92 1,101 1,110 -1,121 1,124 1}
+{3 1,17 1,30 1,33 -1,46 1,57 -1,64 1,65 1,66 -1,67 -1,100 1,101 -1,104 1,105 1,106 1,107 -1,117 1,130 1}
+{5 1,9 1,11 1,17 1,20 1,21 1,22 1,23 1,36 1,37 1,43 1,49 1,56 1,62 1,70 1,72 1,75 1,80 1,93 1,104 1,105 1,116 1,123 1,124 1}
+{11 1,25 1,36 1,43 1,49 1,50 1,52 -1,59 1,62 -1,70 1,75 1,89 1,92 1,96 1,104 1,106 1,109 1,111 -1,116 1,119 -1,123 -1,127 1,128 1}
+{14 1,30 -1,33 -1,35 1,82 1,107 1,121 -1,132 -1}
+{0 1,3 1,10 -1,11 1,14 1,23 1,24 1,25 1,26 -1,27 -1,28 1,29 1,31 1,32 1,34 1,36 1,45 1,47 -1,49 -1,57 1,61 1,63 -1,69 1,73 1,76 1,80 -1,84 -1,88 1,90 -1,91 -1,92 1,93 1,94 -1,95 1,100 -1,101 1,104 -1,105 1,110 1,113 1,115 -1,117 1,119 1,121 -1,123 1,130 1}
+{5 1,14 1,22 -1,38 -1,46 1,50 -1,53 -1,57 1,60 -1,76 1,78 1,91 -1,93 -1,99 1,105 -1,120 1,121 -1,122 -1,123 1,124 -1}
+{20 -1,41 1,65 1,86 -1}
+{7 1,33 1,67 1,118 -1}
+{0 -1,40 -1,64 -1,97 -1}
+{2 1,3 1,10 1,16 1,23 -1,28 1,29 1,31 1,39 1,47 1,49 1,51 1,62 1,63 1,71 1,77 -1,87 1,89 1,92 1,93 -1,94 1,95 1,100 -1,102 1,105 -1,107 -1,113 1,118 -1,122 1}
+{43 -1,106 -1,111 1,119 1}
+{1 1,6 1,12 1,13 1,14 1,15 -1,19 1,20 -1,25 1,27 1,30 1,41 1,48 -1,58 -1,60 1,65 1,68 -1,71 1,76 1,86 1,97 1,109 1,111 -1,112 -1,126 1,129 1,132 -1,133 1}
+{5 1,43 1,80 -1,124 -1}
+{11 1,18 -1,49 -1,65 -1,75 1,116 -1,119 1,122 -1}
+{8 1,20 -1,65 1,120 1}
+{8 1,9 1,10 1,11 1,12 1,14 1,15 -1,26 1,28 1,29 -1,30 1,33 -1,35 1,40 1,44 1,54 1,56 1,59 1,63 1,67 -1,70 1,77 1,79 1,82 1,83 1,91 -1,92 1,98 1,101 -1,104 1,107 -1,121 1,124 -1,126 1,132 -1}
+{1 1,4 -1,15 -1,16 1,17 -1,18 -1,19 1,22 1,35 1,44 1,54 1,56 1,63 1,67 -1,70 1,79 1,80 1,83 1,92 1,98 1,104 1,126 1}
+{34 1,38 -1,58 -1,63 -1,68 -1,84 1,115 1,133 1}
+{0 1,14 1,16 1,20 -1,22 1,23 1,24 1,25 1,26 1,27 -1,31 1,32 -1,33 1,34 -1,35 1,44 1,45 1,46 -1,49 1,53 1,68 -1,69 1,86 1,88 1,90 1,91 1,94 1,100 -1,101 1,102 1,103 1,106 -1,108 1,112 1,113 1,114 1,115 -1,116 1,117 -1,118 1,119 -1,130 1,133 1}
+{12 1,28 1,29 1,34 1,36 1,38 1,39 1,40 1,42 1,43 1,58 -1,63 1,68 -1,73 1,80 -1,81 1,82 1,83 1,84 1,85 1,88 1,95 -1,101 -1,109 1,110 1,114 1,115 1,118 -1,119 1,133 1}
+{12 1,14 1,28 1,29 1,30 1,33 1,35 -1,40 1,82 1,107 -1,121 1,132 -1}
+{30 1,57 1,64 1,65 1,66 -1,67 -1,104 1,105 1,106 1,107 -1,117 -1}
+{19 1,48 1,60 1,76 1}
+{2 1,10 1,25 1,39 1,49 1,52 -1,59 -1,71 -1,77 -1,87 -1,89 1,90 1,94 1,96 -1,107 -1,109 -1,113 -1,122 1,127 1,128 1}
+{2 1,4 1,5 1,6 1,7 1,9 1,10 1,17 1,36 1,37 -1,39 1,49 -1,56 -1,62 1,70 -1,71 1,72 1,77 1,87 1,90 -1,93 1,94 1,104 -1,105 1,107 1,113 -1,122 1,123 -1}
+{15 1,52 1,55 1,68 1,74 1,111 1,125 1,133 1}
+{34 -1,38 -1,42 1,58 -1,63 1,68 -1,73 1,80 1,81 1,82 1,83 1,84 1,85 -1,110 -1,115 1,133 1}
+{0 1,14 1,16 1,20 -1,22 1,23 1,24 1,25 1,26 1,27 1,47 1,69 1,88 1,89 1,90 1,91 1,92 1,93 1,94 1,95 1,108 1,114 1,115 1,116 1,118 -1,119 -1}
+{8 -1,9 1,24 1,26 1,35 1,37 1,56 1,64 1,66 -1,77 -1,82 1,83 1,84 1,85 1,86 1,87 1,101 -1,112 -1,124 -1}
+{1 1,4 -1,8 -1,16 1,17 -1,18 -1,19 1,20 -1,22 1,35 1,56 1,65 1,80 -1,120 1,126 -1}
+{5 1,9 1,11 1,17 -1,20 1,21 1,22 1,23 -1,37 1,43 1,49 1,56 1,62 -1,72 1,75 -1,80 1,84 1,85 1,86 1,87 1,93 1,105 1,116 1,124 -1}
+{10 1,31 -1,32 1,36 1,45 1,57 1,61 1,69 1}
+{1 1,4 1,7 -1,13 -1,15 1,16 1,17 1,18 -1,19 1,20 -1,21 1,22 -1,26 -1,27 -1,29 1,32 -1,33 1,34 1,35 1,36 1,37 1,39 -1,41 1,42 1,44 -1,53 -1,56 1,58 -1,60 -1,65 1,66 1,67 1,68 1,71 -1,73 1,77 -1,80 -1,81 1,86 1,88 -1,94 -1,111 1,112 1,118 -1,125 1,126 -1,129 -1,132 -1,133 1}
+{19 1,27 1,58 -1,71 1}
+{8 -1,9 -1,26 -1,35 1,56 1,77 -1,101 1,124 1}
+{11 1,20 -1,21 1,22 1,23 -1,36 1,49 1,70 1,75 1,104 1,116 1,123 1}
+{14 1,21 -1,22 -1,46 1,52 -1,57 1,82 1,96 1,97 -1,98 1,99 -1,102 -1}
+{33 -1,46 1,101 1,106 1}
+{12 1,23 1,45 1,74 1,81 1,96 1,103 1,131 1}
+{12 1,13 1,14 1,15 1,25 1,30 1,41 1,43 1,52 1,59 1,72 1,89 1,90 -1,96 1,97 1,106 1,109 -1,111 -1,119 -1,120 1,127 1,128 1}
+{0 1,16 1,22 1,32 1,33 1,34 -1,35 1,40 1,47 1,53 1,64 1,97 -1,100 1,101 1,102 1,103 1,106 1,113 -1,116 1,117 1,118 -1,119 1,133 1}
+{28 -1,108 -1,132 1,133 -1}
+{8 1,9 1,10 1,11 1,75 1,81 1,84 -1,85 -1,86 1,87 1,92 1,110 -1}
+{1 1,20 1,41 1,60 1,65 1,86 -1,112 1,129 -1}
+{0 1,14 1,23 1,115 1}
+{2 1,10 -1,77 -1,94 1}
+{7 -1,9 1,26 1,41 1,61 1,70 -1,78 1,79 1,98 -1,102 -1,122 -1,123 1}
+{1 1,12 1,13 -1,14 1,15 -1,20 -1,24 1,25 1,30 1,37 1,40 1,41 1,42 1,43 1,60 1,64 1,65 1,66 -1,82 1,83 -1,86 1,97 1,109 1,112 -1,129 -1}
+{12 1,36 1,39 1,43 -1,88 -1,95 -1,101 1,109 1,110 1,114 1,118 -1,119 1}
+{0 1,1 1,2 1,3 1,4 -1,5 1,6 1,7 1,8 1,11 1,16 -1,17 -1,18 -1,19 1,20 -1,21 1,22 1,23 1,25 1,27 1,30 1,35 1,40 1,43 1,45 1,49 1,54 1,56 1,57 1,64 1,65 1,66 1,67 -1,75 1,104 1,105 -1,106 1,107 -1,116 1,117 1,120 1,124 -1,125 1,126 -1,127 -1}
+{3 1,29 -1,40 -1,41 -1,42 1,43 -1,44 1,47 1,51 1,56 1,57 1,58 1,59 1,63 1,72 -1,73 1,74 -1,75 1,85 1,90 -1,95 1,100 -1,105 1,108 -1,112 -1,113 1,114 1,115 1}
+{2 1,4 -1,5 1,6 1,7 1,9 1,10 1,11 1,17 1,20 1,21 1,22 1,23 1,36 1,37 1,43 1,49 1,56 1,62 1,70 1,72 1,75 1,77 1,80 1,93 1,94 1,104 1,105 1,116 1,123 1,124 1}
+{5 1,8 1,9 1,10 1,11 1,12 1,14 1,20 1,21 1,22 1,23 1,28 1,29 -1,30 1,33 1,35 1,40 1,43 1,49 1,75 1,80 1,81 1,82 1,92 1,107 1,110 -1,116 1,121 1,124 -1,132 -1}
+{0 -1,3 -1,5 -1,14 1,17 1,21 -1,22 -1,24 1,27 -1,37 1,40 -1,41 -1,42 -1,43 1,45 1,52 1,57 1,72 1,82 1,96 1,97 -1,98 -1,102 1,103 -1,115 -1,120 -1,124 1,126 -1,128 1,129 1,130 1,131 1}
+{2 1,4 1,5 1,6 1,7 1,10 1,25 1,36 1,39 1,43 1,49 1,50 1,52 -1,59 1,62 -1,70 1,71 1,77 1,87 1,89 1,90 -1,92 1,94 1,96 1,104 1,106 1,107 -1,109 1,111 -1,113 -1,119 -1,122 1,123 -1,127 -1,128 1}
+{25 1,39 1,43 1,49 1,50 1,52 1,59 1,62 -1,71 1,87 1,89 1,90 1,92 1,106 1,107 -1,109 -1,111 -1,113 1,119 -1,122 1,127 -1,128 1}
+{8 1,9 1,10 1,11 1,75 1,81 1,92 1,110 1}
+{15 -1,28 1,29 -1,30 1,31 -1,32 -1,51 1,66 -1,74 1,78 1,79 1,131 1}
+{2 -1,4 -1,5 1,6 1,7 -1,10 -1,15 -1,25 1,36 -1,39 -1,43 -1,49 -1,52 1,59 -1,68 -1,70 1,71 -1,77 -1,87 -1,89 1,90 1,94 -1,96 -1,104 -1,106 -1,107 1,109 1,111 1,113 1,119 -1,122 1,123 1,127 -1,128 1,133 1}
+{12 1,13 1,14 1,15 -1,19 1,24 1,25 1,30 1,36 1,37 1,41 1,48 -1,50 1,60 1,62 -1,64 1,66 -1,70 1,72 1,76 1,82 1,83 1,86 1,90 1,92 1,96 1,97 1,104 1,109 1,112 -1,120 1,123 1}
+{4 -1,7 1,13 1,19 1,21 1,26 1,29 -1,32 1,33 -1,34 -1,38 -1,39 1,42 1,44 1,48 1,52 -1,55 1,60 1,66 -1,67 -1,73 1,74 1,76 1,81 1,88 1,118 -1,125 1,129 1}
+{0 1,3 1,6 -1,18 -1,19 1,24 1,29 1,44 1,45 1,46 1,48 1,51 1,60 1,63 -1,65 1,72 1,76 1,90 1,97 -1,99 1,100 -1,105 -1,115 1,116 1,119 1,122 1,127 1,128 1,129 -1,130 1,131 1}
+{2 1,4 1,5 1,6 1,7 -1,10 1,13 1,19 1,27 1,32 1,38 -1,39 1,44 1,58 -1,71 1,73 1,77 1,88 1,94 1,125 1}
+{0 1,8 1,11 1,24 1,37 1,39 1,40 -1,49 1,52 1,53 1,54 -1,55 1,66 -1,71 1,82 1,83 1,86 1,87 1,90 -1,97 1,107 -1,112 -1,113 1,122 1,128 1}
+{5 -1,43 -1,80 -1,124 -1}
+{6 -1,8 1,9 1,21 1,26 1,35 -1,41 1,48 -1,52 1,54 -1,56 1,59 1,72 1,77 -1,82 1,84 -1,85 1,86 1,87 1,90 1,91 -1,92 1,93 1,94 1,95 1,101 1,102 1,120 1,121 -1,124 -1,126 1,132 1}
+{0 1,1 -1,2 -1,3 1,6 -1,8 -1,11 1,18 -1,19 1,25 1,30 -1,31 1,34 1,40 1,48 1,50 -1,51 1,52 1,53 -1,55 -1,57 -1,64 -1,65 -1,73 -1,76 1,80 -1,84 -1,87 -1,91 1,92 1,93 -1,94 -1,95 -1,98 -1,99 -1,100 -1,104 -1,108 -1,113 1,119 1,121 -1,122 1,123 1,126 -1,127 1,128 1,132 -1,133 -1}
+{5 1,14 1,20 -1,21 1,22 1,27 -1,32 1,33 1,34 1,35 1,45 -1,46 1,50 -1,52 1,53 1,57 -1,68 1,69 -1,77 1,78 -1,79 1,82 1,86 -1,96 1,97 1,98 1,102 1,105 1,106 1,108 1,112 1,113 1,114 -1,115 -1,116 -1,117 1,118 -1,119 -1,120 -1,124 -1,125 1,126 1,127 1,130 1,133 -1}
+{10 1,31 -1,32 1,36 1,45 1,57 -1,61 -1,69 1}
+{54 -1,59 -1,91 -1,121 -1}
+{24 1,25 1,26 1,27 -1,49 1,88 1,89 1,90 1,91 -1,130 1}
+{4 1,5 1,6 1,7 1,9 1,17 1,36 1,37 1,43 1,56 1,62 1,70 1,72 1,80 -1,93 1,104 1,105 1,123 1,124 -1}
+{0 1,14 1,23 1,115 1}
+{8 1,9 1,10 1,11 1,14 1,15 -1,26 1,30 1,33 -1,35 1,44 1,54 -1,56 1,59 -1,63 1,67 1,70 1,75 1,77 1,79 1,81 1,82 1,83 1,84 1,85 1,86 1,87 1,91 -1,92 1,98 1,101 -1,104 1,107 1,110 -1,121 1,124 -1,126 1,132 1}
+{0 1,8 1,11 1,18 -1,40 1,52 -1,53 1,54 1,55 1,64 1,65 1,87 1,97 1,119 -1,122 1,128 1}
+{1 -1,15 -1,19 -1,20 1,27 1,41 -1,58 1,60 -1,65 -1,66 1,68 1,71 1,82 -1,86 1,111 1,129 -1,133 -1}
+{20 -1,41 1,65 1,86 1,100 1,101 1,102 1,103 1}
+{0 1,2 -1,3 1,4 1,8 1,9 1,10 1,12 1,14 -1,16 -1,17 -1,21 1,23 1,24 1,25 1,26 -1,27 1,28 1,29 1,31 -1,34 1,36 -1,40 1,43 1,45 1,46 -1,47 -1,49 -1,50 1,52 -1,53 -1,54 1,55 1,56 1,57 1,58 -1,60 1,61 1,65 1,66 1,73 1,74 -1,80 -1,81 1,83 -1,84 -1,85 -1,86 -1,88 -1,89 1,90 -1,91 -1,92 1,93 -1,94 -1,96 1,99 -1,104 1,105 1,107 1,109 -1,110 1,113 -1,115 1,116 -1,117 -1,118 1,119 1,120 1,121 -1,126 1,127 -1,129 -1,133 1}
+{36 1,70 1,104 1,123 1}
+{33 1,46 1,101 1,106 1}
+{0 1,1 1,2 -1,3 1,4 -1,8 1,16 1,17 1,18 -1,19 1,20 -1,22 -1,25 1,35 1,36 1,37 1,38 -1,39 1,40 1,41 1,53 -1,54 1,56 1,60 1,64 -1,65 1,66 -1,67 1,77 -1,80 -1,86 1,94 1,104 1,105 -1,106 -1,107 1,112 -1,120 1,126 -1,127 1,129 -1,132 1}
+{72 1,73 1,74 1,75 1}
+{33 1,36 -1,37 -1,38 1,39 -1,46 -1,53 -1,77 -1,94 -1,101 1,106 -1,132 1}
+{2 1,7 1,15 1,21 1,24 1,28 1,29 1,30 -1,31 1,37 1,43 1,48 -1,49 1,50 1,51 1,59 1,62 -1,64 1,66 -1,82 1,83 1,86 1,92 1,96 1,102 1,106 -1,107 1,108 1,109 1,110 -1,111 -1,112 -1,118 -1,119 -1,131 1}
+{0 1,1 1,2 1,3 1,4 1,7 1,8 -1,20 1,21 -1,25 1,26 1,29 1,30 1,32 1,34 1,36 1,37 1,38 1,39 -1,40 1,42 -1,44 1,46 1,52 1,53 1,54 1,55 -1,57 1,64 1,66 1,67 1,73 1,74 1,77 1,81 -1,88 1,94 -1,101 1,104 1,105 -1,106 1,107 1,117 1,118 1,120 1,125 1,127 1,129 1,132 1}
+{20 -1,69 1,108 -1,114 1}
+{5 1,53 1,76 1,105 -1}
+{8 1,9 1,26 1,35 1,54 1,56 1,59 1,77 1,84 1,85 -1,86 1,87 1,91 -1,101 1,121 1,124 -1}

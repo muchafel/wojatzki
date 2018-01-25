@@ -1,0 +1,140 @@
+@relation 'Gender Equality'
+
+@attribute 'Opportunities should be just as open to women as men.' numeric
+@attribute 'Women and men have different strengths.' numeric
+@attribute 'Females are just as capable as males.' numeric
+@attribute 'Everybody should have the right to live regardless of gender.' numeric
+@attribute 'Gender never makes someone look dull instead it makes a person look lively.' numeric
+@attribute 'Public and private institutions should hire people based on skills not gender to achieve positive economic impact.' numeric
+@attribute 'Gender equality is not inline with religion.' numeric
+@attribute 'Education empowers a business and further education among women benefits an employer.' numeric
+@attribute 'Gender inequality is the main source of sexual harrasment in various countries.' numeric
+@attribute 'Abolition of gender discriminating laws.' numeric
+@attribute 'The bibles role models are dumb and should be discarded.' numeric
+@attribute 'Gender equality provides empowerment for everyone.' numeric
+@attribute 'Women should be able to move up in the workplace without discrimination.' numeric
+@attribute 'What a man can do a woman can do better.' numeric
+@attribute 'Females and males are equal.' numeric
+@attribute 'Everybody should have the right to work regardless of gender.' numeric
+@attribute 'You should be judged on who you are not your gender.' numeric
+@attribute 'Gender equality is desired by the majority of people.' numeric
+@attribute 'Places don\'t hire people based on gender.' numeric
+@attribute 'People shouldn\'t look at things such as man or woman.' numeric
+@attribute 'Every gender should have specific duties and rights.' numeric
+@attribute 'Gender inequality affects both genders.' numeric
+@attribute 'Gender should be overlooked when choosing criteria comes in.' numeric
+@attribute 'Gender inequality must be eliminated.' numeric
+@attribute 'Decreasing the importance of women in the workforce does not improve work performances.' numeric
+@attribute 'When a woman is educated she lifts the community and the nation.' numeric
+@attribute 'Women are the mothers of the society.' numeric
+@attribute 'We should have more campaigns against gender discrimination.' numeric
+@attribute 'Gender quotas support economic growth.' numeric
+@attribute 'Women fought hard for rights and should be treated as equals.' numeric
+@attribute 'Men need women.' numeric
+@attribute 'Not having good role models make children to fall into crimes.' numeric
+@attribute 'Gender equiality is a must.' numeric
+@attribute 'All people should be treated equally.' numeric
+@attribute 'Women are often discriminated against in the workforce and that needs to change.' numeric
+@attribute 'Men and women have innate differences.' numeric
+@attribute 'Everyone is equal.' numeric
+@attribute 'Women should be given a chance like men.' numeric
+@attribute 'Families were stronger when women stayed home and only the men worked.' numeric
+@attribute 'Gender discrimination should be frown at.' numeric
+@attribute 'Gender equality is against religion.' numeric
+@attribute 'God created man and woman to be together.' numeric
+@attribute 'The wage gap is a made up thing.' numeric
+@attribute 'Gender equality is a global need.' numeric
+@attribute 'It is a woman\'s choice to be educated or a mother.' numeric
+@attribute 'Gender does not prevent females to do what the want.' numeric
+@attribute 'Women and men should be treated the same.' numeric
+@attribute 'There are some jobs that women are better suited for just as there are some jobs men are better suited for.' numeric
+@attribute 'Instead of fighting for gender equality, we must fight for gender equity.' numeric
+@attribute 'Everybody should be treated equally regardless of gender.' numeric
+@attribute 'The society has to understand that women are equal to men.' numeric
+@attribute 'Women should have more access to affordable childcare.' numeric
+@attribute 'Women can be as good workers as men.' numeric
+@attribute 'Women should not be in the army (direct combat forces).' numeric
+@attribute 'Gender Equality exposes women to risks.' numeric
+@attribute 'Women should be treated as men.' numeric
+@attribute 'Gender equality is the state of equal ease of access to resources and opportunities regardless of gender.' numeric
+@attribute 'Human right can be achieved regardless of gender equality.' numeric
+@attribute 'Sanctions should be applied to gender discriminators.' numeric
+@attribute 'Women should have the same opportunities as men.' numeric
+@attribute 'What\'s good for a man is also good for a woman.' numeric
+@attribute 'Womenâ€™s rights have well found legal basis.' numeric
+@attribute 'No one should judge a person by their gender.' numeric
+@attribute 'Sexism in the workplace is a thing of the past.' numeric
+@attribute 'The rights of women are equal to those of men.' numeric
+@attribute 'Gender equality is about the acceptance of role models.' numeric
+@attribute 'Gender equality is part of human rights.' numeric
+@attribute 'Women should be paid the same as men.' numeric
+@attribute 'There is no such thing as a glass ceiling anymore.' numeric
+@attribute 'A family must have a paternal and maternal figure.' numeric
+@attribute 'Women should be paid less because they are more expensive employees.' numeric
+@attribute 'Women should be paid equal to men.' numeric
+@attribute 'Public and private institutions should hire people based.' numeric
+@attribute 'Hiring should be done on a person\'s talent and not their gender.' numeric
+@attribute 'Gender equality has come a long way.' numeric
+@attribute 'Companies should promote gender equity.' numeric
+@attribute 'Gender inequality hinders the rights of people.' numeric
+@attribute 'More women are becoming better educated than men.' numeric
+@attribute 'There is no clear link between having gender quotas and economic growth.' numeric
+@attribute 'Human rights cannot be achieved until there is gender equality.' numeric
+@attribute 'Women should have the same rights as men.' numeric
+@attribute 'Women are just as capable as men.' numeric
+@attribute 'If someone wants to hire a male over a female then let them.' numeric
+@attribute 'Not having a family in classic role models does not set a good example for the child.' numeric
+@attribute 'Wages should not be based on gender.' numeric
+@attribute 'Recognition in professional contribution must be evaluated by the ability and skill of the individual, not by their gender.' numeric
+@attribute 'A woman\'s physical condition makes her unsuitable for certain jobs.' numeric
+@attribute 'Gender equality is a basic human right.' numeric
+@attribute 'Women can be as successful as men.' numeric
+@attribute 'Gender equality can cause problems with the Constitution.' numeric
+@attribute 'The condition of woman\'s mother makes her different from men.' numeric
+@attribute 'Equality is not limited by law.' numeric
+@attribute 'Women are more powerful than men.' numeric
+@attribute 'Education empowers women and girls as well as the employment community.' numeric
+@attribute 'We should promote the inclusion of women in men\'s activities.' numeric
+@attribute 'Women are more capable than men for many things.' numeric
+@attribute 'Gender Equality can generate great advances.' numeric
+@attribute 'Women need men.' numeric
+@attribute 'Women should be able to have the same opportunities as men.' numeric
+@attribute 'Public and private institutions should hire people based on skills not gender.' numeric
+@attribute 'We shouldnâ€™t oppose biblical roles of husbands & wives.' numeric
+@attribute 'Women are usually stereotyped into the housewife role.' numeric
+@attribute 'Woman should be provided the sam benefits as a man for doing the same job.' numeric
+@attribute 'Sexual harrasment has done more harm to women.' numeric
+@attribute 'Women should have the same right as men.' numeric
+@attribute 'Women are as important as men.' numeric
+@attribute 'Women can be bread winners in the household.' numeric
+@attribute 'The society needs woman.' numeric
+@attribute 'Gender equality is good for the society.' numeric
+@attribute 'Men can easily be home stay at home dads.' numeric
+@attribute 'Same rights same duties.' numeric
+@attribute 'If women want to be paid the same as men, then they need to work just as hard.' numeric
+@attribute 'A woman is a man\'s best friend.' numeric
+@attribute 'Gender equality is a desired, possible and realistic goal.' numeric
+@attribute 'Gender equality is stupid.' numeric
+@attribute 'Feminists are way too out of proportions.' numeric
+@attribute 'A woman should have the right to choose her own path.' numeric
+@attribute 'Women should have the same rights than men.' numeric
+@attribute 'There are laws that should be better enforced to protect womens rights.' numeric
+@attribute 'The training of women in scientific knowledge gives them legitimacy to defend themselves and dismantle negative stereotypes.' numeric
+@attribute 'Women are not taken seriously in business.' numeric
+@attribute 'Employers benefit when hiring based an skill and capability, not gender.' numeric
+@attribute 'Women who choose to be stay at home mothers should not be looked down on by society.' numeric
+@attribute 'A women should be hired and promoted based on merit alone.' numeric
+@attribute 'If a female wants to work and the guy wants to stay home, who cares.' numeric
+@attribute 'Women can be as hard workers as men.' numeric
+@attribute 'Skills and qualifications should matter more than gender.' numeric
+@attribute 'Feminism is nothing but a male bashing movement.' numeric
+@attribute 'Gender equality opens opportunities for the female community.' numeric
+@attribute 'Mens should help their wifes at home duties.' numeric
+
+@data
+{0 1,3 1,4 1,5 1,6 -1,7 1,8 1,10 -1,12 1,16 1,17 1,18 -1,19 1,20 -1,22 1,27 1,28 -1,29 1,32 1,33 1,37 1,38 1,40 1,43 1,46 1,47 1,48 -1,51 1,56 1,64 1,68 -1,71 1,72 1,73 1,74 -1,75 1,77 -1,78 1,80 1,81 1,83 -1,84 1,86 1,87 1,91 1,92 -1,93 1,94 -1,95 -1,96 1,97 -1,99 1,103 1,106 1,108 1,109 1,112 1,114 -1,115 1,118 1,120 -1,122 1,123 1}
+{0 1,3 1,4 1,5 1,6 -1,7 1,12 1,13 -1,19 1,20 1,23 1,29 1,32 1,33 1,37 1,38 1,40 -1,41 1,47 1,48 -1,49 1,50 1,51 1,56 1,63 -1,64 1,65 1,66 1,67 1,68 -1,71 1,74 1,77 -1,78 -1,81 1,83 -1,86 1,90 1,91 1,92 -1,93 1,94 1,95 1,96 1,98 1,99 1,108 1,109 1,113 1,115 -1,118 1,123 1,125 1}
+{0 1,3 1,4 1,5 1,6 1,7 1,8 1,10 -1,12 1,20 1,22 1,27 -1,28 -1,29 1,32 1,37 1,43 1,46 1,51 1,52 1,53 -1,54 -1,55 1,56 1,59 1,62 1,67 1,69 1,70 -1,72 1,74 1,75 1,77 1,78 1,80 1,81 1,83 1,84 1,86 -1,91 1,93 1,96 -1,103 -1,104 1,109 1,114 1,115 1,118 1,119 1,120 -1,122 1,125 1}
+{0 1,1 1,2 1,3 1,5 1,8 1,10 -1,14 1,16 -1,17 1,18 1,19 -1,20 -1,21 -1,22 1,25 1,27 1,28 1,29 1,34 1,35 1,36 1,43 1,46 1,49 1,51 1,56 1,57 -1,62 1,69 1,72 1,74 1,75 1,76 1,77 1,78 1,79 1,80 1,81 1,84 1,86 1,87 -1,90 1,93 1,97 1,103 1,114 -1,120 -1,121 1,122 1,123 1}
+{0 1,3 1,4 1,5 1,6 -1,7 1,8 1,12 1,16 1,20 -1,29 1,32 1,33 1,37 1,38 1,40 -1,47 1,48 1,49 1,52 1,64 1,67 1,68 -1,71 1,72 -1,73 1,74 1,75 1,77 1,78 1,79 1,81 1,83 1,91 1,92 -1,93 1,94 1,95 -1,96 1,98 1,99 1,106 1,108 1,109 1,112 1,115 1,118 1,123 1}
+{2 1,3 1,4 1,7 1,8 -1,10 -1,13 -1,14 1,18 1,20 -1,22 1,24 1,25 1,26 1,27 1,29 1,36 1,37 1,38 -1,39 1,41 1,43 1,44 1,45 1,46 1,49 1,50 1,51 1,52 1,53 -1,54 1,55 -1,56 1,59 1,61 1,62 1,64 1,65 1,66 1,70 -1,71 1,72 1,75 1,76 1,77 -1,78 -1,79 1,84 1,88 1,90 -1,93 -1,103 1,120 -1,124 -1}

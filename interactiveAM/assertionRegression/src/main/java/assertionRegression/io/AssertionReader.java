@@ -52,7 +52,7 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 	String support_oppose_score = null;
 	String issue=null;
 	String id=null;
-//	int i=0;
+	int i=0;
 
 	private BufferedReader br;
 
@@ -62,6 +62,7 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 		DocumentMetaData dmd = new DocumentMetaData(aJCas);
 		dmd.setDocumentTitle("");
 //		dmd.setDocumentId(String.valueOf(i++));
+		System.out.println(i++);
 		dmd.setDocumentId(id);
 		dmd.addToIndexes();
 

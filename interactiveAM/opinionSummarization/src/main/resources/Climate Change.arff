@@ -1,0 +1,258 @@
+@relation 'Climate Change'
+
+@attribute 'Climate change causes hotter temperatures.' numeric
+@attribute 'There has been an increase in tropical storms of greater intensity which can be attributed to climate change.' numeric
+@attribute 'Glacier are melting at unprecedented rates due to global warming, causing additional climate change.' numeric
+@attribute 'Humans do not have that large of an impact.' numeric
+@attribute 'Climate change has a big affect on the Earth.' numeric
+@attribute 'Oceans rise due to climate change.' numeric
+@attribute 'Climate change has a lot of research that it is real.' numeric
+@attribute 'Climate change cannot be blamed for every weather phenomenon.' numeric
+@attribute 'Global warming can change our climate.' numeric
+@attribute 'Climate change is serious matter.' numeric
+@attribute 'Human produced co2 is re-absorbed by oceans,forests, and other carbon sinks negating any climate changes.' numeric
+@attribute 'Global warming is not real.' numeric
+@attribute 'Advertising campaigns that encourage the preservation of the environment.' numeric
+@attribute 'Climate change is responsible for the deaths of polar bears.' numeric
+@attribute 'Different changes in weather does not mean global warming.' numeric
+@attribute 'Climate Change is accelerated by changes in atmospheric concentration of green house effect.' numeric
+@attribute 'Irresponsible acts such as air pollutants, chemicals and human impact erosion contribute to climate change.' numeric
+@attribute 'Climate change is affected by different human actions.' numeric
+@attribute 'Natural changes in the sun\'s activity cannot explain 20th century global warming.' numeric
+@attribute 'We are still unsure what could cause climate change.' numeric
+@attribute 'Humanity holds key responsibility for combating climate change.' numeric
+@attribute 'CO2 Levels may be controlled with more trees to prevent climate change.' numeric
+@attribute 'Climate change is already costing money.' numeric
+@attribute 'Climate change endangers people\'s health.' numeric
+@attribute 'Climate change will cause problems for future generations.' numeric
+@attribute 'Global warming can be stopped if we try hard enough.' numeric
+@attribute 'We can see strange weather patterns around the world which is a strong indicator of climate change.' numeric
+@attribute 'There is not a real contribution of human activitis in Climate change.' numeric
+@attribute 'The US should do something about climate change.' numeric
+@attribute 'Climate change can be reversed with effort.' numeric
+@attribute 'Humans should do all they can to stop climate change.' numeric
+@attribute 'Climate change could be caused my human factors.' numeric
+@attribute 'Rising levels of atmospheric CO2 do not necessarily cause global warming.' numeric
+@attribute 'Global warming is just a strategy to get people to recycle more.' numeric
+@attribute 'Climate change is already costing lives.' numeric
+@attribute 'The Bible talks about climate change.' numeric
+@attribute 'Climate change increases the likelihood of some diseases.' numeric
+@attribute 'Climate change is leading to some animals dying off.' numeric
+@attribute 'Moving to electrical cars wil stop climate change.' numeric
+@attribute 'Human activity is primarily responsible for global climate.' numeric
+@attribute 'There are signs of global warming happening all over the world.' numeric
+@attribute 'Animals have no responsibility for climate change.' numeric
+@attribute 'Species of flora and fauna have disappeared due to climate change issues.' numeric
+@attribute 'Climate change will reach a point where there is nothing we can do about it.' numeric
+@attribute 'Stop killing trees will prevent climate change.' numeric
+@attribute 'We should believe in scientists who are experts in the matter.' numeric
+@attribute 'Climate change is affecting the polar ice caps.' numeric
+@attribute 'Government should do something to avoid climate change.' numeric
+@attribute 'There will be more rainfall due to climate change.' numeric
+@attribute 'People should expect to see more volatile weather patterns resulting from climate change.' numeric
+@attribute 'Global warming is a naturally occurring phenomenon unrelated to human activity.' numeric
+@attribute 'Climate change is responsible for melting glaciers.' numeric
+@attribute 'Car exhausts can change our climate.' numeric
+@attribute 'The current Climate change is a natural phenomenon.' numeric
+@attribute 'Decline in rice yields due to warmer nighttime minimum temperatures.' numeric
+@attribute 'Sea levels have already risen in response to climate change.' numeric
+@attribute 'Climate change is currently affecting the lives and livelihood of people globally.' numeric
+@attribute 'Polar ice caps melting is due to global warming.' numeric
+@attribute 'CO2 emissions are not the only cause for climate change.' numeric
+@attribute 'If we do not decrease pollution it will exacerbate climate change.' numeric
+@attribute 'Earth\'s climate has always warmed and cooled.' numeric
+@attribute 'Climate change endangers lives.' numeric
+@attribute 'Climate change has cost at least thirty lives from Hurricane Harvey.' numeric
+@attribute 'Humans are not the only animals that cause pollution on this planet that results in climate change.' numeric
+@attribute 'Extreme weather patterns are part of climate change.' numeric
+@attribute 'Climate change causes huge weather occurances.' numeric
+@attribute 'Climate change should be examined.' numeric
+@attribute 'Climate change is affecting everyone.' numeric
+@attribute 'Gas flaring can change our climate.' numeric
+@attribute 'Man has contributed to climate change.' numeric
+@attribute 'Climate change is real.' numeric
+@attribute 'Climate Change results in billions of dollars of damage to public infrastructure.' numeric
+@attribute 'Trump won the election due to his positions on the environment.' numeric
+@attribute 'With earths population growing more of the rainforest are being developed and destroyed adding to climate change.' numeric
+@attribute 'The high rate of fossil fuels is causing climate change.' numeric
+@attribute 'Humans can effect climate change.' numeric
+@attribute 'Reducing greenhouse gas emissions will not necessarily stop climate change.' numeric
+@attribute 'Human activity need to be revised to change the effects of climate change.' numeric
+@attribute 'Climate change is caused by bad people.' numeric
+@attribute 'Climate change is deemed a fact by the scientific community.' numeric
+@attribute 'Many people are not aware of the damage caused by climate change on planet earth.' numeric
+@attribute 'The climate is in a constant cycle and we are currently in a warming period.' numeric
+@attribute 'Decreasing human water supplies, increased fire frequency, ecosystem change and expanded deserts.' numeric
+@attribute 'Scientific data from the last 100 years have shown climate change to be a fact.' numeric
+@attribute 'Global warming has nothing to do with the change in weather.' numeric
+@attribute 'Climate change is causing flooding due to melting ice caps.' numeric
+@attribute 'People are responsible for climate change.' numeric
+@attribute 'Climate change may also result in cooler weather in some areas.' numeric
+@attribute 'We must stop destroying ozone to prevent climate change.' numeric
+@attribute 'Climate change is bad.' numeric
+@attribute 'A solution to climate change must be sought soon.' numeric
+@attribute 'The ice caps are currently melting leading to increases in sea level.' numeric
+@attribute 'Global warming causes economic damage especially to poorer, low latitude countries.' numeric
+@attribute 'Some climate change is part of the earths natural cycle and cannot be blamed on mankind.' numeric
+@attribute 'Al Gore should practice what he preaches - or go away.' numeric
+@attribute 'It is not rising CO2 leels that are the only cause of climate change but certain instances do add to accelerating such.' numeric
+@attribute 'Climate change extremes are being experienced more regularly in the current century.' numeric
+@attribute 'Global warming is the rise in the temperature of the Earth\'s.' numeric
+@attribute 'Climate change will adversely affect third world countries the most.' numeric
+@attribute 'Climate change result in radom rainfall.' numeric
+@attribute 'Climate change is costing lives.' numeric
+@attribute 'Climate change increases the occurrence of allergic symptoms due to rise in allergenic pollen.' numeric
+@attribute 'Preventing activities that cause climate change can prevent further damage.' numeric
+@attribute 'Climate change is affecting animals homes.' numeric
+@attribute 'Humans are responsible for the rise in temperatures.' numeric
+@attribute 'Global warming will be solved by technology innovations.' numeric
+@attribute 'Hurricanes are due to climate change.' numeric
+@attribute 'Use of certain aerosol substances accelerates global warming.' numeric
+@attribute 'Other countries, such as China, are worse for the environment than the US.' numeric
+@attribute 'Earth\'s climate is a cycle of change as seen through ice ages and warming periods, in which we are currently in a warming period.' numeric
+@attribute 'Climate change will make areas of the world uninhabitable within this decade.' numeric
+@attribute 'Climate change has always been around.' numeric
+@attribute 'Global warming has been showcased with increased temperatures in dry areas.' numeric
+@attribute 'Climate change research shows that it affects us and the earth negatively.' numeric
+@attribute 'The way to treat climate change is by reducing the amount of fossil fuel that is burnt.' numeric
+@attribute 'We will see spread in mosquite-borne diseases such as Malaria and Dengue Fever.' numeric
+@attribute 'Extremes in climate change can cause fammine, flooding, lack of water and other weather phenomena.' numeric
+@attribute 'Humans are not responsible for climate change.' numeric
+@attribute 'Increased hurricane activity and other extreme weather evenys are a result of natural weather patterns not human -caused climate change.' numeric
+@attribute 'Rising of sea temperatures supports climate change.' numeric
+@attribute 'High rate of emission is causing climate change.' numeric
+@attribute 'The rising risk of climate change should not be ignored.' numeric
+@attribute 'The ice caps are shrinking at an alarming rate.' numeric
+@attribute 'The climate change is caused by most developed country.' numeric
+@attribute 'Deep ocean currents not human activity or a primary driver of natural climate warming and cooling cycle.' numeric
+@attribute 'People and environment as well as animals have been affected by climate change.' numeric
+@attribute 'Climate change was made up by the government to keep people in fear.' numeric
+@attribute 'Climate change needs to be addressed.' numeric
+@attribute 'Climate change will cause food shortages.' numeric
+@attribute 'Human beings are primarily responsible for global warming.' numeric
+@attribute 'Climate change is a danger to everything living on Earth.' numeric
+@attribute 'People should act now to protect earth and avoid climate change.' numeric
+@attribute 'People play a huge factor in global warming.' numeric
+@attribute 'Climate change is destroying the habitat of animals who depend on consistently cold environments.' numeric
+@attribute 'Human activity is primarily responsible for global climate change.' numeric
+@attribute 'The use of fossil fuels in excess has contributed to climate change.' numeric
+@attribute 'Humans are the cause of pollution which enable climate change.' numeric
+@attribute 'The change in climate can result from human activities.' numeric
+@attribute 'The sea levels are rising due to climate change.' numeric
+@attribute 'People should do their part to protect nature and avoid climate change.' numeric
+@attribute 'We are experiencing more extreme weather in recent years.' numeric
+@attribute 'Climate change is caused by humans.' numeric
+
+@data
+{0 1,12 1,13 -1,14 1,15 1,37 1,38 1,39 1,57 1,74 1,80 -1,87 1,98 1}
+{7 1,8 1,9 1,10 1,11 -1,17 1,20 -1,36 1,46 1,67 1,70 1,82 1,88 1,91 1,116 1,118 1,121 1,122 1,125 1,138 1,139 1,140 -1}
+{1 1,57 1,76 1,132 1,133 1,134 1,135 1,139 1}
+{21 1,51 1,140 1,141 1}
+{22 1,108 -1,109 -1,110 -1,111 1,130 -1,132 1,139 -1}
+{12 1,13 -1,14 1,15 -1,37 -1,48 1,63 -1,100 -1,108 1,113 -1,127 1,131 1}
+{53 1,82 1,99 1,116 1}
+{32 -1,33 -1,34 1,35 -1}
+{18 -1,25 1,26 1,83 1,84 -1,104 1,141 1}
+{1 -1,11 -1,15 -1,16 1,19 -1,23 -1,29 -1,34 1,39 1,40 -1,46 1,51 -1,52 -1,56 -1,61 1,63 1,64 -1,66 -1,69 1,77 1,84 1,85 1,86 -1,95 1,99 1,100 -1,103 -1,104 1,105 -1,108 1,109 1,112 -1,114 1,120 -1,124 1,127 -1,130 1,132 1,134 1,136 -1,137 -1,139 -1,140 1,141 -1}
+{53 1,82 -1,99 -1,116 -1}
+{0 1,1 -1,2 -1,3 1,7 -1,8 1,9 1,10 -1,11 1,14 1,18 1,20 -1,24 1,28 -1,29 1,30 -1,35 -1,36 1,40 -1,41 1,42 1,45 -1,48 1,49 -1,50 1,51 1,53 1,54 -1,56 -1,60 -1,61 -1,66 1,72 1,73 -1,74 1,75 1,81 -1,82 -1,89 1,92 -1,94 -1,97 1,101 -1,107 -1,111 1,115 -1,116 1,124 1,125 -1,126 -1,127 1,128 1,129 1,130 -1,131 1,137 1,141 1}
+{1 -1,2 1,3 1,7 1,9 1,12 1,13 -1,14 1,19 1,28 -1,29 -1,30 1,31 -1,36 -1,37 -1,38 -1,39 -1,40 1,42 1,45 1,46 1,48 -1,51 1,53 1,55 1,56 1,57 1,66 1,68 1,74 -1,80 1,81 1,82 1,83 1,87 -1,88 1,89 1,90 1,91 1,93 1,98 -1,99 -1,104 -1,105 1,106 -1,107 -1,108 -1,112 1,114 1,116 1,121 1,125 1,127 1,128 -1,129 -1,130 -1,131 -1,136 -1,140 1,141 -1}
+{4 1,7 1,24 1,38 -1,44 -1,52 -1,68 -1,74 -1,82 1,86 -1,92 1,101 1,116 1,117 1,119 1,125 1,133 1,137 -1,141 -1}
+{1 1,3 1,8 1,10 1,11 1,12 -1,15 1,18 1,20 1,21 1,22 1,23 -1,25 1,26 -1,32 1,39 -1,43 1,44 1,50 1,51 -1,57 1,61 -1,65 1,68 1,69 -1,70 1,71 1,75 -1,76 -1,83 1,84 1,94 1,103 1,108 1,109 1,110 1,111 -1,112 1,113 1,114 1,115 -1,118 -1,123 1,124 1,132 1,133 1,134 1,135 -1,139 1,141 1}
+{20 1,21 1,22 1,23 1,108 1,109 -1,110 1,111 1,132 1,133 1,134 1,135 1}
+{0 1,1 1,2 -1,4 -1,5 -1,6 -1,7 -1,9 1,10 -1,11 -1,12 1,13 -1,15 1,16 -1,19 1,22 1,26 1,27 1,28 -1,31 1,32 -1,33 -1,40 -1,42 1,43 -1,44 1,45 -1,46 1,47 -1,49 1,51 -1,52 -1,54 -1,55 1,56 -1,57 -1,59 1,60 1,61 -1,62 -1,65 -1,66 1,69 1,74 1,76 1,77 1,78 -1,81 -1,83 1,84 -1,86 1,87 1,89 1,90 1,91 -1,93 -1,94 -1,97 1,100 1,102 1,103 -1,104 -1,108 1,109 -1,110 -1,111 1,113 1,114 -1,117 -1,119 -1,121 1,123 1,124 -1,125 1,126 -1,127 1,128 1,129 1,131 -1,135 -1,137 1,139 -1,141 -1}
+{43 -1,54 -1,66 -1,137 1}
+{17 1,36 1,70 1,88 1}
+{8 1,18 1,32 -1,35 -1,39 1,43 1,44 -1,60 1,61 1,63 1,71 1,72 -1,73 1,74 1,75 1,89 1,92 -1,103 1,112 1,113 1,114 1,115 -1,118 -1,123 1}
+{8 1,9 1,10 -1,11 -1}
+{1 1,13 1,15 1,18 -1,32 1,53 1,56 -1,60 -1,69 -1,70 1,80 1,81 1,83 1,85 -1,102 -1,110 -1,124 1,129 -1}
+{0 1,4 -1,5 1,6 -1,8 1,9 1,10 -1,12 1,13 1,17 1,21 -1,22 -1,26 -1,27 1,29 1,30 1,31 -1,33 1,35 -1,40 -1,42 -1,43 1,44 -1,45 -1,47 -1,48 1,49 -1,51 1,52 1,55 1,56 1,57 1,60 -1,61 -1,62 1,66 1,69 1,72 1,74 -1,76 -1,78 -1,81 1,82 -1,83 1,84 -1,86 -1,87 1,88 1,89 -1,90 -1,91 -1,92 1,94 1,95 1,96 1,97 -1,100 -1,102 -1,103 1,106 -1,110 -1,111 -1,112 -1,113 -1,117 1,119 -1,121 1,122 1,123 -1,125 -1,126 1,128 1,129 1,131 -1,135 -1,137 -1,138 -1,139 -1,140 -1,141 1}
+{18 -1,24 1,35 1,63 -1,68 1,72 -1,73 1,74 -1,75 1,89 1,112 1,116 1,117 -1,118 -1,119 1,130 1}
+{19 1,21 1,28 1,29 -1,30 1,31 1,34 1,40 1,46 1,52 1,56 1,66 1,69 1,91 1,99 1,103 1,108 1,112 1,114 1,118 1,120 -1,121 1,127 1,140 1}
+{0 1,13 1,14 1,15 -1,18 1,24 1,25 -1,26 1,36 1,37 1,38 1,39 -1,48 1,57 1,63 1,68 1,69 1,70 -1,71 1,74 1,80 1,83 1,84 1,87 1,98 -1,100 1,108 1,109 1,110 -1,111 1,112 1,113 -1,127 1,130 -1,131 -1,141 1}
+{4 1,38 1,52 1,68 -1,101 1,119 1,137 1,141 1}
+{108 1,109 1,110 -1,111 1}
+{1 1,7 1,9 1,11 -1,12 -1,16 1,21 -1,22 1,29 1,33 1,41 -1,42 1,45 1,51 -1,56 1,57 1,58 1,59 -1,60 1,64 1,72 -1,74 1,77 -1,78 1,88 1,90 1,95 -1,96 1,97 1,98 -1,99 1,109 1,110 1,111 1,113 -1,117 -1,119 -1,120 1,123 1,124 -1,125 -1,129 1,135 1,136 1,140 -1,141 1}
+{2 1,34 1,49 -1,65 1,67 -1,85 1,98 -1,107 1}
+{5 1,27 -1,41 1,67 -1,68 -1,69 1,70 1,71 -1,72 -1,93 1,126 1,138 1}
+{1 1,13 1,32 -1,60 1,69 1,81 -1,110 1}
+{80 1,81 1,82 1,83 1,92 1,93 -1,94 1,95 1}
+{1 1,13 -1,15 1,22 1,31 -1,32 1,52 1,60 1,69 1,81 1,104 -1,109 1,110 1,130 -1,132 1,136 1,139 1,140 1}
+{0 1,3 -1,15 1,16 1,22 1,23 1,27 1,28 1,30 1,31 1,34 1,35 -1,38 -1,39 -1,52 -1,62 -1,63 1,66 1,69 1,71 1,72 -1,76 1,77 1,78 -1,84 -1,85 1,86 -1,87 1,96 1,100 1,102 -1,104 -1,105 -1,108 1,109 1,110 -1,111 1,115 -1,116 1,117 -1,118 1,119 1,126 -1,128 1,130 1,132 -1,134 -1,136 1,137 1,138 1,139 1,140 1}
+{28 1,55 1,81 -1,97 1}
+{40 1,42 1,46 1,64 1,65 1,66 1,67 1,88 -1,89 1,90 1,91 1,104 1,105 -1,106 1,107 -1}
+{25 1,26 1,37 1,47 1,64 1,75 1,79 1,131 1}
+{1 -1,13 -1,15 1,16 -1,18 -1,22 1,23 1,28 1,30 -1,31 -1,32 -1,38 1,39 1,53 -1,56 1,60 -1,62 1,63 -1,66 1,70 1,72 -1,76 1,77 -1,78 1,80 1,81 -1,83 1,86 -1,91 1,100 1,102 -1,105 -1,108 -1,110 -1,111 -1,115 -1,118 1,121 1,124 -1,127 1,128 1,129 1,134 1,137 1,140 1}
+{53 1,70 -1,85 -1,102 -1}
+{1 1,57 1,76 1,132 1,133 1,134 1,135 1,139 1}
+{1 1,30 -1,32 1,33 1,34 1,35 1,58 1,61 1,64 -1,65 -1,77 1,88 1,99 -1,102 1,121 -1,126 1}
+{11 1,14 1,19 1,20 1,21 1,23 -1,24 1,30 1,36 1,40 1,41 1,42 1,43 1,48 1,49 1,50 1,51 1,54 -1,62 -1,66 1,79 -1,92 1,94 -1,97 1,107 1,111 1,113 1,115 -1,135 -1,137 1}
+{14 -1,20 1,24 1,29 1,40 1,41 1,42 1,43 1,48 1,49 1,50 -1,51 1,56 1,62 1,101 -1,107 1,116 1,117 -1,118 -1,119 1}
+{16 1,45 -1,78 -1,101 1}
+{24 1,43 -1,44 -1,48 -1,54 1,66 1,86 1,92 -1,97 1,111 1,116 1,137 1}
+{0 -1,3 1,16 1,27 1,28 -1,30 1,31 -1,34 -1,35 -1,38 1,39 -1,52 1,62 -1,63 1,66 1,69 1,71 -1,72 1,76 1,77 -1,78 -1,79 1,84 1,85 -1,86 -1,87 1,92 1,93 -1,94 1,95 1,96 1,100 -1,102 -1,108 1,109 1,110 1,111 -1,115 1,116 1,117 -1,118 1,119 1,126 -1,128 -1,130 1,134 -1,137 1,138 -1,139 1}
+{2 -1,5 1,27 1,32 1,34 -1,41 1,56 -1,59 -1,62 -1,65 1,67 1,72 -1,80 -1,83 -1,86 -1,93 1,94 1,98 1,100 -1,107 -1,109 1,126 1,128 1,138 -1}
+{20 -1,21 1,22 -1,23 -1}
+{44 1,45 1,46 1,47 1,132 1,133 1,134 1,135 1}
+{92 -1,93 1,94 1,95 -1}
+{58 1,71 1,73 1,90 1}
+{17 1,36 1,70 1,88 1,91 1,108 1,109 -1,110 1,111 -1,118 -1,121 1,140 1}
+{32 -1,56 1,80 1,83 1}
+{25 1,33 -1,75 1,95 -1}
+{1 -1,10 1,57 -1,67 -1,76 1,80 -1,81 1,82 -1,83 -1,122 -1,125 -1,139 1}
+{3 1,8 1,10 -1,11 -1,12 -1,28 -1,38 -1,42 -1,50 1,53 1,55 -1,59 -1,60 1,76 1,81 1,82 1,92 1,94 1,97 1,99 -1,114 1,116 1,118 1,123 -1,124 1,133 -1}
+{28 1,32 1,56 1,80 1,83 1,86 1,105 1,134 1}
+{44 -1,45 -1,46 1,47 -1}
+{11 -1,19 1,20 -1,21 -1,23 1,79 1,113 -1,135 -1}
+{18 1,25 1,26 1,68 1,69 1,70 1,71 1,83 1,84 -1,104 1,141 1}
+{91 -1,118 -1,121 1,140 -1}
+{5 -1,8 1,14 1,28 1,37 -1,47 1,58 1,71 -1,73 1,77 -1,80 -1,82 1,86 1,90 1,93 -1,105 -1,106 1,122 1,134 1}
+{3 -1,6 -1,9 -1,19 -1,49 -1,90 -1,115 -1,136 -1}
+{0 1,12 1,36 -1,37 1,38 -1,39 1,57 1,74 -1,80 1,87 -1,98 -1}
+{24 1,32 -1,56 1,68 -1,80 1,83 1,112 1,130 1}
+{6 1,16 1,23 1,27 1,31 1,33 1,38 1,39 1,41 -1,52 1,59 1,62 1,66 1,69 1,72 1,76 1,77 1,78 1,79 1,84 1,85 1,86 1,87 1,100 1,102 -1,105 1,108 -1,109 1,110 1,111 1,115 1,128 1,132 1,134 1}
+{0 1,8 1,9 1,10 -1,11 -1,12 1,13 -1,14 -1,15 1,30 1,36 1,38 1,39 1,48 1,49 1,50 -1,51 1,57 1,60 1,61 -1,62 1,67 1,74 1,80 -1,87 1,94 -1,98 1,100 1,108 1,113 1,115 -1,122 1,124 -1,126 -1,127 1,131 -1}
+{6 -1,8 1,9 1,10 1,11 1,12 -1,15 1,18 -1,19 -1,26 1,32 1,37 -1,39 -1,43 -1,44 -1,47 1,49 1,51 1,57 -1,60 1,61 1,64 1,65 1,68 -1,69 1,70 1,73 1,75 1,77 1,79 -1,83 1,84 -1,90 1,92 1,94 1,103 1,104 1,112 1,113 1,123 1,124 1,131 -1,132 -1,136 1,141 -1}
+{8 1,60 1,92 1,118 -1}
+{44 1,61 1,103 1,112 1,113 1,114 -1,115 1,123 -1}
+{1 1,13 1,32 -1,53 -1,60 1,69 1,70 1,81 -1,85 1,102 1,110 -1}
+{1 -1,3 1,8 1,10 -1,11 -1,12 -1,15 -1,20 -1,21 1,22 -1,23 -1,25 -1,26 -1,37 1,47 -1,50 1,51 1,57 1,60 1,64 1,65 -1,73 -1,75 1,76 1,77 -1,79 -1,92 1,94 1,103 1,108 1,109 1,110 -1,111 1,114 -1,118 1,124 1,131 -1,132 -1,133 1,134 -1,135 -1,139 -1}
+{4 1,38 1,52 1,68 -1,101 -1,108 1,109 1,110 -1,111 1,119 1,137 1,141 1}
+{30 -1,36 1,60 1,61 1,62 -1,63 -1,94 1,115 1,124 1,125 1,126 -1,127 -1}
+{74 1,92 1,117 -1,133 1}
+{7 1,8 1,9 1,10 -1,11 -1,18 -1,20 1,29 1,35 1,52 1,53 -1,54 -1,55 1,56 1,63 -1,67 1,72 -1,73 1,74 1,75 1,82 1,97 1,101 -1,116 1,122 1,125 1,135 1}
+{30 -1,58 -1,65 -1,88 1,99 -1,102 -1,121 1,126 1}
+{1 1,61 1,64 1,77 1}
+{4 1,5 1,6 1,7 1,14 1,17 1,36 1,37 1,45 1,47 1,49 1,70 1,73 1,77 1,78 1,82 1,88 1,106 -1,111 1,122 1,129 1,130 1,133 1,134 1}
+{0 1,3 1,16 1,27 1,31 1,34 1,35 1,38 -1,62 1,66 1,69 1,71 1,72 -1,76 1,77 1,78 -1,79 1,92 1,93 -1,94 1,95 1,96 1,102 1,105 -1,108 1,110 1,111 -1,115 1,116 1,117 -1,118 -1,119 1,126 -1,128 1,138 1}
+{2 1,15 1,40 1,48 1,93 -1,104 1,136 1,140 1}
+{22 1,23 1,28 1,30 1,39 1,63 1,87 1,100 1,105 1,134 1,137 1}
+{4 1,38 -1,52 -1,68 -1,101 -1,119 1,137 1,141 -1}
+{2 1,7 1,13 1,35 -1}
+{0 1,13 1,14 1,15 1,17 1,20 1,29 1,37 1,38 -1,39 1,48 1,56 1,57 1,63 -1,70 1,74 1,80 1,87 -1,88 1,98 1,100 -1,101 1,108 1,113 1,127 1,131 1}
+{2 1,4 1,5 1,6 -1,17 1,26 1,27 -1,34 1,40 -1,41 1,43 1,47 1,48 1,55 1,58 1,62 -1,65 1,67 1,72 -1,76 1,81 1,83 1,84 -1,86 -1,87 1,89 1,93 1,95 1,98 -1,100 1,106 -1,110 -1,117 -1,120 -1,126 -1,128 -1,129 -1,131 1,136 1,137 1,138 1,139 1,140 1}
+{7 1,8 1,9 1,10 -1,11 -1,67 1,82 1,116 1,122 1,125 1}
+{15 -1,18 -1,124 -1,129 -1}
+{7 1,11 1,16 -1,29 1,42 1,64 1,95 -1,110 -1,117 -1,120 -1,124 1,129 -1}
+{30 -1,32 -1,33 1,34 -1,35 -1,49 -1,52 -1,58 1,65 1,67 1,69 -1,85 -1,88 1,99 1,102 -1,103 -1,107 -1,121 -1,126 1}
+{41 1,72 -1,74 1,90 1,109 -1,113 1,119 1,136 1}
+{4 -1,5 -1,6 -1,7 1,14 1,24 -1,27 1,28 -1,44 -1,45 -1,50 1,53 1,55 -1,73 -1,74 -1,77 -1,78 -1,84 -1,86 -1,92 -1,103 -1,105 -1,108 1,109 1,110 -1,111 1,116 -1,117 1,127 -1,128 -1,129 -1,130 -1,131 -1,133 -1,134 -1,141 -1}
+{25 -1,33 -1,75 1,95 -1}
+{6 -1,28 -1,30 1,33 1,36 -1,39 -1,40 1,41 -1,42 1,43 -1,48 -1,49 -1,50 1,51 -1,55 1,59 -1,60 1,61 -1,62 -1,63 1,70 1,81 1,94 1,97 1,98 -1,115 -1,119 -1,120 -1,121 1,122 -1,123 -1,124 -1,125 -1,126 1,127 -1}
+{16 -1,27 -1,30 1,31 1,32 1,33 1,34 -1,35 -1,38 -1,49 1,58 -1,65 1,67 -1,72 1,76 -1,77 1,78 1,79 -1,84 1,86 1,87 -1,88 -1,99 -1,102 1,105 1,107 1,108 -1,110 1,111 -1,115 -1,116 1,117 1,118 -1,119 -1,121 -1,126 -1,128 1,136 1,137 1,138 -1,139 -1}
+{44 1,45 -1,46 1,47 1,53 -1,70 1,85 1,102 1}
+{40 1,41 -1,42 1,43 1}
+{22 1,31 1,52 1,109 1,130 1,132 1,139 1}
+{22 1,23 -1,28 1,30 -1,63 -1,87 1,105 -1,137 1}
+{0 -1,1 -1,2 -1,3 1,14 1,18 1,20 1,24 1,28 -1,29 1,30 1,35 1,36 1,38 -1,40 -1,41 1,42 -1,49 1,50 1,51 1,53 1,54 -1,55 -1,56 -1,59 -1,60 1,61 -1,62 -1,63 1,66 -1,72 -1,73 1,74 1,75 1,76 -1,81 1,82 -1,89 1,92 -1,94 1,97 -1,99 -1,101 -1,107 1,111 1,114 -1,115 1,116 -1,123 -1,124 1,125 1,126 1,127 -1,133 -1,137 -1}
+{80 1,81 1,82 1,83 1,92 1,93 -1,94 -1,95 1}
+{1 1,57 -1,76 1,108 -1,109 -1,110 1,111 1,139 -1}
+{2 -1,34 -1,65 -1,98 -1,136 1,137 -1,138 1,139 1}
+{0 1,3 1,34 -1,35 1,71 -1,96 -1,126 -1,138 1}
+{0 1,1 -1,4 -1,6 -1,8 1,9 1,10 1,12 1,13 1,15 -1,19 1,21 -1,22 -1,23 1,25 -1,28 1,30 -1,31 -1,34 1,35 -1,36 1,39 1,40 1,42 1,43 -1,44 1,45 1,46 -1,48 -1,52 1,54 -1,55 -1,57 -1,60 1,61 -1,62 1,63 1,64 1,65 1,66 1,67 -1,68 -1,69 1,70 -1,72 -1,74 1,76 1,77 1,78 1,82 1,83 1,84 1,85 1,95 1,97 -1,100 1,103 -1,104 1,107 -1,108 1,109 1,110 1,111 -1,113 -1,114 1,117 -1,118 -1,123 1,125 -1,127 -1,128 1,130 -1,131 1,132 1,134 -1,135 -1,137 -1,140 1,141 1}
+{18 1,25 1,26 1,83 1,84 1,104 1,141 1}
+{1 1,7 1,9 1,10 1,11 -1,12 -1,15 1,16 1,21 1,22 1,29 -1,31 -1,33 -1,34 -1,40 1,42 -1,46 1,52 1,60 1,64 1,69 1,77 -1,78 -1,85 1,91 1,95 1,96 1,103 1,104 -1,112 1,120 -1,123 -1,124 1,125 1,135 -1,136 -1,140 1}
+{18 1,25 -1,26 1,83 1,84 -1,104 -1,141 -1}
+{2 1,5 -1,21 1,27 1,32 -1,33 1,34 1,35 1,40 -1,41 1,46 1,49 1,58 1,59 -1,62 -1,65 1,66 1,67 -1,69 1,72 1,79 1,85 1,87 1,89 1,93 -1,94 -1,98 1,107 1,109 -1,120 1,126 1,131 1,138 -1}
+{84 -1,85 1,86 -1,87 1}
+{62 -1,86 -1,100 -1,128 -1}

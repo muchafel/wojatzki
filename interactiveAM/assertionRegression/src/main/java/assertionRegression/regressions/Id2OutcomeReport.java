@@ -3,29 +3,19 @@ package assertionRegression.regressions;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.dkpro.lab.reporting.BatchReportBase;
-import org.dkpro.lab.reporting.ReportBase;
 import org.dkpro.lab.storage.StorageService;
 import org.dkpro.lab.storage.StorageService.AccessMode;
 import org.dkpro.lab.task.TaskContextMetadata;
 import org.dkpro.tc.core.Constants;
-import org.dkpro.tc.core.ml.TcShallowLearningAdapter.AdapterNameEntries;
-import org.dkpro.tc.core.task.InitTask;
-import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
-import org.dkpro.tc.ml.libsvm.LibsvmTestTask;
+import org.dkpro.tc.core.task.TcTaskTypeUtil;
 import org.dkpro.tc.ml.libsvm.writer.LibsvmDataWriter;
-import org.dkpro.tc.ml.report.TcTaskType;
-import org.dkpro.tc.ml.report.TcTaskTypeUtil;
-import org.dkpro.tc.ml.report.util.SortedKeyProperties;
 
 
 public class Id2OutcomeReport extends BatchReportBase implements Constants {
@@ -49,7 +39,7 @@ public class Id2OutcomeReport extends BatchReportBase implements Constants {
 			}
 		}
 		for (TaskContextMetadata subcontext : getSubtasks()) {
-			if (subcontext.getId().startsWith("ExperimentCrossValidation")) {
+			if (subcontext.getId().startsWith("ExperimentCrossValidation")||subcontext.getId().startsWith("DeepLearningExperimentCrossValidation")) {
 				File predFile = store.locateKey(subcontext.getId(), "id2outcome.txt");
 				FileUtils.writeLines(predFile, result);
 			}

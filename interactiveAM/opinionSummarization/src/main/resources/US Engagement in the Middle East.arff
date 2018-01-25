@@ -1,0 +1,152 @@
+@relation 'US Engagement in the Middle East'
+
+@attribute 'Regime change in the Middle East leads to bigger problems.' numeric
+@attribute 'Usa\'s engagement in middle east is not a public interest topic.' numeric
+@attribute 'USA\'s interference in middle east politics resulted in an entire generation that has been turned against the West.' numeric
+@attribute 'The U.S. should not accept any Muslim refugees.' numeric
+@attribute 'The Us should try to protect themselve.' numeric
+@attribute 'Troops should not be sent to the Middle East.' numeric
+@attribute 'ISIS must be destroyed at all cost.' numeric
+@attribute 'US Engagement in the middle east has also helped some people in the middle east.' numeric
+@attribute 'Usa\'s intervention in middle east can bring a disaster.' numeric
+@attribute 'The war with Iraq was pointless and very costly.' numeric
+@attribute 'President Trump should not provide a timeline for troops but should not increase troops.' numeric
+@attribute 'America should not engage with the middle east.' numeric
+@attribute 'Sending troops is not helpful if we are not wanted there.' numeric
+@attribute 'We cannot make any irrational decisions about US Engagement in the middle east.' numeric
+@attribute 'Us should withdraw troops from middle east.' numeric
+@attribute 'The war in the middle east wastes military resources.' numeric
+@attribute 'The US should support humanitarian groups in the middle East.' numeric
+@attribute 'The US should not interfere in the politics of the Middle East.' numeric
+@attribute 'The U.S. should not favor Israel over Palestine.' numeric
+@attribute 'USA had to protect their allies.' numeric
+@attribute 'Americans should not send groud troops to the middle east.' numeric
+@attribute 'Sending troops to the Middle East does not prevent terrorism.' numeric
+@attribute 'Iraq posses no threat to United states.' numeric
+@attribute 'USA interference in the middle east will only cause north koreea creating new measures of war.' numeric
+@attribute 'US should stop engaging middle east conflict.' numeric
+@attribute 'The USA should not send any military to Iraq.' numeric
+@attribute 'The ongoing conflict in the Middle East justifies United States assistance.' numeric
+@attribute 'There are many mixed feelings about US Engagement in the middle east.' numeric
+@attribute 'The terrorists will attack united state as a consequence of interference.' numeric
+@attribute 'US should support the middle east with more resources to prevent terrorism.' numeric
+@attribute 'War in the Middle East creates more terrorism.' numeric
+@attribute 'Unfortunately trying to help has caused disdain for the West.' numeric
+@attribute 'US has to participate in the Middle East to monitor and prevent terrorism.' numeric
+@attribute 'Inclusion with warring in other countries does turn our friends foe into ours.' numeric
+@attribute 'As a political super power the USA should use it\'s power to protect itself and allies from the Middle East.' numeric
+@attribute 'The US has to show strength in the Middle East to prevent terrorism.' numeric
+@attribute 'Withholding funds to Palestinian National Authority prevents anti-Semitism.' numeric
+@attribute 'US should leave Iraq.' numeric
+@attribute 'It is our duty to spread Western ideals to the Middle East.' numeric
+@attribute 'Aiding in trying to secure lives in Iraq is worth the cost of helping them.' numeric
+@attribute 'US must stop aiding Israel to avoid conflict with other middle eastern countries.' numeric
+@attribute 'America  should deal with the problems in their own country before interfering int he Middle East.' numeric
+@attribute 'The war in Iraq was worth the costs.' numeric
+@attribute 'The U.S. has interferred in issues unrelated to us and we have been informed that we are not wanted.' numeric
+@attribute 'ISIS is a direct result of the US involvement in the Middle East.' numeric
+@attribute 'US should not interfere Palestinian fight with Israel.' numeric
+@attribute 'Because of engagement in the middle east US credibility is on the line.' numeric
+@attribute 'The US should leave the middle east alone.' numeric
+@attribute 'The US needs to let the Middle East solve its own problems.' numeric
+@attribute 'US waste millions everyday in a struggling economy.' numeric
+@attribute 'US interference in the middle East increases antisemitism and Islamic racism.' numeric
+@attribute 'Eliminate as many weapons of mass destruction as possible.' numeric
+@attribute 'USA has the right to bomb ISIS.' numeric
+@attribute 'Usa\'s intervention in middle east should be discussed with the Country before act.' numeric
+@attribute 'The US should prevent Rusia to support the syrian dictator.' numeric
+@attribute 'US participation in the Middle East can open more diplomacy opportunities.' numeric
+@attribute 'War in Middle East is too expensive for the US.' numeric
+@attribute 'US interference in the middle east has hurt US economically.' numeric
+@attribute 'Middle East should be left alone.' numeric
+@attribute 'War in Iraq is not worth it.' numeric
+@attribute 'Us engagement in the middle east is controversial in the world and brings a lot of hatred and anti US sentiment to the US.' numeric
+@attribute 'The war in the Middle East is about oil.' numeric
+@attribute 'The war in Iraq was a war for oil not bad intelligence.' numeric
+@attribute 'The US should focus on what is good for the middle East not what is good for us.' numeric
+@attribute 'Engaging in the Middle East only fuels terrorism.' numeric
+@attribute 'The war in Iraq was not worth the financial burden placed on the US economy.' numeric
+@attribute 'The United States is in a place of power to help resolve problems in the Middle East.' numeric
+@attribute 'It is important to protect oil producers in the Middle East.' numeric
+@attribute 'Middle Eastern people are the same as United States citizens.' numeric
+@attribute 'The military should be sent home from the middle east.' numeric
+@attribute 'USA is engaging in the middle east because they are alies with saudi arabia.' numeric
+@attribute 'US interference in the middle East increases antisemitism.' numeric
+@attribute 'Acceptance of differences in Middle Eastern cultures is paramount in resolving current conflict.' numeric
+@attribute 'The u.s. should not \'take sides\' in middle east conflicts.' numeric
+@attribute 'Iraq was better off before the u.s. invaded and took down hussein.' numeric
+@attribute 'It is needed to send more troops to syria.' numeric
+@attribute 'Us engagement in the middle east will help keep terrorist cells from growing.' numeric
+@attribute 'America\'s involvement in the Middle East has lead to increased terrorism.' numeric
+@attribute 'War with Syria is imminent.' numeric
+@attribute 'Stop spending money in other countries and spend it in our own.' numeric
+@attribute 'America should not send ground troops to the middle east.' numeric
+@attribute 'US cannot be in isolation.' numeric
+@attribute 'Us engagement in the middle east will assist legitimate governments from being overrun by terrorist.' numeric
+@attribute 'Before any compromise there must be a correct dialogue.' numeric
+@attribute 'United States must seek more potential allies.' numeric
+@attribute 'The U.S. should take an isolationist approach and not engage.' numeric
+@attribute 'US should protect America against terrorism.' numeric
+@attribute 'If Israel did not exist it would solve all of the problems in the Middle East.' numeric
+@attribute 'The USA has the military force to intervene in the Middle East so they should use it.' numeric
+@attribute 'We must show we are strong.' numeric
+@attribute 'We must contain Iran.' numeric
+@attribute 'The US needs to stay away from the Middle East.' numeric
+@attribute 'The US shouldn\'t bother those people.' numeric
+@attribute 'US Engagement in the middle east needs to be carefully addressed.' numeric
+@attribute 'US interference in the middle East has done a lot to destabilize the region.' numeric
+@attribute 'Terrorist are dominating the middle East since the war.' numeric
+@attribute 'It is sensible to withhold funding from groups that go against our country\'s moral such as anti-semitism.' numeric
+@attribute 'The war in Iraq is wasting money.' numeric
+@attribute 'U.s. military engagement in the middle east is increasing the threat of terrorism.' numeric
+@attribute 'US alies US capabilities to get trained against terrorists.' numeric
+@attribute 'The american public will not support further military engagement in the middle east.' numeric
+@attribute 'America should not send troops to the middle east.' numeric
+@attribute 'American should stop the dispute in the middle east.' numeric
+@attribute 'Those in the Middle East feel the US has butted in where it doesn\'t belong.' numeric
+@attribute 'The US should try to keep themselves safe.' numeric
+@attribute 'US has to take the lead in global leadership.' numeric
+@attribute 'The US should not engage in further warfare in the Middle East.' numeric
+@attribute 'They should fulfill their commitments to peace and harmony.' numeric
+@attribute 'The USA should be concerned with terrorists entering the usa.' numeric
+@attribute 'US is not the police of the world.' numeric
+@attribute 'The US should always support Israel.' numeric
+@attribute 'Us engagement in the middle east will help legitimate governments prevail.' numeric
+@attribute 'ISIS operations should be reduce by a more powerful force.' numeric
+@attribute 'Middle east countries should be allowed to determine their own future.' numeric
+@attribute 'Forcing beliefs on established Middle East cultures will only cause negative reactions.' numeric
+@attribute 'All Muslims should be regarded as terrorists.' numeric
+@attribute 'The war in Iraq was not worth the cost of human life.' numeric
+@attribute 'US needs to strengthen its allies in the Middle East.' numeric
+@attribute 'The Iraq war has cost too many American lives.' numeric
+@attribute 'Sending troops to the Middle East causes more problems than it solves.' numeric
+@attribute 'The war is not helping anybody middle east nor america.' numeric
+@attribute 'The US needs to take a hard stand on terrorism.' numeric
+@attribute 'United States must avoid the least action that leads to war.' numeric
+@attribute 'The US should pull out of the Middle East.' numeric
+@attribute 'The war in Iraq was started under false pretenses.' numeric
+@attribute 'The Iraq war is proof that the US should stay away from the Middle East.' numeric
+@attribute 'The US should continue to conduct humanitarian efforts in the Middle East.' numeric
+@attribute 'United States must prove to be a strong power.' numeric
+@attribute 'Most of the US attacks in the Middle East harm civilians more than terrorists.' numeric
+@attribute 'The US needs to show its support for Israel by moving its embassy to Jerusalem. It would make a big statement to the world .' numeric
+@attribute 'The USA is doing more more harm than good in the middle east by harming innocent civilians.' numeric
+@attribute 'United States should maximize.' numeric
+@attribute 'We must spread democracy to the Middle East.' numeric
+@attribute 'Reducing ISIS activity is a responsibility of the Us.' numeric
+@attribute 'Terrorist groups must be stopped at all costs by the US and its allies combined.' numeric
+@attribute 'If lives can be saved then our assistance in Iraq is warranted.' numeric
+@attribute 'The US should worry about their problems first.' numeric
+@attribute 'Not every middle eastern is a terrorist.' numeric
+
+@data
+{1 1,4 1,5 1,6 -1,7 -1,8 1,10 -1,14 1,21 1,24 1,31 1,36 -1,46 1,52 1,55 -1,62 1,65 1,69 1,71 1,72 1,74 1,75 -1,79 1,81 1,82 -1,86 1,87 -1,90 -1,91 1,101 1,104 1,105 -1,109 1,116 1,119 1,120 1,123 1,127 -1,129 -1,131 -1,132 -1,137 1}
+{3 -1,6 -1,8 1,11 1,15 1,16 1,17 1,18 1,21 1,23 1,24 1,25 1,26 1,27 1,28 -1,29 1,32 -1,36 -1,38 -1,39 -1,42 -1,43 1,44 -1,45 1,46 1,47 1,53 1,55 -1,56 -1,57 -1,58 -1,59 1,63 1,64 1,68 -1,69 1,70 1,71 1,72 -1,73 1,74 -1,75 -1,79 -1,82 -1,86 1,91 -1,93 1,104 1,108 1,110 1,116 1,117 1,120 1,123 1,124 -1,128 1,131 -1,132 1,136 1}
+{1 -1,5 1,8 1,9 1,10 1,13 -1,17 1,19 -1,20 1,21 1,22 -1,23 1,25 1,28 1,30 1,31 1,34 1,38 -1,39 1,40 1,47 1,48 1,52 -1,53 1,54 -1,55 -1,56 1,57 1,58 1,64 1,65 1,66 -1,70 -1,71 1,73 1,74 1,77 1,78 -1,79 1,80 1,81 -1,84 1,85 1,88 -1,89 -1,90 -1,91 1,92 1,93 1,94 -1,95 1,96 1,98 1,99 -1,100 1,101 1,102 1,103 1,104 1,105 -1,106 1,107 1,109 1,113 1,114 1,117 1,118 1,122 1,130 1,131 -1,136 1,137 1}
+{7 1,11 1,16 -1,17 1,18 1,19 1,20 1,25 1,26 1,28 1,29 -1,30 1,31 1,33 1,38 -1,39 -1,43 1,45 1,46 -1,47 1,56 1,61 1,64 1,65 1,66 -1,67 -1,68 -1,69 1,70 -1,71 1,76 1,79 1,84 -1,85 1,86 1,87 -1,88 -1,89 -1,90 1,91 1,96 1,110 -1,116 1,123 1,128 1,131 -1,134 -1}
+{0 1,2 1,3 -1,4 1,5 1,7 1,10 1,11 1,16 1,17 1,18 1,20 1,21 1,24 1,25 1,28 1,29 1,30 -1,31 -1,32 -1,33 1,35 -1,37 1,38 -1,41 1,43 1,45 1,46 1,50 1,51 1,52 -1,53 1,54 1,55 -1,56 1,58 1,59 1,60 1,61 1,62 1,63 -1,64 1,65 1,66 -1,67 1,68 1,69 1,70 1,71 1,72 1,74 1,75 -1,76 -1,84 1,85 1,86 1,87 1,89 1,90 -1,92 1,95 1,96 -1,100 1,102 -1,103 1,104 1,105 1,107 1,108 1,109 1,110 -1,111 -1,112 1,115 -1,116 1,117 1,119 1,120 1,121 1,122 1,123 1,128 1,129 -1,130 1,131 -1,134 1}
+{2 1,6 1,7 1,8 1,11 1,12 1,17 1,18 1,19 -1,20 1,25 1,28 1,29 1,30 1,31 1,33 -1,36 -1,38 1,39 1,43 1,46 1,47 1,56 1,61 1,64 1,65 1,67 1,68 1,69 1,70 1,71 1,74 1,76 1,77 1,78 1,79 1,83 1,84 -1,85 1,86 1,87 -1,88 -1,89 -1,90 -1,91 -1,96 1,99 1,103 1,104 -1,105 -1,106 1,107 1,110 -1,116 1,117 -1,123 1,128 1,129 -1,131 -1,134 1}
+{3 -1,5 1,6 1,8 1,15 1,16 1,19 -1,21 1,23 1,28 1,29 1,32 -1,33 1,36 -1,38 -1,42 -1,44 -1,45 1,46 1,47 1,50 1,53 1,55 -1,56 1,57 1,58 1,59 1,60 1,61 -1,62 1,63 1,64 1,65 1,68 1,69 1,71 1,72 1,73 1,74 -1,75 1,76 -1,79 -1,82 -1,86 1,91 1,93 1,116 1,117 -1,120 1,123 1,124 -1,129 1,131 -1,132 -1,136 -1,137 1}
+{0 1,1 1,9 1,12 1,17 -1,21 1,22 -1,27 1,29 1,40 1,41 1,42 -1,43 1,44 1,47 1,49 1,60 1,62 1,65 1,66 1,68 1,71 1,86 1,88 -1,90 -1,94 1,99 1,103 1,106 1,107 1,108 1,112 -1,118 1,120 1,123 1,124 1,129 -1,132 -1,134 -1}
+{2 1,6 1,7 1,11 1,12 1,14 1,16 1,17 1,18 -1,19 1,22 -1,23 1,24 1,27 1,30 1,34 -1,35 -1,36 -1,37 1,39 1,41 1,45 1,46 -1,50 1,52 -1,53 1,55 -1,63 -1,67 1,69 1,73 -1,76 -1,77 1,78 1,79 1,81 1,83 1,84 -1,91 1,95 1,103 1,104 1,108 1,110 1,115 -1,117 -1,120 1,124 1,125 1,126 -1,127 -1,129 1,130 1,131 1,132 -1,133 1,134 1,135 1,137 1}
+{2 1,4 1,6 1,7 -1,11 1,12 1,14 1,16 1,17 1,18 1,19 -1,22 -1,23 1,27 1,30 1,34 1,35 -1,36 1,37 1,39 -1,41 1,43 1,45 1,50 1,51 1,52 -1,53 1,54 -1,55 -1,63 -1,67 -1,69 1,73 1,75 -1,76 -1,77 1,78 -1,79 1,81 -1,82 -1,83 1,87 -1,91 1,95 1,97 1,103 1,104 1,106 1,108 1,110 -1,115 -1,117 -1,120 1,124 1,125 1,126 -1,127 1,129 -1,131 -1,137 1}

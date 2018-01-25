@@ -1,0 +1,139 @@
+@relation 'Vegetarian & Vegan Lifestyle'
+
+@attribute 'A vegetarian diet is healthy and beneficial over a meat based diet.' numeric
+@attribute 'Animals only must die for eating.' numeric
+@attribute 'Meat is a good source of nutrients.' numeric
+@attribute 'Being a vegan saves animals lives.' numeric
+@attribute 'Humans have been natural carnivores for ages as is displayed through evolution such as that humans have canine teeth and the capability of eating and properly consuming meat.' numeric
+@attribute 'It is possible to kill animals in a manner that is humane.' numeric
+@attribute 'Living a vegan lifestyle makes you look good.' numeric
+@attribute 'Eating plants reduce animal extinction.' numeric
+@attribute 'If people want to be vegan - let them.' numeric
+@attribute 'Many celebrities are vegan.' numeric
+@attribute 'Animal protection should be maximized.' numeric
+@attribute 'There are many vegan options for protein.' numeric
+@attribute 'Vegan lifestyle cuts out dairy completley.' numeric
+@attribute 'These are other lifestyles and life choices that do have more benefits including the ability to grow a lot of one\'s own food safely and organically.' numeric
+@attribute 'Humans are meant to be vegan.' numeric
+@attribute 'Vegetarianism is healthier.' numeric
+@attribute 'Using cows for dairy production is cruel.' numeric
+@attribute 'Farming also contributes to air and water pollution.' numeric
+@attribute 'Vegans are at reduced risk of serious illness.' numeric
+@attribute 'Eating meat is essential to human development.' numeric
+@attribute 'Vegan lifestyle is the healthiest.' numeric
+@attribute 'Being a vegetarian is healthier for you.' numeric
+@attribute 'Enough protein can be found in vegetarian sources.' numeric
+@attribute 'Most vegans and vegetarians are healthier then those who eat meat.' numeric
+@attribute 'Vegetarians face unrealistic expectations.' numeric
+@attribute 'Meat provides the nutrients required for good health.' numeric
+@attribute 'Eating meat is also good for humans body.' numeric
+@attribute 'It is immoral to eat vegetable only.' numeric
+@attribute 'Eating animals reduces deforestation.' numeric
+@attribute 'Eaiting meat is not healthy.' numeric
+@attribute 'Vegan lifestyle results in a short of essential vitamins and minerals.' numeric
+@attribute 'A persons food choice should be there own right to decide.' numeric
+@attribute 'Milk and Chees are good for people.' numeric
+@attribute 'Lack of essential vitamins and minerals.' numeric
+@attribute 'The vegan diet has many health benefits.' numeric
+@attribute 'People living the vegan are much healthier lifestyle.' numeric
+@attribute 'A vegan or vegetarian diet lacks nutrition only found in meat.' numeric
+@attribute 'People can choose a nutrition plan that is suitable for them.' numeric
+@attribute 'Meat consumption contributes to air and water pollution.' numeric
+@attribute 'Avoid discriminating against non-vegetarians and vice versa.' numeric
+@attribute 'The consumption or not of meat must be right of each person.' numeric
+@attribute 'Vegan lifestyles are good for the environment.' numeric
+@attribute 'Some animals are here on earth to eat them.' numeric
+@attribute 'A vegan lifestyle is healthier.' numeric
+@attribute 'People should be free to eat whatever they want.' numeric
+@attribute 'Humans do not need meat to survive.' numeric
+@attribute 'Human teeth have developed to eat meat.' numeric
+@attribute 'Vegan is a good cancer prevention.' numeric
+@attribute 'There are just as many animals killed in the dairy and egg industries as the meat industry.' numeric
+@attribute 'Killing animals is a sin.' numeric
+@attribute 'Vitamins and pills are not safe substitutes for meat.' numeric
+@attribute 'Vegetarian and vegan lifestyles help to regulate blood pressure.' numeric
+@attribute 'A persons diet should be there choice and the individual freedoms of choosing one food should not be shamed.' numeric
+@attribute 'People should be able to make their own choices on what they eat.' numeric
+@attribute 'Most slaughter houses are over crowded and do not properly care for animals.' numeric
+@attribute 'Vegan is the healthier lifestyle.' numeric
+@attribute 'Meat can cause diseases.' numeric
+@attribute 'Carnivorous diets are unhealthy.' numeric
+@attribute 'We have the right to choose what to eat.' numeric
+@attribute 'It is immoral to kill animals.' numeric
+@attribute 'Killing animals is against Gods law.' numeric
+@attribute 'Vegetarian should be encouraged.' numeric
+@attribute 'Eating meat leads to cardiovascular disease.' numeric
+@attribute 'No studies prove that a vegetarian lifestyle is healthier.' numeric
+@attribute 'It is good that more people are starting to go Vegan.' numeric
+@attribute 'Animals used in meat production are mistreated.' numeric
+@attribute 'Meat production is bad for the environment.' numeric
+@attribute 'Vegetarianism is healthier than veganism.' numeric
+@attribute 'Not eating animals can lead to having more pets.' numeric
+@attribute 'Veganism is like a religion.' numeric
+@attribute 'Having more vegetarian options in stores helps boost the economy by creating another group of consumers.' numeric
+@attribute 'Animals have feelings and it is cruel to eat them.' numeric
+@attribute 'Being a vegetarian is a good way to care for animals.' numeric
+@attribute 'There are too many people who take Vegetarian & Vegan Lifestyle to the extreme.' numeric
+@attribute 'The decision of a person to be or not to be vegetarian must be respected.' numeric
+@attribute 'There is more protein in plants than animals.' numeric
+@attribute 'Eating plant can relieve animal extinction.' numeric
+@attribute 'I like cows, so I don\'t eat them.' numeric
+@attribute 'Eating meat has been an essential part of human evolution.' numeric
+@attribute 'Vegans should not put down non vegans or vice versa.' numeric
+@attribute 'If people want to eat meat then let them.' numeric
+@attribute 'Creating a nutrition plan is left for the person.' numeric
+@attribute 'Meat is needed to grow.' numeric
+@attribute 'Meat is bad for humans.' numeric
+@attribute 'Humans are made to eat meat.' numeric
+@attribute 'Vegan lifestyle should be adopted.' numeric
+@attribute 'It would not be practical to meet the world\'s food needs with a purely plant-based diet.' numeric
+@attribute 'It\'s immoral to kill animals.' numeric
+@attribute 'Vegetarians, such as 7th Day Adventists, are healthy people.' numeric
+@attribute 'Vegetarianism is healthier than other diet plans.' numeric
+@attribute 'Cows milk should be for calves only.' numeric
+@attribute 'Humans have evolved to eat meat.' numeric
+@attribute 'Meat offers important nutrients.' numeric
+@attribute 'Meat is as healthy as vegetables.' numeric
+@attribute 'Vegetarians are healthier.' numeric
+@attribute 'Eating animals is part of the natural life cycle.' numeric
+@attribute 'People should be free to choose their own nutrition plan.' numeric
+@attribute 'Tofu is not a healthy substitute for animal protein.' numeric
+@attribute 'Human beings are biological omnivores.' numeric
+@attribute 'There are other sources of B-12 than meat.' numeric
+@attribute 'Vegetarianism is becoming more popular.' numeric
+@attribute 'Beef can cause heart attack.' numeric
+@attribute 'Real leather makes a statement about the woman who carries it (purse).' numeric
+@attribute 'Vegetarism and veganism has interferences with existing medical conditions.' numeric
+@attribute 'Being vegetarian is healthy lifestyle.' numeric
+@attribute 'Is immoral to kill animals.' numeric
+@attribute 'We should consume meat more conscious.' numeric
+@attribute 'There are certain nutrients, such as Zinc, Iron, and Protein, that are most efficiently consumed by eating meat.' numeric
+@attribute 'People have the right to choose he kind of meal they want to eat.' numeric
+@attribute 'Vegetarian lifestyles reduce risk of the No. 1 killer â€“ Heart Disease.' numeric
+@attribute 'People should just eat vegetables.' numeric
+@attribute 'A health plan leads to a healthy life.' numeric
+@attribute 'Being vegan is healthy.' numeric
+@attribute 'Veganism is not healthy.' numeric
+@attribute 'People should eat less meat.' numeric
+@attribute 'Meat consumption should be limited.' numeric
+@attribute 'All people should be free to choose between vegan or vegetarian lifestyle.' numeric
+@attribute 'Eating animal can reduce deforestation.' numeric
+@attribute 'Vegetarianism will result in more animals than the earth can support.' numeric
+@attribute 'Killing animals for food is part of being a person.' numeric
+@attribute 'There are better ways than being vegetarian and vegan to have a healthy lifestyle.' numeric
+@attribute 'God said that is ok to kill animals for human\'s consumtion.' numeric
+@attribute 'Meat production pollutes our environment.' numeric
+@attribute 'A vegan diet promotes weight loss.' numeric
+@attribute 'Freedom to chose your nutrition.' numeric
+@attribute 'Vegans are healthier than omnivores.' numeric
+@attribute 'There should be more vegetarian options available to increase diversity.' numeric
+@attribute 'Killing animals is harmful.' numeric
+
+@data
+{3 1,7 1,8 1,14 1,18 1,21 1,22 1,23 1,25 1,27 1,29 1,32 1,33 1,44 1,45 1,52 1,55 1,56 1,66 1,68 1,70 1,73 1,74 1,75 1,76 1,79 1,83 1,84 1,85 1,86 1,87 1,88 1,89 1,90 1,91 1,92 1,93 1,94 1,95 1,96 1,97 1,98 1,99 1,100 1,103 1,104 1,105 1,117 1,121 1,122 1,123 1,127 1}
+{1 1,3 1,7 1,8 1,14 1,18 1,21 1,22 1,23 1,25 1,27 1,29 1,32 1,33 1,44 1,45 1,50 1,52 1,55 1,56 -1,64 1,66 -1,68 1,70 1,73 1,74 1,75 1,76 1,79 1,83 1,84 1,85 -1,86 1,87 1,88 1,90 1,91 1,96 1,97 1,98 1,99 1,100 1,102 1,103 1,104 1,105 1,112 1,117 1,121 1,123 1,127 1}
+{1 1,3 1,4 1,5 1,6 1,14 -1,19 1,27 1,32 1,33 1,35 1,36 1,43 1,44 -1,50 1,52 1,59 1,64 1,74 1,75 1,76 -1,79 1,80 1,83 1,84 1,90 1,92 1,93 1,94 1,95 1,97 -1,100 -1,102 1,103 1,112 1,117 1,121 1,127 1}
+{1 1,3 1,7 1,8 1,14 1,18 1,21 1,22 1,23 1,25 1,27 1,29 1,32 1,33 1,44 1,45 1,50 1,52 1,55 1,56 -1,64 1,66 -1,68 1,70 1,73 1,74 1,75 1,76 1,79 1,83 1,84 1,85 1,86 1,87 1,88 1,89 1,90 1,91 1,96 1,97 1,98 1,99 1,100 1,102 1,103 1,104 1,105 1,112 1,117 1,121 1,123 1,127 1}
+{4 1,5 1,6 1,7 1,8 1,14 -1,18 1,19 1,21 1,22 1,23 -1,25 1,29 -1,32 1,35 1,36 1,43 1,45 1,55 1,56 1,59 1,66 1,68 1,70 -1,73 -1,75 1,80 1,84 1,85 1,86 1,87 1,88 1,89 1,90 1,91 -1,92 1,93 -1,94 1,95 1,96 1,97 1,98 -1,99 1,104 1,105 1,117 1,121 -1,122 1,123 1,127 1}
+{4 1,5 1,6 -1,7 1,8 1,14 1,18 1,19 1,21 -1,22 1,23 1,25 1,29 1,32 1,35 1,36 -1,43 1,45 1,55 1,56 1,59 1,66 1,68 1,70 1,73 -1,75 1,80 1,84 1,85 1,86 1,87 -1,88 1,89 1,90 1,91 -1,92 -1,93 1,94 1,95 1,96 -1,98 1,104 1,105 1,117 -1,121 1,123 1,127 1}
+{4 1,5 1,6 -1,7 1,8 1,14 1,18 1,19 1,21 1,22 1,23 1,25 1,29 1,35 -1,36 1,43 1,44 1,45 -1,55 1,56 1,59 1,66 1,68 1,70 -1,73 1,75 1,79 1,80 1,83 1,84 1,85 1,86 -1,87 1,88 1,89 1,90 1,91 -1,92 -1,93 1,94 1,95 1,96 1,98 1,99 -1,104 1,105 1,121 1,122 1,123 1,127 1}

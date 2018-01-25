@@ -93,7 +93,8 @@ public class AgreementRegression_IssueAblation implements Constants {
 				"Black Lives Matter"
 				, "Climate Change"
 				,"Creationism in school curricula"
-				, "Foreign Aid", "Gender Equality"
+				, "Foreign Aid", 
+				"Gender Equality"
 				, "Gun Rights"
 				,"Legalization of Marijuana"
 				, "Legalization of Same-sex Marriage"
@@ -124,7 +125,7 @@ public class AgreementRegression_IssueAblation implements Constants {
 			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",featureSet,issue);
 			String issueNameCleaned= cleanName(issue);
 			System.out.println(issueNameCleaned);
-			experiment.runTrainTest(pSpace, "ablation",issueNameCleaned);
+			experiment.runTrainTest(pSpace, "indomain",issueNameCleaned);
 		}
 
 	}
@@ -184,7 +185,7 @@ public class AgreementRegression_IssueAblation implements Constants {
 				CollectionReaderFactory.createReaderDescription(AssertionIssueSpecificReaderTrainTest.class,
 						AssertionIssueSpecificReaderTrainTest.PARAM_SOURCE_LOCATION, path,
 						AssertionIssueSpecificReaderTrainTest.PARAM_LANGUAGE, "en",
-						AssertionIssueSpecificReaderTrainTest.PARAM_TARGETCLASS, targetClass,AssertionIssueSpecificReaderTrainTest.PARAM_IS_TRAIN, true, AssertionIssueSpecificReaderTrainTest.PARAM_ISSUE, issue));
+						AssertionIssueSpecificReaderTrainTest.PARAM_TARGETCLASS, targetClass,AssertionIssueSpecificReaderTrainTest.PARAM_IS_TRAIN, false, AssertionIssueSpecificReaderTrainTest.PARAM_ISSUE, issue));
 		
 
 		return dimReaders;

@@ -1,0 +1,152 @@
+@relation 'Gun Rights'
+
+@attribute 'Guns don\'t kill people, people do.' numeric
+@attribute 'Gun ownership should not be limited.' numeric
+@attribute 'Guns aren\'t promoting safety.' numeric
+@attribute 'While it might be reasonable for individuals to own handguns, the ownership of semi-automatic guns should be restricted.' numeric
+@attribute 'Criminals will always find a way to have a gun.' numeric
+@attribute 'Weapons are necessary to defend ourselves.' numeric
+@attribute 'Gun owners should register their arms.' numeric
+@attribute 'People who have a lot of guns sometimes become murders.' numeric
+@attribute 'Having guns is a protection against robbers.' numeric
+@attribute 'Use of guns must be prohibited among some age groups.' numeric
+@attribute 'Restrictions on gun ownership will only encourage outlaws to have heavy ammunition and high calibre weapons.' numeric
+@attribute 'In a certain part to eliminate the arms would be to end the delinquency.' numeric
+@attribute 'Childredns are dying at schools because of guns usage.' numeric
+@attribute 'There should be limits on automatic weapons.' numeric
+@attribute 'People who own guns are not more likely to mass kill.' numeric
+@attribute 'Gun owners should be required to take a safety test.' numeric
+@attribute 'Gun owners should limit their arms.' numeric
+@attribute 'We don\'t need more and/or tighter gun control.' numeric
+@attribute 'Gun ownership should be very closely regulated.' numeric
+@attribute 'Banning guns only makes people more vulnerable.' numeric
+@attribute 'There are legitimate reasons for people owning guns.' numeric
+@attribute 'Gun ownership can be responsible and regulated.' numeric
+@attribute 'All Guns should be banned.' numeric
+@attribute 'No Guns should be banned.' numeric
+@attribute 'Handguns are required for symbolic reasons.' numeric
+@attribute 'All guns should be registered.' numeric
+@attribute 'Guns possessions should be reduced.' numeric
+@attribute 'Gun owners should only be able to carry a certain amount of ammunition.' numeric
+@attribute 'Gun ownership is too highly regulated.' numeric
+@attribute 'Everyone should own a gun.' numeric
+@attribute 'Guns can be used in self-defense.' numeric
+@attribute 'Circulation of gun should be limited.' numeric
+@attribute 'Guns are rarely used For Defense purpose.' numeric
+@attribute 'Guns are cool.' numeric
+@attribute 'The use of weapons must be regulated or eliminated.' numeric
+@attribute 'Gun owners should have to pass a psych evaluation every year.' numeric
+@attribute 'Guns should be limited.' numeric
+@attribute 'Banning guns won\'t prevent criminals from acquiring them.' numeric
+@attribute 'Gun owners should be required to complete training on the appropriate use of the firearms they own.' numeric
+@attribute 'The people who use guns for crimes usually obtain them illegally anyways.' numeric
+@attribute 'It is dangerous to own a gun.' numeric
+@attribute 'Gun registration laws should increase.' numeric
+@attribute 'Criminals will circumvent gun laws.' numeric
+@attribute 'Automatic weapons with high capacity magazines are involved in nefarious acts and crimes.' numeric
+@attribute 'If guns are outlawed, only outlaws will have guns.' numeric
+@attribute 'Guns should only be used if there are no other options.' numeric
+@attribute 'We should evaluate who can carry a weapon.' numeric
+@attribute 'Guns should be locked up when not in hunting season.' numeric
+@attribute 'Guns per capita should be monitored.' numeric
+@attribute 'You shouldn\'t have to register every gun.' numeric
+@attribute 'Gun owners need to be required to have a background check.' numeric
+@attribute 'Majority of mass murders use legal weapon.' numeric
+@attribute 'People should be allowed to own as many guns as they want.' numeric
+@attribute 'Guns are rarely used in self defense.' numeric
+@attribute 'The founding fathers intended for the military to have the right to bear arms, not ordinary citizens.' numeric
+@attribute 'Civilians should not poses gun.' numeric
+@attribute 'Guns increase murders.' numeric
+@attribute 'Guns can be stored safely at home.' numeric
+@attribute 'Guns can help ward off criminal acts.' numeric
+@attribute 'People should not be allowed to conceal carry without a permit.' numeric
+@attribute 'Evaluate rights and duties when carrying a weapon.' numeric
+@attribute 'There should be a more strict background check for buyign a gun.' numeric
+@attribute 'Gun ownership should be reduced.' numeric
+@attribute 'Owning guns is a fundamental right.' numeric
+@attribute 'Gun ownership deters crime.' numeric
+@attribute 'Guns are part of our history.' numeric
+@attribute 'Gun ownership is protected in the constitution.' numeric
+@attribute 'People must be trained before to buy a gun.' numeric
+@attribute 'Handguns should be allowed for everyone.' numeric
+@attribute 'Gun licenses should include a mental health evaluation.' numeric
+@attribute 'Open carry deters violence.' numeric
+@attribute 'Gun owners must be registered.' numeric
+@attribute 'Gun owners should be registered.' numeric
+@attribute 'Guns are a protection against political tyranny.' numeric
+@attribute 'Guns are necessary.' numeric
+@attribute 'The numbers of guns owned should be limited.' numeric
+@attribute 'Gun ownership only reasserts violence.' numeric
+@attribute 'Gun rights are apart of our freedom.' numeric
+@attribute 'Owning a gun can deter criminals.' numeric
+@attribute 'People with a history of gun violence should not be allowed to own firearms.' numeric
+@attribute 'The possession of free weapons would increase the mortality rate in society.' numeric
+@attribute 'Too much guns in circulation can kill alot.' numeric
+@attribute 'Guns are legitimately used for hunting.' numeric
+@attribute 'Illegal guns should be eliminated.' numeric
+@attribute 'Criminals don\'t obey laws.' numeric
+@attribute 'Only officers should carry a weapon.' numeric
+@attribute 'Most mass shootings involve guns that were obtained illegally.' numeric
+@attribute 'Guns are a vital form of protection for people.' numeric
+@attribute 'Gun rights are necessary.' numeric
+@attribute 'Guns should be allowed just for law enforcement and army,navy,etc.' numeric
+@attribute 'Not every one must have a gun.' numeric
+@attribute 'Widespread gun ownership leads to mass killings.' numeric
+@attribute 'Guns should be legal for everyone.' numeric
+@attribute 'Guns are a form of protection not a form of mass mudering.' numeric
+@attribute 'High-capacity magazines should be banned because they too often turn murder into mass murder.' numeric
+@attribute 'Guns should be registered.' numeric
+@attribute 'Guns are used in self defense in the home.' numeric
+@attribute 'Guns are sometimes used in self defense.' numeric
+@attribute 'Handguns are required for symbolic reasons -- as a defence against the state monopoly of power.' numeric
+@attribute 'Gun control is a must.' numeric
+@attribute 'Guns aren\'t the only weapons that kill. Timothy McVeigh used a rental truck and fertilizer.' numeric
+@attribute 'Guns can too easily fall into the wrong hands.' numeric
+@attribute 'A gun in a household is dangerous for children.' numeric
+@attribute 'Gun owners should be required to take a gun safety course.' numeric
+@attribute 'Owning a gun makes people feel much safer in their home.' numeric
+@attribute 'Guns should act like a means of defence.' numeric
+@attribute 'Owning guns should be a right but monitored.' numeric
+@attribute 'Guns are dangerous to civilians.' numeric
+@attribute 'There should be no restrictions on gun laws.' numeric
+@attribute 'Guns are rarely used in self-defense.' numeric
+@attribute 'Gun ownership may deter crime.' numeric
+@attribute 'Celebrities, such as Rosie O\'Donnel who has a security detail but wants to take guns away from average citizens, should practice what they preach.' numeric
+@attribute 'Background should be checked carefully before giving selling arms to them.' numeric
+@attribute 'What circumstances citizens are allowed to possess and bear guns.' numeric
+@attribute 'Guns should be heavily regulated.' numeric
+@attribute 'All guns should be licensed.' numeric
+@attribute 'People with mental issues should not be allowed to carry guns.' numeric
+@attribute 'We should teach people from an early age the damage that they can do, how to properly and safely use them.' numeric
+@attribute 'Guns should be only allowed to the military.' numeric
+@attribute 'Guns should only be issued for hunting.' numeric
+@attribute 'Gun rights is part of being american.' numeric
+@attribute 'We should take off guns from streets.' numeric
+@attribute 'Anyone should be able to own a gun.' numeric
+@attribute 'Gun ownership should not be banned altogether.' numeric
+@attribute 'Guns pose a threat in families.' numeric
+@attribute 'Guns are much less likely to attempt a crime.' numeric
+@attribute 'Handgun ownership is not only symbolic but is a right of the American people.' numeric
+@attribute 'Gun ownership leads to unnecessary killings.' numeric
+@attribute 'Many people are responsible gun owners.' numeric
+@attribute 'Guns are also used in hunting.' numeric
+@attribute 'This issue is about the kind of the amount of and under what circumstances citizens are allowed to possess and bear guns.' numeric
+@attribute 'Banning guns is a violation of the 2nd amendment.' numeric
+@attribute 'When tension mounts, it will eventually erupt in the most unpleasant of ways.' numeric
+@attribute 'High-capacity magazines should be banned.' numeric
+@attribute 'Guns within the city can be hazardous.' numeric
+@attribute 'Gun restrictions leave the citizens open to abuse from the government, and leave them vulnerable for a fully police state.' numeric
+@attribute 'The NRA holds guns as a symbol of our right to protect themselves and others in various instances in which safety is threatened.' numeric
+@attribute 'Gun owners should only be able to carry 1 weapon on their person.' numeric
+@attribute 'Should be able to carry whatever gun you want whenerever.' numeric
+@attribute 'Although guns are to be a great aid for self-defense this is not a typical usage by gun owners and guns.' numeric
+@attribute 'Guns help protect families.' numeric
+@attribute 'The gun industry is too heavily regulated.' numeric
+@attribute 'Everyone should support the 2nd amendment.' numeric
+@attribute 'Gun owners should be imprisoned if they don\'t follow applicable laws.' numeric
+@attribute 'Banning guns is like banning forks in an attempt to stop making people fat.' numeric
+
+@data
+{3 1,4 1,5 1,6 1,7 1,8 1,9 1,11 1,12 1,13 1,14 1,15 1,17 1,24 1,25 1,26 1,27 1,31 1,32 1,34 1,36 1,40 1,41 1,42 1,43 1,47 1,52 1,53 1,58 1,68 1,70 1,71 1,73 1,76 1,78 1,81 1,83 1,86 1,87 1,89 1,91 1,92 1,93 1,99 1,111 1,112 1,113 1,114 1,115 1,116 1,118 1,119 1,124 1,125 1,128 1,129 1,131 1,134 1,135 1,136 1,140 1,141 1,142 1,143 1}
+{5 1,7 1,8 1,9 1,10 1,11 1,13 1,17 1,18 1,19 1,23 1,25 -1,26 1,27 1,32 1,36 1,37 1,38 1,39 1,40 1,41 1,42 1,43 1,45 1,46 1,47 1,49 1,50 1,52 1,59 1,60 1,61 1,62 1,64 1,68 1,69 1,70 1,71 1,76 1,77 1,78 1,79 1,80 1,83 1,90 1,93 1,100 1,101 1,102 1,103 1,106 1,111 1,113 1,114 1,116 1,118 1,120 1,122 1,124 1,125 1,126 -1,127 -1,129 1,136 1,138 -1,139 1,140 1,141 1,142 1,143 1}
+{6 -1,8 -1,10 1,11 1,12 1,13 1,14 -1,15 -1,17 1,18 -1,20 1,21 1,23 -1,24 1,26 1,27 -1,31 1,32 1,34 1,36 1,37 1,38 -1,40 1,42 -1,43 -1,45 -1,46 1,47 1,49 1,50 1,52 1,59 1,60 1,61 -1,63 1,64 1,65 -1,68 1,69 1,70 1,71 -1,73 -1,77 1,83 1,89 1,90 1,92 1,93 1,94 1,96 1,97 1,100 1,101 1,103 -1,105 -1,109 1,110 1,111 1,113 1,116 1,118 1,119 1,120 1,121 1,122 1,124 1,126 1,127 -1,129 1,132 1,133 1,134 1,136 1,138 -1,139 1,140 1,141 1,142 -1,143 1}

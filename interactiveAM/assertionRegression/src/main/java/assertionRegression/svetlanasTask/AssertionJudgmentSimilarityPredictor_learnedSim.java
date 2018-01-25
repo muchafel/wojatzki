@@ -25,44 +25,64 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 	 
 	 public AssertionJudgmentSimilarityPredictor_learnedSim(String path, String labelPath) throws IOException {
 		 similarityHelper= new SimilarityHelper();
-		 List<String> orderedLabes= getLabes(labelPath);
+		 Map<Integer,String> orderedLabes= getLabes(labelPath);
+//		 System.out.println(orderedLabes.size());
 		 similarityMapping= readMapping(path,orderedLabes);
-		 
+//		 System.out.println("number of assertion pairs in mapping "+similarityMapping.size());
+//		 System.out.println();
 	}
 
-	private List<String> getLabes(String labelPath) throws IOException {
-		List<String> result= new ArrayList<String>();
+	private Map<Integer,String> getLabes(String labelPath) throws IOException {
+//		List<String> result= new ArrayList<String>();
+		Map<Integer,String> labelMapping=new HashMap<>();
+		System.out.println(labelPath);
 		for(String line: FileUtils.readLines(new File(labelPath))) {
 			//only process first line
+			int i=1;
 			for(String part: line.split("\t")) {
 				if(!part.isEmpty()) {
-					result.add(part);
+//					result.add(part);
+					labelMapping.put(i, part);
+					i++;
 				}
 			}
-			 return result;
+//			System.out.println(labelMapping.size());
+			 return labelMapping;
 		}
 		return null;
 	}
 
-	private Map<String,Double> readMapping(String path, List<String> orderedLabes) throws IOException {
+	private Map<String,Double> readMapping(String path, Map<Integer,String> orderedLabes) throws IOException {
 		Map<String,Double> result= new HashMap<String, Double>();
+		Map<String,Double> result2= new HashMap<String, Double>();
+//		System.out.println("number of assertion pairs in file "+FileUtils.readLines(new File(path)).size()+ " "+path);
+		int i=0;
 		for(String line: FileUtils.readLines(new File(path))) {
 			
 			String[] parts= line.split(";")[0].split("=");
 			String labelCombination=resolveLabes(parts[0],orderedLabes);
+//			System.out.println(parts[0]);
+//			System.out.println(labelCombination+" "+Double.valueOf(parts[1])+" "+i++);
+//			if(result.containsKey(labelCombination)) {
+//				System.out.println(result.get(labelCombination));
+//				System.out.println("+++++");
+//			}
 			result.put(labelCombination, Double.valueOf(parts[1]));
+			result2.put(line.split(";")[0], Double.valueOf(parts[1]));
 		}
+//		System.out.println(result2.size());
+//		System.out.println(result.size());
 		return result;
 	}
 
-	private String resolveLabes(String string, List<String> orderedLabes) {
+	private String resolveLabes(String string, Map<Integer,String> orderedLabes) {
 		int id1= Integer.valueOf(string.split("_")[0]);
 		int id2= Integer.valueOf(string.split("_")[1]);
 		
 		String assertion1=orderedLabes.get(id1);
 		String assertion2=orderedLabes.get(id2);
 		
-		return assertion1+"_"+assertion2;
+		return assertion1+"$"+assertion2;
 	}
 
 	@Override
@@ -104,8 +124,9 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 	}
 
 	private double similarity(String previousAssertion, String assertion, PredictionExperiment experiment) throws Exception {
-		String merge1= previousAssertion+"_"+assertion;
-		String merge2= assertion+"_"+previousAssertion;
+		String merge1= previousAssertion+"$"+assertion;
+		String merge2= assertion+"$"+previousAssertion;
+//		System.out.println(merge1);
 		if(similarityMapping.containsKey(merge1)) {
 			return similarityMapping.get(merge1);
 		}else if(similarityMapping.containsKey(merge2)) {

@@ -116,7 +116,7 @@ public class DeepRegression_LeaveOneIssueOut implements Constants {
 		for(String issue: issues) {
 			DeepRegression_LeaveOneIssueOut experiment = new DeepRegression_LeaveOneIssueOut();
 
-			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",issue, baseDir + "/UCI/data/wiki.en.vec",baseDir + "/regression_conv/A.py");
+			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",issue, baseDir + "/UCI/data/wiki.en.vec",baseDir + "/regression_conv/2.py");
 
 //			ParameterSpace pSpace = experiment.setupCrossValidation(baseDir + "/UCI/data/data.tsv", "Agreement",issue, baseDir + "/UCI/data/wiki.en.vec",  "src/main/resources/kerasCode/regression_conv/A.py");
 			String issueNameCleaned= cleanName(issue);
@@ -158,8 +158,8 @@ public class DeepRegression_LeaveOneIssueOut implements Constants {
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_FEATURE_MODE, Constants.FM_DOCUMENT),
 				Dimension.create(DIM_LEARNING_MODE, Constants.LM_REGRESSION),
-//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
-				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
+				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
+//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
 				Dimension.create(DeepLearningConstants.DIM_USER_CODE, pythonCode),
 				Dimension.create(DeepLearningConstants.DIM_MAXIMUM_LENGTH, 50),
 				Dimension.create(DeepLearningConstants.DIM_VECTORIZE_TO_INTEGER, true),

@@ -81,7 +81,7 @@ public class DeepRegression implements Constants{
 //				i++;
 //			}
 //		}
-		ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", "src/main/resources/kerasCode/regression_conv/E.py",embeddings[1]);
+		ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/data/data.tsv", "Agreement", "src/main/resources/kerasCode/regression_conv/2.py",embeddings[1]);
 		
 		experiment.runTrainTest(pSpace, "test");
 

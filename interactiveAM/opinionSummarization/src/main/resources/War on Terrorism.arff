@@ -1,0 +1,161 @@
+@relation 'War on Terrorism'
+
+@attribute 'America should control the middle east.' numeric
+@attribute 'Torture should not be allowed.' numeric
+@attribute 'Sometimes spying on terrorists can unfortunately reveal about unrelated persons.' numeric
+@attribute 'Terrorism is an international threat.' numeric
+@attribute 'Measure put in place to allow government more access to private information after the 9-11 terrorist attacks have been mis used.' numeric
+@attribute 'All suspected individual should be well detaned.' numeric
+@attribute 'Fighting terrorism by using bombings that kill civilians creates more terrorists than it kills.' numeric
+@attribute 'The US uses terrorism to justifice violence against other countries.' numeric
+@attribute 'Terrorism needs to end with the hope of peace.' numeric
+@attribute 'We need to take necessary means to capture terrorists.' numeric
+@attribute 'The war on terror having long-term economic effects while we could keep our borders safe here instead.' numeric
+@attribute 'The government should have many strategies for the war.' numeric
+@attribute 'War on terrorism should be the priority by the US.' numeric
+@attribute 'We should take troops out of the middle east.' numeric
+@attribute 'The war on terror makes us a police state rather than do much for our world image and sovereignt.' numeric
+@attribute 'The war or terrorism must be enforced and take seriously.' numeric
+@attribute 'A person\'s chances of being killed by a terrorist are astronomically low.' numeric
+@attribute 'More countries should join forces in combating terrorist.' numeric
+@attribute 'The cost of terror has economical and human consequences.' numeric
+@attribute 'USA need more arab people to fight terror.' numeric
+@attribute 'US should not meddle in foreign affairs in the name of defense.' numeric
+@attribute 'Eradicating terrorism save many lives.' numeric
+@attribute 'As a bonus, war on terror almost guarantees safety worldwide.' numeric
+@attribute 'The war against Afghanistan was justified by terrorism.' numeric
+@attribute 'The war on terrorism must be taken serious.' numeric
+@attribute 'People can not avoid war.' numeric
+@attribute 'Terrorism should not be encouraged.' numeric
+@attribute 'The terrorist issue is small compared to other priorities.' numeric
+@attribute 'Using torture makes us terrorists.' numeric
+@attribute 'Terrorism should be defeated but not at the cost of civilian lives.' numeric
+@attribute 'Terrorism has to be defeated using all available means.' numeric
+@attribute 'Torture can be a necessary tool in the war on terror.' numeric
+@attribute 'Many companies are getting rich by selling wapons agains terrorism.' numeric
+@attribute 'Terrorists lose any kind of human right.' numeric
+@attribute 'The government uses the war on terror to spy on US citizens.' numeric
+@attribute 'We must protect our country.' numeric
+@attribute 'War against terrorism is expensive.' numeric
+@attribute 'We must have a psychological support group for many of the affected by terror.' numeric
+@attribute 'Any arrested terrorist should be jailed.' numeric
+@attribute 'Fighting terrorists only radicalizes more.' numeric
+@attribute 'The war on terrorism has lead to discrimination of muslims.' numeric
+@attribute 'It is ok that our taxes support the war on terrorism.' numeric
+@attribute 'Terrorism is only a problem in the middle east.' numeric
+@attribute 'We should not call it a war, as it is totally different than what we think of as a war between countries.' numeric
+@attribute 'Terrorism needs to be eliminated once and for all.' numeric
+@attribute 'We need to focus on intelligence and infiltrating groups of suspected terrorists.' numeric
+@attribute 'Terrorism needs to be stopped.' numeric
+@attribute 'American born terrorists are a bigger threat than middle eastern terrorists.' numeric
+@attribute 'The war on terrorism is to costly.' numeric
+@attribute 'Any cost is little if terrorism is eliminated.' numeric
+@attribute 'The United States must work with the international community to defeat terrorism.' numeric
+@attribute 'If U.S. citizens have nothing to hide, then they shouldn\'t be concerned about the government spying on them.' numeric
+@attribute 'Torture is an ineffective way to extract reliable information from people.' numeric
+@attribute 'The government uses war on terror to spy on foreign affairs.' numeric
+@attribute 'The war on terrorism has been minimally effective.' numeric
+@attribute 'It is necessary to defeat the evils that want to destroy others as their mission.' numeric
+@attribute 'War on terrorism is good for the country.' numeric
+@attribute 'The government must take care that the taken measures on counter-terror does not affect innocents.' numeric
+@attribute 'Terrorism should be countered.' numeric
+@attribute 'Troops lives have been lost for no reason due to the war on terrorism.' numeric
+@attribute 'Terrorism takes many forms and is home grown through the use of the internet and a section of the population that is completely disenfranchised with our society.' numeric
+@attribute 'The war on terrorism resulted in more terrorist acts against the United States.' numeric
+@attribute 'Too many lives are lost during acts of terrorism.' numeric
+@attribute 'The War on Terror is unwinnable.' numeric
+@attribute 'The War on Terrorism did not boost the economy.' numeric
+@attribute 'The US needs to stop their war on terrorism.' numeric
+@attribute 'Torture may have some benefits although inhuman.' numeric
+@attribute 'Terrorism needs to be destroy  by using tecnology.' numeric
+@attribute 'Torture is sometimes required to get answers.' numeric
+@attribute 'Terrorism is the biggest problem of our time.' numeric
+@attribute 'We must fight for our freedoms.' numeric
+@attribute 'War on terrorism is a necessary strategy.' numeric
+@attribute 'All Muslims are terrorists.' numeric
+@attribute 'The us government need to spot out all the terrorist with intellegence.' numeric
+@attribute 'The war against afghanistan was justified by terrorism.' numeric
+@attribute 'Jet fuel can\'t melt steel beams: 9-11 is fake.' numeric
+@attribute 'Too much lives are wasted because of war on terrorism.' numeric
+@attribute 'The war on terror made us look a lot stronger as a nation.' numeric
+@attribute 'Terrorism should be stopped.' numeric
+@attribute 'It is needed to educate people to reduce terrorism.' numeric
+@attribute 'Terrorism needs to be defeated using all available means.' numeric
+@attribute 'The United States had to do something regarding terror following September 11, 2001.' numeric
+@attribute 'The war on terrorism does not prevent terrorism.' numeric
+@attribute 'The economic costs of terrorism and human cost is far too much.' numeric
+@attribute 'Radical Islamic terrorists do not portray the beliefs of all muslims.' numeric
+@attribute 'Government need to increase fighting measure.' numeric
+@attribute 'US should act seriously on terrorism war.' numeric
+@attribute 'Military deployment to the Middle East is a necessary to deter terrorism.' numeric
+@attribute 'The war on terror costs too much.' numeric
+@attribute 'The War on Terrorism required a large amount of funding to be.' numeric
+@attribute 'Measures to be taken must be preventive to major risks.' numeric
+@attribute 'The war on terrorism is an invasion of privacy.' numeric
+@attribute 'We have no credible evidence that Iraq and al Qaeda cooperated on attacks against the United States.' numeric
+@attribute 'The government is trying to use the war on terrorism to scare people.' numeric
+@attribute 'The CIA use the war on terror to spy on others.' numeric
+@attribute 'Terrorism will always be ahead of authorities trying to combat it because there is no boundary too great to cross and they will do anything to achieve their results.' numeric
+@attribute 'The United States must appropriate adequate funds to fight terrorism internationally.' numeric
+@attribute 'Terrorism must be defeated.' numeric
+@attribute 'God does not approve any war.' numeric
+@attribute 'War on terriorism kept us safe so far.' numeric
+@attribute 'We use the word terrorist for groups that attack us, and rebels if they attack our enemies.' numeric
+@attribute 'Torture can be used to extract necessary information.' numeric
+@attribute 'The war on terrorism has caused more harm to us citizens.' numeric
+@attribute 'The government uses the war on terror to spy on US citizen.' numeric
+@attribute 'Casualties piled by the War on Terrorism are necessary to protect constitutional fundamentals.' numeric
+@attribute 'We will never be able to eliminate terrorism.' numeric
+@attribute 'The war on terrorism is too expensive.' numeric
+@attribute 'Terrorist should be killed without trials.' numeric
+@attribute 'Measures to end terrorism must be maximized.' numeric
+@attribute 'Terrorism is dangerous to all the world.' numeric
+@attribute 'Quit spending money overseas.' numeric
+@attribute 'The War on Terrorism is costing too much.' numeric
+@attribute 'The war on terror kept us safe so far.' numeric
+@attribute 'Terrorism is a war that effects the world.' numeric
+@attribute 'The war on terrorism needs to be stopped.' numeric
+@attribute 'Terrorists are recruiting people via the internet.' numeric
+@attribute 'The war on terrorism creates more terrorism.' numeric
+@attribute 'Terrorism should be stopped by any means necessary.' numeric
+@attribute 'War is sometimes a necessary thing.' numeric
+@attribute 'Government surveillance may inadvertantly pick up info on unrelated persons.' numeric
+@attribute 'Terrorism will be a part of our world until the end of time, that is one of the costs of freedom of thought.' numeric
+@attribute 'It is necessary to protect ourselves from viable terrorism.' numeric
+@attribute 'Spying is a necessary method to prevent terrorists from acting.' numeric
+@attribute 'The terrorists are very crue to telorate.' numeric
+@attribute 'Terrorism has destroyed too much and needs to end.' numeric
+@attribute 'The United States is in more debt than ever because of the War on Terrorism.' numeric
+@attribute 'Torture is a necessary tool in the war on terror.' numeric
+@attribute 'Immigration into the United States must be monitored and restricted to prevent terrorism within our borders.' numeric
+@attribute 'The War on Terrorism was a necessary defense measure.' numeric
+@attribute 'The US government must provide measures to prevent war.' numeric
+@attribute 'President Bush had to make a difficult decisions regarding the War on Terrorism.' numeric
+@attribute 'We should fight to the finish against Afghanistan.' numeric
+@attribute 'The 9/11 attacks stunned the nation.' numeric
+@attribute 'The government is spending too much funds on war on terrorism.' numeric
+
+@data
+{0 1,3 1,6 1,9 1,12 1,13 1,14 1,15 1,17 1,18 1,23 1,29 1,33 1,37 1,38 1,39 1,40 1,41 1,42 1,43 1,44 1,45 1,46 1,47 1,48 1,60 1,65 1,69 1,73 1,75 1,88 1,91 1,93 1,95 1,100 1,101 1,105 1,106 1,108 1,109 1,110 1,111 1,114 1,115 1,119 1,122 1,126 1,130 1,132 1}
+{0 1,3 1,6 -1,9 1,13 -1,14 1,17 1,18 1,20 1,23 1,29 1,33 1,36 1,37 1,38 1,39 1,40 1,41 1,42 -1,43 1,44 1,46 1,47 -1,48 1,65 1,69 -1,70 1,73 1,75 -1,86 1,88 1,93 1,95 1,100 1,101 1,104 1,105 1,106 1,108 1,109 1,110 1,111 1,114 -1,115 1,119 1,122 1,123 1,126 -1,130 1,132 1}
+{0 -1,1 1,2 1,4 1,8 1,9 -1,10 1,11 1,13 1,14 1,16 1,20 1,21 -1,23 -1,25 -1,29 1,31 -1,32 -1,35 1,36 1,37 1,38 1,39 -1,40 1,41 -1,44 1,47 1,49 -1,54 1,61 1,65 1,67 1,70 -1,73 -1,75 -1,81 1,86 -1,88 1,93 1,94 1,95 1,101 -1,104 -1,105 1,110 1,115 1,116 1,117 -1,118 -1,119 1,123 -1,127 1,128 -1,129 1}
+{8 1,9 1,12 1,13 1,14 1,15 -1,20 1,26 1,30 1,33 1,36 1,37 -1,38 1,39 -1,41 1,45 1,46 1,47 -1,60 1,65 1,70 1,73 1,77 1,82 1,85 1,86 1,91 -1,93 1,95 1,104 1,105 1,106 1,107 -1,108 1,110 1,119 -1,123 1,132 1}
+{0 1,3 1,6 1,8 1,12 1,13 1,14 1,15 1,17 1,18 1,23 1,26 1,29 1,30 1,33 1,38 1,39 1,40 1,41 1,42 1,44 1,45 1,46 1,47 1,48 1,60 1,65 1,69 1,75 1,77 1,82 1,85 -1,88 1,91 1,93 1,95 1,100 1,101 1,105 1,106 1,107 1,108 1,109 1,110 1,111 1,114 -1,115 1,119 1,122 1,126 1,130 1,132 1}
+{1 1,2 1,8 -1,9 1,10 1,11 1,16 1,18 -1,19 1,20 1,21 1,25 -1,26 1,29 -1,31 1,32 1,34 1,35 1,36 -1,37 -1,38 1,39 -1,40 1,41 1,42 1,44 1,47 1,49 1,54 1,55 1,61 1,63 1,65 1,66 -1,68 1,70 1,73 1,75 -1,84 -1,88 1,93 1,94 -1,95 1,98 1,101 -1,104 1,105 1,110 1,112 -1,116 1,119 1,123 1,127 1,128 -1,129 -1,130 1,133 1}
+{9 1,12 1,16 -1,18 1,20 1,22 1,25 -1,26 1,30 -1,34 1,36 1,38 1,41 -1,42 -1,47 1,49 -1,50 1,53 1,56 -1,57 1,58 1,59 1,61 1,62 1,64 -1,65 1,66 -1,67 1,68 1,69 -1,70 1,71 -1,72 -1,73 1,77 1,78 1,82 -1,85 1,86 -1,90 1,91 -1,92 -1,94 1,96 -1,97 1,98 1,99 -1,104 -1,108 1,109 1,110 -1,112 -1,113 1,114 1,115 1,117 1,118 -1,120 1,122 1,124 1,125 1,126 -1,127 1,132 1}
+{0 1,1 1,2 1,3 1,4 1,5 1,6 1,7 1,8 1,9 1,10 1,11 1,12 -1,20 1,22 -1,25 -1,28 1,30 1,32 1,34 -1,35 1,36 1,42 -1,48 1,49 -1,50 1,51 1,53 -1,54 1,56 -1,59 1,61 1,65 1,68 1,69 1,70 -1,71 -1,77 -1,79 1,80 -1,84 1,91 -1,93 -1,94 -1,95 1,97 1,98 1,103 -1,104 -1,108 1,109 1,114 1,118 -1,120 1,121 1,122 1,123 1,124 1,126 -1,132 1,133 1}
+{0 1,3 1,6 1,9 1,13 1,14 1,17 1,18 1,20 1,23 1,29 1,33 1,36 1,37 1,38 1,39 1,40 1,41 1,42 -1,43 1,44 1,46 1,47 1,48 1,65 1,69 1,70 1,73 1,75 1,86 1,88 1,93 1,95 1,100 1,101 1,104 1,105 1,106 1,108 1,109 1,110 1,111 1,114 1,115 1,119 1,122 1,123 1,126 1,130 1,132 1}
+{0 -1,3 1,6 1,13 1,14 1,17 1,18 1,21 1,23 1,33 -1,39 1,40 1,43 1,46 1,48 1,52 1,62 1,64 1,65 1,69 1,71 -1,72 -1,73 1,74 1,75 -1,76 1,77 -1,78 1,79 1,82 1,84 1,85 1,86 1,87 -1,88 1,97 1,100 -1,101 -1,102 1,106 1,107 -1,108 -1,109 1,110 1,111 1,114 1,115 1,118 1,119 1,122 1,126 -1,130 -1,132 1}
+{0 1,3 1,6 1,8 1,12 1,13 1,14 1,15 1,17 1,18 1,23 1,26 1,29 1,30 1,33 -1,38 1,39 -1,40 1,41 1,42 -1,43 1,44 1,45 1,46 1,47 -1,48 -1,60 1,65 -1,69 1,75 1,77 1,82 1,85 1,88 1,91 -1,93 1,95 1,100 -1,105 1,106 1,107 -1,108 -1,109 1,110 1,111 1,114 1,115 -1,119 1,122 1,126 1,130 1,132 1}
+{0 1,6 1,8 1,12 1,13 1,15 1,17 1,18 1,23 1,26 1,29 1,30 1,33 1,38 1,39 -1,40 1,41 1,42 -1,43 1,45 -1,48 1,60 1,65 1,69 1,75 -1,77 1,82 -1,85 -1,88 1,91 1,93 -1,95 -1,100 1,101 -1,105 1,106 1,107 1,108 1,109 1,110 1,111 -1,114 1,115 1,119 -1,122 1,126 1,130 -1}
+{2 -1,6 1,8 1,12 -1,14 1,16 1,17 1,18 -1,19 1,22 -1,23 -1,24 1,26 1,27 1,28 -1,29 1,30 1,31 1,32 1,33 1,35 1,36 1,37 1,39 -1,40 1,41 -1,42 -1,43 1,46 1,48 1,49 -1,51 -1,52 1,53 -1,55 -1,56 1,57 1,58 -1,59 -1,62 -1,63 1,65 -1,66 -1,69 1,70 1,72 1,74 -1,75 -1,76 1,78 1,79 1,82 1,83 -1,85 1,86 -1,87 -1,88 1,89 1,90 -1,91 -1,93 1,95 -1,101 -1,102 1,104 -1,105 1,107 1,108 1,109 1,110 1,111 1,115 1,117 1,118 -1,119 1,120 1,122 1,124 1,126 -1,127 -1,128 -1,131 1,132 1}
+{0 -1,6 1,8 1,12 1,14 1,15 1,17 1,18 -1,23 1,26 1,29 1,30 -1,33 -1,38 1,39 1,40 1,41 1,42 1,44 1,45 1,46 1,47 1,48 1,60 1,65 -1,69 -1,75 1,77 1,82 -1,85 -1,88 1,91 1,93 -1,95 1,100 1,101 -1,105 1,106 1,107 1,108 1,110 1,111 1,114 1,115 1,119 1,122 1,126 1,130 1,132 1}
+{3 1,6 -1,9 1,11 1,13 1,17 1,18 1,20 1,29 -1,33 1,36 1,37 -1,38 1,39 -1,40 -1,41 -1,42 -1,43 1,44 1,45 1,46 1,47 -1,48 -1,49 1,69 1,70 1,73 1,75 -1,86 -1,88 -1,93 1,95 1,100 -1,101 1,104 1,105 1,106 1,108 1,109 1,110 1,111 1,114 1,116 -1,119 1,122 1,123 1,126 1,130 1,132 1}
+{0 -1,6 1,8 1,11 1,17 1,18 1,19 -1,21 1,26 1,34 -1,40 1,42 -1,49 1,50 1,52 1,55 1,56 -1,62 1,64 1,65 1,66 -1,67 1,72 -1,73 1,74 -1,75 -1,82 1,84 -1,87 -1,88 1,89 1,90 1,91 -1,97 1,98 1,99 -1,102 1,113 1,128 -1}
+{1 1,12 1,13 1,14 -1,15 1,27 -1,28 1,29 1,30 1,31 -1,32 1,33 1,34 -1,35 1,36 1,37 1,38 1,39 -1,40 1,42 -1,44 1,45 1,51 -1,53 -1,57 1,60 1,61 1,63 -1,64 1,66 -1,68 -1,69 1,70 1,71 1,83 1,84 1,88 -1,93 -1,95 1,100 1,103 1,104 1,106 -1,108 1,112 -1,113 1,114 -1,115 1,117 1,120 1,121 1,125 1,129 1,131 -1,132 1}
+{8 1,12 -1,13 1,14 1,15 1,18 1,19 -1,20 -1,21 1,22 1,23 1,24 1,25 -1,26 1,27 -1,30 1,34 -1,38 1,39 -1,40 1,41 -1,42 1,43 -1,44 1,45 1,46 1,47 1,48 1,49 1,50 1,51 -1,55 1,60 -1,66 1,67 1,77 1,81 1,82 1,85 1,87 1,91 1,93 1,95 1,96 1,98 -1,101 1,107 1,108 1,116 1,117 1,118 1,119 1,122 1,129 1,131 -1,132 1}
+{2 1,4 1,7 -1,9 1,10 1,11 1,18 1,19 -1,21 1,25 -1,26 1,29 1,30 1,32 1,34 1,36 1,40 1,42 -1,52 1,53 1,55 1,59 1,61 1,63 1,66 -1,68 -1,84 1,86 1,87 1,97 1,98 1,109 1,112 1,127 1,128 1,129 1,130 1,133 1}
+{0 -1,3 1,6 1,13 1,14 1,17 1,18 1,23 -1,29 1,33 1,39 1,40 1,41 -1,42 -1,43 1,46 1,47 -1,48 1,65 1,67 1,69 1,75 -1,81 1,88 1,100 -1,101 -1,105 1,106 1,108 1,109 1,110 -1,111 1,114 -1,115 1,119 1,122 -1,126 -1,129 1,130 1,132 1}
+{0 -1,3 1,6 1,8 1,13 1,15 1,17 1,18 1,23 -1,26 1,29 1,30 1,33 -1,36 1,38 1,39 -1,40 1,41 1,42 -1,43 -1,44 1,45 1,46 1,48 1,56 -1,57 1,58 1,59 -1,60 1,65 -1,69 -1,73 1,75 -1,77 -1,82 1,89 1,90 1,91 -1,93 1,95 1,100 1,105 1,106 1,107 -1,108 1,109 1,110 -1,111 1,115 1,118 1,119 1,122 1,126 -1,130 1,132 1}
+{3 1,5 1,8 1,11 1,12 1,13 1,14 1,26 1,29 1,30 1,36 1,38 1,39 -1,40 1,41 -1,42 -1,44 1,45 1,46 1,49 1,52 1,53 -1,54 1,55 1,60 1,67 1,70 1,75 -1,76 1,77 -1,82 1,85 1,88 1,91 1,92 -1,93 1,95 1,101 -1,104 -1,105 1,107 -1,108 1,109 1,116 1,123 -1,132 1}
+{0 1,3 1,6 1,8 1,12 1,14 1,15 1,17 -1,18 1,23 1,26 -1,29 1,30 1,33 1,38 -1,39 -1,40 1,41 1,42 -1,43 1,44 1,45 1,48 1,60 1,65 1,69 -1,75 1,77 -1,82 1,85 1,88 1,91 1,93 1,95 1,100 1,101 1,105 1,106 1,107 1,109 1,110 1,111 -1,114 1,115 -1,119 -1,122 1,126 1,130 1}
