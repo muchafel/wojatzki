@@ -50,23 +50,24 @@ public class DeepRegression_Similarity implements Constants{
 		System.out.println("DKPRO_HOME: " + baseDir);
 
 		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList(
-				"assertionSimilarity_climateChange"
-				,
-				"assertionSimilarity_aid",
-				"assertionSimilarity_blm",  
-				"assertionSimilarity_creationism",
-				"assertionSimilarity_electoralSystem", 
-				"assertionSimilarity_gender", 
+//				"assertionSimilarity_climateChange"
+//				,
+//				"assertionSimilarity_aid",
+//				"assertionSimilarity_blm",  
+//				"assertionSimilarity_creationism",
+//				"assertionSimilarity_electoralSystem", 
+//				"assertionSimilarity_gender", 
 				"assertionSimilarity_gunRights",
 				"assertionSimilarity_immigration", 
 				"assertionSimilarity_marijuana", 
 				"assertionSimilarity_mediaBias",
-				"assertionSimilarity_middleEast",
-				"assertionSimilarity_obamacare", 
-				"assertionSimilarity_sameSex",
-				"assertionSimilarity_terror", 
-				"assertionSimilarity_vaccination", 
-				"assertionSimilarity_veggie"
+				"assertionSimilarity_middleEast"
+//				,
+//				"assertionSimilarity_obamacare", 
+//				"assertionSimilarity_sameSex",
+//				"assertionSimilarity_terror", 
+//				"assertionSimilarity_vaccination", 
+//				"assertionSimilarity_veggie"
 				));
 		
 //		String[] pythonScripts = new String[] { 
@@ -124,8 +125,8 @@ public class DeepRegression_Similarity implements Constants{
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_FEATURE_MODE, Constants.FM_DOCUMENT),
 				Dimension.create(DIM_LEARNING_MODE, Constants.LM_REGRESSION),
-				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
-//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
+//				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/local/bin/python3"),
+				Dimension.create(DeepLearningConstants.DIM_PYTHON_INSTALLATION, "/usr/bin/python3"),
 				Dimension.create(DeepLearningConstants.DIM_USER_CODE, pythonCode),
 				Dimension.create(DeepLearningConstants.DIM_MAXIMUM_LENGTH, 15),
 				Dimension.create(DeepLearningConstants.DIM_VECTORIZE_TO_INTEGER, false),

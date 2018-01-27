@@ -39,14 +39,34 @@ public class PredictJudgmentsOfIndividualParticipants {
 		
 		ArrayList<String> issues = new ArrayList<String>(Arrays.asList(
 //				"Climate Change"
-//				, "Vegetarian & Vegan Lifestyle",
-				"Black Lives Matter"
-//				, "Creationism in school curricula", 
+//				, 
+//				"Vegetarian & Vegan Lifestyle"
+//				,
+//				"Black Lives Matter"
+//				, 
+//				"Creationism in school curricula"
+//				, 
 //				"Foreign Aid"
-//				, "Gender Equality", "Gun Rights",
-//				"Legalization of Marijuana", "Legalization of Same-sex Marriage", "Mandatory Vaccination", "Media Bias",
-//				"Obama Care -- Affordable Health Care Act", "US Engagement in the Middle East","US Electoral System",
-//				"US Immigration", "War on Terrorism"
+//				, "Gender Equality", 
+//				"Gun Rights"
+//				,
+//				"Legalization of Marijuana"
+//				, 
+//				"Legalization of Same-sex Marriage"
+//				, 
+//				"Mandatory Vaccination"
+//				, 
+//				"Media Bias"
+//				,
+//				"Obama Care -- Affordable Health Care Act"
+//				,
+				"US Engagement in the Middle East"
+//				,
+//				"US Electoral System"
+//				,
+//				"US Immigration"
+//				, 
+//				"War on Terrorism"
 				));
 		
 		for(String issue: issues) {
@@ -58,7 +78,7 @@ public class PredictJudgmentsOfIndividualParticipants {
 			
 			Predictor randomPredictor= new RandomPredictor();
 			
-			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions_deep/"+issue+".txt",baseDir+"/UCI/similarityMatrices/assertionSimilarity_blm.tsv");
+			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions_deep/"+issue+".txt",baseDir+"/UCI/similarityMatrices/assertionSimilarity_middleEast.tsv");
 //			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issue+".txt",baseDir+"/UCI/rawMatrices/"+issue+".tsv");
 
 			Predictor mostSimilarAssertionPredictor_jaccard= new AssertionTextSimilarityPredictor(new WordNGramJaccardMeasure());

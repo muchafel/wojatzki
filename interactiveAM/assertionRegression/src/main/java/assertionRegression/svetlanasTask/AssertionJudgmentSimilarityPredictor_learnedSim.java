@@ -26,9 +26,9 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 	 public AssertionJudgmentSimilarityPredictor_learnedSim(String path, String labelPath) throws IOException {
 		 similarityHelper= new SimilarityHelper();
 		 Map<Integer,String> orderedLabes= getLabes(labelPath);
-//		 System.out.println(orderedLabes.size());
+		 System.out.println(orderedLabes);
 		 similarityMapping= readMapping(path,orderedLabes);
-//		 System.out.println("number of assertion pairs in mapping "+similarityMapping.size());
+		 System.out.println("number of assertion pairs in mapping "+similarityMapping.size());
 //		 System.out.println();
 	}
 
@@ -36,7 +36,8 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 //		List<String> result= new ArrayList<String>();
 		Map<Integer,String> labelMapping=new HashMap<>();
 		System.out.println(labelPath);
-		for(String line: FileUtils.readLines(new File(labelPath))) {
+		for(String line: FileUtils.readLines(new File(labelPath),"UTF-8")) {
+			
 			//only process first line
 			int i=1;
 			for(String part: line.split("\t")) {
@@ -57,8 +58,8 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 		Map<String,Double> result2= new HashMap<String, Double>();
 //		System.out.println("number of assertion pairs in file "+FileUtils.readLines(new File(path)).size()+ " "+path);
 		int i=0;
-		for(String line: FileUtils.readLines(new File(path))) {
-			
+		for(String line: FileUtils.readLines(new File(path),"UTF-8")) {
+
 			String[] parts= line.split(";")[0].split("=");
 			String labelCombination=resolveLabes(parts[0],orderedLabes);
 //			System.out.println(parts[0]);
@@ -103,8 +104,6 @@ public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {
 			
 			if(previousAssertion.equals(assertion))continue;
 			
-			//TODO proper tokenization
-			String[] wordsB = previousAssertion.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 			double sim=0;
 			try {
 				sim = similarity(previousAssertion,assertion,experiment);

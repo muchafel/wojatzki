@@ -83,6 +83,5 @@ public class AssertionTextSimilarityPredictor extends Predictor {
 		return null;
 	}
 
-
 	
 }

@@ -62,13 +62,13 @@ public class AssertionSimilarityPairReader_deep extends JCasCollectionReader_Imp
 			hasNext();
 		}
 		
-//		if(rowCounter==20) {
+//		if(rowCounter==2) {
 //			return false;
 //		}
 		
 		
 		if (rowCounter>=numberOfLines-1) {
-			System.out.println("number of instances "+map.size());
+//			System.out.println("number of instances "+map.size());
 			return false;
 		}
 

@@ -63,6 +63,7 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 			<artifactId>de.tudarmstadt.ukp.dkpro.core.api.sentiment-asl</artifactId>
+			<version>1.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -219,7 +220,7 @@
 					</configuration>
 					<archive>
 						<manifest>
-							<mainClass>assertionRegression.regressions.DeepRegression</mainClass>
+							<mainClass>assertionRegression.regressions.DeepRegression_Similarity</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
@@ -241,7 +242,7 @@
 								<!-- Set the main class of the executable JAR -->
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>assertionRegression.regressions.DeepRegression_LeaveOneIssueOut</mainClass>
+									<mainClass>assertionRegression.regressions.DeepRegression_Similarity</mainClass>
 								</transformer>
 								<!-- Merge the uimaFIT configuration files -->
 								<transformer
