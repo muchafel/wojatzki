@@ -61,9 +61,11 @@ public class AggregatedJudgmentSimilarityPredictor_learnedSim {
 	private String resolveLabes(String string, List<String> orderedLabes) {
 		int id1= Integer.valueOf(string.split("_")[0]);
 		int id2= Integer.valueOf(string.split("_")[1]);
+//		System.out.println(id1+ " "+id2);
 		
 		String assertion1=orderedLabes.get(id1);
 		String assertion2=orderedLabes.get(id2);
+//		System.out.println(assertion1+ " "+assertion2);
 		
 		return assertion1+"_"+assertion2;
 	}

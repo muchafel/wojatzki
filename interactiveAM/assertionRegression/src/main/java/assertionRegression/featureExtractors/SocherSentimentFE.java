@@ -9,6 +9,7 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.FeatureType;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.sentiment.type.StanfordSentimentAnnotation;
@@ -33,11 +34,11 @@ implements FeatureExtractor{
 			negative+=sentiment.getNegative();
 			veryNegative+=sentiment.getVeryNegative();
 		}
-		featList.add(new Feature("SOCHER_SENTIMENT_VERY_POSITIVE",veryPositive));
-		featList.add(new Feature("SOCHER_SENTIMENT_POSITIVE",positive));
-		featList.add(new Feature("SOCHER_SENTIMENT_NEUTRAL",neutral));
-		featList.add(new Feature("SOCHER_SENTIMENT_NEGATIVE",negative));
-		featList.add(new Feature("SOCHER_SENTIMENT_VERY_NEGATIVE",veryNegative));
+		featList.add(new Feature("SOCHER_SENTIMENT_VERY_POSITIVE",veryPositive, FeatureType.NUMERIC));
+		featList.add(new Feature("SOCHER_SENTIMENT_POSITIVE",positive, FeatureType.NUMERIC));
+		featList.add(new Feature("SOCHER_SENTIMENT_NEUTRAL",neutral, FeatureType.NUMERIC));
+		featList.add(new Feature("SOCHER_SENTIMENT_NEGATIVE",negative, FeatureType.NUMERIC));
+		featList.add(new Feature("SOCHER_SENTIMENT_VERY_NEGATIVE",veryNegative, FeatureType.NUMERIC));
 		
 		return featList;
 	}

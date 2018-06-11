@@ -15,7 +15,7 @@ import org.dkpro.lab.storage.StorageService.AccessMode;
 import org.dkpro.lab.task.TaskContextMetadata;
 import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.core.task.TcTaskTypeUtil;
-import org.dkpro.tc.ml.libsvm.writer.LibsvmDataWriter;
+import org.dkpro.tc.io.libsvm.LibsvmDataFormatWriter;
 
 
 public class Id2OutcomeReport extends BatchReportBase implements Constants {
@@ -92,7 +92,7 @@ private Map<String, String> getMapping(boolean isUnit) throws IOException {
 		File f;
 		if (isUnit) {
 			f = new File(getContext().getFolder(TEST_TASK_INPUT_KEY_TEST_DATA, AccessMode.READONLY),
-					LibsvmDataWriter.INDEX2INSTANCEID);
+					LibsvmDataFormatWriter.INDEX2INSTANCEID);
 		} else {
 			f = new File(getContext().getFolder(TEST_TASK_INPUT_KEY_TEST_DATA, AccessMode.READONLY),
 					Constants.FILENAME_DOCUMENT_META_DATA_LOG);

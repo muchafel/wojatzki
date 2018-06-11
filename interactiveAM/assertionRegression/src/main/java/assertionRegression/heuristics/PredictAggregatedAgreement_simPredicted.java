@@ -64,11 +64,11 @@ public class PredictAggregatedAgreement_simPredicted {
 //				,
 //				"Obama Care -- Affordable Health Care Act"
 //				,
-//				"US Engagement in the Middle East" //:(
+				"US Engagement in the Middle East" //:(
 //				,
 //				"US Electoral System"
 //				,
-				"US Immigration" // :(
+//				"US Immigration" // :(
 //				, 
 //				"War on Terrorism"
 				));
@@ -92,13 +92,14 @@ public class PredictAggregatedAgreement_simPredicted {
 		
 		
 	
-		for (int j=2; j<=2;j+=1) { 
+		for (int j=1; j<=50;j+=1) { 
 			List<Double> all_correlations= new ArrayList<>();
 			List<Double> all_gold_array= new ArrayList<>();
 			List<Double> all_predicted_array= new ArrayList<>();
 			for(String issueToTest: issues) {
+//				AggregatedJudgmentSimilarityPredictor_learnedSim mostSimilarAssertionPredictor_learned= new AggregatedJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issueToTest+".txt",baseDir+"/UCI/rawMatrices/"+issueToTest+".tsv");
 				AggregatedJudgmentSimilarityPredictor_learnedSim mostSimilarAssertionPredictor_learned= new AggregatedJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issueToTest+".txt",baseDir+"/UCI/rawMatrices/"+issueToTest+".tsv");
-				
+
 				LinkedHashMap<String, Double> aggregatedAssertions= new LinkedHashMap<>();
 				int i=0;
 
@@ -125,8 +126,8 @@ public class PredictAggregatedAgreement_simPredicted {
 						all_gold_array.add(aggregatedAssertions.get(assertion));
 						// predicted_array.add(mostSimilarAssertionPredictor_learned.predictionOfMostSimilarAssertion(nonZeroJudgments_toTest,
 						// assertion));
-						System.out.println(aggregatedAssertions.get(assertion) + "\t" + mostSimilarAssertionPredictor_learned
-								.predictionOfMostSimilarAssertions(nonZeroJudgments_toTest, assertion, j));
+//						System.out.println(aggregatedAssertions.get(assertion) + "\t" + mostSimilarAssertionPredictor_learned
+//								.predictionOfMostSimilarAssertions(nonZeroJudgments_toTest, assertion, j));
 						predicted_array.add(mostSimilarAssertionPredictor_learned.predictionOfMostSimilarAssertions(nonZeroJudgments_toTest, assertion, j));
 						all_predicted_array.add(mostSimilarAssertionPredictor_learned.predictionOfMostSimilarAssertions(nonZeroJudgments_toTest, assertion, j));
 						
@@ -137,6 +138,7 @@ public class PredictAggregatedAgreement_simPredicted {
 					double[] predicted=toPrimitive(predicted_array);
 					double corr = new PearsonsCorrelation().correlation(gold,predicted);
 					correlations.add(corr);
+//					System.out.println(corr);
 //				    System.out.println(issueToTest+"\t"+j+"\t"+corr);
 //				}
 //				System.out.println(issueToTest+ " "+StringUtils.join(correlations,"\t"));
@@ -146,8 +148,8 @@ public class PredictAggregatedAgreement_simPredicted {
 			
 			double[] predicted=toPrimitive(all_predicted_array);
 			double corr = new PearsonsCorrelation().correlation(gold,predicted);
-//		    System.out.println(j+"\t"+corr);
-			System.out.println(corr);
+		    System.out.println(j+"\t"+corr);
+//			System.out.println(corr);
 		}
 		
 		

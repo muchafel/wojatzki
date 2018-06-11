@@ -47,7 +47,9 @@ public class PredictJudgmentsOfIndividualParticipants {
 //				"Creationism in school curricula"
 //				, 
 //				"Foreign Aid"
-//				, "Gender Equality", 
+//				, 
+//				"Gender Equality"
+//				, 
 //				"Gun Rights"
 //				,
 //				"Legalization of Marijuana"
@@ -78,7 +80,7 @@ public class PredictJudgmentsOfIndividualParticipants {
 			
 			Predictor randomPredictor= new RandomPredictor();
 			
-			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions_deep/"+issue+".txt",baseDir+"/UCI/similarityMatrices/assertionSimilarity_middleEast.tsv");
+			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issue+".txt",baseDir+"/UCI/similarityMatrices/"+issue+".tsv");
 //			Predictor mostSimilarAssertionPredictor_learned= new AssertionJudgmentSimilarityPredictor_learnedSim("src/main/resources/similarityPredictions/"+issue+".txt",baseDir+"/UCI/rawMatrices/"+issue+".tsv");
 
 			Predictor mostSimilarAssertionPredictor_jaccard= new AssertionTextSimilarityPredictor(new WordNGramJaccardMeasure());
@@ -139,13 +141,13 @@ public class PredictJudgmentsOfIndividualParticipants {
 				
 				count2Accuracy_baseline=add2Map(count2Accuracy_baseline,experiment.getNonZeroJudgments_toTest().size(),baselinePredictor.predict(experiment));
 //				count2Accuracy_random=add2Map(count2Accuracy_random,experiment.getNonZeroJudgments_toTest().size(),randomPredictor.predict(experiment));
-//				count2Accuracy_jaccard=add2Map(count2Accuracy_jaccard,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_jaccard.predict(experiment));
-//				count2Accuracy_embedding=add2Map(count2Accuracy_embedding,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_embedding.predict(experiment));
-				count2Accuracy_judgment=add2Map(count2Accuracy_judgment,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_judgment.predict(experiment));
+				count2Accuracy_jaccard=add2Map(count2Accuracy_jaccard,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_jaccard.predict(experiment));
+				count2Accuracy_embedding=add2Map(count2Accuracy_embedding,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_embedding.predict(experiment));
+//				count2Accuracy_judgment=add2Map(count2Accuracy_judgment,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_judgment.predict(experiment));
 //				count2Accuracy_userHistory=add2Map(count2Accuracy_userHistory,experiment.getNonZeroJudgments_toTest().size(),meanhistoryPredictor.predict(experiment));
 //				count2Accuracy_meanOther=add2Map(count2Accuracy_meanOther,experiment.getNonZeroJudgments_toTest().size(),meanOtherPredictor.predict(experiment));
 //				count2Accuracy_mostSimilarUser=add2Map(count2Accuracy_mostSimilarUser,experiment.getNonZeroJudgments_toTest().size(),mostSimilarUserPredictor.predict(experiment));
-//				count2Accuracy_gst=add2Map(count2Accuracy_gst,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_gst.predict(experiment));
+				count2Accuracy_gst=add2Map(count2Accuracy_gst,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_gst.predict(experiment));
 //				count2Accuracy_lcss=add2Map(count2Accuracy_lcss,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_lcss.predict(experiment));
 				count2Accuracy_ownSim=add2Map(count2Accuracy_ownSim,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_learned.predict(experiment));
 //				count2Accuracy_mostSimilAssertion_avg=add2Map(count2Accuracy_mostSimilAssertion_avg,experiment.getNonZeroJudgments_toTest().size(),mostSimilarAssertionPredictor_avg.predict(experiment));
@@ -157,15 +159,15 @@ public class PredictJudgmentsOfIndividualParticipants {
 //			}
 			System.out.println("--");
 			System.out.println("baseline:\t"+mean(count2Accuracy_baseline));
-//			System.out.println("random:\t"+mean(count2Accuracy_random));
-//			System.out.println("userHistory:\t"+mean(count2Accuracy_userHistory));
-//			System.out.println("jaccard:\t"+mean(count2Accuracy_jaccard));
+			System.out.println("random:\t"+mean(count2Accuracy_random));
+			System.out.println("userHistory:\t"+mean(count2Accuracy_userHistory));
+			System.out.println("jaccard:\t"+mean(count2Accuracy_jaccard));
 			System.out.println("mostSimilarJudgment:\t"+mean(count2Accuracy_judgment));
-//			System.out.println("embedding:\t"+mean(count2Accuracy_embedding));
-//			System.out.println("gst:\t"+mean(count2Accuracy_gst));
-//			System.out.println("meanOther:\t"+mean(count2Accuracy_meanOther));
-//			System.out.println("lcss:\t"+mean(count2Accuracy_lcss));
-//			System.out.println("mostSimilarUser:\t"+mean(count2Accuracy_mostSimilarUser));
+			System.out.println("embedding:\t"+mean(count2Accuracy_embedding));
+			System.out.println("gst:\t"+mean(count2Accuracy_gst));
+			System.out.println("meanOther:\t"+mean(count2Accuracy_meanOther));
+			System.out.println("lcss:\t"+mean(count2Accuracy_lcss));
+			System.out.println("mostSimilarUser:\t"+mean(count2Accuracy_mostSimilarUser));
 			System.out.println(issue+"\t"+"ownSim:\t"+mean(count2Accuracy_ownSim));
 			System.out.println(issue+"\t"+"ownSim(avg):\t"+mean(count2Accuracy_ownSim_avg));
 			System.out.println(issue+"\t"+"sim(avg):\t"+mean(count2Accuracy_mostSimilAssertion_avg));

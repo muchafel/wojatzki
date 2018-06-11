@@ -1,11 +1,7 @@
 package assertionRegression.regressions;
 
-import static java.util.Arrays.asList;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,51 +14,23 @@ import org.dkpro.lab.Lab;
 import org.dkpro.lab.task.BatchTask.ExecutionPolicy;
 import org.dkpro.lab.task.Dimension;
 import org.dkpro.lab.task.ParameterSpace;
-import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
-import org.dkpro.tc.features.length.AvgNrOfCharsPerToken;
-import org.dkpro.tc.features.length.NrOfTokens;
-import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
-import org.dkpro.tc.features.ngram.LuceneNGram;
-import org.dkpro.tc.features.ngram.LucenePOSNGram;
-import org.dkpro.tc.features.ngram.LucenePhoneticNGram;
+import org.dkpro.tc.features.ngram.CharacterNGram;
+import org.dkpro.tc.features.ngram.WordNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
-import org.dkpro.tc.features.style.AdjectiveEndingFeatureExtractor;
-import org.dkpro.tc.features.style.ExclamationFeatureExtractor;
-import org.dkpro.tc.features.style.LongWordsFeatureExtractor;
-import org.dkpro.tc.features.style.ModalVerbsFeatureExtractor;
-import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
 import org.dkpro.tc.features.syntax.POSRatioFeatureExtractor;
 import org.dkpro.tc.features.syntax.QuestionsRatioFeatureExtractor;
-import org.dkpro.tc.features.syntax.SuperlativeRatioFeatureExtractor;
-import org.dkpro.tc.features.twitter.EmoticonRatio;
-import org.dkpro.tc.features.twitter.NumberOfHashTags;
-import org.dkpro.tc.features.window.CaseExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
-import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
-import org.dkpro.tc.ml.weka.WekaRegressionAdapter;
+import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
 
-//import assertionRegression.featureExtractors.AdjEndingFeatureExtractor;
-import assertionRegression.featureExtractors.CorpusFrequency;
 import assertionRegression.featureExtractors.NRCSentiment;
-import assertionRegression.featureExtractors.SocherSentimentFE;
 import assertionRegression.featureExtractors.WordEmbeddingDFE;
 import assertionRegression.io.AssertionReader;
-import assertionRegression.io.CrossValidationReport;
-import assertionRegression.preprocessing.StanfordSentimentAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
 import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import weka.classifiers.functions.SMOreg;
-import weka.classifiers.rules.ZeroR;
-import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
 
 
 public class AgreementRegression_FeatureSearch implements Constants {
@@ -89,29 +57,29 @@ public class AgreementRegression_FeatureSearch implements Constants {
 		
 		
 		TcFeatureSet featureSetStyle = new TcFeatureSet(
-				TcFeatureFactory.create(ExclamationFeatureExtractor.class),
-				TcFeatureFactory.create(LongWordsFeatureExtractor.class),
-				TcFeatureFactory.create(ModalVerbsFeatureExtractor.class),
-				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
-				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
-				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-				TcFeatureFactory.create(NrOfTokens.class),
+//				TcFeatureFactory.create(ExclamationFeatureExtractor.class),
+//				TcFeatureFactory.create(LongWordsFeatureExtractor.class),
+//				TcFeatureFactory.create(ModalVerbsFeatureExtractor.class),
+//				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
+//				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
+//				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
+//				TcFeatureFactory.create(NumberOfTokensRatio.class),
 //				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
 				TcFeatureFactory.create(QuestionsRatioFeatureExtractor.class)
 		);
 		
 		TcFeatureSet featureSetLength = new TcFeatureSet(
-				TcFeatureFactory.create(NrOfTokens.class)
+//				TcFeatureFactory.create(NumberOfTokensRatio.class)
 		);
 
 		TcFeatureSet featureSetUniGrams = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 1)
 				
 		);
 		TcFeatureSet featureSetTriGrams = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 3)
 				
@@ -119,14 +87,14 @@ public class AgreementRegression_FeatureSearch implements Constants {
 		
 		
 		TcFeatureSet trigramsReduced = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						300, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 3)
 				
 		);
 		
 		TcFeatureSet featureSet5Grams = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 5)
 				
@@ -143,7 +111,7 @@ public class AgreementRegression_FeatureSearch implements Constants {
 		
 
 		TcFeatureSet sentiment_trigrams = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 
@@ -153,7 +121,7 @@ public class AgreementRegression_FeatureSearch implements Constants {
 						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"));
 		
 		TcFeatureSet sentiment_fourgrams = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 
@@ -162,35 +130,36 @@ public class AgreementRegression_FeatureSearch implements Constants {
 						NRCSentiment.PARAM_PREDICTION_FILE_SCORES,
 						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"));
 		
+		TcFeatureSet featureSetEmbeddings = new TcFeatureSet(TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
+				embeddings[1]));
 		
 		TcFeatureSet featureSetFull = new TcFeatureSet(
 
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
-				TcFeatureFactory.create(LuceneCharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(CharacterNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						500, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX),
 				TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION,
 						embeddings[1]),
-				TcFeatureFactory.create(CorpusFrequency.class, CorpusFrequency.PARAM_CORPUS_FOLDER,
-						baseDir + "/UCI/statuses/cleaned"),
-				TcFeatureFactory.create(NRCSentiment.class, NRCSentiment.PARAM_PREDICTION_FILE_CLASSES,
-						baseDir + "/UCI/sentimentPredictions/assertions-preds.txt",
-						NRCSentiment.PARAM_PREDICTION_FILE_SCORES,
-						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"),TcFeatureFactory.create(ExclamationFeatureExtractor.class),
-				TcFeatureFactory.create(LongWordsFeatureExtractor.class),
-				TcFeatureFactory.create(ModalVerbsFeatureExtractor.class),
-				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
-				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
-				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
-				TcFeatureFactory.create(NrOfTokens.class),
+//				TcFeatureFactory.create(NRCSentiment.class, NRCSentiment.PARAM_PREDICTION_FILE_CLASSES,
+//						baseDir + "/UCI/sentimentPredictions/assertions-preds.txt",
+//						NRCSentiment.PARAM_PREDICTION_FILE_SCORES,
+//						baseDir + "/UCI/sentimentPredictions/assertions-preds-scores.txt"),TcFeatureFactory.create(ExclamationFeatureExtractor.class),
+//				TcFeatureFactory.create(LongWordsFeatureExtractor.class),
+//				TcFeatureFactory.create(ModalVerbsFeatureExtractor.class),
+//				TcFeatureFactory.create(AvgNrOfCharsPerToken.class),
+//				TcFeatureFactory.create(POSRatioFeatureExtractor.class),
+//				TcFeatureFactory.create(TypeTokenRatioFeatureExtractor.class),
+//				TcFeatureFactory.create(NumberOfTokensRatio.class),
 //				TcFeatureFactory.create(AdjEndingFeatureExtractor.class),
 				TcFeatureFactory.create(QuestionsRatioFeatureExtractor.class)
 
 		);
 		variants.put("style", featureSetStyle);
 		variants.put("unigrams", featureSetUniGrams);
+		variants.put("embeddings", featureSetEmbeddings);
 		variants.put("trigrams", featureSetTriGrams);
 		variants.put("sentiment", featureSetSentiment);
 		variants.put("5grams", featureSet5Grams);
@@ -198,7 +167,6 @@ public class AgreementRegression_FeatureSearch implements Constants {
 		variants.put("length", featureSetLength);
 		variants.put("sentimentTrigrams", sentiment_trigrams);
 		variants.put("sentimentTrigrams", sentiment_fourgrams);
-		variants.put("reducedTrigrams", trigramsReduced);
 		
 
 		for(String featureSet: variants.keySet()) {
@@ -211,12 +179,11 @@ public class AgreementRegression_FeatureSearch implements Constants {
 	}
 
 	private void runCrossValidation(ParameterSpace pSpace, String title) throws Exception {
-		ExperimentCrossValidation batch = new ExperimentCrossValidation(title, LibsvmAdapter.class, NUM_FOLDS);
+		ExperimentCrossValidation batch = new ExperimentCrossValidation(title, NUM_FOLDS);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-		batch.addReport(CrossValidationReport.class);
 
 		// Run
 		Lab.getInstance().run(batch);
@@ -231,12 +198,16 @@ public class AgreementRegression_FeatureSearch implements Constants {
 				);
 	}
 
-	private ParameterSpace setupCrossValidation(String path, String target, TcFeatureSet featureSetStyle) throws ResourceInitializationException {
+	private ParameterSpace setupCrossValidation(String path, String target, TcFeatureSet featureSet) throws ResourceInitializationException {
 		Map<String, Object> dimReaders = getDimReaders(path, target);
-		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-                Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION , "-c", "100"}));
+		 Dimension<List<Object>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
+	                Arrays.asList(
+	                        new Object[] { new LibsvmAdapter(), "-s", "4" , "-c", "100"}));
+		
+//		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
+//                Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION , "-c", "100"}));
 
-		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSetStyle);
+		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
 		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimFeatureSets, dimClassificationArgs);
 
@@ -244,7 +215,7 @@ public class AgreementRegression_FeatureSearch implements Constants {
 	}
 
 	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders, Dimension<TcFeatureSet> dimFeatureSets,
-			Dimension<List<String>> dimClassificationArgs) {
+			Dimension<List<Object>> dimClassificationArgs) {
 		return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_LEARNING_MODE, LM_REGRESSION), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
 				dimFeatureSets, dimClassificationArgs);

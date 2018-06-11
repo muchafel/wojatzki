@@ -21,6 +21,7 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.FeatureType;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import assertionRegression.wordembeddings.WordEmbeddingHelper;
@@ -53,7 +54,7 @@ public class WordEmbeddingDFE extends FeatureExtractorResource_ImplBase implemen
 	private Set<Feature> createFeatures(List<Double> averagedVector) {
 		Set<Feature> featList = new HashSet<Feature>();
 		for(int i=0; i< averagedVector.size(); i++){
-			featList.add(new Feature("embeddingDimension_"+i, averagedVector.get(i)));
+			featList.add(new Feature("embeddingDimension_"+i, averagedVector.get(i), FeatureType.NUMERIC));
 		}
 		return featList;
 	}

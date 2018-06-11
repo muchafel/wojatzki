@@ -34,7 +34,6 @@ import org.dkpro.tc.ml.report.ScatterplotReport;
 import assertionRegression.io.AssertionReader;
 import assertionRegression.io.AssertionSimilarityPairReader;
 import assertionRegression.io.AssertionSimilarityPairReader_deep;
-import assertionRegression.io.CrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
@@ -50,24 +49,23 @@ public class DeepRegression_Similarity implements Constants{
 		System.out.println("DKPRO_HOME: " + baseDir);
 
 		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList(
-//				"assertionSimilarity_climateChange"
+//				"Climate Change", 
+//				"Vegetarian & Vegan Lifestyle",
+//				"Black Lives Matter", 
+//				"Creationism in school curricula", 
+//				"Foreign Aid", 
+//				"Gender Equality", 
+//				"Gun Rights",
+//				"Legalization of Marijuana", 
+//				"Legalization of Same-sex Marriage", 
+//				"Mandatory Vaccination", 
+//				"Media Bias",
+//				"Obama Care -- Affordable Health Care Act",
+//				"US Engagement in the Middle East",
+				"US Electoral System"
 //				,
-//				"assertionSimilarity_aid",
-//				"assertionSimilarity_blm",  
-//				"assertionSimilarity_creationism",
-//				"assertionSimilarity_electoralSystem", 
-//				"assertionSimilarity_gender", 
-				"assertionSimilarity_gunRights",
-				"assertionSimilarity_immigration", 
-				"assertionSimilarity_marijuana", 
-				"assertionSimilarity_mediaBias",
-				"assertionSimilarity_middleEast"
-//				,
-//				"assertionSimilarity_obamacare", 
-//				"assertionSimilarity_sameSex",
-//				"assertionSimilarity_terror", 
-//				"assertionSimilarity_vaccination", 
-//				"assertionSimilarity_veggie"
+//				"US Immigration", 
+//				"War on Terrorism"
 				));
 		
 //		String[] pythonScripts = new String[] { 
@@ -109,6 +107,10 @@ public class DeepRegression_Similarity implements Constants{
 			int i=1;
 			for (String script : pythonScripts) {
 				ParameterSpace pSpace = getParameterSpace(baseDir + "/UCI/similarityMatrices/" + simil + ".tsv", "Agreement",script, embeddings[0]);
+				simil=simil.replaceAll("[^A-Za-z0-9 ]", "");
+				simil=simil.replace(" ", "");
+				System.out.println(simil);
+				
 				experiment.runTrainTest(pSpace, simil+"_"+String.valueOf(i));
 				i++;
 			}
@@ -142,10 +144,10 @@ public class DeepRegression_Similarity implements Constants{
         DeepLearningExperimentCrossValidation batch = new DeepLearningExperimentCrossValidation(name,KerasAdapter.class,NUM_FOLDS);
         batch.setPreprocessing(getPreprocessing());
         batch.setParameterSpace(pSpace);
-        batch.addReport(BatchCrossValidationReport.class);        
+//        batch.addReport(BatchCrossValidationReport.class);        
         batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 		batch.addReport(Id2OutcomeReport.class);
-        batch.addReport(ScatterplotReport.class);
+//        batch.addReport(ScatterplotReport.class);
 
         // Run
         Lab.getInstance().run(batch);

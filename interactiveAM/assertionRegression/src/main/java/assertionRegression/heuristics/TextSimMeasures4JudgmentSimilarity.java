@@ -30,73 +30,101 @@ public class TextSimMeasures4JudgmentSimilarity {
 		System.out.println("DKPRO_HOME: " + baseDir);
 		
 		ArrayList<TextSimilarityMeasure> measures = new ArrayList<TextSimilarityMeasure>(Arrays.asList(
-				new WordNGramJaccardMeasure(), new EmbeddingSimilarityMeasure(baseDir + "/UCI/data/pruned/wiki.en.vec"),
-				new GreedyStringTiling(5), new LongestCommonSubstringComparator()));
+//				new WordNGramJaccardMeasure(1),
+//				new WordNGramJaccardMeasure(2),
+//				new WordNGramJaccardMeasure(3),
+//				new WordNGramJaccardMeasure(4)
+//				, 
+//				new EmbeddingSimilarityMeasure(baseDir + "/UCI/data/pruned/wiki.en.vec"),
+//				new GreedyStringTiling(5),
+				new GreedyStringTiling(4),
+				new GreedyStringTiling(3),
+				new GreedyStringTiling(2)
+//				new LongestCommonSubstringComparator()
+				));
 		
 //		TextSimilarityMeasure measure= new WordNGramJaccardMeasure();
 		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList(
-				"assertionSimilarity_climateChange"
+				"Climate Change"
+				, 
+				"Vegetarian & Vegan Lifestyle"
 				,
-				"assertionSimilarity_aid",
-				"assertionSimilarity_blm",  
-				"assertionSimilarity_creationism",
-				"assertionSimilarity_electoralSystem", 
-				"assertionSimilarity_gender", 
-				"assertionSimilarity_gunRights",
-				"assertionSimilarity_immigration", 
-				"assertionSimilarity_marijuana", 
-				"assertionSimilarity_mediaBias",
-				"assertionSimilarity_middleEast",
-				"assertionSimilarity_obamacare", 
-				"assertionSimilarity_sameSex",
-				"assertionSimilarity_terror", 
-				"assertionSimilarity_vaccination", 
-				"assertionSimilarity_veggie"
+				"Black Lives Matter"
+				, 
+				"Creationism in school curricula"
+				, 
+				"Foreign Aid"
+				, 
+				"Gender Equality"
+				, 
+				"Gun Rights"
+				,
+				"Legalization of Marijuana"
+				, 
+				"Legalization of Same-sex Marriage"
+				, 
+				"Mandatory Vaccination"
+				, 
+				"Media Bias"
+				,
+				"Obama Care -- Affordable Health Care Act"
+				,
+				"US Engagement in the Middle East"
+				,
+				"US Electoral System"
+				,
+				"US Immigration"
+				, 
+				"War on Terrorism"
 				));
 		
 		
 
 
-		for(String simil:similarityMatrixes) {
-//			List<Double> gold_array_all= new ArrayList();
-//			List<Double> predicted_array_all= new ArrayList();
-			System.out.println(simil+ " ----");
-			CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
-	                AssertionSimilarityPairReader_deep.class, AssertionSimilarityPairReader_deep.PARAM_SOURCE_LOCATION,baseDir + "/UCI/similarityMatrices/" + simil + ".tsv");
+	
 			
-			List<Double> gold_array= new ArrayList();
-			List<Double> predicted_array= new ArrayList();
+			
 			for (TextSimilarityMeasure measure: measures) {
-				for (JCas jcas : new JCasIterable(reader)) {
-					String[] text=jcas.getDocumentText().split(" \\$ ");
-//					System.out.println(text[0]);
-//					System.out.println(text[1]);
-//					System.out.println(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
-					double gold=Double.valueOf(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
-					double sim = measure.getSimilarity(text[0].split(" "), text[1].split(" "));
-					gold_array.add(gold);
-					predicted_array.add(sim);
-//					gold_array_all.add(gold);
-//					predicted_array_all.add(sim);
-//					System.out.println(sim+"\t"+gold);
+				System.out.println("new ME");
+				for(String simil:similarityMatrixes) {
+					List<Double> gold_array= new ArrayList();
+					List<Double> predicted_array= new ArrayList();
+//					List<Double> gold_array_all= new ArrayList();
+//					List<Double> predicted_array_all= new ArrayList();
+//					System.out.println(simil+ " ----");
+					CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
+			                AssertionSimilarityPairReader_deep.class, AssertionSimilarityPairReader_deep.PARAM_SOURCE_LOCATION,baseDir + "/UCI/similarityMatrices/" + simil + ".tsv");
+					for (JCas jcas : new JCasIterable(reader)) {
+						String[] text=jcas.getDocumentText().split(" \\$ ");
+//						System.out.println(text[0]);
+//						System.out.println(text[1]);
+//						System.out.println(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
+						double gold=Double.valueOf(JCasUtil.selectSingle(jcas, TextClassificationOutcome.class).getOutcome());
+						double sim = measure.getSimilarity(text[0].split(" "), text[1].split(" "));
+						gold_array.add(gold);
+						predicted_array.add(sim);
+	//					gold_array_all.add(gold);
+	//					predicted_array_all.add(sim);
+	//					System.out.println(sim+"\t"+gold);
+					}
+					double[] gold=toPrimitive(gold_array);
+					double[] predicted=toPrimitive(predicted_array);
+					double corr = new PearsonsCorrelation().correlation(gold,predicted);
+					double rounded = Math.round(corr*100.0)/100.0;
+					System.out.println(rounded);
 				}
-				double[] gold=toPrimitive(gold_array);
-				double[] predicted=toPrimitive(predicted_array);
+//				System.out.println("----");
+//				double[] gold_all=toPrimitive(gold_array_all);
+//				double[] predicted_all=toPrimitive(predicted_array_all);
 				
-				double corr = new PearsonsCorrelation().correlation(gold,predicted);
-				System.out.println(corr);
-			}
-//			System.out.println("----");
-//			double[] gold_all=toPrimitive(gold_array_all);
-//			double[] predicted_all=toPrimitive(predicted_array_all);
-			
-//			double corr_all = new PearsonsCorrelation().correlation(gold_all,predicted_all);
-//			System.out.println(corr_all);
-			
-			
+//				double corr_all = new PearsonsCorrelation().correlation(gold_all,predicted_all);
+//				System.out.println(corr_all);
+				
+				
 
-//			correlations.add(corr);
-		}
+//				correlations.add(corr);
+			}
+
 		
 
 	}

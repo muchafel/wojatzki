@@ -17,6 +17,7 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.FeatureType;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
@@ -71,18 +72,18 @@ implements FeatureExtractor{
 		DocumentMetaData md= JCasUtil.selectSingle(jcas, DocumentMetaData.class);
 		String predictedClass=id2Class.get(md.getDocumentId());
 		if(predictedClass.equals("neutral")) {
-			featList.add(new Feature("PredcitedSentimentClass",0));
+			featList.add(new Feature("PredcitedSentimentClass",0, FeatureType.NUMERIC));
 		}else if(predictedClass.equals("negative")){
-			featList.add(new Feature("PredcitedSentimentClass",-1));
+			featList.add(new Feature("PredcitedSentimentClass",-1, FeatureType.NUMERIC));
 		}else if(predictedClass.equals("positive")){
-			featList.add(new Feature("PredcitedSentimentClass",1));
+			featList.add(new Feature("PredcitedSentimentClass",1, FeatureType.NUMERIC));
 		}
 		
 		String scoreStrings=id2Score.get(md.getDocumentId());
 		String[] scores=scoreStrings.split(" ");
-		featList.add(new Feature("sentiment_positive_score",Double.valueOf(scores[0].split(":")[1])));
-		featList.add(new Feature("sentiment_negative_score",Double.valueOf(scores[1].split(":")[1])));
-		featList.add(new Feature("sentiment_neutral_score",Double.valueOf(scores[2].split(":")[1])));
+		featList.add(new Feature("sentiment_positive_score",Double.valueOf(scores[0].split(":")[1]), FeatureType.NUMERIC));
+		featList.add(new Feature("sentiment_negative_score",Double.valueOf(scores[1].split(":")[1]), FeatureType.NUMERIC));
+		featList.add(new Feature("sentiment_neutral_score",Double.valueOf(scores[2].split(":")[1]), FeatureType.NUMERIC));
 		
 		
 		return featList;

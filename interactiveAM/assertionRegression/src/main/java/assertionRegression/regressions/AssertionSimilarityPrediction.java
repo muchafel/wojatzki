@@ -21,7 +21,6 @@ import org.dkpro.lab.task.ParameterSpace;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
-import org.dkpro.tc.features.ngram.LuceneNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
 import org.dkpro.tc.features.pair.core.length.DiffNrOfTokensPairFeatureExtractor;
 import org.dkpro.tc.features.pair.core.ngram.LuceneNGramCPFE;
@@ -31,13 +30,10 @@ import org.dkpro.tc.features.pair.similarity.SimilarityPairFeatureExtractor;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentTrainTest;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
-import org.dkpro.tc.ml.libsvm.report.LibsvmOutcomeIdReport;
 import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
-import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
 
 import assertionRegression.io.AssertionSimilarityPairReader;
-import assertionRegression.io.CrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
@@ -71,12 +67,34 @@ public class AssertionSimilarityPrediction  implements Constants
     	String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
     	
-		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList("assertionSimilarity_aid",
-				"assertionSimilarity_blm", "assertionSimilarity_climateChange", "assertionSimilarity_creationism",
-				"assertionSimilarity_electoralSystem", "assertionSimilarity_gender", "assertionSimilarity_gunRights",
-				"assertionSimilarity_immigration", "assertionSimilarity_marijuana", "assertionSimilarity_mediaBias",
-				"assertionSimilarity_middleEast", "assertionSimilarity_obamacare", "assertionSimilarity_sameSex",
-				"assertionSimilarity_terror", "assertionSimilarity_vaccination", "assertionSimilarity_veggie.tsv"));
+		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList(
+//				"Climate Change", 
+//				"Vegetarian & Vegan Lifestyle",
+//				"Black Lives Matter", 
+//				"Creationism in school curricula", 
+//				"Foreign Aid", 
+//				"Gender Equality", 
+//				"Gun Rights",
+//				"Legalization of Marijuana", 
+//				"Legalization of Same-sex Marriage", 
+//				"Mandatory Vaccination", 
+//				"Media Bias",
+//				"Obama Care -- Affordable Health Care Act",
+				"US Engagement in the Middle East",
+//				"US Electoral System"
+//				,
+				"US Immigration"
+//				"War on Terrorism"
+				));
+		
+		
+//		ArrayList<String> similarityMatrixes = new ArrayList<String>(Arrays.asList("assertionSimilarity_aid",
+//				"assertionSimilarity_blm", "assertionSimilarity_climateChange", "assertionSimilarity_creationism",
+//				"assertionSimilarity_electoralSystem", "assertionSimilarity_gender", "assertionSimilarity_gunRights",
+//				"assertionSimilarity_immigration", "assertionSimilarity_marijuana", "assertionSimilarity_mediaBias",
+//				"assertionSimilarity_middleEast", "assertionSimilarity_obamacare", "assertionSimilarity_sameSex",
+//				"assertionSimilarity_terror", "assertionSimilarity_vaccination", "assertionSimilarity_veggie.tsv"));
+		
 		TcFeatureSet featureSet = new TcFeatureSet(
 //			 TcFeatureFactory.create(GreedyStringTilingFeatureExtractor.class)
 //				TcFeatureFactory.create(SimilarityPairFeatureExtractor.class,
@@ -103,7 +121,10 @@ public class AssertionSimilarityPrediction  implements Constants
 			ParameterSpace pSpace = getParameterSpace(featureSet,
 					baseDir + "/UCI/similarityMatrices/" + simil + ".tsv");
 			AssertionSimilarityPrediction experiment = new AssertionSimilarityPrediction();
-			experiment.runCrossValidation(pSpace, simil);
+			simil=simil.replaceAll("[^A-Za-z0-9 ]", "");
+			simil=simil.replace(" ", "");
+			System.out.println(simil);
+			experiment.runCrossValidation(pSpace, simil.replaceAll("/[^A-Za-z0-9]/", ""));
 		}
 		
 //      
@@ -120,9 +141,10 @@ public class AssertionSimilarityPrediction  implements Constants
         dimReaders.put(DIM_READER_TRAIN, reader);
 
 
-        Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-                Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION , "-c", "100"}));
-
+        Dimension<List<Object>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
+                Arrays.asList(
+                        new Object[] { new LibsvmAdapter(), "-s", "4" , "-c", "100"}));
+        
         Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
         ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
@@ -135,17 +157,17 @@ public class AssertionSimilarityPrediction  implements Constants
 
 	protected void runCrossValidation(ParameterSpace pSpace, String title) throws Exception {
 
-		ExperimentCrossValidation batch = new ExperimentCrossValidation("sim_"+title, LibsvmAdapter.class, NUM_FOLDS);
+		ExperimentCrossValidation batch = new ExperimentCrossValidation("sim_"+title,  NUM_FOLDS);
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
 		batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
 //		batch.addReport(LibsvmOutcomeIdReport.class);
 		
 //		batch.addReport(CrossValidationReport.class);
-		batch.addReport(BatchCrossValidationReport.class);
+//		batch.addReport(BatchCrossValidationReport.class);
 
 		batch.addReport(Id2OutcomeReport.class);
-		batch.addReport(ScatterplotReport.class);
+//		batch.addReport(ScatterplotReport.class);
 
 		// Run
 		Lab.getInstance().run(batch);

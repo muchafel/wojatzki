@@ -37,13 +37,15 @@ public class PredictAggregatedAgreement_SimGold {
 				AssertionReader.PARAM_SOURCE_LOCATION, baseDir+"/UCI/data/data.tsv", AssertionReader.PARAM_LANGUAGE, "en",
 				AssertionReader.PARAM_TARGETCLASS, "Agreement");
 		
-		
-		//"US Electoral System"
-		ArrayList<String> issues = new ArrayList<String>(Arrays.asList("Climate Change", "Vegetarian & Vegan Lifestyle",
+//		
+		ArrayList<String> issues = new ArrayList<String>(Arrays.asList(
+				"Climate Change", "Vegetarian & Vegan Lifestyle",
 				"Black Lives Matter", "Creationism in school curricula", "Foreign Aid", "Gender Equality", "Gun Rights",
 				"Legalization of Marijuana", "Legalization of Same-sex Marriage", "Mandatory Vaccination", "Media Bias",
 				"Obama Care -- Affordable Health Care Act", "US Engagement in the Middle East",
-				"US Immigration", "War on Terrorism"));
+				"US Immigration", "War on Terrorism", 
+				"US Electoral System"
+				));
 
 //		String issueToTest="Climate Change";
 //		String issueToTest="Vegetarian & Vegan Lifestyle";
@@ -63,12 +65,14 @@ public class PredictAggregatedAgreement_SimGold {
 //		String issueToTest="War on Terrorism";
 		
 		
-	
+//		for(String issueToTest: issues) {
+//			System.out.println(issueToTest);
 		for (int j=1; j<=51;j+=1) { 
 			List<Double> all_correlations= new ArrayList<>();
 			List<Double> all_gold_array= new ArrayList<>();
 			List<Double> all_predicted_array= new ArrayList<>();
 			for(String issueToTest: issues) {
+//			for (int j=1; j<=51;j+=1) { 
 				
 				
 				LinkedHashMap<String, Double> aggregatedAssertions= new LinkedHashMap<>();
@@ -82,7 +86,7 @@ public class PredictAggregatedAgreement_SimGold {
 					}
 				}
 				
-				AggregatedJudgmentSimilarityPredictor_Sim mostSimilarAssertionPredictor_learned= new AggregatedJudgmentSimilarityPredictor_Sim("src/main/resources/rawMatrices/"+issueToTest+".tsv",new ArrayList<String>(aggregatedAssertions.keySet()),issueToTest);
+				AggregatedJudgmentSimilarityPredictor_Sim mostSimilarAssertionPredictor_learned= new AggregatedJudgmentSimilarityPredictor_Sim(baseDir +"/UCI/rawMatrices/"+issueToTest+".tsv",new ArrayList<String>(aggregatedAssertions.keySet()),issueToTest);
 				
 				List<Double> correlations= new ArrayList<>();
 //				for (int j=1; j<=12;j+=1) { 
@@ -112,7 +116,7 @@ public class PredictAggregatedAgreement_SimGold {
 					double[] predicted=toPrimitive(predicted_array);
 					double corr = new PearsonsCorrelation().correlation(gold,predicted);
 					correlations.add(corr);
-//				    System.out.println(issueToTest+"\t"+j+"\t"+corr);
+//				    System.out.println(corr);
 //				}
 //				System.out.println(issueToTest+ " "+StringUtils.join(correlations,"\t"));
 			}
@@ -121,7 +125,7 @@ public class PredictAggregatedAgreement_SimGold {
 			
 			double[] predicted=toPrimitive(all_predicted_array);
 			double corr = new PearsonsCorrelation().correlation(gold,predicted);
-		    System.out.println(j+"\t"+corr);
+		    System.out.println(corr);
 		}
 		
 		

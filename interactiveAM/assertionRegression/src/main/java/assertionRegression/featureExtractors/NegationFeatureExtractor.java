@@ -13,6 +13,7 @@ import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.Feature;
 import org.dkpro.tc.api.features.FeatureExtractor;
 import org.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
+import org.dkpro.tc.api.features.FeatureType;
 import org.dkpro.tc.api.type.TextClassificationTarget;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -62,10 +63,10 @@ implements FeatureExtractor{
 		}
 		
 		Set<Feature> featList = new HashSet<Feature>();
-		featList.add(new Feature("notRatio",(double)countOfNegativeWords/tokens.size()));
-		featList.add(new Feature("negationWordsRatio",(double)countOfNot/tokens.size()));
-		featList.add(new Feature("negativeAdverbsRatio",(double)countOfNegativeAdverbs/tokens.size()));
-		featList.add(new Feature("negativeVerbs",(double)countOfNegativeVerbs/tokens.size()));
+		featList.add(new Feature("notRatio",(double)countOfNegativeWords/tokens.size(), FeatureType.NUMERIC));
+		featList.add(new Feature("negationWordsRatio",(double)countOfNot/tokens.size(), FeatureType.NUMERIC));
+		featList.add(new Feature("negativeAdverbsRatio",(double)countOfNegativeAdverbs/tokens.size(), FeatureType.NUMERIC));
+		featList.add(new Feature("negativeVerbs",(double)countOfNegativeVerbs/tokens.size(), FeatureType.NUMERIC));
 //		System.out.println((double)countOfNegativeWords/tokens.size()+ " "+(double)countOfNot/tokens.size()+" "+(double)countOfNegativeAdverbs/tokens.size());
 		
 		return featList;

@@ -1,10 +1,7 @@
 package assertionRegression.regressions;
 
-import static java.util.Arrays.asList;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,59 +15,19 @@ import org.dkpro.lab.Lab;
 import org.dkpro.lab.task.BatchTask.ExecutionPolicy;
 import org.dkpro.lab.task.Dimension;
 import org.dkpro.lab.task.ParameterSpace;
-import org.dkpro.tc.api.exception.TextClassificationException;
 import org.dkpro.tc.api.features.TcFeatureFactory;
 import org.dkpro.tc.api.features.TcFeatureSet;
 import org.dkpro.tc.core.Constants;
-import org.dkpro.tc.features.length.AvgNrOfCharsPerToken;
-import org.dkpro.tc.features.length.NrOfTokens;
-import org.dkpro.tc.features.ngram.LuceneCharacterNGram;
-import org.dkpro.tc.features.ngram.LuceneNGram;
-import org.dkpro.tc.features.ngram.LucenePOSNGram;
-import org.dkpro.tc.features.ngram.LucenePhoneticNGram;
+import org.dkpro.tc.features.ngram.WordNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
-import org.dkpro.tc.features.style.AdjectiveEndingFeatureExtractor;
-import org.dkpro.tc.features.style.ExclamationFeatureExtractor;
-import org.dkpro.tc.features.style.LongWordsFeatureExtractor;
-import org.dkpro.tc.features.style.ModalVerbsFeatureExtractor;
-import org.dkpro.tc.features.style.TokenRatioFeatureExtractor;
-import org.dkpro.tc.features.style.TypeTokenRatioFeatureExtractor;
-import org.dkpro.tc.features.syntax.POSRatioFeatureExtractor;
-import org.dkpro.tc.features.syntax.QuestionsRatioFeatureExtractor;
-import org.dkpro.tc.features.syntax.SuperlativeRatioFeatureExtractor;
-import org.dkpro.tc.features.twitter.EmoticonRatio;
-import org.dkpro.tc.features.twitter.NumberOfHashTags;
-import org.dkpro.tc.features.window.CaseExtractor;
-import org.dkpro.tc.ml.ExperimentCrossValidation;
 import org.dkpro.tc.ml.ExperimentTrainTest;
-import org.dkpro.tc.ml.weka.WekaClassificationAdapter;
-import org.dkpro.tc.ml.weka.WekaRegressionAdapter;
-
-import assertionRegression.featureExtractors.CorpusFrequency;
-import assertionRegression.featureExtractors.NRCSentiment;
-import assertionRegression.featureExtractors.SocherSentimentFE;
-import assertionRegression.featureExtractors.WordEmbeddingDFE;
-import assertionRegression.io.AssertionIssueSpecificReader;
-import assertionRegression.io.AssertionIssueSpecificReaderTrainTest;
-import assertionRegression.io.AssertionReader;
-import assertionRegression.io.CrossValidationReport;
-import assertionRegression.io.FoldReport;
-import assertionRegression.preprocessing.StanfordSentimentAnnotator;
-import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
-import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.arktools.ArktweetTokenizer;
-import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import weka.classifiers.functions.SMOreg;
-import weka.classifiers.rules.ZeroR;
-import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
-import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.BatchTrainTestReport;
-import org.dkpro.tc.ml.report.InnerBatchReport;
-import org.dkpro.tc.ml.report.ScatterplotReport;
+
+import assertionRegression.featureExtractors.NRCSentiment;
+import assertionRegression.io.AssertionIssueSpecificReaderTrainTest;
+import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
+import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
 public class AgreementRegression_LeaveOneIssueOut implements Constants {
 
@@ -109,7 +66,7 @@ public class AgreementRegression_LeaveOneIssueOut implements Constants {
 		
 		
 		TcFeatureSet featureSet = new TcFeatureSet(
-				TcFeatureFactory.create(LuceneNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
+				TcFeatureFactory.create(WordNGram.class, NGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K,
 						N_GRAM_MAXCANDIDATES, NGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN,
 						NGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
 
@@ -136,7 +93,7 @@ public class AgreementRegression_LeaveOneIssueOut implements Constants {
 	}
 
 	private void runTrainTest(ParameterSpace pSpace, String title, String issue) throws Exception {
-		ExperimentTrainTest batch = new ExperimentTrainTest(title+""+issue, LibsvmAdapter.class);
+		ExperimentTrainTest batch = new ExperimentTrainTest(title+""+issue);
 
 		batch.setPreprocessing(getPreprocessing());
 		batch.setParameterSpace(pSpace);
@@ -161,9 +118,9 @@ public class AgreementRegression_LeaveOneIssueOut implements Constants {
 
 	private ParameterSpace setupCrossValidation(String path, String target, TcFeatureSet featureSet, String issue) throws ResourceInitializationException {
 		Map<String, Object> dimReaders = getDimReaders(path, target,issue);
-		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-				Arrays.asList(new String[] { "-s", LibsvmAdapter.PARAM_SVM_TYPE_NU_SVR_REGRESSION, "-c", "100" }));
-
+		Dimension<List<Object>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
+                Arrays.asList(
+                        new Object[] { new LibsvmAdapter(), "-s", "4" , "-c", "100"}));
 		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
 		ParameterSpace pSpace = bundleParameterSpace(dimReaders, dimFeatureSets, dimClassificationArgs);
@@ -172,7 +129,7 @@ public class AgreementRegression_LeaveOneIssueOut implements Constants {
 	}
 
 	private ParameterSpace bundleParameterSpace(Map<String, Object> dimReaders, Dimension<TcFeatureSet> dimFeatureSets,
-			Dimension<List<String>> dimClassificationArgs) {
+			Dimension<List<Object>> dimClassificationArgs) {
 		return new ParameterSpace(Dimension.createBundle("readers", dimReaders),
 				Dimension.create(DIM_LEARNING_MODE, LM_REGRESSION), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT),
 				dimFeatureSets, dimClassificationArgs,Dimension.create( DIM_CROSS_VALIDATION_MANUAL_FOLDS, true));

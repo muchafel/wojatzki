@@ -61,12 +61,13 @@ public class AssertionReader extends JCasCollectionReader_ImplBase {
 	public void getNext(JCas aJCas) throws IOException, CollectionException {
 		DocumentMetaData dmd = new DocumentMetaData(aJCas);
 		dmd.setDocumentTitle("");
-//		dmd.setDocumentId(String.valueOf(i++));
-		System.out.println(i++);
+		dmd.setDocumentId(String.valueOf(i++));
+//		System.out.println(i++);
 		dmd.setDocumentId(id);
 		dmd.addToIndexes();
 
 		aJCas.setDocumentText(text);
+//		System.out.println(text);
 		aJCas.setDocumentLanguage(language);
 
 		TextClassificationOutcome o = new TextClassificationOutcome(aJCas, 0, aJCas.getDocumentText().length());

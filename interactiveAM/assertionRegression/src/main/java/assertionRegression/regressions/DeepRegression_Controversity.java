@@ -30,7 +30,6 @@ import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 
 import assertionRegression.io.AssertionReader;
-import assertionRegression.io.CrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import weka.classifiers.functions.SMOreg;
