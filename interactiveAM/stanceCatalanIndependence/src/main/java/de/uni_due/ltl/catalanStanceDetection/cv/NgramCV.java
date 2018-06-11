@@ -55,6 +55,7 @@ public class NgramCV implements Constants{
 
 	public static TcFeatureSet featureSet = new TcFeatureSet(
 			TcFeatureFactory.create(LuceneNGram.class,LuceneNGram.PARAM_NGRAM_MAX_N,3,LuceneNGram.PARAM_NGRAM_MIN_N,1, LuceneNGram.PARAM_NGRAM_USE_TOP_K,3000),
+			
 //			TcFeatureFactory.create(LuceneCharacterNGram.class,LuceneCharacterNGram.PARAM_NGRAM_MAX_N,4,LuceneCharacterNGram.PARAM_NGRAM_MIN_N,2, LuceneCharacterNGram.PARAM_NGRAM_USE_TOP_K,3000)
 //			,
 			TcFeatureFactory.create(WordEmbeddingDFE.class, WordEmbeddingDFE.PARAM_WORDEMBEDDINGLOCATION, "src/main/resources/prunedEmbeddings_wiki."+LANGUAGE_CODE+".vec")

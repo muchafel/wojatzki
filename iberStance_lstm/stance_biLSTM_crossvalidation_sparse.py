@@ -25,7 +25,7 @@ for file in leave_out_Files:
     #Hyperparams (other paramter are configured according to input length etc)
     n_hidden = 100
     n_out = 3
-    lstm_units=138
+    lstm_units=50
     numberEpochs=5
     activation='tanh'
     optimizer='nadam'

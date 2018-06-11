@@ -34,10 +34,10 @@ public class CanabisDataWriter {
 		}
 		System.out.println(headerBuilder.toString().split("\t").length);
 		headerBuilder.append("\n");
-		FileUtils.write(file, headerBuilder.toString(), true);
+		FileUtils.write(file, headerBuilder.toString());
 		for(Participant p: data.getParticipants()){
 			String row=((CanabisParticipant)p).print()+"\t"+data.getStringValuesForParticipant(p)+"\n";
-			FileUtils.write(file, row, true);
+			FileUtils.write(file, row);
 		}
 		
 	}

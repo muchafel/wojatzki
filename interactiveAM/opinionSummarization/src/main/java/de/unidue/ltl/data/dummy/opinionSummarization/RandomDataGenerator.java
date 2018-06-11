@@ -48,7 +48,7 @@ public class RandomDataGenerator {
 			i++;
 		}
 		System.out.println(statements.size());
-		return new OpinionSummarizationData(participants,statements,valueMatrix);
+		return new OpinionSummarizationData(participants,statements,valueMatrix, null);
 	}
 
 	private double randomValue() {

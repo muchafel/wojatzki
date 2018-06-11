@@ -60,10 +60,10 @@ public class CatalanStanceReader extends JCasResourceCollectionReader_ImplBase{
 
 	    public static final String ENCODING_AUTO = "auto";
 
-	    private BufferedReader br;
-
-	    private List<BufferedReader> bfs = new ArrayList<BufferedReader>();
-	    private int currentReader = 0;
+//	    private BufferedReader br;
+//
+//	    private List<BufferedReader> bfs = new ArrayList<BufferedReader>();
+//	    private int currentReader = 0;
 
 	    private List<String> lines= new ArrayList<>();
 	    protected Iterator<String> linesIt;

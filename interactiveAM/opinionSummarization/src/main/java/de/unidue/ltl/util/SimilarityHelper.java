@@ -1,6 +1,8 @@
 package de.unidue.ltl.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.print.attribute.standard.RequestingUserName;
@@ -45,4 +47,5 @@ public class SimilarityHelper {
 		}
 		return sum;
 	}
+	
 }

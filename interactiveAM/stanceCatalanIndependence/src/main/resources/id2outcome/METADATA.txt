@@ -1,0 +1,7 @@
+#Tue Apr 04 11:54:09 CEST 2017
+end=1491299648663
+uuid=ExperimentCrossValidation-es_NgramCV_embeddings-e1f7f5f3-1919-11e7-bacc-47fef1325c89
+type=org.dkpro.tc.ml.ExperimentCrossValidation-es_NgramCV_embeddings
+begin=1491298461803
+duration=1186s
+import.preprocessorOutputTrain=task-id\://InitTask-es_NgramCV_embeddings-d2a56242-1919-11e7-bacc-47fef1325c89/preprocessorOutputTrain

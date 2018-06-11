@@ -1,0 +1,4 @@
+BOTH
+LSTM
+SVM
+UNK
