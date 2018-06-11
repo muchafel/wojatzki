@@ -22,11 +22,12 @@ from __future__ import print_function
 from sys import argv
 import numpy as np
 import argparse
+from keras import backend as K
 
 
 def numpyizeDataVector(vec):
 	trainVecNump=[]
-	file = open(vec, 'r')
+	file = open(vec,'r',encoding='utf8')
 	for l in file.readlines():
 		l = l.strip()
 		trainVecNump.append(np.fromstring(l, dtype=int, sep=' '))
@@ -34,7 +35,7 @@ def numpyizeDataVector(vec):
 	return trainVecNump
 
 def numpyizeOutcomeVector(vec):
-	file = open(vec, 'r')
+	file = open(vec,'r',encoding='utf8')
 	v=""
 	for l in file.readlines():
 		l = l.strip()
@@ -43,7 +44,7 @@ def numpyizeOutcomeVector(vec):
 	return v
 
 def loadEmbeddings(emb):
-	f = open(emb, 'r')
+	f = open(emb,'r',encoding='utf8')
 	embData = f.readlines()
 	f.close()
 	dim = len(embData[0].split())-1
@@ -73,7 +74,7 @@ def readInstances(vec):
 	startIdx=0
 	trainVec1=[]
 	trainVec2=[]
-	file = open(vec, 'r')
+	file = open(vec,'r',encoding='utf8')
 	for l in file.readlines():
 		trainVecPart1=[]
 		trainVecPart2=[]
@@ -102,7 +103,7 @@ def readInstances(vec):
 def readInstancesTest2(vec,dic,startIdx):
 	trainVec1=[]
 	trainVec2=[]
-	file = open(vec, 'r')
+	file = open(vec, 'r',encoding='utf8')
 	for l in file.readlines():
 		trainVecPart1=[]
 		trainVecPart2=[]
@@ -129,7 +130,7 @@ def readInstancesTest2(vec,dic,startIdx):
 	
 def readInstancesTest(vec,dic,startIdx):
 	trainVec=[]
-	file = open(vec, 'r')
+	file = open(vec, 'r',encoding='utf8')
 	for l in file.readlines():
 		trainVecPart=[]
 		l = l.strip()
@@ -145,7 +146,7 @@ def readInstancesTest(vec,dic,startIdx):
 	
 def getEmbeddingsIndex(embedding):
 	embeddings_index = {}
-	f = open(embedding, 'r')
+	f = open(embedding, 'r',encoding='utf8')
 	embData = f.readlines()
 	f.close()
 	dim = len(embData[0].split())-1
@@ -162,11 +163,10 @@ def getEmbeddingsIndex(embedding):
 
 def loadPretrainedEmbedding(path, word_index):
 	embeddings_index = {}
-	f = open(embedding, 'r')
+	f = open(embedding, 'r',encoding='utf8')
 	embData = f.readlines()
 	EMBEDDING_DIM = len(embData[0].split())-1
 	f.close()
-	f = open(path,encoding='utf-8',errors='ignore')
 	for line in embData:
 		if line.count(' ') < EMBEDDING_DIM:
 		# probably first line
@@ -208,21 +208,36 @@ def getMatrix(embeddings_index,train,dim):
 		#matrix.[j]=(embedding_matrix)
 	return matrix
 
+def euclideanSqDistance(inputs):
+	if (len(inputs) != 2):
+		raise 'oops'
+	output = K.mean(K.square(inputs[0] - inputs[1]), axis=-1)
+	output = K.expand_dims(output, 1)
+	return output
+
+def shuffle_list(*ls):
+	from random import shuffle
+	l =list(zip(*ls))
+	shuffle(l)
+	return zip(*l)
+
 def runExperiment(seed, trainVec, trainOutcome, testVec, testOutcome, embedding, maximumLength, predictionOut):
 
 	np.random.seed(seed)
 	from keras.preprocessing import sequence
 	from keras.models import Sequential
-	from keras.layers import Dense, Dropout, Activation
-	from keras.layers import Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D, Merge
+	from keras.layers import Dense, Dropout, Activation, merge
+	from keras.layers import Embedding, TimeDistributed, Bidirectional, Flatten,Convolution1D, MaxPooling1D, GlobalMaxPooling1D, Merge, Dot
 	from keras.layers import Embedding
 	from keras.layers import LSTM
 	from keras.layers import Conv1D, MaxPooling1D
+	from keras import backend as K
+	from keras.optimizers import SGD
 
 
 	train1, train2, dic, startIdx= readInstances(trainVec)	
-	print(train1)
-	print(train2)
+	#print(train1)
+	#print(train2)
 	test1,test2, dic=readInstancesTest2(testVec,dic,startIdx);
 	
 	embeddingsIndex = loadPretrainedEmbedding(embedding,dic)
@@ -240,56 +255,108 @@ def runExperiment(seed, trainVec, trainOutcome, testVec, testOutcome, embedding,
 	trainOutcome = numpyizeOutcomeVector(trainOutcome)
 	testOutcome = numpyizeOutcomeVector(testOutcome)
 
-	x_train1 = sequence.pad_sequences(train1, maxlen=int(maximumLength))
-	x_train2 = sequence.pad_sequences(train1, maxlen=int(maximumLength))
-	x_test1 = sequence.pad_sequences(test1, maxlen=int(maximumLength))
-	x_test2 = sequence.pad_sequences(test2, maxlen=int(maximumLength))
+	#x_train1 = sequence.pad_sequences(train1, maxlen=int(maximumLength))
+	#x_train2 = sequence.pad_sequences(train1, maxlen=int(maximumLength))
+	#x_test1 = sequence.pad_sequences(test1, maxlen=int(maximumLength))
+	#x_test2 = sequence.pad_sequences(test2, maxlen=int(maximumLength))
 
-	print(len(x_train1))
-	print(len(train2))
+	#print(len(x_train1))
+	#print(len(train2))
 
 	y_train = trainOutcome
 	y_test = testOutcome
 
 	
-	print(len(y_test))
+	#print(len(y_test))
 
 	left = Sequential()
-	left.add(Embedding(output_dim=embeddingsIndex.shape[1], input_dim=embeddingsIndex.shape[0], input_length=x_train1.shape[1],  weights=[embeddingsIndex], trainable=False))
-	left.add(Flatten())
-	left.add(Dense(150))
-	left.add(Dense(100))
-	left.add(Dense(50))
-	left.add(Dense(10, kernel_initializer='normal', activation='relu'))
-	#model.add(Dense(1, kernel_initializer='normal'))
+	left.add(Embedding(output_dim=embeddingsIndex.shape[1], input_dim=embeddingsIndex.shape[0],weights=[embeddingsIndex],trainable=False))	
+	left.add(Dropout(0.5))
+	left.add(Conv1D(200,2,padding='valid',activation='tanh',strides=1))
+	left.add(GlobalMaxPooling1D())
+	left.add(Dense(100, kernel_initializer='normal', activation='tanh'))
+	left.summary()
+
 	
 	right = Sequential()
-	right.add(Embedding(output_dim=embeddingsIndex.shape[1], input_dim=embeddingsIndex.shape[0], input_length=x_train2.shape[1],  weights=[embeddingsIndex], trainable=False))
-	right.add(Flatten())
-	right.add(Dense(150))
-	right.add(Dense(100))
-	right.add(Dense(50))
-	right.add(Dense(10, kernel_initializer='normal', activation='relu'))
+	right.add(Embedding(output_dim=embeddingsIndex.shape[1], input_dim=embeddingsIndex.shape[0],weights=[embeddingsIndex],trainable=False))
+	right.add(Dropout(0.5))
+	right.add(Conv1D(200,2,padding='valid',activation='tanh',strides=1))
+	right.add(GlobalMaxPooling1D())
+	right.add(Dense(100, kernel_initializer='normal', activation='tanh'))
+	right.summary()
+	#right.add(Dense(100, kernel_initializer='normal', activation='tanh'))
 	
 
 	model = Sequential()
-	model.add(Merge([left, right], mode='concat'))
-	model.add(Dense(1, kernel_initializer='normal'))	
-	
-	model.compile(loss='mean_squared_error', optimizer='adam')
-	#model.fit(x_train1, y_train, epochs=10, shuffle=True)
-	model.fit([x_train1, x_train2], y_train, epochs=10, shuffle=True)
-	
-	
-	#prediction = model.predict(x_test)
-	prediction = model.predict([x_test1, x_test2])
-	
+	model.add(Merge([left, right], mode='cos',dot_axes=1))
+	model.add(Flatten())
 
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	model.summary()
+	
+	
+	
+	print("Start training")
+	for i in range(0, 10):
+		x_train1,x_train2,y_train1 = shuffle_list(train1,train2,y_train)
+
+		assert(len(x_train1) == len(y_train))
+		for x1,x2,y in zip(x_train1,x_train2, y_train1):
+		
+			x1=np.asarray(x1)
+			x2=np.asarray(x2)
+			#print(x1)
+			max=np.max([len(x1),len(x2)])
+			#print(max)
+			x1 = sequence.pad_sequences([x1], maxlen=int(max))
+			x2 = sequence.pad_sequences([x2], maxlen=int(max))
+			y=np.asarray([y])
+			
+			a = model.fit([x1, x2], y, epochs=1, batch_size=1, verbose=0)
+		print("\nEpoche " + str(i+1) + " completed")
+		
+	#prediction = [model.predict([x1, x2]) for x1,x2 in enumerate(zip(test1,test2))]
+	#test1=np.asarray([test1])
+	#test2=np.asarray([test2])
+	#prediction = model.predict([test1, test2])
+	prediction=[]
+	print(test1)
+	for x1,x2 in zip(test1,test2):
+		#print(x1)
+		x1=np.asarray(x1)
+		x2=np.asarray(x2)
+		#print(x1)
+		max=np.max([len(x1),len(x2)])
+		#print(max)
+		x1 = sequence.pad_sequences([x1], maxlen=int(max))
+		x2 = sequence.pad_sequences([x2], maxlen=int(max))
+		#
+		#print(x2)
+		prediction.append(model.predict([x1, x2]))
+	
 	predictionFile = open(predictionOut, 'w')
 	predictionFile.write("#Gold\tPrediction\n")
 	for i in range(0, len(prediction)):
-		predictionFile.write(str(y_test[i]) +"\t" + str(prediction[i][0])+ "\n")
+		print(str(y_test[i]) +"\t" + str(prediction[i][0][0]))
+		predictionFile.write(str(y_test[i]) +"\t" + str(prediction[i][0][0])+ "\n")
 	predictionFile.close()
+	
+	
+	#model.fit(x_train1, y_train, epochs=10, shuffle=True)
+	#model.fit([x_train1, x_train2], y_train, epochs=10, shuffle=True)
+	
+	
+	#prediction = model.predict(x_test)
+	#prediction = model.predict([x_test1, x_test2])
+	
+
+	#predictionFile = open(predictionOut, 'w')
+	#predictionFile.write("#Gold\tPrediction\n")
+	#for i in range(0, len(prediction)):
+		#print(str(y_test[i]) +"\t" + str(prediction[i][0]))
+		#predictionFile.write(str(y_test[i]) +"\t" + str(prediction[i][0])+ "\n")
+	#predictionFile.close()
 
 
 if  __name__ =='__main__':
