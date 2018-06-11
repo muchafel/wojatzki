@@ -39,7 +39,7 @@ public class AssertionSimilarityPrediction implements Constants {
     public static final String languageCode = "de";
 
 
-	private static final int NUM_FOLDS = 2;
+	private static final int NUM_FOLDS = 10;
     
     
     public static void main(String[] args)throws Exception {

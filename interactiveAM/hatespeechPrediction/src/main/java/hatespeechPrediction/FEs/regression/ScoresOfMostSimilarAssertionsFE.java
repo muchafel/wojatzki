@@ -36,7 +36,7 @@ import org.dkpro.tc.features.ngram.meta.WordNGramMC;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 
-public class SimilarityPredictionFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor,MetaDependent{
+public class ScoresOfMostSimilarAssertionsFE extends FeatureExtractorResource_ImplBase implements FeatureExtractor,MetaDependent{
 
 	
 	public static final String PARAM_N_MOST_SIMILAR = "nmostSimilar";
@@ -73,7 +73,8 @@ public class SimilarityPredictionFE extends FeatureExtractorResource_ImplBase im
 //    	System.out.println(pair2Sim);
     	pair2Scores= getScoresMapping(path2scoresFile, useHSScore);
     	
-    	System.out.println();
+    	System.out.println("use HS Score: "+useHSScore+ "\n"+"use gold sim: "+useGold+"\n"+"id2outcome: "+path2Id2OutcomeFile+ "\n"+"score file: "+path2scoresFile);
+    System.out.println();
     	return true;
    
     }
@@ -108,7 +109,7 @@ public class SimilarityPredictionFE extends FeatureExtractorResource_ImplBase im
 				line = line.replace("\\ ", " ");
 				double similarity;
 				String[] parts= line.split(";");
-				if(useGold) {
+				if(!useGold) {
 					similarity=Double.valueOf(parts[0].split("=")[1]);
 				}else {
 					similarity=Double.valueOf(parts[1]);
@@ -137,15 +138,13 @@ public class SimilarityPredictionFE extends FeatureExtractorResource_ImplBase im
 		
 		
 		//create a feature for the top n most similar assertions with their HS/AD value as value
-		/**
-		 * TODO check if sort order is right
-		 */
 		int i=0;
 		double sum = 0;
 		for (Entry<String, Double> entry : assertion2Scores.entrySet()) {
-			if(i>topN) break;
-		    
+			if(i>=topN) break;
 			String assertion = entry.getKey();
+//		    System.out.println("mostSimilarAssertion"+assertion+ " "+entry.getValue());
+
 		    double score = entry.getValue();
 		   
 		    if(useHSScore) {
@@ -162,7 +161,7 @@ public class SimilarityPredictionFE extends FeatureExtractorResource_ImplBase im
 				features.add(new Feature("AD_AVERAGED", sum/(double)topN,FeatureType.NUMERIC));
 			}
 		
-		
+//		System.out.println(jcas.getDocumentText()+" "+features.size());
 		return features;
 	}
 

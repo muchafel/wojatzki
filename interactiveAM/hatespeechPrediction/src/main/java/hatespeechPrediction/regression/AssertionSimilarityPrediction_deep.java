@@ -42,14 +42,14 @@ import io.Id2OutcomeReport;
 public class AssertionSimilarityPrediction_deep implements Constants {
 	public static final String languageCode = "de";
 
-	private static final int NUM_FOLDS = 10;
+	private static final int NUM_FOLDS = 2;
 
 	public static void main(String[] args) throws Exception {
 		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
 		System.out.println("DKPRO_HOME: " + baseDir);
 
 		ParameterSpace pSpace = getParameterSpace(baseDir + "/hateSpeechGender/similarity_gold/matrix.tsv",
-				baseDir + "/hateSpeechGender/embeddings/de.polyglot.txt", baseDir + "/hateSpeechGender/kerasCode/cosinus.py");
+				baseDir + "/hateSpeechGender/embeddings/de.polyglot.txt", baseDir + "/hateSpeechGender/kerasCode/cosinus2.py");
 		AssertionSimilarityPrediction_deep experiment = new AssertionSimilarityPrediction_deep();
 		experiment.runCrossValidation(pSpace, "Similarity");
 

@@ -25,6 +25,7 @@ import org.dkpro.tc.core.Constants;
 import org.dkpro.tc.features.ngram.CharacterNGram;
 import org.dkpro.tc.features.ngram.WordNGram;
 import org.dkpro.tc.features.ngram.base.NGramFeatureExtractorBase;
+import org.dkpro.tc.features.pair.core.ngram.LuceneNGramPFE;
 import org.dkpro.tc.features.twitter.EmoticonRatio;
 import org.dkpro.tc.features.twitter.NumberOfHashTags;
 import org.dkpro.tc.ml.ExperimentCrossValidation;
@@ -37,7 +38,7 @@ import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import hatespeechPrediction.FEs.regression.SimilarityPredictionFE;
+import hatespeechPrediction.FEs.regression.ScoresOfMostSimilarAssertionsFE;
 import io.AssertionReader;
 import io.Id2OutcomeReport;
 import weka.classifiers.functions.SMOreg;
@@ -62,22 +63,36 @@ public class HateSpeechRegressionUsingSim implements Constants {
 	 * XXX specify features here we should do some experiments using the
 	 * standard fetaures from dkpro-tc
 	 */
-	public TcFeatureSet featureSet = new TcFeatureSet(
-			 TcFeatureFactory.create(
-					SimilarityPredictionFE.class, SimilarityPredictionFE.PARAM_USE_HS_SCORE, true,
-					SimilarityPredictionFE.PARAM_N_MOST_SIMILAR, 10, SimilarityPredictionFE.PARAM_USE_GOLD, false,
-					SimilarityPredictionFE.PARAM_PATH2_SCORES_FILE, "src/main/resources/scores/scores.tsv",
-					SimilarityPredictionFE.PARAM_ID2OUTCOME_FILE,
-					"src/main/resources/similarityPredicted/id2Outcome.txt"));
+	
 
 	public static void main(String[] args) throws Exception {
-		String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
-		System.out.println("DKPRO_HOME: " + baseDir);
-		HateSpeechRegressionUsingSim experiment = new HateSpeechRegressionUsingSim();
+		
+		for(int i=1; i<101; i+=25) {
+			String baseDir = DkproContext.getContext().getWorkspace().getAbsolutePath();
+			System.out.println("DKPRO_HOME: " + baseDir);
+			HateSpeechRegressionUsingSim experiment = new HateSpeechRegressionUsingSim();
 
-		// XXX CV for getting the id2outcome file for the DFE
-		ParameterSpace pSpace = experiment.setupCrossValidation("src/main/resources/scores/scores.tsv", "HateSpeech");
-		experiment.runCrossValidation(pSpace, "hateSpeccccc");
+			TcFeatureSet featureSet = new TcFeatureSet(TcFeatureFactory.create(ScoresOfMostSimilarAssertionsFE.class,
+					ScoresOfMostSimilarAssertionsFE.PARAM_USE_HS_SCORE, false,
+					ScoresOfMostSimilarAssertionsFE.PARAM_N_MOST_SIMILAR, i,
+					ScoresOfMostSimilarAssertionsFE.PARAM_USE_GOLD, true,
+					ScoresOfMostSimilarAssertionsFE.PARAM_PATH2_SCORES_FILE, "src/main/resources/scores/scores.tsv",
+					ScoresOfMostSimilarAssertionsFE.PARAM_ID2OUTCOME_FILE,
+					"src/main/resources/similarityPredicted/snn:id2Outcome_translated_2.txt")
+//					,
+//					TcFeatureFactory.create(WordNGram.class, WordNGram.PARAM_NGRAM_USE_TOP_K, N_GRAM_MAXCANDIDATES,
+//							WordNGram.PARAM_NGRAM_MIN_N, WORD_N_GRAM_MIN, WordNGram.PARAM_NGRAM_MAX_N, WORD_N_GRAM_MAX),
+//					TcFeatureFactory.create(CharacterNGram.class, CharacterNGram.PARAM_NGRAM_USE_TOP_K,
+//							N_GRAM_MAXCANDIDATES, CharacterNGram.PARAM_NGRAM_MIN_N, CHAR_N_GRAM_MIN,
+//							CharacterNGram.PARAM_NGRAM_MAX_N, CHAR_N_GRAM_MAX)
+					);
+			
+			
+			// XXX CV for getting the id2outcome file for the DFE
+			ParameterSpace pSpace = experiment.setupCrossValidation("src/main/resources/scores/scores.tsv", "HateSpeech",featureSet);
+			experiment.runCrossValidation(pSpace, "hateSpec_AD_snn_gold"+String.valueOf(i));
+		}
+		
 
 	}
 
@@ -101,7 +116,7 @@ public class HateSpeechRegressionUsingSim implements Constants {
 				);
 	}
 
-	private ParameterSpace setupCrossValidation(String path, String target) throws ResourceInitializationException {
+	private ParameterSpace setupCrossValidation(String path, String target, TcFeatureSet featureSet) throws ResourceInitializationException {
 		Map<String, Object> dimReaders = getDimReaders(path, target);
 //		Dimension<List<Object>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 //                Arrays.asList(
@@ -109,7 +124,7 @@ public class HateSpeechRegressionUsingSim implements Constants {
 		Dimension<TcFeatureSet> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, featureSet);
 
 		Map<String, Object> config1 = new HashMap<>();
-		config1.put(DIM_CLASSIFICATION_ARGS,new Object[] { new LibsvmAdapter(),  "-s", "4" , "-c", "100" });
+		config1.put(DIM_CLASSIFICATION_ARGS,new Object[] { new LibsvmAdapter(),  "-s", "3" , "-c", "100" });
 		config1.put(DIM_DATA_WRITER, new LibsvmAdapter().getDataWriterClass());
 		config1.put(DIM_FEATURE_USE_SPARSE, new LibsvmAdapter().useSparseFeatures());
 		
