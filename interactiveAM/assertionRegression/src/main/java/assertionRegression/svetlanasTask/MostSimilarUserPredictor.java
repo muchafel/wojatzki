@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import assertionRegression.judgmentPrediction.SimilarityHelper;
 import assertionRegression.similarity.Participant;
+import assertionRegression.util.SimilarityHelper;
 
 public class MostSimilarUserPredictor extends Predictor {
 	

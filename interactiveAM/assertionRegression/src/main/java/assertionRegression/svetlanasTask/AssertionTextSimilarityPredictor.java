@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 import org.bytedeco.javacpp.RealSense.context;
 
-import assertionRegression.judgmentPrediction.ParticipanJudgmentPredictionExperiment;
 import dkpro.similarity.algorithms.api.SimilarityException;
 import dkpro.similarity.algorithms.api.TextSimilarityMeasure;
 

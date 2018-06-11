@@ -56,7 +56,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import org.dkpro.tc.ml.libsvm.LibsvmAdapter;
 import org.dkpro.tc.ml.report.BatchCrossValidationReport;
 import org.dkpro.tc.ml.report.BatchTrainTestReport;
-import org.dkpro.tc.ml.report.InnerBatchReport;
 import org.dkpro.tc.ml.report.ScatterplotReport;
 
 public class DeepRegression_LeaveOneIssueOut implements Constants {

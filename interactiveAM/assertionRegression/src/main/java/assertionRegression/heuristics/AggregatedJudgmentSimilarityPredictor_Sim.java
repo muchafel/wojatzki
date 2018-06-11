@@ -13,10 +13,10 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import assertionRegression.judgmentPrediction.SimilarityHelper;
 import assertionRegression.similarity.OpinionSummarizationData;
 import assertionRegression.similarity.Participant;
 import assertionRegression.svetlanasTask.PredictionExperiment;
+import assertionRegression.util.SimilarityHelper;
 
 public class AggregatedJudgmentSimilarityPredictor_Sim {
 	private SimilarityHelper similarityHelper;

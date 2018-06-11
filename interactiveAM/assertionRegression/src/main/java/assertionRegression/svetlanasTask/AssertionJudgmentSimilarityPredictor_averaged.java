@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import assertionRegression.judgmentPrediction.SimilarityHelper;
+import assertionRegression.util.SimilarityHelper;
 import dkpro.similarity.algorithms.api.SimilarityException;
 
 public class AssertionJudgmentSimilarityPredictor_averaged extends Predictor {

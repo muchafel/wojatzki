@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
-import assertionRegression.judgmentPrediction.EmbeddingSimilarityMeasure;
 import assertionRegression.similarity.Participant;
+import assertionRegression.util.EmbeddingSimilarityMeasure;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import dkpro.similarity.algorithms.lexical.ngrams.WordNGramJaccardMeasure;
 import dkpro.similarity.algorithms.lexical.string.GreedyStringTiling;

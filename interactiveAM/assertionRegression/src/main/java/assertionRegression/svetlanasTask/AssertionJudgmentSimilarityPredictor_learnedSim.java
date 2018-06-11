@@ -14,7 +14,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.ibm.icu.impl.locale.XCldrStub.FileUtilities;
 
-import assertionRegression.judgmentPrediction.SimilarityHelper;
+import assertionRegression.util.SimilarityHelper;
 import dkpro.similarity.algorithms.api.SimilarityException;
 
 public class AssertionJudgmentSimilarityPredictor_learnedSim extends Predictor {

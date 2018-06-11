@@ -15,7 +15,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.dkpro.tc.api.type.TextClassificationOutcome;
 
 import assertionRegression.io.AssertionSimilarityPairReader_deep;
-import assertionRegression.judgmentPrediction.EmbeddingSimilarityMeasure;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.DkproContext;
 import dkpro.similarity.algorithms.api.SimilarityException;
 import dkpro.similarity.algorithms.api.TextSimilarityMeasure;

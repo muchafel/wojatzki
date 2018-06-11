@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import assertionRegression.judgmentPrediction.SimilarityHelper;
+import assertionRegression.util.SimilarityHelper;
 import dkpro.similarity.algorithms.api.SimilarityException;
 
 public class AssertionJudgmentSimilarityPredictor extends Predictor {
